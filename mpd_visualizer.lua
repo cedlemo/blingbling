@@ -17,7 +17,7 @@ module("blingbling.mpd_visualizer")
 
 local data = setmetatable({}, { __mode = "k" })
 
-local properties = { "width", "height", "v_margin","h_margin", "background_color", "graph_color", "line", "mpd_pass", "mpd_host","mpd_port","error_background_color","error_text_color" }
+local properties = { "width", "height", "v_margin","h_margin", "background_color", "graph_color", "line","show_text","label","background_text_color","text_color","font_size", "mpd_pass", "mpd_host","mpd_port","error_background_color","error_text_color" }
 
 local function check_mpd()
   local mpd_state={}
@@ -46,6 +46,37 @@ local function check_mpd()
   end
   f:close()
   return mpd_state
+end
+local function get_song_infos(mpd_graph)
+  local pass = "\"\""
+  local host = "127.0.0.1"
+  local port = "6600"
+  
+  if data[mpd_graph].mpd_pass then
+    pass = data[mpd_graph].mpd_pass
+  end
+  if data[mpd_graph].mpd_host then
+    host = data[mpd_graph].mpd_host
+  end
+  if data[mpd_graph].mpd_port then
+    port = data[mpd_graph].mpd_port
+  end
+    -- MPD client command 
+  local mpd_c = "mpc" .. " -h " .. host .. " -p " .. port .. " " .. 'current -f [%artist%]€[%title%]€[%album%]'
+
+  -- Get data from MPD server
+  data[mpd_graph].songinfos = ""
+  local string =""
+  local f = io.popen(mpd_c)
+  for line in f:lines() do
+    string= line .. string
+  end
+  f:close()
+  local t={}  
+  t=helpers.split(string,"€")
+  data[mpd_graph].song_artist=t[1]
+  data[mpd_graph].song_title=t[2]
+  data[mpd_graph].song_album=t[3]
 end
 local function mpd_send(mpd_graph,command)
 
@@ -228,8 +259,64 @@ local function generate(mpd_graph)
       end
       mpd_graph_context:fill()
     end
+    --Text
+    if data[mpd_graph].show_text == true then
+      --Draw Text and it's background
+      local text=''
+      local title
+      local artist
+      local album
+      if data[mpd_graph].song_title then
+        title = data[mpd_graph].song_title
+      else
+        title="n/a"
+      end
+      if data[mpd_graph].song_artist then
+        artist = data[mpd_graph].song_artist
+      else
+        artist="n/a"
+      end
+      if data[mpd_graph].song_album then
+        album = data[mpd_graph].song_album
+      else
+        album="n/a"
+      end
+      if data[mpd_graph].label then
+        text=string.gsub(data[mpd_graph].label,"$title", title)
+        text=string.gsub(text,"$artist", artist)
+        text=string.gsub(text,"$album", album)
+        --helpers.dbg({text})
+      else
+        text=artist .. ">" ..title .. ">" .. album
+      end
+      --Text Background
+      ext=mpd_graph_context:text_extents(text)
+      mpd_graph_context:rectangle(0+h_margin + ext.x_bearing ,(data[mpd_graph].height - (2 * v_margin)) + ext.y_bearing ,ext.width, ext.height)
+      if data[mpd_graph].background_text_color then
+        r,g,b,a=helpers.hexadecimal_to_rgba_percent(data[mpd_graph].background_text_color)
+        mpd_graph_context:set_source_rgba(r,g,b,a)
+      else
+        mpd_graph_context:set_source_rgba(0,0,0,0.5)
+      end
+      mpd_graph_context:fill()
+      --Text
+      if data[mpd_graph].font_size then
+        mpd_graph_context:set_font_size(data[mpd_graph].font_size)
+      else
+        mpd_graph_context:set_font_size(9)
+      end
+      mpd_graph_context:new_path()
+      mpd_graph_context:move_to(0+h_margin,data[mpd_graph].height - (2 * v_margin))
+      if data[mpd_graph].text_color then
+        r,g,b,a=helpers.hexadecimal_to_rgba_percent(data[mpd_graph].text_color)
+        mpd_graph_context:set_source_rgba(r, g, b, a)
+      else
+        mpd_graph_context:set_source_rgba(1,1,1,1)
+      end
+      mpd_graph_context:show_text(text)
+    end
   end
-  mpd_graph.widget.image = capi.image.argb32(data[mpd_graph].width, data[mpd_graph].height, mpd_graph_surface:get_data())
+mpd_graph.widget.image = capi.image.argb32(data[mpd_graph].width, data[mpd_graph].height, mpd_graph_surface:get_data())
 end
 
 function update(mpd_graph)
@@ -238,11 +325,18 @@ function update(mpd_graph)
   data[mpd_graph].update_timer:start()
 end
 
-local function mpd_info(mpd_graph)
-  data[mpd_graph].mpdinfos=check_mpd()
-  update_infos= capi.timer({timeout = 0.1 })
-  update_infos:add_signal("timeout", function() data[mpd_graph].mpdinfos=check_mpd() end)
+--local function mpd_info(mpd_graph)
+--  data[mpd_graph].mpdinfos=check_mpd()
+--  update_infos= capi.timer({timeout = 0.1 })
+--  update_infos:add_signal("timeout", function() data[mpd_graph].mpdinfos=check_mpd() end)
+--end
+
+local function update_song_infos(mpd_graph)
+  a_timer=capi.timer({timeout = 1 })
+  a_timer:add_signal("timeout", function() get_song_infos(mpd_graph) end)
+  a_timer:start()
 end
+
 function set_height(mpd_graph, height)
     if height >= 5 then
         data[mpd_graph].height = height
@@ -309,7 +403,8 @@ function new(args)
     mpd_graph.widget.resize = false
 
     data[mpd_graph] = { width = width, height = height, values = {}, mpdinfos = {}  }
-
+    
+    update_song_infos(mpd_graph)
     -- Set methods
     mpd_graph.update = update
     mpd_graph.set_mpc_commands = set_mpc_commands

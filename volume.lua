@@ -274,6 +274,43 @@ local function update_master(v_graph)
     end)
     data[v_graph].mastertimer:start()
 end
+
+local function get_mpd_volume()
+  local mpd_volume=0
+
+  local pass = "\"\""
+  local host = "127.0.0.1"
+  local port = "6600"
+
+    -- MPD client command 
+  local mpd_c = "mpc" .. " -h " .. host .. " -p " .. port .. " status 2>&1"
+
+  -- Get data from MPD server
+  local f = io.popen(mpd_c)
+
+  for line in f:lines() do
+    --helpers.dbg({line})
+    if string.find(line,'error:%sConnection%srefused') then
+      mpd_vol="-1"
+    end
+    if string.find(line,"volume:.%d%d%%") then
+      mpd_volume = string.match(line,"[%s%d]%d%d")
+      --mpd_volume = line
+    end
+  end
+  f:close()
+  return mpd_volume
+end
+local function update_mpd(v_graph)
+    local state
+    local value
+    data[v_graph].mastertimer = capi.timer({timeout = 0.5})
+    data[v_graph].mastertimer:add_signal("timeout", function() 
+      value = get_mpd_volume(); add_value(v_graph,value/100) 
+    end)
+        data[v_graph].mastertimer:start()
+end
+
 local function set_master_control(v_graph)
     v_graph.widget:buttons(awful.util.table.join(
     awful.button({ }, 1, function()
@@ -336,13 +373,12 @@ function new(args)
     -- Set methods
     v_graph.add_value = add_value
     v_graph.update_master = update_master
+    v_graph.update_mpd= update_mpd
     v_graph.set_master_control = set_master_control
     for _, prop in ipairs(properties) do
         v_graph["set_" .. prop] = _M["set_" .. prop]
     end
-    get_master_infos()
     v_graph.layout = args.layout or layout.horizontal.leftright
-
     return v_graph
 end
 

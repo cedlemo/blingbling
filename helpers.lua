@@ -1,6 +1,6 @@
 local naughty= require("naughty")
 local string = require("string")
-
+local table = table
 module("blingbling.helpers")
 
 function dbg(vars)

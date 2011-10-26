@@ -24,7 +24,7 @@ Installation
 ($XDG_CONFIG_HOME usually ~/.config)
 
 cd $XDG_CONFIG_HOME/awesome/
-git clone git://github.com/cedlemo/blingbling.git
+git clone git@github.com:cedlemo/blingbling.git
 
 Usage
 -----------
@@ -205,9 +205,12 @@ This graphical widget represent a value between 0 and 1 with a triangle or with 
             .....,
      --reload awesome
   
-  -You can use vicious to feed the graph or create a timer that feeds it using myvolume:add_value( a_value) or you can use the method that get the sound value from amixer:
+  -You can use vicious to feed the graph or create a timer that feeds it using myvolume:add_value( a_value) or you can use one of the method that get the sound value from:
+  amixer
     myvolume:update_master()
-  
+  mpc
+    myvolume:update_mpd()
+
   -You can link to the widget some commands to manage the sound:
     myvolume:set_master_control()
       a left clic toggle mute/unmute
@@ -295,9 +298,9 @@ The most useless widget, but my favorite. This widget reads from the fifo of a l
       mympd:set_background_text_color(string) -->"#rrggbbaa"
       mympd:set_font_size(integer)
       mympd:set_label(string)
-        define what is the text to display. By default the text is : (value_send_to_the_widget *100) .. "%"
-        static string: example set_label("CPU usage:") will display "CUP usage:" on the graph
-        dynamic string: use $percent in the string example set_label("Load $percent %") will display "Load 10%" 
+        define what is the text to display. By default the text is : (artist > song > album)
+        static string: example set_label("MPD:") will display "MPD:" on the graph
+        dynamic string: use $artist, $title, $album in the string example set_label("$artist>$song") will display "Megadeth>Tornado of souls"" 
 *top popup
 The top popup is a popup created with naugthy that displays a top formated and colorized output. You can bind it to a widget (textbox or image or graph from blingbling). It adds a button fonctionnality to the widget, left click launch htop in a terminal. Furthermore wheel down/up refresh the popup with less or more lines.
   -Usage:
