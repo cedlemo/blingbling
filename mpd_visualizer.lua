@@ -203,22 +203,27 @@ local function generate(mpd_graph)
       mpd_graph_context:paint()
     end
 
-    if data[mpd_graph].font_size then
-      mpd_graph_context:set_font_size(data[mpd_graph].font_size)
-    else
-      mpd_graph_context:set_font_size(9)
+    if data[mpd_graph].font_size == nil then
+      data[mpd_graph].font_size=9
     end
 
     mpd_graph_context:new_path()
-    mpd_graph_context:move_to(0,data[mpd_graph].height /2 )
 
-    if data[mpd_graph].error_text_color then
-      r,g,b,a = helpers.hexadecimal_to_rgba_percent(data[mpd_graph].error_text_color)
-      mpd_graph_context:set_source_rgba(r,g,b,a)
-    else
-     mpd_graph_context:set_source_rgb(1,0,0)
+    if data[mpd_graph].error_text_color == nil then
+      data[mpd_graph].error_text_color = "#ff0000ff" 
+    end
+    if data[mpd_graph].background_text_color == nil then
+      data[mpd_graph].background_text_color = "#000000dd" 
     end
     mpd_graph_context:show_text(data[mpd_graph].fifo_error)
+    helpers.draw_text_and_background(mpd_graph_context, 
+                                        data[mpd_graph].fifo_error, 
+                                        h_margin, 
+                                        (data[mpd_graph].height/2) + (data[mpd_graph].font_size)/2, 
+                                        data[mpd_graph].background_text_color, 
+                                        data[mpd_graph].error_text_color,
+                                        false,
+                                        false)
   else  
     --drawn the the graph
     if data[mpd_graph].background_color then
@@ -262,10 +267,23 @@ local function generate(mpd_graph)
     --Text
     if data[mpd_graph].show_text == true then
       --Draw Text and it's background
+      if data[mpd_graph].font_size == nil then
+        data[mpd_graph].font_size = 9
+      end
+      mpd_graph_context:set_font_size(data[mpd_graph].font_size)
+    
+      if data[mpd_graph].background_text_color == nil then
+        data[mpd_graph].background_text_color = "#000000dd" 
+      end
+      if data[mpd_graph].text_color == nil then
+        data[mpd_graph].text_color = "#ffffffff" 
+      end    
+      
       local text=''
       local title
       local artist
       local album
+      
       if data[mpd_graph].song_title then
         title = data[mpd_graph].song_title
       else
@@ -289,31 +307,14 @@ local function generate(mpd_graph)
       else
         text=artist .. ">" ..title .. ">" .. album
       end
-      --Text Background
-      ext=mpd_graph_context:text_extents(text)
-      mpd_graph_context:rectangle(0+h_margin + ext.x_bearing ,(data[mpd_graph].height - (2 * v_margin)) + ext.y_bearing ,ext.width, ext.height)
-      if data[mpd_graph].background_text_color then
-        r,g,b,a=helpers.hexadecimal_to_rgba_percent(data[mpd_graph].background_text_color)
-        mpd_graph_context:set_source_rgba(r,g,b,a)
-      else
-        mpd_graph_context:set_source_rgba(0,0,0,0.5)
-      end
-      mpd_graph_context:fill()
-      --Text
-      if data[mpd_graph].font_size then
-        mpd_graph_context:set_font_size(data[mpd_graph].font_size)
-      else
-        mpd_graph_context:set_font_size(9)
-      end
-      mpd_graph_context:new_path()
-      mpd_graph_context:move_to(0+h_margin,data[mpd_graph].height - (2 * v_margin))
-      if data[mpd_graph].text_color then
-        r,g,b,a=helpers.hexadecimal_to_rgba_percent(data[mpd_graph].text_color)
-        mpd_graph_context:set_source_rgba(r, g, b, a)
-      else
-        mpd_graph_context:set_source_rgba(1,1,1,1)
-      end
-      mpd_graph_context:show_text(text)
+      helpers.draw_text_and_background(mpd_graph_context, 
+                                        text, 
+                                        h_margin, 
+                                        (data[mpd_graph].height/2) + (data[mpd_graph].font_size)/2, 
+                                        data[mpd_graph].background_text_color, 
+                                        data[mpd_graph].text_color,
+                                        false,
+                                        false)
     end
   end
 mpd_graph.widget.image = capi.image.argb32(data[mpd_graph].width, data[mpd_graph].height, mpd_graph_surface:get_data())

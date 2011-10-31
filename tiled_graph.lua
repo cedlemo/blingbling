@@ -37,7 +37,7 @@ local function update(t_graph)
   local t_graph_surface=cairo.image_surface_create("argb32",data[t_graph].width, data[t_graph].height)
   local t_graph_context = cairo.context_create(t_graph_surface)
   
-  local v_margin = 3
+  local v_margin = 2  
   if data[t_graph].v_margin then 
     v_margin = data[t_graph].v_margin 
   end
@@ -154,38 +154,33 @@ local function update(t_graph)
 
   if data[t_graph].show_text == true then
   --Draw Text and it's background
+    if data[t_graph].font_size == nil then
+      data[t_graph].font_size = 9
+    end
+    t_graph_context:set_font_size(data[t_graph].font_size)
+    
+    if data[t_graph].background_text_color == nil then
+     data[t_graph].background_text_color = "#000000dd" 
+    end
+    if data[t_graph].text_color == nil then
+     data[t_graph].text_color = "#ffffffff" 
+    end    
+      
     local value = data[t_graph].values[1] * 100
     if data[t_graph].label then
       text=string.gsub(data[t_graph].label,"$percent", value)
     else
       text=value .. "%"
     end
-    --Text Background
-    ext=t_graph_context:text_extents(text)
-    t_graph_context:rectangle(0+h_margin +h_rest+ ext.x_bearing ,(data[t_graph].height - (2* v_margin )) + ext.y_bearing ,ext.width, ext.height)
-    if data[t_graph].background_text_color then
-      r,g,b,a=helpers.hexadecimal_to_rgba_percent(data[t_graph].background_text_color)
-      t_graph_context:set_source_rgba(r,g,b,a)
-    else
-      t_graph_context:set_source_rgba(0,0,0,0.5)
-    end
-    t_graph_context:fill()
-    --Text
-    if data[t_graph].font_size then
-      t_graph_context:set_font_size(data[t_graph].font_size)
-    else
-      t_graph_context:set_font_size(9)
-    end
-    --t_graph_context:select_font_face("Sans", "normal", "normal")
-    t_graph_context:new_path()
-    t_graph_context:move_to(0+h_margin+h_rest,data[t_graph].height - ( 2*v_margin ))
-    if data[t_graph].text_color then
-      r,g,b,a=helpers.hexadecimal_to_rgba_percent(data[t_graph].text_color)
-      t_graph_context:set_source_rgba(r, g, b, a)
-    else
-      t_graph_context:set_source_rgba(1,1,1,1)
-    end
-    t_graph_context:show_text(text)
+    
+    helpers.draw_text_and_background(t_graph_context, 
+                                        text, 
+                                        h_margin, 
+                                        (data[t_graph].height/2) + (data[t_graph].font_size)/2, 
+                                        data[t_graph].background_text_color, 
+                                        data[t_graph].text_color,
+                                        false,
+                                        false)
   end
   
   t_graph.widget.image = capi.image.argb32(data[t_graph].width, data[t_graph].height, t_graph_surface:get_data())

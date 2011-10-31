@@ -20,7 +20,7 @@ local function update(graph)
   local graph_surface=cairo.image_surface_create("argb32",data[graph].width, data[graph].height)
   local graph_context = cairo.context_create(graph_surface)
   
-  local v_margin = 3
+  local v_margin = 2 
   if data[graph].v_margin then 
     v_margin = data[graph].v_margin 
   end
@@ -47,42 +47,20 @@ local function update(graph)
           r,g,b,a = helpers.hexadecimal_to_rgba_percent(data[graph].filled_color)
           graph_context:set_source_rgba(r, g, b,a)
     else
-          graph_context:set_source_rgba(1, 1, 1,0.8)
+          graph_context:set_source_rgba(0, 0, 0,0.5)
     end
     graph_context:fill()
   elseif data[graph].filled ~= true and data[graph].tiles== false then
       --draw nothing
       else
       --draw tiles
-        --find nb max horizontal lignes we can display with 2 pix squarre and 1 px separator (3px)
-        local max_line=math.floor((data[graph].height - (v_margin *2)) /3)
-        --what to do with the rest of the height:
-        local rest=(data[graph].height - (v_margin * 2)) - (max_line * 3)
-        --if rest = 0, we do nothing
-        --if rest = 1, nothing to do
-        --if rest = 2, we can add a line of squarre whitout separator.
-        if rest == 2 then 
-          max_line= max_line + 1
-        end
-        --find nb columns we can draw with 1 square of 4px and 2 px separator (6px)
-        local max_column=math.ceil(data[graph].width/6)
-        --set x and y at the bottom right minus column length for x (rectangle origin is the left bottom corner)
-        x=data[graph].width-4 
-        y=data[graph].height-(v_margin*2) 
-        for i=1,max_column do
-          for j=1,max_line do
-            graph_context:rectangle(x,y,4,2)
-	          y= y-3
-          end
-          y=data[graph].height - (v_margin * 2)
-          x=x-6
-        end
         if data[graph].tiles_color then
           r,g,b,a = helpers.hexadecimal_to_rgba_percent(data[graph].tiles_color)
           graph_context:set_source_rgba(r, g, b,a)
         else
           graph_context:set_source_rgba(0, 0, 0,0.5)
         end
+		helpers.draw_background_tiles(graph_context, data[graph].height, v_margin, data[graph].width ,h_margin )
         graph_context:fill()
   end
 
@@ -155,37 +133,33 @@ local function update(graph)
   graph_context:stroke()
   if data[graph].show_text == true then
   --Draw Text and it's background
+    if data[graph].font_size == nil then
+      data[graph].font_size = 9
+    end
+    graph_context:set_font_size(data[graph].font_size)
+    
+    if data[graph].background_text_color == nil then
+     data[graph].background_text_color = "#000000dd" 
+    end
+    if data[graph].text_color == nil then
+     data[graph].text_color = "#ffffffff" 
+    end    
+    
     local value = data[graph].values[1] * 100
     if data[graph].label then
       text=string.gsub(data[graph].label,"$percent", value)
     else
       text=value .. "%"
     end
-    --Text Background
-    ext=graph_context:text_extents(text)
-    graph_context:rectangle(0+v_margin + ext.x_bearing ,(data[graph].height - (2 * v_margin)) + ext.y_bearing ,ext.width, ext.height)
-    if data[graph].background_text_color then
-      r,g,b,a=helpers.hexadecimal_to_rgba_percent(data[graph].background_text_color)
-      graph_context:set_source_rgba(r,g,b,a)
-    else
-      graph_context:set_source_rgba(0,0,0,0.5)
-    end
-    graph_context:fill()
-    --Text
-    if data[graph].font_size then
-      graph_context:set_font_size(data[graph].font_size)
-    else
-      graph_context:set_font_size(9)
-    end
-    graph_context:new_path()
-    graph_context:move_to(0+v_margin,data[graph].height - (2 * v_margin))
-    if data[graph].text_color then
-      r,g,b,a=helpers.hexadecimal_to_rgba_percent(data[graph].text_color)
-      graph_context:set_source_rgba(r, g, b, a)
-    else
-      graph_context:set_source_rgba(1,1,1,1)
-    end
-    graph_context:show_text(text)
+
+    helpers.draw_text_and_background(graph_context, 
+                                        text, 
+                                        h_margin, 
+                                        (data[graph].height/2) + (data[graph].font_size)/2, 
+                                        data[graph].background_text_color, 
+                                        data[graph].text_color,
+                                        false,
+                                        false)
   end
   graph.widget.image = capi.image.argb32(data[graph].width, data[graph].height, graph_surface:get_data())
 end

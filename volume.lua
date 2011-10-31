@@ -20,7 +20,7 @@ local function update(v_graph)
   local v_graph_surface=cairo.image_surface_create("argb32",data[v_graph].width, data[v_graph].height)
   local v_graph_context = cairo.context_create(v_graph_surface)
   
-  local v_margin = 3
+  local v_margin = 2
   if data[v_graph].v_margin and data[v_graph].v_margin <= data[v_graph].height/4 then 
     v_margin = data[v_graph].v_margin 
   end
@@ -140,7 +140,6 @@ local function update(v_graph)
         v_graph_context:set_source_rgba(0.5, 0.7, 0.1, 0.7)
       end
       v_graph_context:fill()
-      --set x and y at the bottom right minus column length for x (rectangle origin is the left bottom corner)
 
       x=0+h_margin 
       y=data[v_graph].height-(v_margin) 
@@ -164,69 +163,54 @@ local function update(v_graph)
     end
   end
   
+--Draw Text and it's background
   if data[v_graph].show_text == true and data[v_graph].state ~= "off" then
-  --Draw Text and it's background
-    local value = data[v_graph].value * 100
+    if data[v_graph].font_size == nil then
+      data[v_graph].font_size = 9
+    end
+    v_graph_context:set_font_size(data[v_graph].font_size)
+    
+    if data[v_graph].background_text_color == nil then
+     data[v_graph].background_text_color = "#000000dd" 
+    end
+    if data[v_graph].text_color == nil then
+     data[v_graph].text_color = "#ffffffff" 
+    end    
+     local value = data[v_graph].value * 100
+    
     if data[v_graph].label then
       text=string.gsub(data[v_graph].label,"$percent", value)
     else
       text=value .. "%"
     end
-    --Text Background
-    ext=v_graph_context:text_extents(text)
-    v_graph_context:rectangle(0+v_margin + ext.x_bearing ,v_margin ,ext.width, ext.height)
-    if data[v_graph].background_text_color then
-      r,g,b,a=helpers.hexadecimal_to_rgba_percent(data[v_graph].background_text_color)
-      v_graph_context:set_source_rgba(r,g,b,a)
-    else
-      v_graph_context:set_source_rgba(0,0,0,0.5)
-    end
-    v_graph_context:fill()
-    --Text
-    if data[v_graph].font_size then
+    helpers.draw_text_and_background(v_graph_context, 
+                                      text, 
+                                      h_margin, 
+                                      (data[v_graph].height/2) + (data[v_graph].font_size)/2, 
+                                      data[v_graph].background_text_color, 
+                                      data[v_graph].text_color,
+                                      false,
+                                      false)
+  else 
+    if data[v_graph].state == "off" then
+      text = "Muted"
+      local background_text_color = "#000000dd" 
+      local text_color = "#ff0000ff" 
+      if data[v_graph].font_size == nil then
+        data[v_graph].font_size = 9
+      end
       v_graph_context:set_font_size(data[v_graph].font_size)
-    else
-      v_graph_context:set_font_size(9)
+      helpers.draw_text_and_background(v_graph_context, 
+                                      text, 
+                                      h_margin, 
+                                      (data[v_graph].height/2) + (data[v_graph].font_size)/2, 
+                                      background_text_color, 
+                                      text_color,
+                                      false,
+                                      false)
     end
-    v_graph_context:new_path()
-    v_graph_context:move_to(0+v_margin,ext.height + v_margin)
-    if data[v_graph].text_color then
-      r,g,b,a=helpers.hexadecimal_to_rgba_percent(data[v_graph].text_color)
-      v_graph_context:set_source_rgba(r, g, b, a)
-    else
-      v_graph_context:set_source_rgba(1,1,1,1)
-    end
-    v_graph_context:show_text(text)
   end
-  if data[v_graph].state == "off" or data[v_graph].value == 0 then
-    text = "Muted"
-    --Text Background
-    ext=v_graph_context:text_extents(text)
-    v_graph_context:rectangle(0+v_margin + ext.x_bearing ,(data[v_graph].height - (2 * v_margin)) + ext.y_bearing ,ext.width, ext.height)
-    if data[v_graph].background_text_color then
-      r,g,b,a=helpers.hexadecimal_to_rgba_percent(data[v_graph].background_text_color)
-      v_graph_context:set_source_rgba(r,g,b,a)
-    else
-      v_graph_context:set_source_rgba(0,0,0,0.5)
-    end
-    v_graph_context:fill()
-    --Text
-    if data[v_graph].font_size then
-      v_graph_context:set_font_size(data[v_graph].font_size)
-    else
-      v_graph_context:set_font_size(9)
-    end
-    v_graph_context:new_path()
-    v_graph_context:move_to(0+v_margin,data[v_graph].height - (2 * v_margin))
-    if data[v_graph].text_color then
-      r,g,b,a=helpers.hexadecimal_to_rgba_percent(data[v_graph].text_color)
-      v_graph_context:set_source_rgba(r, g, b, a)
-    else
-      v_graph_context:set_source_rgba(1,0,0,1)
-    end
-    v_graph_context:show_text(text)
-    
-  end
+  
   v_graph.widget.image = capi.image.argb32(data[v_graph].width, data[v_graph].height, v_graph_surface:get_data())
 
 end
@@ -351,10 +335,6 @@ for _, prop in ipairs(properties) do
     end
 end
 
---- Create a v_graph widget.
--- @param args Standard widget() arguments. You should add width and height
--- key to set v_graph geometry.
--- @return A v_graph widget.
 function new(args)
     local args = args or {}
     args.type = "imagebox"
