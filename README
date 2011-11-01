@@ -19,7 +19,7 @@ Dependencies
 ------------
 Blingbling require oocairo. The address of the website of the project is : http://oocairo.naquadah.org.
 
-Check you package manager to see if you can install an already packaged version of oocairo for your system.
+Check your package manager to see if you can install an already packaged version of oocairo for your system.
 
 For example on archlinux:
 yaourt -S lua-oocairo-git
@@ -217,7 +217,7 @@ This widget drawn a progress bar as the initial bar widget of Awesome but it loo
             .....,
      --reload awesome
   
-  -You can use vicious to feed the graph or create a timer that feeds it using mybar:add_value( a_value) or you can use one of the method that get the sound value from:
+  -You can use vicious to feed the graph or create a timer that feeds it using mybar:add_value( a_value):
       mybar=blingbling.classical_graph.new()
       mybar:set_height(18)
       mybar:set_width(60)
