@@ -1,8 +1,11 @@
 local naughty= require("naughty")
+local cairo=require("oocairo")
 local string = require("string")
 local math = math
 local table = table
 module("blingbling.helpers")
+
+widget_index={}
 
 function dbg(vars)
   local text = ""
@@ -161,4 +164,78 @@ function draw_up_down_arrows(cairo_context,x,y_bottom,y_top,value,background_arr
       cairo_context:set_line_width(1)
       cairo_context:stroke()
   end
+end
+
+function draw_vertical_bar(cairo_context,h_margin,v_margin, width,height, represent)
+  x=h_margin
+  bar_width=width - 2*h_margin
+  bar_height=height - 2*v_margin
+  y=v_margin 
+  if represent["background_bar_color"] == nil then
+    r,g,b,a = hexadecimal_to_rgba_percent("#000000")
+  else
+    r,g,b,a = hexadecimal_to_rgba_percent(represent["background_bar_color"])
+  end
+
+  cairo_context:rectangle(x,y,bar_width ,bar_height)
+  gradient=cairo.pattern_create_linear(h_margin, height/2, width-h_margin, height/2)
+  gradient:add_color_stop_rgba(0, r, g, b, 0.5)
+  gradient:add_color_stop_rgba(0.5, 1, 1, 1, 0.5)
+  gradient:add_color_stop_rgba(1, r, g, b, 0.5)
+  cairo_context:set_source(gradient)
+  cairo_context:fill()
+  if represent["value"] ~= nil and represent["color"] ~= nil then
+    x=h_margin
+    bar_width=width - 2*h_margin
+    bar_height=height - 2*v_margin
+    if represent["invert"] == true then
+      y=v_margin 
+    else
+      y=height - (bar_height*represent["value"] + v_margin )
+    end
+    cairo_context:rectangle(x,y,bar_width,bar_height*represent["value"])
+    r,g,b,a = hexadecimal_to_rgba_percent(represent["color"])
+    gradient=cairo.pattern_create_linear(0, height/2,width, height/2)
+    gradient:add_color_stop_rgba(0, r, g, b, 0.1)
+    gradient:add_color_stop_rgba(0.5, r, g, b, 1)
+    gradient:add_color_stop_rgba(1, r, g, b, 0.1)
+    cairo_context:set_source(gradient)
+    cairo_context:fill()
+  end  
+end
+function draw_horizontal_bar( cairo_context,h_margin,v_margin, width, height, represent)
+  x=h_margin
+  bar_width=width - 2*h_margin
+  bar_height=height - 2*v_margin
+  y=v_margin 
+  if represent["background_bar_color"] == nil then
+    r,g,b,a = hexadecimal_to_rgba_percent("#000000")
+  else
+    r,g,b,a = hexadecimal_to_rgba_percent(represent["background_bar_color"])
+  end
+  cairo_context:rectangle(x,y,bar_width,bar_height)
+  gradient=cairo.pattern_create_linear( width /2,v_margin , width/2, height - v_margin)
+  gradient:add_color_stop_rgba(0, r, g, b, 0.5)
+  gradient:add_color_stop_rgba(0.5, 1, 1, 1, 0.5)
+  gradient:add_color_stop_rgba(1, r, g, b, 0.5)
+  cairo_context:set_source(gradient)
+  cairo_context:fill()
+  if represent["value"] ~= nil and represent["color"] ~= nil then
+    x=h_margin
+    bar_width=width - 2*h_margin
+    bar_height=height - 2*v_margin
+    if represent["invert"] == true then
+      x=width - (h_margin + bar_width*represent["value"] )
+    else
+      x=h_margin
+    end
+    cairo_context:rectangle(x,y,bar_width*represent["value"],bar_height)
+    r,g,b,a = hexadecimal_to_rgba_percent(represent["color"])
+    gradient=cairo.pattern_create_linear(width /2,0 , width/2, height)
+    gradient:add_color_stop_rgba(0, r, g, b, 0.1)
+    gradient:add_color_stop_rgba(0.5, r, g, b, 1)
+    gradient:add_color_stop_rgba(1, r, g, b, 0.1)
+    cairo_context:set_source(gradient)
+    cairo_context:fill()
+  end  
 end

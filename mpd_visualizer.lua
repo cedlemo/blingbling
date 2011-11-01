@@ -184,7 +184,10 @@ local function generate(mpd_graph)
     x_pattern_separator=1
     pattern_lenght=w_pattern + x_pattern_separator
   end
-
+  --generate background:
+  if data[mpd_graph].background_bar == true then
+    helpers.draw_horizontal_bar( mpd_graph_context,h_margin,v_margin, data[mpd_graph].width, data[mpd_graph].height, {})
+  end
   --find nb columns to display
   nb_columns_to_display= math.floor((data[mpd_graph].width - 2* h_margin)/pattern_lenght)
   h_rest=(data[mpd_graph].width - 2* h_margin)%nb_columns_to_display

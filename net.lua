@@ -46,9 +46,9 @@ local function update(n_graph)
       n_graph_context:set_font_size(9)
     end
     --Adapt widget width with max lenght text
-    local text_reference="1.00gb"
+    local text_reference="1.00mb"
     local ext=n_graph_context:text_extents(text_reference)
-    local text_width=ext.width + 1
+    local text_width=ext.width +1 
     local arrow_width = 6 
     local arrows_separator = 2
     local total_width = (2* text_width) +(2*arrow_width) +(2 * ext.x_bearing)+ arrows_separator + (2*h_margin) 
@@ -158,7 +158,7 @@ end
 --Drawn up arrow 
   helpers.draw_up_down_arrows(
       n_graph_context,
-      math.floor(data[n_graph].width/2),
+      math.floor(data[n_graph].width/2 -1),
       data[n_graph].height - v_margin,
       v_margin, 
       up_value, 
@@ -169,7 +169,7 @@ end
   --Drawn down arrow
   helpers.draw_up_down_arrows(
       n_graph_context,
-      math.floor(data[n_graph].width/2)+2,
+      math.floor(data[n_graph].width/2)+1,
       v_margin,
       data[n_graph].height - v_margin,
       down_value,
@@ -180,7 +180,6 @@ end
   
   --helpers.dbg({type(data[n_graph][interface.."_state"]), type(data[n_graph][interface.."_carrier"]) }) 
   if data[n_graph][interface.."_state"] ~= "up" or data[n_graph][interface.."_carrier"] ~= "1" then
-     --n_graph_context:new_path()
      n_graph_context:move_to(data[n_graph].width*2/5, v_margin)
      n_graph_context:line_to(data[n_graph].width*3/5,data[n_graph].height - v_margin)
      n_graph_context:move_to(data[n_graph].width *4/7, 2*v_margin)
@@ -363,7 +362,7 @@ local function show_ippopup_infos(n_graph)
 
 end
 
-local function set_ippopup(n_graph)
+function set_ippopup(n_graph)
   n_graph.widget:add_signal("mouse::enter", function()
       show_ippopup_infos(n_graph)
     end)
@@ -388,14 +387,14 @@ function new(args)
     data[n_graph] = { width = width, height = height, value = 0 ,nets={}}
     -- Set methods
 --    n_graph.add_value = add_value
-
+      n_graph.set_ippopup = set_ippopup
     for _, prop in ipairs(properties) do
         n_graph["set_" .. prop] = _M["set_" .. prop]
     end
 
     n_graph.layout = args.layout or layout.horizontal.leftright
     update_net(n_graph)
-    set_ippopup(n_graph)
+--    set_ippopup(n_graph)
     return n_graph
 end
 

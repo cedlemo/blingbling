@@ -2,11 +2,22 @@ Blingbling:
 ----------
 Blingbling is a graphical widget library for Awesome Windows Manager. Based on oocairo (http://oocairo.naquadah.org/) it was first an attempt to rewrite the graph and progressbar widgets of Awesome WM. The goal of the Blingbling library is to provide more fancy, customisable and easy to setup graphical widgets, popups or signals for Awesome WM.
 
-Originally, I have written Blingbling for myself but I share it under the GNU GPL-v2 (http://www.gnu.org/licenses/old-licenses/gpl-2.0.html). It meens that for this version, I know it works for me but that all. Testers and feddbacks are welcome!
+Originally, I have written Blingbling for myself but I share it under the GNU GPL-v2 (http://www.gnu.org/licenses/old-licenses/gpl-2.0.html). It meens that for this version, I know it works for me but that all. Testers and feedbacks are welcome!
+
+*Classical graph
+*Tiled graph
+*Progress graph
+*Progress bar
+*Volume graph
+*Mpd widget
+*Net widget
+*Top popup
+*Netstat popup
+
 
 Dependencies
 ------------
-Blingbling require oocairo. The adress of the website of the project is : http://oocairo.naquadah.org.
+Blingbling require oocairo. The address of the website of the project is : http://oocairo.naquadah.org.
 
 Check you package manager to see if you can install an already packaged version of oocairo for your system.
 
@@ -132,7 +143,7 @@ This widget is a graph like the Awesome graph widget but the values are represen
         static string: example set_label("CPU usage:") will display "CUP usage:" on the graph
         dynamic string: use $percent in the string example set_label("Load $percent %") will display "Load 10%" 
 
-*Progress bar
+*Progress graph
 This widget drawn a progress bar as the initial bar widget of Awesome but with more possibilities to customize it. (background transparency, displaying text on it). It takes value in the range (0,1).
   -Create a bar and display it:
     --add this before adding the widget in the wibox
@@ -188,6 +199,56 @@ This widget drawn a progress bar as the initial bar widget of Awesome but with m
         static string: example set_label("CPU usage:") will display "CUP usage:" on the graph
         dynamic string: use $percent in the string example set_label("Load $percent %") will display "Load 10%" 
 
+*Progress bar
+This widget drawn a progress bar as the initial bar widget of Awesome but it looks like a cylinder. It supports transparency, displaying text. User can set horizontal or vertical and make the graph increase/decrease from bottom to top, top to bottom, left to right and right to left. It takes value in the range (0,1).
+
+  -Create the bar  widget and display it:
+    
+    --add this before adding the widget in the wibox
+      
+      mybar:blingbling.progress_bar.new()
+      mybar:set_height(18)
+      mybar:set_width(60)
+    
+    --add the widget in the wibox:
+      my_top_wibox[s].widgets = {
+             ......,
+             mybar.widget,
+            .....,
+     --reload awesome
+  
+  -You can use vicious to feed the graph or create a timer that feeds it using mybar:add_value( a_value) or you can use one of the method that get the sound value from:
+      mybar=blingbling.classical_graph.new()
+      mybar:set_height(18)
+      mybar:set_width(60)
+      vicious.register(mybar, vicious.widgets.mem, '$1', 2)
+
+  -Customize the graph:
+      mybar:set_width(integer)
+      mybar:set_height(integer)
+      mybar:set_background_color(string) -->"#rrggbbaa"
+        fill all the widget (width * height) with this color (default is transparent )
+      mybar:set_v_margin(integer)
+        define the top and bottom margin for the graph
+      mybar:set_h_margin(integer) 
+        define the right and left margin for the graph
+      mybar:set_background_graph_color(string) -->"#rrggbbaa"
+      mybar:set_graph_color(string) -->"#rrggbbaa"
+        set the color that fill the graph
+      mybar:set_show_text(boolean) --> true or false
+        does the widget must display text on the graph
+      mybar:set_horizontal(true)
+        set the widget to display an horizontal bar (vertical by default)
+      mybar:set_invert(true)
+        invert the graph by default the graph is vertical and increase fom bottom to top. If invert is true, the graph increase from top to bottom. If horizontal is set to true and invert to true, the graph will increase from right to left. Default is from left to right with horizontal set to true.
+      mybar:set_text_color(string) -->"#rrggbbaa"
+      mybar:set_background_text_color(string) -->"#rrggbbaa"
+      mybar:set_font_size(integer)
+      mybar:set_label(string)
+        define what is the text to display. By default the text is : (value_send_to_the_widget *100) .. "%"
+        static string: example set_label("Mem:") will display "Mem:" on the graph
+        dynamic string: use $percent in the string example set_label("Mem: $percent %") will display "Mem: 10%" .
+
 *Volume widget
 This graphical widget represent a value between 0 and 1 with a triangle or with bars. Lot of parameters can be customized and there are functions to get data from master or set commands for managing the sound.
   -Create the volume widget and display it:
@@ -239,7 +300,8 @@ This graphical widget represent a value between 0 and 1 with a triangle or with 
         static string: example set_label("Volume:") will display "Volume:" on the graph
         dynamic string: use $percent in the string example set_label("Volume: $percent %") will display "Volume: 10%" .
 
-*MPD widget
+
+*Mpd widget
 The most useless widget, but my favorite. This widget reads from the fifo of a local mpd server and display the raw data as a graph which evolves with the music played. There is method a to bind on it mpd commands ( play/stop, next/prev song, increase/decrease volume ) and displaying state and current song informations.
 
   -Create the mpd widget and display it:
@@ -302,9 +364,54 @@ The most useless widget, but my favorite. This widget reads from the fifo of a l
         static string: example set_label("MPD:") will display "MPD:" on the graph
         dynamic string: use $artist, $title, $album in the string example set_label("$artist>$song") will display "Megadeth>Tornado of souls"" 
 
-*net widget
+*Net widget
+The net widget display two arrows (up and down). Colors of the arrows change with net activity. User can display text with current upload and download informations. User can define the interface (eth0, eth1...)
 
-*top popup
+  -Create a net widget and display it:
+    --add this before adding the widget in the wibox
+
+      mynet=blingbling.classical_graph.new()
+      mynet:set_height(18)
+      mynet:set_interface("eth0")
+      (no need to set the width, the widget adapt it from the font size)
+    --add the widget in the wibox:
+
+      my_top_wibox[s].widgets = {
+            ......,
+            mynet.widget,
+            .....,
+    --reload awesome
+
+    --The widget get the net information alone, no need to use vicious or a timer.
+    --You can add a popup that display informations:
+      local ip address
+      routeur address
+      external ip address
+      external tor ip address (if tor is running).
+      my_net:set_ippopup()
+  
+  -Customize the graph:
+      mynet:set_interface()
+        set the interface ("eth0" or "eth1" ...)
+      mynet:set_height(integer)
+      mynet:set_background_color(string) -->"#rrggbbaa"
+        fill all the widget (width * height) with this color (default is transparent )
+      mynet:set_v_margin(integer)
+        define the top and bottom margin for the graph
+      mynet:set_h_margin(integer) 
+        define the right and left margin for the graph
+      mynet:set_background_graph_color(string) -->"#rrggbbaa"
+      mynet:set_graph_color(string) -->"#rrggbbaa"
+        set the color that fill the arrows
+      mynet:set_graph_line_color(string) -->"#rrggbbaa"
+        set the color of the line of the arrows
+      mybar:set_show_text(boolean) --> true or false
+        does the widget must display text on the graph
+      mybar:set_text_color(string) -->"#rrggbbaa"
+      mybar:set_background_text_color(string) -->"#rrggbbaa"
+      mybar:set_font_size(integer)
+
+*Top popup
 The top popup is a popup created with naugthy that displays a top formated and colorized output. You can bind it to a widget (textbox or image or graph from blingbling). It adds a button fonctionnality to the widget, left click launch htop in a terminal. Furthermore wheel down/up refresh the popup with less or more lines.
   -Usage:
     
@@ -319,22 +426,20 @@ The top popup is a popup created with naugthy that displays a top formated and c
 
     optional arguments:
     terminal let you define the terminal used to launch htop. By default it's xterm
-*netstat popup
+
+*Netstat popup
 The  netstat popup is a popup created with naugthy that displays a netstat formated and colorized output. You can bind it to a widget (textbox or image or graph from blingbling).
   -Usage:
     
     (with net -> a textbox widget)
     
-    blingbling.popups.htop(mycairograph.widget,{ title_color = "#rrggbbaa", user_color= "#rrggbbaa", root_color="#rrggbbaa", terminal = "urxvt"})
+    blingbling.popups.netstat(net,{ title_color = "#rrggbbaa", established_color= "#rrggbbaa", listen_color="#rrggbbaa"})
       
     mandatory arguments:
     widget (if blinbling widget add .widget ex: cpu.widget, if textbox or imagebox just put the widget name)
     title_color define the color of the title's columns.
-    user_color display the name of the current user with this color in the top output.
-    root_color display the root name with this color in the top output
-
-    optional arguments:
-    terminal let you define the terminal used to launch htop. By default it's xterm
+    established_color display the state "ESTABLISHED" the connexion  with this color in the netstat output.
+    listen_color display the state "LISTEN" with this color in the netstat output.
 
 
 Author
