@@ -35,7 +35,7 @@ Installation
 ($XDG_CONFIG_HOME usually ~/.config)
 
 cd $XDG_CONFIG_HOME/awesome/
-git clone git@github.com:cedlemo/blingbling.git
+git clone git://github.com/cedlemo/blingbling.git 
 
 Usage
 -----------
