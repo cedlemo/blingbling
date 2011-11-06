@@ -17,7 +17,7 @@ module("blingbling.mpd_visualizer")
 
 local data = setmetatable({}, { __mode = "k" })
 
-local properties = { "width", "height", "v_margin","h_margin", "background_color", "graph_color", "line","show_text","label","background_text_color","text_color","font_size", "mpd_pass", "mpd_host","mpd_port","error_background_color","error_text_color" }
+local properties = { "width", "height", "v_margin","h_margin", "background_color", "graph_color", "line","show_text","label","background_text_color","text_color","font_size","launch_mpd_client", "mpd_pass", "mpd_host","mpd_port","error_background_color","error_text_color" }
 
 local function check_mpd()
   local mpd_state={}
@@ -329,11 +329,6 @@ function update(mpd_graph)
   data[mpd_graph].update_timer:start()
 end
 
---local function mpd_info(mpd_graph)
---  data[mpd_graph].mpdinfos=check_mpd()
---  update_infos= capi.timer({timeout = 0.1 })
---  update_infos:add_signal("timeout", function() data[mpd_graph].mpdinfos=check_mpd() end)
---end
 
 local function update_song_infos(mpd_graph)
   a_timer=capi.timer({timeout = 1 })
@@ -379,9 +374,17 @@ function set_mpc_commands(mpd_graph)
     awful.button({"Control"}, 5, function()
       mpd_send(mpd_graph,"prev")
     end),
-awful.button({ "Control"}, 4, function()
+    awful.button({ "Control"}, 4, function()
       mpd_send(mpd_graph,"next")
-    end)))
+    end),
+    awful.button({ }, 3, function()
+        if data[mpd_graph].launch_mpd_client then
+          awful.util.spawn_with_shell(data[mpd_graph].launch_mpd_client)
+        else
+          awful.util.spawn_with_shell("xterm" .. " -e ncmpcpp")
+        end
+    end)
+    ))
 end
 for _, prop in ipairs(properties) do
     if not _M["set_" .. prop] then

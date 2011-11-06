@@ -13,6 +13,7 @@ Originally, I have written Blingbling for myself but I share it under the GNU GP
 *Net widget
 *Top popup
 *Netstat popup
+*System shutdown/Reboot button
 
 
 Dependencies
@@ -327,6 +328,7 @@ The most useless widget, but my favorite. This widget reads from the fifo of a l
   -You can link to the widget some commands to manage mpd:
     mympd:set_mpc_commands()
       a left clic toggle stop/start
+      a right clic launch an mpd client in a console (xterm -e ncmpcpp by default can be customize with set_launch_mpd_client)
       wheel up increase the mpd volume
       wheel down decrease the mpd volume
       ctrl + wheel up to play the next song
@@ -350,6 +352,8 @@ The most useless widget, but my favorite. This widget reads from the fifo of a l
         define the host name where is the mpd server (127.0.0.1 by default)
       mympd:set_mpd_port(integer)
         define the mpd port to connect to (6600 by default)
+      mympd:set_launch_mpd_client(string)
+        define the command linked to right click on the widget
       mympd:set_error_background_color(string) -->"#rrggbbaa"
         define the color of the background when error messages are displayed
       mympd:set_error_text_color
@@ -442,6 +446,24 @@ The  netstat popup is a popup created with naugthy that displays a netstat forma
     listen_color display the state "LISTEN" with this color in the netstat output.
 
 
+*System shutdown/Reboot buttons
+The module system provide two buttons linked with a dialog menu for accept or cancel the action (reboot or shutdown). The commands to reboot/shutdown use dbus, and consolekit. You need to have a valid session to make buttons works.(check commands ck-launch-session / ck-list-sessions)
+
+  -Usage:
+    --add this before adding the widget in the wibox
+
+      reboot=blingbling.system.rebootmenu(launcher_image, menu_dialog_image_ok, menu_dialog_image_cancel)
+      shutdown=blingbling.system.shutdownmenu(launcher_image, menu_dialog_image_ok, menu_.dialog_image_cancel)
+    
+    --add the widget in the wibox:
+
+      my_top_wibox[s].widgets = {
+            ......,
+            reboot,
+            shutdown,
+            .....,
+    --reload awesome
+    
 Author
 -------
 
