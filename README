@@ -14,7 +14,7 @@ Originally, I have written Blingbling for myself but I share it under the GNU GP
 *Top popup
 *Netstat popup
 *System shutdown/Reboot button
-
+*Udisks-glue widget menu
 
 Dependencies
 ------------
@@ -464,7 +464,42 @@ The module system provide two buttons linked with a dialog menu for accept or ca
             .....,
     --reload awesome
     
+*Udisks-glue widget menu
+This widget is an icon linked to a menu. The menu entries are dynamically added or removed by udisks-glue when cdrom or usb disks are mounted, unmounted or removed. Each action display a popup via naughty.notify.
+
+  -Usage:
+    --add this before adding the widget in the wibox:
+
+      ud_glue=blingbling.udisks_glue.new(an_image_file_name)
+
+    --add the widget in the wibox:
+    
+      my_top_wibox[s].widgets = {
+            ......,
+            ud_glue.widget,
+            .....,
+    
+    --Make sur that you launch udisks-glue at the begining of your session with the configuration file .udisks-glue.conf that I have created: 
+      Just modify this file according to the widget name you put in your rc.lua for the udisks-glue widget:
+      match optical {
+          automount = true
+          automount_options = ro
+          post_mount_command = "echo \'ud_glue:mount_device(\"%device_file\",\"%mount_point\",\"Cdrom\")\' | awesome-client"
+          post_unmount_command = "echo \'ud_glue:unmount_device(\"%device_file\",\"%mount_point\",\"Cdrom\")\' | awesome-client"
+          post_removal_command = "echo \'ud_glue:remove_device(\"%device_file\",\"%mount_point\",\"Cdrom\")\' | awesome-client"
+}
+    --reload awesome
+  
+  -Customize:
+    you can add icons in the menu for device types and actions like mount,unmount,detach and eject:
+     ud_glue:set_mount_icon(an_image_file_name)
+     ud_glue:set_umount_icon(an_image_file_name)
+     ud_glue:set_detach_icon(an_image_file_name)
+     ud_glue:set_eject_icon(an_image_file_name)
+     ud_glue:set_Usb_icon(an_image_file_name)
+     ud_glue:set_Cdrom_icon(an_image_file_name)
+
 Author
 -------
 
-cedlemo cedlemo at gmx dot com
+cedlemo contact: cedlemo at gmx dot com

@@ -239,3 +239,10 @@ function draw_horizontal_bar( cairo_context,h_margin,v_margin, width, height, re
     cairo_context:fill()
   end  
 end
+
+function hash_remove(hash,key)
+  local element = hash[key]
+  hash[key] = nil
+  return element
+end
+
