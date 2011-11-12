@@ -101,18 +101,33 @@ function draw_background_tiles(cairo_context, height, v_margin , width, h_margin
   end
 end
 
-function draw_text_and_background(cairo_context, text, x, y, background_text_color, text_color, show_text_on_left_of_x, show_text_on_bottom_of_y)
+function draw_text_and_background(cairo_context, text, x, y, background_text_color, text_color, show_text_centered_on_x, show_text_centered_on_y, show_text_on_left_of_x, show_text_on_bottom_of_y)
     --Text background
     ext=cairo_context:text_extents(text)
-    if show_text_on_left_of_x == true then
-      x_modif = ext.width + 2 *ext.x_bearing     
-    else 
-      x_modif = 0
+    x_modif = 0
+    y_modif = 0
+    
+    if show_text_centered_on_x == true then
+      x_modif = ((ext.width + ext.x_bearing) / 2) + ext.x_bearing / 2 
+      show_text_on_left_of_x = false
+    else
+      if show_text_on_left_of_x == true then
+        x_modif = ext.width + 2 *ext.x_bearing     
+      else 
+        x_modif = x_modif
+      end
     end
-    if show_text_on_bottom_of_y == true then
-      y_modif = ext.height + 2 *ext.y_bearing     
-    else 
-      y_modif = 0
+    
+    if show_text_centered_on_y == true then
+      y_modif = ((ext.height +ext.y_bearing)/2 ) + ext.y_bearing / 2
+      show_text_on_left_of_y = false
+      --dbg({y_modif})
+    else
+      if show_text_on_bottom_of_y == true then
+        y_modif = ext.height + 2 *ext.y_bearing     
+      else 
+        y_modif = y_modif
+      end
     end
     cairo_context:rectangle(x + ext.x_bearing - x_modif,y + ext.y_bearing - y_modif,ext.width, ext.height)
     r,g,b,a=hexadecimal_to_rgba_percent(background_text_color)
@@ -239,7 +254,270 @@ function draw_horizontal_bar( cairo_context,h_margin,v_margin, width, height, re
     cairo_context:fill()
   end  
 end
+function draw_rounded_corners_rectangle(cairo_context,x,y,width, height, color, rounded_size)
+--if rounded_size =0 it is a classical rectangle (whooooo!)  
+  local height = height
+  local width = width
+  local x = x
+  local y = y
+  local rounded_size = rounded_size or 0.4
+  if height > width then
+    radius=0.5 * width
+  else
+    radius=0.5 * height
+  end
 
+  PI = 2*math.asin(1)
+  r,g,b,a=hexadecimal_to_rgba_percent(color)
+  cairo_context:set_source_rgba(r,g,b,a)
+  --top left corner
+  cairo_context:arc(x + radius*rounded_size,y + radius*rounded_size, radius*rounded_size,PI, PI * 1.5)
+  --top right corner
+  cairo_context:arc(width - radius*rounded_size,y + radius*rounded_size, radius*rounded_size,PI*1.5, PI * 2)
+  --bottom right corner
+  cairo_context:arc(width - radius*rounded_size,height -  radius*rounded_size, radius*rounded_size,PI*0, PI * 0.5)
+  --bottom left corner
+  cairo_context:arc(x + radius*rounded_size,height -  radius*rounded_size, radius*rounded_size,PI*0.5, PI * 1)
+  cairo_context:close_path()
+  cairo_context:fill()
+
+end
+function draw_rounded_corners_horizontal_graph(cairo_context,x,y,width, height, background_color, graph_color, rounded_size, value_to_represent, graph_line_color)
+--if rounded_size =0 it is a classical rectangle (whooooo!)  
+  local height = height
+  local width = width
+  local x = x
+  local y = y
+  local rounded_size = rounded_size or 0.4
+  if height > width then
+    radius=0.5 * width
+  else
+    radius=0.5 * height
+  end
+
+  PI = 2*math.asin(1)
+  --draw the background
+  r,g,b,a=hexadecimal_to_rgba_percent(background_color)
+  cairo_context:set_source_rgba(r,g,b,a)
+  --top left corner
+  cairo_context:arc(x + radius*rounded_size,y + radius*rounded_size, radius*rounded_size,PI, PI * 1.5)
+  --top right corner
+  cairo_context:arc(width - radius*rounded_size,y + radius*rounded_size, radius*rounded_size,PI*1.5, PI * 2)
+  --bottom right corner
+  cairo_context:arc(width - radius*rounded_size,height -  radius*rounded_size, radius*rounded_size,PI*0, PI * 0.5)
+  --bottom left corner
+  cairo_context:arc(x + radius*rounded_size,height -  radius*rounded_size, radius*rounded_size,PI*0.5, PI * 1)
+  cairo_context:close_path()
+  cairo_context:fill()
+  --represent the value
+  -- value in 0 -> 1
+  --  radius*rounded_size |  width - 2*( radius*rounded) | radius * rounded_size
+  --                  |               |                         |
+  --                  |      _________|  _______________________|
+  --                  |     |           |
+  --                  v ____v_________  v
+  --                  /|              |\
+  --                 | |              | |               (... and yes I don't have a job)
+  --                  \|______________|/
+  --
+  --1 => width/ width
+  --limit_2 => width -radius / width
+  --limit_1 => radius /width
+  value = value_to_represent
+  limit_2 = (width -(radius * rounded_size)) / width
+  limit_1 = radius* rounded_size /width
+
+  r,g,b,a=hexadecimal_to_rgba_percent(graph_color)
+  cairo_context:set_source_rgba(r,g,b,a)
+ 
+  if value <= 1 and value > limit_2 then
+    cairo_context:arc(x + radius*rounded_size,y + radius*rounded_size, radius*rounded_size,PI, PI * 1.5)
+    ratio = (value - limit_2) / (1 - limit_2)
+    cairo_context:arc(width - radius*rounded_size,y + radius*rounded_size, radius*rounded_size,PI*1.5, PI *(1.5 +(0.5  * ratio)))
+    cairo_context:arc(width - radius*rounded_size,height -  radius*rounded_size, radius*rounded_size,PI*(0.5 - (0.5 * ratio))  , PI * 0.5)
+    cairo_context:arc(x + radius*rounded_size,height -  radius*rounded_size, radius*rounded_size,PI*0.5, PI * 1)
+    cairo_context:close_path()
+    cairo_context:fill()
+  elseif value <= limit_2 and value > limit_1 then
+    cairo_context:arc(x + radius*rounded_size,y + radius*rounded_size, radius*rounded_size,PI, PI * 1.5)
+    ratio = value  / limit_2
+    cairo_context:line_to(limit_2*width*ratio,y)
+    cairo_context:line_to(limit_2*width*ratio,height)
+    cairo_context:arc(x + radius*rounded_size,height -  radius*rounded_size, radius*rounded_size,PI*0.5, PI * 1)
+    cairo_context:close_path()
+    cairo_context:fill()
+  elseif value <= limit_1 and value > 0 then
+    ratio = value  / limit_1
+    cairo_context:arc(x + radius*rounded_size,y + radius*rounded_size, radius*rounded_size,PI, PI * (1+ (0.5*ratio)))
+    cairo_context:arc(x + radius*rounded_size,height -  radius*rounded_size, radius*rounded_size,PI*(1-(0.5 * ratio)) , PI * 1)
+    cairo_context:close_path()
+    cairo_context:fill()
+  end
+  if graph_line_color then
+    r,g,b,a=hexadecimal_to_rgba_percent(graph_color)
+    cairo_context:set_source_rgba(r,g,b,a)
+    cairo_context:set_line_width(1)
+
+    if value <= 1 and value > limit_2 then
+      cairo_context:arc(x + radius*rounded_size,y + radius*rounded_size, radius*rounded_size,PI, PI * 1.5)
+      ratio = (value - limit_2) / (1 - limit_2)
+      cairo_context:arc(width - radius*rounded_size,y + radius*rounded_size, radius*rounded_size,PI*1.5, PI *(1.5 +(0.5  * ratio)))
+      cairo_context:arc(width - radius*rounded_size,height -  radius*rounded_size, radius*rounded_size,PI*(0.5 - (0.5 * ratio))  , PI * 0.5)
+      cairo_context:arc(x + radius*rounded_size,height -  radius*rounded_size, radius*rounded_size,PI*0.5, PI * 1)
+      cairo_context:close_path()
+      cairo_context:stroke()
+    elseif value <= limit_2 and value > limit_1 then
+      cairo_context:arc(x + radius*rounded_size,y + radius*rounded_size, radius*rounded_size,PI, PI * 1.5)
+      ratio = value  / limit_2
+      cairo_context:line_to(limit_2*width*ratio,y)
+      cairo_context:line_to(limit_2*width*ratio,height)
+      cairo_context:arc(x + radius*rounded_size,height -  radius*rounded_size, radius*rounded_size,PI*0.5, PI * 1)
+      cairo_context:close_path()
+      cairo_context:stroke()
+    elseif value <= limit_1 and value > 0 then
+      ratio = value  / limit_1
+      cairo_context:arc(x + radius*rounded_size,y + radius*rounded_size, radius*rounded_size,PI, PI * (1+ (0.5*ratio)))
+      cairo_context:arc(x + radius*rounded_size,height -  radius*rounded_size, radius*rounded_size,PI*(1-(0.5 * ratio)) , PI * 1)
+      cairo_context:close_path()
+      cairo_context:stroke()
+    end
+  end
+end
+function draw_rounded_corners_vertical_graph(cairo_context,x,y,width, height, background_color, graph_color, rounded_size, value_to_represent, graph_line_color)
+--if rounded_size =0 it is a classical rectangle (whooooo!)  
+  local height = height
+  local width = width
+  local x = x
+  local y = y
+  if rounded_size == nil or rounded_size == 0 then
+    --draw the background:
+    r,g,b,a=hexadecimal_to_rgba_percent(background_color)
+    cairo_context:set_source_rgba(r,g,b,a)
+    cairo_context:move_to(x,y)
+    cairo_context:line_to(x,height)
+    cairo_context:line_to(width,height)
+    cairo_context:line_to(width,y)
+    cairo_context:close_path()
+    cairo_context:fill()
+    --draw the graph:
+    r,g,b,a=hexadecimal_to_rgba_percent(graph_color)
+    cairo_context:set_source_rgba(r,g,b,a)
+    cairo_context:move_to(x,height)
+    cairo_context:line_to(x, height -((height -y)* value_to_represent)  )
+    cairo_context:line_to(width,height -((height - y)*value_to_represent) )
+    cairo_context:line_to(width,height)
+    cairo_context:close_path()
+    cairo_context:fill()
+    if graph_line_color then
+      r,g,b,a=hexadecimal_to_rgba_percent(graph_line_color)
+      cairo_context:set_source_rgba(r,g,b,a)
+      cairo_context:move_to(x,height)
+      cairo_context:line_to(x,height -((height -y)* value_to_represent) )
+      cairo_context:line_to(width,height -((height -y)*value_to_represent) )
+      cairo_context:line_to(width,height)
+      cairo_context:close_path()
+      cairo_context:set_line_width(1)
+      cairo_context:stroke()
+    end
+  else
+    local rounded_size = rounded_size or 0.4
+    if height > width then
+      radius=0.5 * width
+    else
+      radius=0.5 * height
+    end
+
+    PI = 2*math.asin(1)
+    --draw the background
+    r,g,b,a=hexadecimal_to_rgba_percent(background_color)
+    cairo_context:set_source_rgba(r,g,b,a)
+    --top left corner
+    cairo_context:arc(x + radius*rounded_size,y + radius*rounded_size, radius*rounded_size,PI, PI * 1.5)
+    --top right corner
+    cairo_context:arc(width - radius*rounded_size,y + radius*rounded_size, radius*rounded_size,PI*1.5, PI * 2)
+    --bottom right corner
+    cairo_context:arc(width - radius*rounded_size,height -  radius*rounded_size, radius*rounded_size,PI*0, PI * 0.5)
+    --bottom left corner
+    cairo_context:arc(x + radius*rounded_size,height -  radius*rounded_size, radius*rounded_size,PI*0.5, PI * 1)
+    cairo_context:close_path()
+    cairo_context:fill()
+    --represent the value
+    -- value in 0 -> 1
+    --  radius*rounded_size |  height - 2*( radius*rounded) | radius * rounded_size
+    --                  |               |                         |
+    --                  |           ____|  _______________________|
+    --                  |_______   |      |     
+    --                   ___    |  |      |
+    --                  /___\ <-   |      |
+    --                 |     |     |      |
+    --                 |     |<----       |
+    --                 |_____|            |
+    --                  \___/<------------
+    --
+    --1 => height/ height
+    --limit_2 => height -radius / height
+    --limit_1 => radius /height
+    value = value_to_represent
+    limit_2 = (height -(radius * rounded_size)) / height
+    limit_1 = radius* rounded_size /height
+    --dbg({value, limit_2, limit_1})
+    r,g,b,a=hexadecimal_to_rgba_percent(graph_color)
+    cairo_context:set_source_rgba(r,g,b,a)
+ 
+    if value <= 1 and value > limit_2 then
+      ratio = (value - limit_2) / (1 - limit_2)
+      cairo_context:arc(width - radius*rounded_size,height -  radius*rounded_size, radius*rounded_size,PI*0  , PI * 0.5)
+      cairo_context:arc(x + radius*rounded_size,height -  radius*rounded_size, radius*rounded_size,PI*0.5, PI * 1)
+      cairo_context:arc(x + radius*rounded_size,y + radius*rounded_size, radius*rounded_size,PI, PI * (1+(0.5* ratio)) )
+      cairo_context:arc(width - radius*rounded_size,y + radius*rounded_size, radius*rounded_size,PI*(2 -(0.5* ratio)), PI *2)
+      cairo_context:close_path()
+      cairo_context:fill()
+    elseif value <= limit_2 and value > limit_1 then
+      ratio = value  / limit_2
+      cairo_context:arc(width - radius*rounded_size,height -  radius*rounded_size, radius*rounded_size,PI*0  , PI * 0.5)
+      cairo_context:arc(x + radius*rounded_size,height - radius*rounded_size, radius*rounded_size,PI*0.5, PI * 1)
+      cairo_context:line_to(x,y + height - (height * ratio*limit_2) )
+      cairo_context:line_to(width,y+ height - (height * ratio*limit_2) )
+      cairo_context:close_path()
+      cairo_context:fill()
+
+    elseif value <= limit_1 and value > 0 then
+      ratio = value  / limit_1
+      cairo_context:arc(width - radius*rounded_size,height -  radius*rounded_size, radius*rounded_size,PI*(0.5-( 0.5*ratio))  , PI * 0.5)
+      cairo_context:arc(x + radius*rounded_size,height - radius*rounded_size, radius*rounded_size,PI*0.5, PI *(0.5+ (0.5*ratio)))
+      cairo_context:close_path()
+      cairo_context:fill()
+    end
+    if graph_line_color then
+      r,g,b,a=hexadecimal_to_rgba_percent(graph_color)
+      cairo_context:set_source_rgba(r,g,b,a)
+      cairo_context:set_line_width(1)
+      if value <= 1 and value > limit_2 then
+        ratio = (value - limit_2) / (1 - limit_2)
+        cairo_context:arc(width - radius*rounded_size,height -  radius*rounded_size, radius*rounded_size,PI*0  , PI * 0.5)
+        cairo_context:arc(x + radius*rounded_size,height -  radius*rounded_size, radius*rounded_size,PI*0.5, PI * 1)
+        cairo_context:arc(x + radius*rounded_size,y + radius*rounded_size, radius*rounded_size,PI, PI * (1+(0.5* ratio)) )
+        cairo_context:arc(width - radius*rounded_size,y + radius*rounded_size, radius*rounded_size,PI*(2 -(0.5* ratio)), PI *2)
+        cairo_context:close_path()
+        cairo_context:stroke()
+      elseif value <= limit_2 and value > limit_1 then
+        ratio = value  / limit_2
+        cairo_context:arc(width - radius*rounded_size,height -  radius*rounded_size, radius*rounded_size,PI*0  , PI * 0.5)
+        cairo_context:arc(x + radius*rounded_size,height - radius*rounded_size, radius*rounded_size,PI*0.5, PI * 1)
+      cairo_context:line_to(x,y + height - (height * ratio*limit_2) )
+      cairo_context:line_to(width,y+ height - (height * ratio*limit_2) )
+      cairo_context:close_path()
+      cairo_context:stroke()
+      elseif value <= limit_1 and value > 0 then
+        ratio = value  / limit_1
+        cairo_context:arc(width - radius*rounded_size,height -  radius*rounded_size, radius*rounded_size,PI*(0.5-( 0.5*ratio))  , PI * 0.5)
+        cairo_context:arc(x + radius*rounded_size,height - radius*rounded_size, radius*rounded_size,PI*0.5, PI *(0.5+ (0.5*ratio)))
+        cairo_context:close_path()
+        cairo_context:stroke()
+      end
+    end
+  end
+end
 function hash_remove(hash,key)
   local element = hash[key]
   hash[key] = nil

@@ -176,9 +176,11 @@ local function update(t_graph)
     helpers.draw_text_and_background(t_graph_context, 
                                         text, 
                                         h_margin, 
-                                        (data[t_graph].height/2) + (data[t_graph].font_size)/2, 
+                                        (data[t_graph].height/2) , 
                                         data[t_graph].background_text_color, 
                                         data[t_graph].text_color,
+                                        false,
+                                        true,
                                         false,
                                         false)
   end

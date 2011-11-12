@@ -208,6 +208,8 @@ end
                                         v_margin , 
                                         data[n_graph].background_text_color, 
                                         data[n_graph].text_color,
+                                        false,
+                                        false,
                                         true,
                                         true)
     
@@ -217,6 +219,8 @@ end
                                         data[n_graph].height -v_margin , 
                                         data[n_graph].background_text_color, 
                                         data[n_graph].text_color,
+                                        false,
+                                        false,
                                         false,
                                         false)
     

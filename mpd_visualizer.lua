@@ -222,9 +222,11 @@ local function generate(mpd_graph)
     helpers.draw_text_and_background(mpd_graph_context, 
                                         data[mpd_graph].fifo_error, 
                                         h_margin, 
-                                        (data[mpd_graph].height/2) + (data[mpd_graph].font_size)/2, 
+                                        (data[mpd_graph].height/2) , 
                                         data[mpd_graph].background_text_color, 
                                         data[mpd_graph].error_text_color,
+                                        false,
+                                        true,
                                         false,
                                         false)
   else  
@@ -313,9 +315,11 @@ local function generate(mpd_graph)
       helpers.draw_text_and_background(mpd_graph_context, 
                                         text, 
                                         h_margin, 
-                                        (data[mpd_graph].height/2) + (data[mpd_graph].font_size)/2, 
+                                        (data[mpd_graph].height/2) , 
                                         data[mpd_graph].background_text_color, 
                                         data[mpd_graph].text_color,
+                                        false,
+                                        true,
                                         false,
                                         false)
     end

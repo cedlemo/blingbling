@@ -80,14 +80,30 @@ local function update(p_bar)
     else
       text=value .. "%"
     end
-    helpers.draw_text_and_background(p_bar_context, 
+    --if vertical bar, text is at the middle of the width, if vertical bar text is at the middle of the height
+    if data[p_bar].horizontal == nil or data[p_bar].horizontal == false then
+      helpers.draw_text_and_background(p_bar_context, 
+                                        text, 
+                                        data[p_bar].width/2, 
+                                        data[p_bar].height/2 , 
+                                        data[p_bar].background_text_color, 
+                                        data[p_bar].text_color,
+                                        true,
+                                        true,
+                                        false,
+                                        false)
+    else
+       helpers.draw_text_and_background(p_bar_context, 
                                         text, 
                                         h_margin, 
-                                        (data[p_bar].height/2) + (data[p_bar].font_size)/2, 
+                                        data[p_bar].height/2 , 
                                         data[p_bar].background_text_color, 
                                         data[p_bar].text_color,
                                         false,
+                                        true,
+                                        false,
                                         false)
+    end    
   end
 
   p_bar.widget.image = capi.image.argb32(data[p_bar].width, data[p_bar].height, p_bar_surface:get_data())

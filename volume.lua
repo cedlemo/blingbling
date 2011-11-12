@@ -186,9 +186,11 @@ local function update(v_graph)
     helpers.draw_text_and_background(v_graph_context, 
                                       text, 
                                       h_margin, 
-                                      (data[v_graph].height/2) + (data[v_graph].font_size)/2, 
+                                      (data[v_graph].height/2) , 
                                       data[v_graph].background_text_color, 
                                       data[v_graph].text_color,
+                                      false,
+                                      true,
                                       false,
                                       false)
   else 
@@ -203,9 +205,11 @@ local function update(v_graph)
       helpers.draw_text_and_background(v_graph_context, 
                                       text, 
                                       h_margin, 
-                                      (data[v_graph].height/2) + (data[v_graph].font_size)/2, 
+                                      (data[v_graph].height/2) , 
                                       background_text_color, 
                                       text_color,
+                                      false,
+                                      true,
                                       false,
                                       false)
     end

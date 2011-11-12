@@ -13,7 +13,7 @@ module("blingbling.classical_graph")
 
 local data = setmetatable({}, { __mode = "k" })
 
-local properties = { "width", "height", "v_margin","h_margin", "background_color", "filled", "filled_color", "tiles", "tiles_color", "graph_color", "graph_line_color", "show_text", "text_color", "background_text_color" ,"label", "font_size"}
+local properties = { "width", "height", "v_margin","h_margin", "background_color", "filled", "filled_color", "rounded_size", "tiles", "tiles_color", "graph_color", "graph_line_color", "show_text", "text_color", "background_text_color" ,"label", "font_size"}
 
 local function update(graph)
   
@@ -31,25 +31,38 @@ local function update(graph)
 
 --Generate Background (background widget)
   if data[graph].background_color then
-    r,g,b,a = helpers.hexadecimal_to_rgba_percent(data[graph].background_color)
-    --helpers.dbg({r,g,b,a})
-    graph_context:set_source_rgba(r,g,b,a)
-    graph_context:paint()
-  end
+    rounded_size = data[graph].rounded_size or 0
+    helpers.draw_rounded_corners_rectangle( graph_context,
+                                            0,
+                                            0,
+                                            data[graph].width, 
+                                            data[graph].height,
+                                            data[graph].background_color, 
+                                            rounded_size )
   
+  end
   
   --Draw nothing, tiles (default) or graph background (filled) 
   if data[graph].filled  == true then
     --fill the graph background
-    graph_context:rectangle(h_margin,v_margin, data[graph].width - (2*h_margin), data[graph].height - (2* v_margin))
-
+    rounded_size = data[graph].rounded_size or 0
     if data[graph].filled_color then
-          r,g,b,a = helpers.hexadecimal_to_rgba_percent(data[graph].filled_color)
-          graph_context:set_source_rgba(r, g, b,a)
+    helpers.draw_rounded_corners_rectangle( graph_context,
+                                            h_margin,
+                                            v_margin,
+                                            data[graph].width - h_margin, 
+                                            data[graph].height - v_margin ,
+                                            data[graph].filled_color, 
+                                            rounded_size )
     else
-          graph_context:set_source_rgba(0, 0, 0,0.5)
+    helpers.draw_rounded_corners_rectangle( graph_context,
+                                            h_margin,
+                                            v_margin,
+                                            data[graph].width - h_margin, 
+                                            data[graph].height - v_margin ,
+                                            "#00000066", 
+                                            rounded_size )
     end
-    graph_context:fill()
   elseif data[graph].filled ~= true and data[graph].tiles== false then
       --draw nothing
       else
@@ -66,8 +79,15 @@ local function update(graph)
 
 --Drawn the graph
  --find nb values we can draw every 3 px
-  max_column=math.ceil((data[graph].width - (2*h_margin))/3)
-  --helpers.dbg({max_column})
+  --if rounded, make sure that graph don't begin or end outside background
+  --check for the less value between hight and height:
+  rounded_size = data[graph].rounded_size or 0
+  if data[graph].height > data[graph].width then
+    less_value = data[graph].width/2
+  else
+    less_value = data[graph].height/2
+  end
+  max_column=math.ceil((data[graph].width - (2*h_margin + (rounded_size * less_value)))/3)
   --Check if the table graph values is empty / not initialized
   --if next(data[graph].values) == nil then
   if #data[graph].values == 0 or #data[graph].values ~= max_column then
@@ -80,7 +100,7 @@ local function update(graph)
     end
   end
   
-  x=data[graph].width -h_margin
+  x=data[graph].width -(h_margin + rounded_size * less_value)
   y=data[graph].height-(v_margin) 
   
   graph_context:new_path()
@@ -106,7 +126,7 @@ local function update(graph)
   graph_context:fill()
   
 
-  x=data[graph].width - h_margin 
+  x=data[graph].width - (h_margin + rounded_size * less_value)
   y=data[graph].height-(v_margin) 
  
   graph_context:new_path()
@@ -154,10 +174,12 @@ local function update(graph)
 
     helpers.draw_text_and_background(graph_context, 
                                         text, 
-                                        h_margin, 
-                                        (data[graph].height/2) + (data[graph].font_size)/2, 
+                                        h_margin + rounded_size * less_value, 
+                                        data[graph].height/2 , 
                                         data[graph].background_text_color, 
                                         data[graph].text_color,
+                                        false,
+                                        true,
                                         false,
                                         false)
   end

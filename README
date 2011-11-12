@@ -72,6 +72,8 @@ This widget drawn a common graph as the initial graph widget of Awesome but with
       mycairograph:set_height(integer)      
       mycairograph:set_background_color(string) -->"#rrggbbaa"
         fill all the widget (width * height) with this color (default is transparent )
+      mycairograph:set_rounded_size(a) -> a in [0,1]
+        set rounded corners
       mycairograph:set_v_margin(integer)
         define the top and bottom margin for the filed background and the graph
       mycairograph:set_h_margin(integer) 
@@ -172,6 +174,8 @@ This widget drawn a progress bar as the initial bar widget of Awesome but with m
   -Customize the graph:
       mycairoprogressbar:set_width(integer)
       mycairoprogressbar:set_height(integer)
+      mycairoprogressbar:set_rounded_size(a) -> a in [0,1]
+        set rounded corners
       mycairogrogressbar:set_horizontal(boolean) --> true or false
         set the progress bar to increase/decrease horizontaly, from left to right
       mycairoprogressbar:set_background_color(string) -->"#rrggbbaa"

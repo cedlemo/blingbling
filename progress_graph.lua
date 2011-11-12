@@ -12,7 +12,7 @@ module("blingbling.progress_graph")
 
 local data = setmetatable({}, { __mode = "k" })
 
-local properties = { "width", "height", "v_margin", "h_margin", "background_color", "filled", "filled_color", "tiles", "tiles_color", "graph_color", "graph_line_color","show_text", "text_color", "background_text_color" ,"label", "font_size","horizontal"}
+local properties = { "width", "height", "v_margin", "h_margin", "background_color","rounded_size", "filled", "filled_color", "tiles", "tiles_color", "graph_color", "graph_line_color","show_text", "text_color", "background_text_color" ,"label", "font_size","horizontal"}
 
 local function update(p_graph)
   
@@ -27,26 +27,60 @@ local function update(p_graph)
   if data[p_graph].h_margin and data[p_graph].h_margin <= data[p_graph].width / 3 then 
     h_margin = data[p_graph].h_margin 
   end
+  
+  local rounded_size = data[p_graph].rounded_size or 0
 
 --Generate Background (background widget)
   if data[p_graph].background_color then
-    r,g,b,a = helpers.hexadecimal_to_rgba_percent(data[p_graph].background_color)
-    p_graph_context:set_source_rgba(r,g,b,a)
-    p_graph_context:paint()
+    helpers.draw_rounded_corners_rectangle( graph_context,
+                                            0,
+                                            0,
+                                            data[p_graph].width, 
+                                            data[p_graph].height,
+                                            data[p_graph].background_color, 
+                                            rounded_size )
+  
   end
   
   --Draw nothing, tiles (default) or filled ( graph background)
   if data[p_graph].filled  == true then
-    --fill the graph background
-    p_graph_context:rectangle(h_margin,v_margin, data[p_graph].width - (2*h_margin), data[p_graph].height - (2* v_margin))
     if data[p_graph].filled_color then
-          r,g,b,a = helpers.hexadecimal_to_rgba_percent(data[p_graph].filled_color)
-          p_graph_context:set_source_rgba(r, g, b,a)
+      background_color = data[p_graph].filled_color  
+    --      p_graph_context:set_source_rgba(r, g, b,a)
     else
-          p_graph_context:set_source_rgba(0, 0, 0,0.5)
+      background_color = "#00000066"
     end
-    p_graph_context:fill()
+      if data[p_graph].graph_color == nil then
+        data[p_graph].graph_color="#7fb219B3"
+      end
+      if data[p_graph].graph_line_color == nil then
+        data[p_graph].graph_line_color="#7fb219"
+      end
+    --draw a graph with filled background
+    if data[p_graph].horizontal == true then
+      helpers.draw_rounded_corners_horizontal_graph( p_graph_context,
+                                        h_margin,
+                                        v_margin,
+                                        data[p_graph].width - h_margin, 
+                                        data[p_graph].height - v_margin, 
+                                        background_color, 
+                                        data[p_graph].graph_color, 
+                                        rounded_size, 
+                                        data[p_graph].value,
+                                        data[p_graph].graph_line_color)
 
+    else
+       helpers.draw_rounded_corners_vertical_graph( p_graph_context,
+                                        h_margin,
+                                        v_margin,
+                                        data[p_graph].width - h_margin, 
+                                        data[p_graph].height - v_margin, 
+                                        background_color, 
+                                        data[p_graph].graph_color, 
+                                        rounded_size, 
+                                        data[p_graph].value,
+                                        data[p_graph].graph_line_color)
+    end 
   elseif data[p_graph].filled ~= true and data[p_graph].tiles== false then
     --draw nothing
     else
@@ -57,96 +91,130 @@ local function update(p_graph)
     else
       p_graph_context:set_source_rgba(0, 0, 0,0.5)
     end
-    helpers.draw_background_tiles(p_graph_context, data[p_graph].height, v_margin, data[p_graph].width ,h_margin )        
+    helpers.draw_background_tiles(p_graph_context, 
+                                  data[p_graph].height, 
+                                  v_margin,   
+                                  data[p_graph].width ,
+                                  h_margin )        
     p_graph_context:fill()
+    --draw the graph that will be in front of the tiles
+    if data[p_graph].value > 0 then
+      if data[p_graph].graph_color == nil then
+        data[p_graph].graph_color="#7fb21946"
+      end
+      if data[p_graph].graph_line_color == nil then
+        data[p_graph].graph_line_color="#7fb219"
+      end
+      if data[p_graph].horizontal == true then
+        helpers.draw_rounded_corners_rectangle( p_graph_context,
+                                                h_margin,
+                                                v_margin,
+                                                (data[p_graph].width - h_margin) * data[p_graph].value, 
+                                                data[p_graph].height - v_margin, 
+                                                data[p_graph].graph_color, 
+                                                rounded_size,
+                                                data[p_graph].graph_line_color
+                                                )
+      else
+         helpers.draw_rounded_corners_rectangle( p_graph_context,
+                                                h_margin,
+                                                v_margin,
+                                                data[p_graph].width - 2 *h_margin , 
+                                                (data[p_graph].height - 2 * v_margin)* data[p_graph].value, 
+                                                data[p_graph].graph_color, 
+                                                rounded_size,
+                                                data[p_graph].graph_line_color
+                                                )
+      end
+    end
   end
 
 --Drawn the p_graph
-  if data[p_graph].value > 0 then
-    if data[p_graph].horizontal == true then
+--  if data[p_graph].value > 0 then
+--    if data[p_graph].horizontal == true then
       --progress bar increase/decrease from left to right
-      x=h_margin 
-      y=data[p_graph].height-(v_margin) 
-      PI = 2*math.asin(1)
-      p_graph_context:new_path()
-      p_graph_context:move_to(x,y)
-      p_graph_context:line_to(x,y)
-      x_range=data[p_graph].width - (2 * h_margin)
-      p_graph_context:line_to( h_margin + (x_range * data[p_graph].value) - (3*0),y )
---      p_graph_context:arc_negative(h_margin + (x_range * data[p_graph].value) - 3,y -3, 3, 0.5*PI, 2*PI)
-      p_graph_context:line_to( h_margin + (x_range * data[p_graph].value), v_margin )
-      p_graph_context:line_to(h_margin, v_margin )
-      p_graph_context:line_to(h_margin,data[p_graph].height-(v_margin))
-  
-      p_graph_context:close_path()
-      if data[p_graph].graph_color then
-        r,g,b,a=helpers.hexadecimal_to_rgba_percent(data[p_graph].graph_color)
-        p_graph_context:set_source_rgba(r, g, b, a)
-      else
-        p_graph_context:set_source_rgba(0.5, 0.7, 0.1, 0.7)
-      end
-      p_graph_context:fill()
-      x=h_margin 
-      y=data[p_graph].height-(v_margin) 
-
-      p_graph_context:new_path()
-      p_graph_context:move_to(x,y)
-      p_graph_context:line_to(x,y)
-      x_range=data[p_graph].width - (2 * h_margin)
-      p_graph_context:line_to( h_margin + (x_range * data[p_graph].value),y)
-      p_graph_context:line_to( h_margin + (x_range * data[p_graph].value), v_margin )
-      p_graph_context:line_to(h_margin, v_margin )--  
-      p_graph_context:set_line_width(1)
-     if data[p_graph].graph_line_color then
-        r,g,b,a=helpers.hexadecimal_to_rgba_percent(data[p_graph].graph_line_color)
-        p_graph_context:set_source_rgb(r, g, b)
-      else
-        p_graph_context:set_source_rgb(0.5, 0.7, 0.1)
-      end
-    else
+--      x=h_margin 
+--      y=data[p_graph].height-(v_margin) 
+--      PI = 2*math.asin(1)
+--      p_graph_context:new_path()
+--      p_graph_context:move_to(x,y)
+--      p_graph_context:line_to(x,y)
+--      x_range=data[p_graph].width - (2 * h_margin)
+--      p_graph_context:line_to( h_margin + (x_range * data[p_graph].value) - (3*0),y )
+----      p_graph_context:arc_negative(h_margin + (x_range * data[p_graph].value) - 3,y -3, 3, 0.5*PI, 2*PI)
+--      p_graph_context:line_to( h_margin + (x_range * data[p_graph].value), v_margin )
+--      p_graph_context:line_to(h_margin, v_margin )
+--      p_graph_context:line_to(h_margin,data[p_graph].height-(v_margin))
+--  
+--      p_graph_context:close_path()
+--      if data[p_graph].graph_color then
+--        r,g,b,a=helpers.hexadecimal_to_rgba_percent(data[p_graph].graph_color)
+--        p_graph_context:set_source_rgba(r, g, b, a)
+--      else
+--        p_graph_context:set_source_rgba(0.5, 0.7, 0.1, 0.7)
+--      end
+--      p_graph_context:fill()
+--      x=h_margin 
+--      y=data[p_graph].height-(v_margin) 
+--
+--      p_graph_context:new_path()
+--      p_graph_context:move_to(x,y)
+--      p_graph_context:line_to(x,y)
+--      x_range=data[p_graph].width - (2 * h_margin)
+--      p_graph_context:line_to( h_margin + (x_range * data[p_graph].value),y)
+--      p_graph_context:line_to( h_margin + (x_range * data[p_graph].value), v_margin )
+--      p_graph_context:line_to(h_margin, v_margin )--  
+--      p_graph_context:set_line_width(1)
+--     if data[p_graph].graph_line_color then
+--        r,g,b,a=helpers.hexadecimal_to_rgba_percent(data[p_graph].graph_line_color)
+--        p_graph_context:set_source_rgb(r, g, b)
+--      else
+--        p_graph_context:set_source_rgb(0.5, 0.7, 0.1)
+--      end
+--    else
       --progress bar increase/decrease from bottom to top
-      x=0+h_margin 
-      y=data[p_graph].height-(v_margin) 
+--      x=0+h_margin 
+--      y=data[p_graph].height-(v_margin) 
 
-      p_graph_context:new_path()
-      p_graph_context:move_to(x,y)
-      p_graph_context:line_to(x,y)
-      y_range=data[p_graph].height - (2 * v_margin)
-      p_graph_context:line_to(x,data[p_graph].height -( v_margin + (y_range * data[p_graph].value)))
-      p_graph_context:line_to(data[p_graph].width - h_margin,data[p_graph].height -( v_margin + (y_range * data[p_graph].value)))
-      p_graph_context:line_to(data[p_graph].width - h_margin, data[p_graph].height - (v_margin ))
-      p_graph_context:line_to(0+h_margin,data[p_graph].height-(v_margin))
-  
-      p_graph_context:close_path()
-      if data[p_graph].graph_color then
-        r,g,b,a=helpers.hexadecimal_to_rgba_percent(data[p_graph].graph_color)
-        p_graph_context:set_source_rgba(r, g, b, a)
-      else
-        p_graph_context:set_source_rgba(0.5, 0.7, 0.1, 0.7)
-      end
-      p_graph_context:fill()
+--      p_graph_context:new_path()
+--      p_graph_context:move_to(x,y)
+--      p_graph_context:line_to(x,y)
+--      y_range=data[p_graph].height - (2 * v_margin)
+--      p_graph_context:line_to(x,data[p_graph].height -( v_margin + (y_range * data[p_graph].value)))
+--      p_graph_context:line_to(data[p_graph].width - h_margin,data[p_graph].height -( v_margin + (y_range * data[p_graph].value)))
+--      p_graph_context:line_to(data[p_graph].width - h_margin, data[p_graph].height - (v_margin ))
+--      p_graph_context:line_to(0+h_margin,data[p_graph].height-(v_margin))
+--  
+--      p_graph_context:close_path()
+--      if data[p_graph].graph_color then
+--        r,g,b,a=helpers.hexadecimal_to_rgba_percent(data[p_graph].graph_color)
+--        p_graph_context:set_source_rgba(r, g, b, a)
+--      else
+--        p_graph_context:set_source_rgba(0.5, 0.7, 0.1, 0.7)
+--      end
+--      p_graph_context:fill()
 
-      x=0+h_margin 
-      y=data[p_graph].height-(v_margin) 
-  
-      p_graph_context:new_path()
-      p_graph_context:move_to(x,y)
-      p_graph_context:line_to(x,y)
-      y_range=data[p_graph].height - (2 * v_margin)
-      p_graph_context:line_to(x,data[p_graph].height -( v_margin + (y_range * data[p_graph].value)))
-      p_graph_context:line_to(data[p_graph].width -h_margin,data[p_graph].height -( v_margin +  (y_range * data[p_graph].value)))
-      p_graph_context:line_to(data[p_graph].width - h_margin, data[p_graph].height - (v_margin ))
-  
-      p_graph_context:set_line_width(1)
-      if data[p_graph].graph_line_color then
-        r,g,b,a=helpers.hexadecimal_to_rgba_percent(data[p_graph].graph_line_color)
-        p_graph_context:set_source_rgb(r, g, b)
-      else
-        p_graph_context:set_source_rgb(0.5, 0.7, 0.1)
-      end
-    end
-    p_graph_context:stroke()
-  end
+--      x=0+h_margin 
+--      y=data[p_graph].height-(v_margin) 
+--  
+--      p_graph_context:new_path()
+--      p_graph_context:move_to(x,y)
+--      p_graph_context:line_to(x,y)
+--      y_range=data[p_graph].height - (2 * v_margin)
+--      p_graph_context:line_to(x,data[p_graph].height -( v_margin + (y_range * data[p_graph].value)))
+--      p_graph_context:line_to(data[p_graph].width -h_margin,data[p_graph].height -( v_margin +  (y_range * data[p_graph].value)))
+--      p_graph_context:line_to(data[p_graph].width - h_margin, data[p_graph].height - (v_margin ))
+--  
+--      p_graph_context:set_line_width(1)
+--      if data[p_graph].graph_line_color then
+--        r,g,b,a=helpers.hexadecimal_to_rgba_percent(data[p_graph].graph_line_color)
+--        p_graph_context:set_source_rgb(r, g, b)
+--      else
+--        p_graph_context:set_source_rgb(0.5, 0.7, 0.1)
+--      end
+--    end
+--    p_graph_context:stroke()
+--  end
   if data[p_graph].show_text == true then
   --Draw Text and it's background
     if data[p_graph].font_size == nil then
@@ -166,14 +234,30 @@ local function update(p_graph)
     else
       text=value .. "%"
     end
-    helpers.draw_text_and_background(p_graph_context, 
+    --if vertical graph, text is at the middle of the width, if vertical bar text is at the middle of the height
+    if data[p_graph].horizontal == nil or data[p_graph].horizontal == false then
+      helpers.draw_text_and_background(p_graph_context, 
+                                        text, 
+                                        data[p_graph].width/2, 
+                                        data[p_graph].height/2 , 
+                                        data[p_graph].background_text_color, 
+                                        data[p_graph].text_color,
+                                        true,
+                                        true,
+                                        false,
+                                        false)
+    else
+       helpers.draw_text_and_background(p_graph_context, 
                                         text, 
                                         h_margin, 
-                                        (data[p_graph].height/2) + (data[p_graph].font_size)/2, 
+                                        data[p_graph].height/2 , 
                                         data[p_graph].background_text_color, 
                                         data[p_graph].text_color,
                                         false,
+                                        true,
+                                        false,
                                         false)
+    end     
   end
 
   p_graph.widget.image = capi.image.argb32(data[p_graph].width, data[p_graph].height, p_graph_surface:get_data())
