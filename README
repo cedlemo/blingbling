@@ -15,6 +15,8 @@ Originally, I have written Blingbling for myself but I share it under the GNU GP
 *Netstat popup
 *System shutdown/Reboot button
 *Udisks-glue widget menu
+*Menu widget
+*Task warrior widget
 
 Dependencies
 ------------
@@ -502,6 +504,37 @@ This widget is an icon linked to a menu. The menu entries are dynamically added 
      ud_glue:set_eject_icon(an_image_file_name)
      ud_glue:set_Usb_icon(an_image_file_name)
      ud_glue:set_Cdrom_icon(an_image_file_name)
+
+*Menu widget
+This widget is the original menu widget from awful that I have modified. With this menu, width of menus and submenus is auto-adjusted to the longer 
+label of the menu. There is no fixed width. Usage is the same as awful.menu.
+
+  -Usage:
+
+  my_menu=blingbling.menu({items={})
+  with items a table of entries where each entrie is a table like this:
+    entrie={label, command or another table of entries for a submenu, an icon}
+
+*Task warrior widget
+Task warrior widget is an interface for task warrior (http://taskwarrior.org/projects/show/taskwarrior). The goal is to provide a quick way to see projects and tasks and to provide basic management of tasks or project (just set task done for now). 
+  
+  -Usage:
+    --add this before adding the widget in the wibox:
+
+      my_tasks=blingbling.task_warrior.new(an_image_file_name)
+
+    --add the widget in the wibox:
+    
+      my_top_wibox[s].widgets = {
+            ......,
+            my_tasks.widget,
+            .....,
+
+  -Customize:
+    you can add custom icons for project menu entries, task menu entrie, and task done action.
+      my_tasks:set_task_done_icon(an_image_file_name)
+      my_tasks:set_task_icon(an_image_file_name)
+      my_tasks:set_project_icon(an_image_file_name)
 
 Author
 -------
