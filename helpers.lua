@@ -518,9 +518,50 @@ function draw_rounded_corners_vertical_graph(cairo_context,x,y,width, height, ba
     end
   end
 end
+function generate_rounded_rectangle_with_text_in_image(text, padding, background_color, text_color, font_size, rounded_size)
+  local data={}
+  local padding = padding or 2
+  --find the height and width of the image:
+  local cairo_surface=cairo.image_surface_create("argb32",20, 20)
+  local cr = cairo.context_create(cairo_surface)
+  local ext = cr:text_extents(text)
+  data.height = font_size + 2* padding
+  data.width = ext.width +ext.x_bearing*2 + 2*padding
+  
+  --recreate the cairo context with good width and height:
+  cairo_surface= nil
+  cr=nil
+  cairo_surface=cairo.image_surface_create("argb32",data.width, data.height)
+  cr = cairo.context_create(cairo_surface)
+
+  --draw the background
+  draw_rounded_corners_rectangle(cr,0,0,data.width, data.height, background_color, rounded_size)
+  
+  --draw the text
+  cr:move_to(padding, data.height - padding)
+  r,g,b,a=hexadecimal_to_rgba_percent(text_color)
+  cr:set_source_rgba(r,g,b,a)
+  cr:show_text(text)
+  
+  data.raw_image = cairo_surface:get_data()
+  return data
+end
 function hash_remove(hash,key)
   local element = hash[key]
   hash[key] = nil
   return element
 end
 
+
+local function is_leap_year(year)
+  return year % 4 == 0 and (year % 100 ~= 0 or year % 400 == 0)
+end
+
+days_in_m = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 }
+function get_days_in_month(month, year)
+  if month == 2 and is_leap_year(year) then
+    return 29
+  else
+    return days_in_m[month]
+  end
+end

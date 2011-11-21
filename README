@@ -17,6 +17,8 @@ Originally, I have written Blingbling for myself but I share it under the GNU GP
 *Udisks-glue widget menu
 *Menu widget
 *Task warrior widget
+*Table widget layout
+*Calendar
 
 Dependencies
 ------------
@@ -536,6 +538,69 @@ Task warrior widget is an interface for task warrior (http://taskwarrior.org/pro
       my_tasks:set_task_icon(an_image_file_name)
       my_tasks:set_project_icon(an_image_file_name)
 
+*Table widget layout
+This layout can be used in a wibox and offert the possibility to display it's widgets on stacked lines. 
+  
+  -Usage:
+    
+    my_wibox.widgets={{widget1, widget2, layout = blingbling.layout.array.line_center},
+                      {widget1, widget2, layout = blingbling.layout.array.line_center},
+                      layout = blingbling.layout.array.stack_lines
+                      }
+  -Customize:
+    There are 3 layouts for lines of your table:
+    blingbling.layout.array.leftright : like leftright layout for awesome
+    blingbling.layout.array.rightleft : like rightleft layout for awesome
+    blingbling.layout.array.center : all line width is used and each widget is centered. (This layout check bottom and top margins of your widgets)
+
+*Calendar
+It's a wibox that display a calendar of the current month with widgets. (Next step is to add key grabber and bind to task management applications or agenda for displaying appointements when a day is selected)
+    --add this before adding the widget in the wibox:
+
+      my_cal =blingbling.calendar.new()
+      my_cal:set_cell_padding(4)
+      my_cal:set_columns_lines_titles_text_color(beautiful.text_font_color_2)
+      my_cal:set_title_text_color(beautiful.bg_focus)
+
+
+    --add the widget in the wibox:
+    
+      my_top_wibox[s].widgets = {
+            ......,
+            my_cal.widget,
+            .....,
+
+  -Customize:
+    my_cal:set_width(integer)
+      define the width of the wibox, the height is auto-adjusted
+    my_cal:set_margin(integer)
+      define the margin in the wibox
+    my_cal:set_inter_margin(integer)
+      define the margin between the lines
+    my_cal:set_cell_background_color(string) -->"#rrggbbaa"
+      define the color of the days widgets
+    my_cal:set_cell_padding(integer)
+      define the padding between the text and the background of days widgets
+    my_cal:set_rounded_size(integer) -> a value in 0 to 1
+      define the size of the rounded corner
+    my_cal:set_text_color(string) -->"#rrggbbaa"
+      define the color of the text in the cell
+    my_cal:set_font_size(integer)
+      define the size of the text in the cell
+    my_cal:set_title_background_color(string) -->"#rrggbbaa"
+      define the background color of the title widget 
+    my_cal:set_title_text_color(string) -->"#rrggbbaa"
+      define the color of text int the title widget
+    my_cal:set_title_font_size(integer)
+      define the size of the text in the title widget
+    my_cal:set_columns_lines_titles_background_color(string) -->"#rrggbbaa"
+      define the color of the background of the titles of each columns or lines
+    my_cal:set_columns_lines_titles_text_color(string) -->"#rrggbbaa"
+      define the color of the text in titles of columns
+    my_cal:set_columns_lines_titles_font_size
+      define the size of the text in the titles of columns
+
+  
 Author
 -------
 
