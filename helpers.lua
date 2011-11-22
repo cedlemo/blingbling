@@ -1,6 +1,7 @@
 local naughty= require("naughty")
 local cairo=require("oocairo")
 local string = require("string")
+local os = require('os')
 local math = math
 local table = table
 module("blingbling.helpers")
@@ -552,16 +553,87 @@ function hash_remove(hash,key)
   return element
 end
 
-
+--Functions for date and calendar
 local function is_leap_year(year)
   return year % 4 == 0 and (year % 100 ~= 0 or year % 400 == 0)
 end
 
-days_in_m = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 }
+local days_in_m = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 }
 function get_days_in_month(month, year)
   if month == 2 and is_leap_year(year) then
     return 29
   else
     return days_in_m[month]
   end
+end
+function get_ISO8601_weeks_number_of_month(month,year)
+--Week begin on monday
+--http://fr.wikipedia.org/wiki/ISO_8601
+-- find the week number of a date:
+--1 find the day number (in the year) of the thursday of the same week of our date
+--2 find the week day of the 04 january of the year of our date
+--3 find the number of days between the 04-01 and the first monday before this date
+--4 find the number of days between the 04-01 and the date we focus on
+--5 add the two last value, add 3 and divide by 7
+
+  --the date we focus on
+  local my_day=1
+  local my_year = year
+  local my_month = month 
+  local day=my_day
+  local year=my_year
+  local month=my_month
+  local w_day =os.date('*t', os.time{year=year,month=month, day=day})['wday']
+  local thursday=5
+--define nb days in month
+  if is_leap_year(year) then
+    days_in_m[2] = 29
+  end
+
+--1
+  local closer_thursday = {}
+  local difference=0
+
+  if w_day ~= thursday then
+    difference= thursday - w_day
+    if difference > 0 then
+      for i=1, difference do
+        if day == days_in_m[month] then
+          day=1
+          month=month + 1
+        else
+          day = day +1
+        end
+      end
+      closer_thursday = os.date('*t', os.time{year=year,month=month, day=day})
+    else
+      for i=1, math.abs(difference) do
+        if day == 1 then
+          month=month -1 
+          day=days_in_m[month]
+        else
+          day = day -1
+        end
+      end
+      closer_thursday = os.date('*t', os.time{year=year,month=month, day=day})
+    end
+  else
+    closer_thursday = os.date('*t', os.time{year=year,month=month, day=day})
+  end 
+--2 find the week day of the 04 january of the year of our date
+  local fourth_january=os.date('*t', os.time{year=year,month=01, day=04})
+  local monday = 2
+--3 find the number of days between the 04-01 and the first monday before this date
+  local difference_one= monday - fourth_january.wday  
+  if difference_one > 0 then
+    difference_one = 7 - difference_one 
+  else
+    difference_one = difference_one*(-1)
+  end
+--4 find the number of days between the 04-01 and the date we focus on
+  local difference_two=closer_thursday.yday - fourth_january.yday
+--5 add the two last value, add 3 and divide by 7
+  local current_week= (difference_two +3 + difference_one +1) / 7
+  local weeks ={ current_week, current_week +1, current_week +2, current_week + 3, current_week + 4}
+  return weeks
 end

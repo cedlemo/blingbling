@@ -98,7 +98,7 @@ function generate_cal(calendar)
   local mouse_coords = capi.mouse.coords()
   local all_lines_height = 0
 
-  local day_labels = { "Su", "Mo", "Tu", "We", "Th", "Fr","Sa" }
+  local day_labels = { "Mo", "Tu", "We", "Th", "Fr","Sa" , "Su"}
   local days_of_month={}
   local weeks_of_year={}
   local current_day_of_month= tonumber(os.date("%d")) 
@@ -106,7 +106,7 @@ function generate_cal(calendar)
   local year_displayed = tonumber(os.date("%Y"))
   local first_day_of_month = 0
   local d=os.date('*t',os.time{year=2011,month=11,day=01})
-  first_day_of_month = d['wday']
+  first_day_of_month = d['wday'] - 1
   local last_day_of_current_month = tonumber(helpers.get_days_in_month(month_displayed, year_displayed))
   local max_day_cells = 35
   local day_of_month = 0 
@@ -142,10 +142,36 @@ function generate_cal(calendar)
   end
   
   all_lines_height = all_lines_height + days_widgets_line_height
-  
+  --generate empty cell (corner of days of week line and weeks of year column
+    local cell = helpers.generate_rounded_rectangle_with_text_in_image("__|", 
+                                                                        padding, 
+                                                                        columns_lines_titles_background_color, 
+                                                                        columns_lines_titles_text_color, 
+                                                                        columns_lines_titles_font_size, 
+                                                                        rounded_size)
+    local corner_widget= widget({ type ="imagebox", width=cell.width, height=cell.height })
+    corner_widget.image = capi.image.argb32(cell.width, cell.height, cell.raw_image)
+    margins[corner_widget]={top = inter_margin, bottom = inter_margin + 2}
+
+  --generate cells for weeks numbers  
+  local weeks_numbers_widgets={}
+  local weeks_numbers = helpers.get_ISO8601_weeks_number_of_month(month_displayed,year_displayed)
+  for i=1,5 do 
+    local cell = helpers.generate_rounded_rectangle_with_text_in_image(weeks_numbers[i], 
+                                                                        padding, 
+                                                                        columns_lines_titles_background_color, 
+                                                                        columns_lines_titles_text_color, 
+                                                                        columns_lines_titles_font_size, 
+                                                                        rounded_size)
+    local cell_widget= widget({ type ="imagebox", width=cell.width, height=cell.height })
+    cell_widget.image = capi.image.argb32(cell.width, cell.height, cell.raw_image)
+    margins[cell_widget]={top = inter_margin}
+    table.insert(weeks_numbers_widgets,cell_widget)
+  end
+
   local classic_cell_height = 0
   for i=1,35 do
-  --generate cells where of days of week before the first day
+  --generate cells  before the first day
     if i < first_day_of_month then
       local cell = helpers.generate_rounded_rectangle_with_text_in_image( "--", 
                                                                         padding, 
@@ -161,7 +187,7 @@ function generate_cal(calendar)
         classic_cell_height = cell.height+ margins[cell_widget].top 
       end
     end
-    if i>= first_day_of_month and i <= last_day_of_current_month + first_day_of_month then
+    if i>= first_day_of_month and i < last_day_of_current_month + first_day_of_month then
       if i == current_day_of_month + first_day_of_month -1 then
         background = beautiful.bg_focus
         color = beautiful.fg_focus
@@ -213,17 +239,17 @@ function generate_cal(calendar)
 
   calendarbox.widgets={
       {displayed_month_and_year, layout = blingbling.layout.array.line_center },
-      {day_widgets[1], day_widgets[2], day_widgets[3], day_widgets[4], 
+      {corner_widget, day_widgets[1], day_widgets[2], day_widgets[3], day_widgets[4], 
        day_widgets[5], day_widgets[6], day_widgets[7], layout =blingbling.layout.array.line_center},
-      {days_of_month[1],days_of_month[2], days_of_month[3], days_of_month[4],
+      {weeks_numbers_widgets[1], days_of_month[1],days_of_month[2], days_of_month[3], days_of_month[4],
        days_of_month[5],days_of_month[6],days_of_month[7],layout =blingbling.layout.array.line_center}, 
-      {days_of_month[8],days_of_month[9], days_of_month[10], days_of_month[11],
+      {weeks_numbers_widgets[2], days_of_month[8],days_of_month[9], days_of_month[10], days_of_month[11],
        days_of_month[12],days_of_month[13],days_of_month[14],layout =blingbling.layout.array.line_center}, 
-      {days_of_month[15],days_of_month[16], days_of_month[17], days_of_month[18],
+      {weeks_numbers_widgets[3], days_of_month[15],days_of_month[16], days_of_month[17], days_of_month[18],
        days_of_month[19],days_of_month[20],days_of_month[21],layout =blingbling.layout.array.line_center}, 
-      {days_of_month[22],days_of_month[23], days_of_month[24], days_of_month[25],
+      {weeks_numbers_widgets[4], days_of_month[22],days_of_month[23], days_of_month[24], days_of_month[25],
        days_of_month[26],days_of_month[27],days_of_month[28],layout =blingbling.layout.array.line_center}, 
-      {days_of_month[29],days_of_month[30], days_of_month[31], days_of_month[32],
+      {weeks_numbers_widgets[5], days_of_month[29],days_of_month[30], days_of_month[31], days_of_month[32],
        days_of_month[33],days_of_month[34],days_of_month[35],layout =blingbling.layout.array.line_center},    
        layout = blingbling.layout.array.stack_lines 
                     }
