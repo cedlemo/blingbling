@@ -145,7 +145,7 @@ local function update(graph)
   graph_context:set_line_width(1)
   if data[graph].graph_line_color then
     r,g,b,a=helpers.hexadecimal_to_rgba_percent(data[graph].graph_line_color)
-    graph_context:set_source_rgb(r, g, b)
+    graph_context:set_source_rgba(r, g, b,a)
   else
     graph_context:set_source_rgb(0.5, 0.7, 0.1)
   end

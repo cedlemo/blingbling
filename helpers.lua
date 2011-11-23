@@ -156,7 +156,8 @@ function draw_up_down_arrows(cairo_context,x,y_bottom,y_top,value,background_arr
     cairo_context:line_to(x-(3*invert), y_bottom)
     cairo_context:line_to(x,y_bottom)
     cairo_context:close_path()
-    cairo_context:set_source_rgba(0, 0, 0, 0.3)
+    r,g,b,a = hexadecimal_to_rgba_percent(background_arrow_color)
+    cairo_context:set_source_rgba(r, g, b, a)
     cairo_context:fill()
     --Draw the arrow if value is > 0
     if value > 0 then
@@ -167,7 +168,8 @@ function draw_up_down_arrows(cairo_context,x,y_bottom,y_top,value,background_arr
       cairo_context:line_to(x-(3*invert), y_bottom)
       cairo_context:line_to(x,y_bottom)
       cairo_context:close_path()
-      cairo_context:set_source_rgba(0.5, 0.7, 0.1, 0.7)
+      r,g,b,a = hexadecimal_to_rgba_percent(arrow_color)
+      cairo_context:set_source_rgba(r, g, b, a)
       cairo_context:fill()
       cairo_context:move_to(x,y_bottom)
       cairo_context:line_to(x,y_top )
@@ -176,7 +178,8 @@ function draw_up_down_arrows(cairo_context,x,y_bottom,y_top,value,background_arr
       cairo_context:line_to(x-(3*invert), y_bottom)
       cairo_context:line_to(x,y_bottom)
       cairo_context:close_path()
-      cairo_context:set_source_rgba(0.5, 0.7, 0.1, 0.7)
+      r,g,b,a = hexadecimal_to_rgba_percent(arrow_line_color)
+      cairo_context:set_source_rgba(r, g, b, a)
       cairo_context:set_line_width(1)
       cairo_context:stroke()
   end

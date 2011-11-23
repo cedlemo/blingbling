@@ -149,7 +149,7 @@ if data[n_graph].background_graph_color == nil then
   data[n_graph].background_graph_color="#00000077"
 end
 if data[n_graph].graph_color == nil then
-  data[n_graph].graph_color="#7fb21946"
+  data[n_graph].graph_color="#7fb21946"--46"
 end
 if data[n_graph].graph_line_color == nil then
   data[n_graph].graph_line_color="#7fb219"
