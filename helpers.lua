@@ -528,6 +528,7 @@ function generate_rounded_rectangle_with_text_in_image(text, padding, background
   --find the height and width of the image:
   local cairo_surface=cairo.image_surface_create("argb32",20, 20)
   local cr = cairo.context_create(cairo_surface)
+  cr:set_font_size(font_size)
   local ext = cr:text_extents(text)
   data.height = font_size + 2* padding
   data.width = ext.width +ext.x_bearing*2 + 2*padding
@@ -544,6 +545,7 @@ function generate_rounded_rectangle_with_text_in_image(text, padding, background
   --draw the text
   cr:move_to(padding, data.height - padding)
   r,g,b,a=hexadecimal_to_rgba_percent(text_color)
+  cr:set_font_size(font_size)
   cr:set_source_rgba(r,g,b,a)
   cr:show_text(text)
   

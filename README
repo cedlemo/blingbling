@@ -4,6 +4,7 @@ Blingbling is a graphical widget library for Awesome Windows Manager. Based on o
 
 Originally, I have written Blingbling for myself but I share it under the GNU GPL-v2 (http://www.gnu.org/licenses/old-licenses/gpl-2.0.html). It meens that for this version, I know it works for me but that all. Testers and feedbacks are welcome!
 
+*Value text box
 *Classical graph
 *Tiled graph
 *Progress graph
@@ -46,6 +47,59 @@ Usage
 -----------
 in your rc.lua (at the top of the file or just before you use blingbling widgets or functions), add:
 require("blingbling")
+*Value text box:
+This is a text box that get a value between 0 and 1 and display it as text (like classical textbox widget in awesome). The difference with this widget, is that user can display a colored background with rounded corner (or not) behind the text. Furthermore user can set different colors to display the value (not all the text) depending on the value. ( 30>value< 70 set text color as green, value > 70% set text color as red for example.
+
+  -Usage:
+    --add this before adding the widget in the wibox:
+      my_fs_root=blingbling.value_text_box.new()
+      my_fs_root:set_height(18)
+      my_fs_root:set_width(100)
+      my_fs_root:set_v_margin(2)
+      my_fs_root:set_filled(true)
+      my_fs_root:set_filled_color("#00000099")
+      my_fs_root:set_values_text_color({{"#88aa00ff",0},{"#d4aa00ff", 0.5},{"#d45500ff",0.75}})
+      my_fs_root:set_default_text_color(beautiful.textbox_widget_as_label_font_color)
+      my_fs_root:set_rounded_size(0.4)
+      my_fs_root:set_background_color("#00000044")
+      my_fs_root:set_label("/root usage:$percent %")
+    
+    --add the widget in the wibox:
+
+      my_top_wibox[s].widgets = {
+            ......,
+            my_fs_root.widget,
+            .....,
+    --reload awesome
+
+  -You can use vicious to feed the graph:
+  vicious.register(my_fs_root, vicious.widgets.fs, "${/ used_p}", 120)
+
+  -Customize the widget:
+      my_fs_root:set_width(integer)
+        width is auto adjusted if the width given by the user is inferior to the text width
+      my_fs_root:set_height(integer)      
+      my_fs_root:set_background_color(string) -->"#rrggbbaa"
+        fill all the widget (width * height) with this color (default is transparent )
+      my_fs_root:set_rounded_size(a) -> a in [0,1]
+        set rounded corners
+      my_fs_root:set_v_margin(integer)
+        define the top and bottom margin for the background and the text background
+      my_fs_root:set_h_margin(integer) 
+        define the right and left margin for the filed background and the text background
+      my_fs_root:set_filled(boolean) --> true or false
+        drawn a rectangle behind the text default color is black
+      my_fs_root:set_filled_color(string) -->"#rrggbbaa"
+      my_fs_root:set_default_text_color(string) -->"#rrggbbaa"
+        this define the color for all the text of the widget (white by default)
+      my_fs_root:set_values_text_color(table) -->{ {"#rrggbbaa", limit 1}, {"#rrggbbaa", limit 2}}
+        this define the value text color depending on the limit given ( if value >= limit, we apply the color.
+        By default the color is default_text_color(another example: {{"#88aa00ff",0},{"#d4aa00ff", 0.5},{"#d45500ff",0.75}})
+      my_fs_root:set_font_size(integer)
+      my_fs_root:set_label(string)
+        define what is the text to display. By default the text is : (value_send_to_the_widget *100)
+        static string: example set_label("CPU usage:") will display "CUP usage:" on the widget.
+        dynamic string: use $percent in the string example set_label("Load $percent %") will display "Load 10%" 
 
 *Classical graph: classical_graph.lua
 This widget drawn a common graph as the initial graph widget of Awesome but with more possibilities to customize it. (background transparency, displaying text on it). The stack graph is not implemented yet. It takes value in the range (0,1).
