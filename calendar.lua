@@ -74,7 +74,102 @@ function bind_click_to_toggle_visibility(calendar)
 ))
 end
 
+function display_new_month( calendar,month, year)
+  local month_label = os.date("%B", os.time{year=year, month=month, day=01})
+  local padding = data[calendar].cell_padding or 4 
+  local background_color = data[calendar].cell_background_color or "#00000066"
+  local rounded_size = data[calendar].rounded_size or 0.4
+  local text_color = data[calendar].text_color or "#ffffffff"
+  local font_size = data[calendar].font_size or 9
+  local title_background_color = data[calendar].title_background_color or background_color
+  local title_text_color = data[calendar].title_text_color or text_color
+  local title_font_size = data[calendar].title_font_size or font_size + 2
   
+  local cell =helpers.generate_rounded_rectangle_with_text_in_image(month_label.." "..year, 
+                                                                    padding, 
+                                                                    title_background_color, 
+                                                                    title_text_color, 
+                                                                    title_font_size, 
+                                                                    rounded_size)
+  data[calendar].displayed_month_year.image = capi.image.argb32(cell.width, cell.height, cell.raw_image)
+  
+  local last_day_of_current_month = tonumber(helpers.get_days_in_month(month, year))
+  local current_day_of_month= tonumber(os.date("%d")) 
+  local current_month = tonumber(os.date("%m"))
+  local d=os.date('*t',os.time{year=year,month=month,day=01})
+  first_day_of_month = d['wday'] - 1
+  if first_day_of_month == 0 then first_day_of_month = 7 end 
+  local day_of_month = 0 
+  
+  for i=1,42 do
+  --generate cells  before the first day
+    if i < first_day_of_month then
+      local cell = helpers.generate_rounded_rectangle_with_text_in_image( "--", 
+                                                                        padding, 
+                                                                        background_color, 
+                                                                        text_color, 
+                                                                        font_size, 
+                                                                        rounded_size)
+      data[calendar].days_of_month[i].image = capi.image.argb32(cell.width, cell.height, cell.raw_image)
+    end
+    if i>= first_day_of_month and i < last_day_of_current_month + first_day_of_month then
+      if i == current_day_of_month + first_day_of_month -1 and current_month == month then
+        background = beautiful.bg_focus
+        color = beautiful.fg_focus
+      else  
+        background = background_color
+        color = text_color
+      end
+      day_of_month = day_of_month + 1
+      --Had 0 before the day if the day is inf to 10
+      if day_of_month < 10 then
+        day_of_month = "0" .. day_of_month
+      else
+        day_of_month = day_of_month ..""
+      end
+      local cell = helpers.generate_rounded_rectangle_with_text_in_image( day_of_month, 
+                                                                        padding, 
+                                                                        background, 
+                                                                        color, 
+                                                                        font_size, 
+                                                                        rounded_size)
+      data[calendar].days_of_month[i].image = capi.image.argb32(cell.width, cell.height, cell.raw_image)
+    end
+    if i >= last_day_of_current_month  + first_day_of_month then
+      local cell = helpers.generate_rounded_rectangle_with_text_in_image( "--", 
+                                                                        padding, 
+                                                                        background_color, 
+                                                                        text_color, 
+                                                                        font_size, 
+                                                                        rounded_size)
+      data[calendar].days_of_month[i].image = capi.image.argb32(cell.width, cell.height, cell.raw_image)
+    end
+  end
+end
+
+function see_prev_month(calendar, month, year)
+  if month == 1 then
+    month = 12 
+    year = year -1 
+  else
+    month = month - 1
+  end
+  data[calendar].month = month
+  data[calendar].year = year
+  display_new_month(calendar,month, year)
+end
+function see_next_month(calendar, month, year)
+  if month == 12 then
+    month = 1 
+    year = year +1 
+  else
+    month = month + 1
+  end
+  data[calendar].month = month
+  data[calendar].year = year
+  display_new_month(calendar,month, year)
+end
+
 function generate_cal(calendar)
   
   local wibox_margin = data[calendar].margin or 2
@@ -99,30 +194,70 @@ function generate_cal(calendar)
   local all_lines_height = 0
 
   local day_labels = { "Mo", "Tu", "We", "Th", "Fr","Sa" , "Su"}
-  local days_of_month={}
+  data[calendar].days_of_month={}
   local weeks_of_year={}
   local current_day_of_month= tonumber(os.date("%d")) 
   local month_displayed = tonumber(os.date("%m"))
   local year_displayed = tonumber(os.date("%Y"))
+  
+  data[calendar].month = month_displayed
+  data[calendar].year = year_displayed
+  
   local first_day_of_month = 0
-  local d=os.date('*t',os.time{year=2011,month=11,day=01})
+  local d=os.date('*t',os.time{year=year_displayed,month=month_displayed,day=01})
   first_day_of_month = d['wday'] - 1
   local last_day_of_current_month = tonumber(helpers.get_days_in_month(month_displayed, year_displayed))
-  local max_day_cells = 35
+  local max_day_cells = 42 
   local day_of_month = 0 
   local day_widgets={}
   
-  --generate cell with displayed month and year
-  local cell =helpers.generate_rounded_rectangle_with_text_in_image(os.date("%B / %Y"), 
+  --generate title cells with displayed month and year
+  local cell_month_year =helpers.generate_rounded_rectangle_with_text_in_image(os.date("%B %Y"), 
                                                                     padding, 
                                                                     title_background_color, 
                                                                     title_text_color, 
                                                                     title_font_size, 
                                                                     rounded_size)
-  local displayed_month_and_year= widget({ type ="imagebox", width=cell.width, height=cell.height })
-  displayed_month_and_year.image = capi.image.argb32(cell.width, cell.height, cell.raw_image)
-  margins[displayed_month_and_year]={top = wibox_margin + inter_margin, bottom = inter_margin + 2}
-  all_lines_height = margins[displayed_month_and_year].top + margins[displayed_month_and_year].bottom + cell.height+ all_lines_height
+  data[calendar].displayed_month_year= widget({ type ="imagebox", width=cell_month_year.width, height=cell_month_year.height })
+  data[calendar].displayed_month_year.image = capi.image.argb32(cell_month_year.width, cell_month_year.height, cell_month_year.raw_image)
+  margins[data[calendar].displayed_month_year]={top = wibox_margin + inter_margin, bottom = inter_margin + 2}
+  
+  --generate cells for precedent month and next month:
+  local cell_prev = helpers.generate_rounded_rectangle_with_text_in_image("<<", 
+                                                                    padding, 
+                                                                    title_background_color, 
+                                                                    title_text_color, 
+                                                                    title_font_size, 
+                                                                    rounded_size)
+  local prev_month= widget({ type ="imagebox", width=cell_prev.width, height=cell_prev.height })
+  prev_month.image = capi.image.argb32(cell_prev.width, cell_prev.height, cell_prev.raw_image)
+  margins[prev_month]={top = wibox_margin + inter_margin, bottom = inter_margin + 2}
+  --Link action on the widget:
+  prev_month:buttons(util.table.join(
+       button({ }, 1, function()
+        see_prev_month(calendar, data[calendar].month, data[calendar].year)      
+       end)
+  ))
+
+  
+  local cell_next = helpers.generate_rounded_rectangle_with_text_in_image(">>", 
+                                                                    padding, 
+                                                                    title_background_color, 
+                                                                    title_text_color, 
+                                                                    title_font_size, 
+                                                                    rounded_size)
+  local next_month= widget({ type ="imagebox", width=cell_next.width, height=cell_next.height })
+  next_month.image = capi.image.argb32(cell_next.width, cell_next.height, cell_next.raw_image)
+  margins[next_month]={top = wibox_margin + inter_margin, bottom = inter_margin + 2}
+  --Link action on the widget:
+  next_month:buttons(util.table.join(
+       button({ }, 1, function()
+        see_next_month(calendar, data[calendar].month, data[calendar].year)      
+       end)
+  ))
+  
+  all_lines_height = margins[data[calendar].displayed_month_year].top + margins[data[calendar].displayed_month_year].bottom + cell_month_year.height+ all_lines_height
+
   --generate cells with day label
   local days_widgets_line_height = 0
   for i=1,7 do 
@@ -156,7 +291,7 @@ function generate_cal(calendar)
   --generate cells for weeks numbers  
   local weeks_numbers_widgets={}
   local weeks_numbers = helpers.get_ISO8601_weeks_number_of_month(month_displayed,year_displayed)
-  for i=1,5 do 
+  for i=1,6 do 
     local cell = helpers.generate_rounded_rectangle_with_text_in_image(weeks_numbers[i], 
                                                                         padding, 
                                                                         columns_lines_titles_background_color, 
@@ -170,7 +305,7 @@ function generate_cal(calendar)
   end
 
   local classic_cell_height = 0
-  for i=1,35 do
+  for i=1,42 do
   --generate cells  before the first day
     if i < first_day_of_month then
       local cell = helpers.generate_rounded_rectangle_with_text_in_image( "--", 
@@ -182,7 +317,7 @@ function generate_cal(calendar)
       local cell_widget= widget({ type ="imagebox", width=cell.width, height=cell.height })
       cell_widget.image = capi.image.argb32(cell.width, cell.height, cell.raw_image)
       margins[cell_widget]={top = inter_margin}
-      table.insert(days_of_month, cell_widget)
+      table.insert(data[calendar].days_of_month, cell_widget)
       if cell.height + margins[cell_widget].top  > classic_cell_height then
         classic_cell_height = cell.height+ margins[cell_widget].top 
       end
@@ -211,7 +346,7 @@ function generate_cal(calendar)
       local cell_widget= widget({ type ="imagebox", width=cell.width, height=cell.height })
       cell_widget.image = capi.image.argb32(cell.width, cell.height, cell.raw_image)
       margins[cell_widget]={top = inter_margin}
-      table.insert(days_of_month, cell_widget)
+      table.insert(data[calendar].days_of_month, cell_widget)
       if cell.height + margins[cell_widget].top  > classic_cell_height then
         classic_cell_height = cell.height+ margins[cell_widget].top 
       end
@@ -226,31 +361,33 @@ function generate_cal(calendar)
       local cell_widget= widget({ type ="imagebox", width=cell.width, height=cell.height })
       cell_widget.image = capi.image.argb32(cell.width, cell.height, cell.raw_image)
       margins[cell_widget]={top = inter_margin}
-      table.insert(days_of_month, cell_widget)
+      table.insert(data[calendar].days_of_month, cell_widget)
       if cell.height + margins[cell_widget].top  > classic_cell_height then
         classic_cell_height = cell.height+ margins[cell_widget].top 
       end
     end
   end
-  all_lines_height =wibox_margin  +all_lines_height + classic_cell_height * 5 
+  all_lines_height =wibox_margin  +all_lines_height + classic_cell_height * 6 
   calendarbox=wibox({height = all_lines_height, width=(data[calendar].width or 200) })
   calendarbox.widgets={}
   calendarbox.ontop =true
 
   calendarbox.widgets={
-      {displayed_month_and_year, layout = blingbling.layout.array.line_center },
+      {prev_month, data[calendar].displayed_month_year, next_month, layout = blingbling.layout.array.line_center },
       {corner_widget, day_widgets[1], day_widgets[2], day_widgets[3], day_widgets[4], 
        day_widgets[5], day_widgets[6], day_widgets[7], layout =blingbling.layout.array.line_center},
-      {weeks_numbers_widgets[1], days_of_month[1],days_of_month[2], days_of_month[3], days_of_month[4],
-       days_of_month[5],days_of_month[6],days_of_month[7],layout =blingbling.layout.array.line_center}, 
-      {weeks_numbers_widgets[2], days_of_month[8],days_of_month[9], days_of_month[10], days_of_month[11],
-       days_of_month[12],days_of_month[13],days_of_month[14],layout =blingbling.layout.array.line_center}, 
-      {weeks_numbers_widgets[3], days_of_month[15],days_of_month[16], days_of_month[17], days_of_month[18],
-       days_of_month[19],days_of_month[20],days_of_month[21],layout =blingbling.layout.array.line_center}, 
-      {weeks_numbers_widgets[4], days_of_month[22],days_of_month[23], days_of_month[24], days_of_month[25],
-       days_of_month[26],days_of_month[27],days_of_month[28],layout =blingbling.layout.array.line_center}, 
-      {weeks_numbers_widgets[5], days_of_month[29],days_of_month[30], days_of_month[31], days_of_month[32],
-       days_of_month[33],days_of_month[34],days_of_month[35],layout =blingbling.layout.array.line_center},    
+      {weeks_numbers_widgets[1], data[calendar].days_of_month[1],data[calendar].days_of_month[2], data[calendar].days_of_month[3], data[calendar].days_of_month[4],
+       data[calendar].days_of_month[5],data[calendar].days_of_month[6],data[calendar].days_of_month[7],layout =blingbling.layout.array.line_center}, 
+      {weeks_numbers_widgets[2], data[calendar].days_of_month[8],data[calendar].days_of_month[9], data[calendar].days_of_month[10], data[calendar].days_of_month[11],
+       data[calendar].days_of_month[12],data[calendar].days_of_month[13],data[calendar].days_of_month[14],layout =blingbling.layout.array.line_center}, 
+      {weeks_numbers_widgets[3], data[calendar].days_of_month[15],data[calendar].days_of_month[16], data[calendar].days_of_month[17], data[calendar].days_of_month[18],
+       data[calendar].days_of_month[19],data[calendar].days_of_month[20],data[calendar].days_of_month[21],layout =blingbling.layout.array.line_center}, 
+      {weeks_numbers_widgets[4], data[calendar].days_of_month[22],data[calendar].days_of_month[23], data[calendar].days_of_month[24], data[calendar].days_of_month[25],
+       data[calendar].days_of_month[26],data[calendar].days_of_month[27],data[calendar].days_of_month[28],layout =blingbling.layout.array.line_center}, 
+      {weeks_numbers_widgets[5], data[calendar].days_of_month[29],data[calendar].days_of_month[30], data[calendar].days_of_month[31], data[calendar].days_of_month[32],
+       data[calendar].days_of_month[33],data[calendar].days_of_month[34],data[calendar].days_of_month[35],layout =blingbling.layout.array.line_center},    
+      {weeks_numbers_widgets[6], data[calendar].days_of_month[36],data[calendar].days_of_month[37], data[calendar].days_of_month[38], data[calendar].days_of_month[39],
+       data[calendar].days_of_month[40],data[calendar].days_of_month[41],data[calendar].days_of_month[42],layout =blingbling.layout.array.line_center},    
        layout = blingbling.layout.array.stack_lines 
                     }
    
@@ -278,12 +415,17 @@ for _, prop in ipairs(properties) do
    end
 end
 
-function new()
+function new(args)
+  local args =args or {}
   local calendar={}
   data[calendar]={}
-  calendar.widget=widget({ type = "textbox" })
-  calendar.widget.text = "Cal"
-  
+  if  args == nil or args.type == "textbox" then
+    calendar.widget=widget({ type = "textbox" })
+    calendar.widget.text = args.text or "Calendar"
+  elseif args.type == "imagebox" then
+    calendar.widget=widget({ type = "imagebox" })
+    calendar.widget.image=capi.image(args.image)
+  end
   for _, prop in ipairs(properties) do
     calendar["set_" .. prop] = _M["set_" .. prop]
   end

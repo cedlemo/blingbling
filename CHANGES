@@ -1,0 +1,4 @@
+25-11-2011
+  array.layout: Modifications on the line_center layout. Now it can deal with widgets that have different width.
+  calendar.lua: display current month and current date
+                previous and next month buttons
