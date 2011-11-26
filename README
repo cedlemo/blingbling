@@ -47,6 +47,7 @@ Usage
 -----------
 in your rc.lua (at the top of the file or just before you use blingbling widgets or functions), add:
 require("blingbling")
+
 *Value text box:
 This is a text box that get a value between 0 and 1 and display it as text (like classical textbox widget in awesome). The difference with this widget, is that user can display a colored background with rounded corner (or not) behind the text. Furthermore user can set different colors to display the value (not all the text) depending on the value. ( 30>value< 70 set text color as green, value > 70% set text color as red for example.
 
@@ -608,7 +609,7 @@ This layout can be used in a wibox and offert the possibility to display it's wi
     blingbling.layout.array.center : all line width is used and each widget is centered. (This layout check bottom and top margins of your widgets)
 
 *Calendar
-It's a wibox that display a calendar of the current month with widgets. (Next step is to add key grabber and bind to task management applications or agenda for displaying appointements when a day is selected)
+It's a wibox that display a calendar of the current month with widgets. By default, you have two buttons for displaying next and previous month. Furthermore, You can link the calendar to external agenda.  
     --add this before adding the widget in the wibox:
 
       my_cal =blingbling.calendar.new()
@@ -623,6 +624,21 @@ It's a wibox that display a calendar of the current month with widgets. (Next st
             ......,
             my_cal.widget,
             .....,
+  -Link to external agenda. By default I have write 2 functions that get informations on remind and taskwarrior. You can activate this fonctionnality with:
+    my_cal:set_link_to_external_calendar(true)
+      Now when your mouse curser pass on a day widget, it's color change and a menu is displaying remind events for this day. If you scroll up, the menu display task warrior events for the day.
+
+    You have the possibility to had functions for getting data from another application. Here is an example:
+    my_cal:append_function_get_events_from(function(day, month, year)
+       s="third function ".. " " .. day .. " " .. month .." " ..year
+       return s
+       end)
+    This  function display in the menu the string "third function 26 11 2011" for example.
+    If you don't like my two functions for taskwarrior and remind, you can remove them and add your own:
+    my_cal:clear_and_add_function_get_events_from(function(day, month, year)
+       s="third function ".. " " .. day .. " " .. month .." " ..year
+       return s
+       end)
 
   -Customize:
     my_cal:set_width(integer)
