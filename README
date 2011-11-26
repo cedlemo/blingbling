@@ -612,7 +612,8 @@ This layout can be used in a wibox and offert the possibility to display it's wi
 It's a wibox that display a calendar of the current month with widgets. By default, you have two buttons for displaying next and previous month. Furthermore, You can link the calendar to external agenda.  
     --add this before adding the widget in the wibox:
 
-      my_cal =blingbling.calendar.new()
+      my_cal =blingbling.calendar.new({type = "imagebox", image = beautiful.calendar_icon})
+      --you can set blingbling.calendar.new({type = "textbox", text = "calendar"}) if you prefer a textbox      
       my_cal:set_cell_padding(4)
       my_cal:set_columns_lines_titles_text_color(beautiful.text_font_color_2)
       my_cal:set_title_text_color(beautiful.bg_focus)
