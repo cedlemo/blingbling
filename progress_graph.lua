@@ -8,7 +8,123 @@ local cairo = require("oocairo")
 local capi = { image = image, widget = widget }
 local layout = require("awful.widget.layout")
 
+---A progressbar widget
 module("blingbling.progress_graph")
+
+---Fill all the widget (width * height) with this color (default is transparent ) 
+--mycairoprogressgraph:set_background_color(string) -->"#rrggbbaa"
+--@name set_background_color
+--@class function
+--@graph graph the progressgraph
+--@param color a string "#rrggbbaa" or "#rrggbb"
+
+---Set rounded corners for background and graph background
+--mycairoprogressgraph:set_rounded_size(a) -> a in [0,1]
+--@name set_rounded_size
+--@class function
+--@param graph the progressgraph
+--@param rounded_size float in [0,1]
+
+--Define the top and bottom margin for the filed background and the graph
+--mycairoprogressgraph:set_v_margin(integer)
+--@name set_v_margin
+--@class function
+--@param graph the progressgraph
+--@param margin an integer for top and bottom margin
+
+--Define the left and right margin for the filed background and the graph
+--mycairoprogressgraph:set_h_margin(integer)
+--@name set_h_margin
+--@class function
+--@param graph the progressgraph
+--@param margin an integer for left and right margin
+
+---Draw a rectangle behind the graph, default color is black
+--mycairoprogressgraph:set_filled(boolean) --> true or false
+--@name set_filled
+--@class function
+--@param graph the progressgraph
+--@param boolean true or false (default is false)
+
+---Set the color of the filled background
+--mycairoprogressgraph:set_filled_color(string) -->"#rrggbbaa"
+--@name set_filled_color
+--@class function
+--@param graph the progressgraph
+--@param color a string "#rrggbbaa" or "#rrggbb"
+
+---Draw tiles behind the graph
+--mycairoprogressgraph:set_tiles(boolean) --> true or false
+--@name set_tiles
+--@class function
+--@param graph the progressgraph
+--@param boolean true or false (default is true)
+
+---Define tiles color
+--mycairoprogressgraph:set_tiles_color(string) -->"#rrggbbaa"
+--@name set_tiles_color
+--@class function
+--@param graph the progressgraph
+--@param color a string "#rrggbbaa" or "#rrggbb"
+
+---Define the graph color
+--mycairoprogressgraph:set_graph_color(string) -->"#rrggbbaa"
+--@name set_graph_color
+--@class function
+--@param graph the progressgraph
+--@param color a string "#rrggbbaa" or "#rrggbb"
+
+--Define the graph outline
+--mycairoprogressgraph:set_graph_line_color(string) -->"#rrggbbaa"
+--@name set_graph_line_color
+--@class function
+--@param graph the progressgraph
+--@param color a string "#rrggbbaa" or "#rrggbb"
+
+--The graph evove horizontaly or verticaly
+--mycairoprogressgraph:set_horizontal(boolean) --> true or false
+--@name set_horizontal
+--@class function
+--@param graph the progressgraph
+--@param boolean true or false (default is false)
+
+--Display text on the graph or not
+--mycairoprogressgraph:set_show_text(boolean) --> true or false
+--@name set_show_text
+--@class function
+--@param graph the progressgraph
+--@param boolean true or false (default is false)
+
+--Define the color of the text
+--mycairoprogressgraph:set_text_color(string) -->"#rrggbbaa"
+--@name set_text_color
+--@class function
+--@param graph the progressgraph
+--@param color a string "#rrggbbaa" or "#rrggbb" defaul is white
+
+--Define the background color of the text
+--mycairoprogressgraph:set_background_text_color(string) -->"#rrggbbaa"
+--@name set_background_text_color
+--@class
+--@param graph the progressgraph
+--@param color a string "#rrggbbaa" or "#rrggbb"
+
+---Define the text font size
+--mycairoprogressgraph:set_font_size(integer)
+--@name set_font_size
+--@class function
+--@param graph the progressgraph
+--@param size the font size
+
+---Define the template of the text to display
+--mycairoprogressgraph:set_label(string)
+--By default the text is : (value_send_to_the_widget *100) .. "%"
+--static string: example set_label("CPU usage:") will display "CUP usage:" on the graph
+--dynamic string: use $percent in the string example set_label("Load $percent %") will display "Load 10%" 
+--@name set_label
+--@class function
+--@param graph the progressgraph
+--@param text the text to display
 
 local data = setmetatable({}, { __mode = "k" })
 
@@ -129,92 +245,6 @@ local function update(p_graph)
     end
   end
 
---Drawn the p_graph
---  if data[p_graph].value > 0 then
---    if data[p_graph].horizontal == true then
-      --progress bar increase/decrease from left to right
---      x=h_margin 
---      y=data[p_graph].height-(v_margin) 
---      PI = 2*math.asin(1)
---      p_graph_context:new_path()
---      p_graph_context:move_to(x,y)
---      p_graph_context:line_to(x,y)
---      x_range=data[p_graph].width - (2 * h_margin)
---      p_graph_context:line_to( h_margin + (x_range * data[p_graph].value) - (3*0),y )
-----      p_graph_context:arc_negative(h_margin + (x_range * data[p_graph].value) - 3,y -3, 3, 0.5*PI, 2*PI)
---      p_graph_context:line_to( h_margin + (x_range * data[p_graph].value), v_margin )
---      p_graph_context:line_to(h_margin, v_margin )
---      p_graph_context:line_to(h_margin,data[p_graph].height-(v_margin))
---  
---      p_graph_context:close_path()
---      if data[p_graph].graph_color then
---        r,g,b,a=helpers.hexadecimal_to_rgba_percent(data[p_graph].graph_color)
---        p_graph_context:set_source_rgba(r, g, b, a)
---      else
---        p_graph_context:set_source_rgba(0.5, 0.7, 0.1, 0.7)
---      end
---      p_graph_context:fill()
---      x=h_margin 
---      y=data[p_graph].height-(v_margin) 
---
---      p_graph_context:new_path()
---      p_graph_context:move_to(x,y)
---      p_graph_context:line_to(x,y)
---      x_range=data[p_graph].width - (2 * h_margin)
---      p_graph_context:line_to( h_margin + (x_range * data[p_graph].value),y)
---      p_graph_context:line_to( h_margin + (x_range * data[p_graph].value), v_margin )
---      p_graph_context:line_to(h_margin, v_margin )--  
---      p_graph_context:set_line_width(1)
---     if data[p_graph].graph_line_color then
---        r,g,b,a=helpers.hexadecimal_to_rgba_percent(data[p_graph].graph_line_color)
---        p_graph_context:set_source_rgb(r, g, b)
---      else
---        p_graph_context:set_source_rgb(0.5, 0.7, 0.1)
---      end
---    else
-      --progress bar increase/decrease from bottom to top
---      x=0+h_margin 
---      y=data[p_graph].height-(v_margin) 
-
---      p_graph_context:new_path()
---      p_graph_context:move_to(x,y)
---      p_graph_context:line_to(x,y)
---      y_range=data[p_graph].height - (2 * v_margin)
---      p_graph_context:line_to(x,data[p_graph].height -( v_margin + (y_range * data[p_graph].value)))
---      p_graph_context:line_to(data[p_graph].width - h_margin,data[p_graph].height -( v_margin + (y_range * data[p_graph].value)))
---      p_graph_context:line_to(data[p_graph].width - h_margin, data[p_graph].height - (v_margin ))
---      p_graph_context:line_to(0+h_margin,data[p_graph].height-(v_margin))
---  
---      p_graph_context:close_path()
---      if data[p_graph].graph_color then
---        r,g,b,a=helpers.hexadecimal_to_rgba_percent(data[p_graph].graph_color)
---        p_graph_context:set_source_rgba(r, g, b, a)
---      else
---        p_graph_context:set_source_rgba(0.5, 0.7, 0.1, 0.7)
---      end
---      p_graph_context:fill()
-
---      x=0+h_margin 
---      y=data[p_graph].height-(v_margin) 
---  
---      p_graph_context:new_path()
---      p_graph_context:move_to(x,y)
---      p_graph_context:line_to(x,y)
---      y_range=data[p_graph].height - (2 * v_margin)
---      p_graph_context:line_to(x,data[p_graph].height -( v_margin + (y_range * data[p_graph].value)))
---      p_graph_context:line_to(data[p_graph].width -h_margin,data[p_graph].height -( v_margin +  (y_range * data[p_graph].value)))
---      p_graph_context:line_to(data[p_graph].width - h_margin, data[p_graph].height - (v_margin ))
---  
---      p_graph_context:set_line_width(1)
---      if data[p_graph].graph_line_color then
---        r,g,b,a=helpers.hexadecimal_to_rgba_percent(data[p_graph].graph_line_color)
---        p_graph_context:set_source_rgb(r, g, b)
---      else
---        p_graph_context:set_source_rgb(0.5, 0.7, 0.1)
---      end
---    end
---    p_graph_context:stroke()
---  end
   if data[p_graph].show_text == true then
   --Draw Text and it's background
     if data[p_graph].font_size == nil then
@@ -264,6 +294,9 @@ local function update(p_graph)
 
 end
 
+--- Add a value to the graph
+-- @param p_graph The graph.
+-- @param value The value between 0 and 1.
 local function add_value(p_graph, value)
   if not p_graph then return end
   local value = value or 0
@@ -278,6 +311,9 @@ local function add_value(p_graph, value)
   return p_graph
 end
 
+--- Set the graph height.
+-- @param p_graph The graph.
+-- @param height The height to set.
 function set_height(p_graph, height)
     if height >= 5 then
         data[p_graph].height = height
@@ -286,6 +322,9 @@ function set_height(p_graph, height)
     return p_graph
 end
 
+--- Set the graph width.
+-- @param p_graph The graph.
+-- @param width The width to set.
 function set_width(p_graph, width)
     if width >= 5 then
         data[p_graph].width = width
@@ -304,6 +343,11 @@ for _, prop in ipairs(properties) do
         end
     end
 end
+
+--- Create a graph widget.
+-- @param args Standard widget() arguments. You should add width and height
+-- key to set graph geometry.
+-- @return A graph widget.
 
 function new(args)
     local args = args or {}

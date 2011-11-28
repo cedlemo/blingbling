@@ -9,7 +9,7 @@ local cairo = require "oocairo"
 local capi = { image = image, widget = widget }
 local layout = require("awful.widget.layout")
 
----A graph widget based on Awesome WM graph widget.
+---A graph widget.
 module("blingbling.classical_graph")
 
 ---Fill all the widget (width * height) with this color (default is transparent ) 

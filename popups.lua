@@ -5,6 +5,7 @@ local awful = require("awful")
 local helpers =require("blingbling.helpers")
 local string = require("string")
 
+---Specific popups
 module("blingbling.popups")
 
 local function colorize(string, pattern, color)
@@ -46,7 +47,15 @@ local function show_process_info(inc_proc_offset, title_color,user_color, root_c
 	timeout = 0, hover_timeout = 0.5,
 	})
 end
- --mytitle_color, myuser_color,myroot_color, terminal
+---Top popup
+--It binds a colorized output of the top command to a widget, and the possibility to launch htop with a click on the widget.
+--</br>Example blingbling.popups.htop(mycairograph,{ title_color = "#rrggbbaa", user_color    = "#rrggbbaa", root_color="#rrggbbaa", terminal = "urxvt"})
+--</br>The terminal parameter is not mandatory, htop will be launch in xterm. Mandatory arguments:
+-- <ul> <li>title_color define the color of the title's columns.</li>
+--  <li>user_color display the name of the current user with this color in the top output.</li>
+--  <li>root_color display the root name with this color in the top output. </li></ul>
+--@param mywidget the widget
+--@param args a table of arguments { title_color = "#rrggbbaa", user_color = "#rrggbbaa", root_color="#rrggbbaa", terminal = a terminal name})
 function htop(mywidget, args)
 mywidget:add_signal("mouse::enter", function()
     show_process_info(0, args["title_color"], args["user_color"],args["root_color"])
@@ -99,6 +108,16 @@ local function show_netinfo(c1,c2,c3)
     timeout = 0, hover_timeout = 0.5,
 })
 end
+---Netstat popup
+--It binds a colorized output of the netstat command to a widget.
+--</br>Example: blingbling.popups.netstat(net,{ title_color = "#rrggbbaa", established_color= "#rrggbbaa", listen_color="#rrggbbaa"})
+--</br>Mandatory arguments:
+--<ul><li>widget (if blinbling widget add .widget ex: cpu.widget, if textbox or image box just put the widget name)</li>
+--<li>title_color define the color of the title's columns.</li>
+--<li>established_color display the state "ESTABLISHED" of a connexion  with this color in the netstat output.</li>
+--<li>listen_color display the state "LISTEN" with this color in the netstat output.</li></ul>
+--@param mywidget the widget
+--@param args a table { title_color = "#rrggbbaa", established_color= "#rrggbbaa", listen_color="#rrggbbaa"}
 function netstat(mywidget, args)
     mywidget:add_signal("mouse::enter", function()
       show_netinfo( args["title_color"], args["established_color"], args["listen_color"])

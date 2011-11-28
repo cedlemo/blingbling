@@ -4,16 +4,24 @@ local string = require("string")
 local os = require('os')
 local math = math
 local table = table
+---Functions used in blingbling.
 module("blingbling.helpers")
 
 widget_index={}
 
+---Display values of variables in an awesome popup.
+--Each variables in vars is separated by a "|"
+--@param vars a table of variable
 function dbg(vars)
   local text = ""
   for i=1, #vars do text = text .. vars[i] .. " | " end
   naughty.notify({ text = text, timeout = 15 })
 end
 
+---Convert an hexadecimal color to rgba color.
+--It convert a string variable "#rrggbb" or "#rrggbbaa" (with r,g,b and a which are hexadecimal value) to r, g, b a=1 or r,g,b,a (with r,g,b,a floated value from 0 to 1.
+--The function returns 4 variables.
+--@param my_color a string "#rrggbb" or "#rrggbbaa"
 function hexadecimal_to_rgba_percent(my_color)
   --check if color is a valid hex color else return white
   if string.find(my_color,"#[0-f][0-f][0-f][0-f][0-f]") then
@@ -36,6 +44,9 @@ function hexadecimal_to_rgba_percent(my_color)
   return r/255,v/255,b/255,a/255
 end
 
+---Split string in different parts which are returned in a table. The delimiter of each part is a pattern given in argument
+--@param str the string to split
+--@param pat the pattern delimiter
 function split(str, pat)
   local t = {}  -- NOTE: use {n = 0} in Lua-5.0
   local fpat = "(.-)" .. pat
@@ -54,6 +65,13 @@ function split(str, pat)
   end
   return t
 end
+
+---Draw tiles in a cairo context.
+--@param cairo_context a cairo context already initialised with oocairo.context_create( )
+--@param height the height of the surface on which we want tiles
+--@param v_margin value used to define top margin and/or bottom margin (tiles are not drawn on the margins)
+--@param width the width of the surface on which we want tiles
+--@param h_margin value used to define left margin and/or right margin.
 function draw_background_tiles(cairo_context, height, v_margin , width, h_margin)
 --tiles: width 4 px height 2px horizontal separator=1 px vertical separator=2px
 --			v_separator
@@ -102,6 +120,17 @@ function draw_background_tiles(cairo_context, height, v_margin , width, h_margin
   end
 end
 
+---Draw text on a rectangle which width and height depend on the text width and height.
+--@param cairo_context a cairo context already initialised with oocairo.context_create( )
+--@param text the text to display
+--@param x the x coordinate of the left of the text 
+--@param y the y coordinate of the bottom of the text
+--@param background_text_color a string "#rrggbb" or "#rrggbbaa" for the rectangle color
+--@param text_color a string "#rrggbb" or "#rrggbbaa" for the text color
+--@param show_text_centered_on_x a boolean value not mandatory (false by default) if true, x parameter is the coordinate of the middle of the text
+--@param show_text_centered_on_y a boolean value not mandatory (false by default) if true, y parameter is the coordinate of the middle of the text
+--@param show_text_on_left_of_x a boolean value not mandatory (false by default) if true, x parameter is the right of the text
+--@param show_text_on_bottom_of_y a boolean value not mandatory (false by default) if true, y parameter is the top of the text
 function draw_text_and_background(cairo_context, text, x, y, background_text_color, text_color, show_text_centered_on_x, show_text_centered_on_y, show_text_on_left_of_x, show_text_on_bottom_of_y)
     --Text background
     ext=cairo_context:text_extents(text)
@@ -122,7 +151,6 @@ function draw_text_and_background(cairo_context, text, x, y, background_text_col
     if show_text_centered_on_y == true then
       y_modif = ((ext.height +ext.y_bearing)/2 ) + ext.y_bearing / 2
       show_text_on_left_of_y = false
-      --dbg({y_modif})
     else
       if show_text_on_bottom_of_y == true then
         y_modif = ext.height + 2 *ext.y_bearing     
@@ -142,6 +170,17 @@ function draw_text_and_background(cairo_context, text, x, y, background_text_col
     cairo_context:show_text(text)
 end
 
+---Drawn one foreground arrow with a background arrow that depend on a value.
+--If the value is egal to 0 then the foreground arrow is not drawn.
+--@param cairo_context a cairo context already initialised with oocairo.context_create( )
+--@param x the x coordinate in the cairo context where the arrow start
+--@param y_bottom the bottom corrdinate of the arrows
+--@param y_top the top coordinate of the arrows
+--@param value a number 
+--@param background_arrow_color the color of the background arrow, a string "#rrggbb" or "#rrggbbaa" 
+--@param arrow_color the color of the foreground arrow, a string "#rrggbb" or "#rrggbbaa"
+--@param arrow_line_color the color of the outline of the foreground arrow , a string "#rrggbb" or "#rrggbbaa"
+--@param up boolean value if false draw a down arrow, if true draw a up arrow
 function draw_up_down_arrows(cairo_context,x,y_bottom,y_top,value,background_arrow_color, arrow_color, arrow_line_color,up)
     if up ~= false then 
       invert = 1
@@ -185,6 +224,13 @@ function draw_up_down_arrows(cairo_context,x,y_bottom,y_top,value,background_arr
   end
 end
 
+---Draw a vertical bar with gradient color, so it looks like a cylinder, and it's height depends on a value. 
+--@param cairo_context a cairo context already initialised with oocairo.context_create( )
+--@param h_margin the left and right margin of the bar in the cairo_context 
+--@param v_margin the top and bottom margin of the bar in the cairo_context
+--@param width the width used to display the left margin, the bar and the right margin
+--@param height the height used to display the top margin, the bar and the bottom margin
+--@param represent a table {background_bar_color = "#rrggbb" or "#rrggbbaa", color = "#rrggbb" or "#rrggbbaa", value =the value used to calculate the height of the bar}
 function draw_vertical_bar(cairo_context,h_margin,v_margin, width,height, represent)
   x=h_margin
   bar_width=width - 2*h_margin
@@ -222,6 +268,14 @@ function draw_vertical_bar(cairo_context,h_margin,v_margin, width,height, repres
     cairo_context:fill()
   end  
 end
+---Draw an horizontal bar with gradient color, so it looks like a cylinder, and it's height depends on a value. 
+--@param cairo_context a cairo context already initialised with oocairo.context_create( )
+--@param h_margin the left and right margin of the bar in the cairo_context 
+--@param v_margin the top and bottom margin of the bar in the cairo_context
+--@param width the width used to display the left margin, the bar and the right margin
+--@param height the height used to display the top margin, the bar and the bottom margin
+--@param represent a table {background_bar_color = "#rrggbb" or "#rrggbbaa", color = "#rrggbb" or "#rrggbbaa", value =the value used to calculate the width of the bar}
+
 function draw_horizontal_bar( cairo_context,h_margin,v_margin, width, height, represent)
   x=h_margin
   bar_width=width - 2*h_margin
@@ -258,6 +312,15 @@ function draw_horizontal_bar( cairo_context,h_margin,v_margin, width, height, re
     cairo_context:fill()
   end  
 end
+
+---Draw a rectangle width rounded corners.
+--@param cairo_context a cairo context already initialised with oocairo.context_create( )
+--@param x the x coordinate of the left top corner
+--@param y the y corrdinate of the left top corner
+--@param width the width of the rectangle
+--@param height the height of the rectangle
+--@param color a string "#rrggbb" or "#rrggbbaa" for the color of the rectangle
+--@param rounded_size a float value from 0 to 1 (0 is no rounded corner)
 function draw_rounded_corners_rectangle(cairo_context,x,y,width, height, color, rounded_size)
 --if rounded_size =0 it is a classical rectangle (whooooo!)  
   local height = height
@@ -286,6 +349,18 @@ function draw_rounded_corners_rectangle(cairo_context,x,y,width, height, color, 
   cairo_context:fill()
 
 end
+
+---Draw a foreground rounded corners rectangle which width depends on a value, and a background rounded corners rectangle.
+--@param cairo_context a cairo context already initialised with oocairo.context_create( )
+--@param x the x coordinate of the left top corner
+--@param y the y corrdinate of the left top corner
+--@param width the width of the background rectangle and the maximal width of th foreground rectangle
+--@param height the height of the background and the foreground rectangles
+--@param background_color a string "#rrggbb" or "#rrggbbaa" for the color of the background rectangle
+--@param graph_color a string "#rrggbb" or "#rrggbbaa" for the color of the foreground rectangle
+--@param rounded_size a float value from 0 to 1 (0 is no rounded corner)
+--@param value_to_represent the percent of the max width used to calculate the width of the foreground rectangle
+--@param graph_line_color a string "#rrggbb" or "#rrggbbaa" for the outiline color of the background rectangle
 function draw_rounded_corners_horizontal_graph(cairo_context,x,y,width, height, background_color, graph_color, rounded_size, value_to_represent, graph_line_color)
 --if rounded_size =0 it is a classical rectangle (whooooo!)  
   local height = height
@@ -387,6 +462,18 @@ function draw_rounded_corners_horizontal_graph(cairo_context,x,y,width, height, 
     end
   end
 end
+
+---Draw a foreground rounded corners rectangle which height depends on a value, and a background rounded corners rectangle.
+--@param cairo_context a cairo context already initialised with oocairo.context_create( )
+--@param x the x coordinate of the left top corner
+--@param y the y corrdinate of the left top corner
+--@param width the width of the background and the foreground rectangles
+--@param height the height of the background rectangle and the maximal height of the foreground rectangle
+--@param background_color a string "#rrggbb" or "#rrggbbaa" for the color of the background rectangle
+--@param graph_color a string "#rrggbb" or "#rrggbbaa" for the color of the foreground rectangle
+--@param rounded_size a float value from 0 to 1 (0 is no rounded corner)
+--@param value_to_represent the percent of the max height used to calculate the height of the foreground rectangle
+--@param graph_line_color a string "#rrggbb" or "#rrggbbaa" for the outiline color of the background rectangle
 function draw_rounded_corners_vertical_graph(cairo_context,x,y,width, height, background_color, graph_color, rounded_size, value_to_represent, graph_line_color)
 --if rounded_size =0 it is a classical rectangle (whooooo!)  
   local height = height
@@ -522,6 +609,15 @@ function draw_rounded_corners_vertical_graph(cairo_context,x,y,width, height, ba
     end
   end
 end
+
+---Generate a text in front of a centered rectangle with rounded corners (or not).
+--It returns a table ={ width = the width of the image, height = the height of the image, raw_image= the image in a raw format}
+--@param cairo_context a cairo context already initialised with oocairo.context_create( )
+--@param padding the left/right/top/bottom padding used to center the text in the background rectangle
+--@param background_color a string "#rrggbb" or "#rrggbbaa" for the color of the background rectangle
+--@param text_color a string "#rrggbb" or "#rrggbbaa" for the color of the text
+--@param font_size define the size of the font
+--@param rounded_size a float value from 0 to 1 (0 is no rounded corner)
 function generate_rounded_rectangle_with_text_in_image(text, padding, background_color, text_color, font_size, rounded_size)
   local data={}
   local padding = padding or 2
@@ -552,6 +648,9 @@ function generate_rounded_rectangle_with_text_in_image(text, padding, background
   data.raw_image = cairo_surface:get_data()
   return data
 end
+--Remove an element from  a table using key.
+--@param hash the table
+--@param key the key to remove
 function hash_remove(hash,key)
   local element = hash[key]
   hash[key] = nil
@@ -564,6 +663,10 @@ local function is_leap_year(year)
 end
 
 local days_in_m = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 }
+---Get the number of days in a given month of a year.
+--iT returns a number
+--@param month the month we focus on ( 1 to 12 )
+--@param year a number YYYY used to check if it's a leap year.
 function get_days_in_month(month, year)
   if month == 2 and is_leap_year(year) then
     return 29
@@ -571,7 +674,8 @@ function get_days_in_month(month, year)
     return days_in_m[month]
   end
 end
-function get_ISO8601_weeks_number_of_month(month,year)
+
+---Find the weeks numbers of a given month.
 --Week begin on monday
 --http://fr.wikipedia.org/wiki/ISO_8601
 -- find the week number of a date:
@@ -580,6 +684,10 @@ function get_ISO8601_weeks_number_of_month(month,year)
 --3 find the number of days between the 04-01 and the first monday before this date
 --4 find the number of days between the 04-01 and the date we focus on
 --5 add the two last value, add 3 and divide by 7
+--First it checks the number of the first week of a month and then it calculate the next six weeks numbers. The value returned is a table of six number.
+--@param month the month
+--@param the year
+function get_ISO8601_weeks_number_of_month(month,year)
 
   --the date we focus on
   local my_day=1
@@ -639,6 +747,6 @@ function get_ISO8601_weeks_number_of_month(month,year)
   local difference_two=closer_thursday.yday - fourth_january.yday
 --5 add the two last value, add 3 and divide by 7
   local current_week= (difference_two +3 + difference_one +1) / 7
-  local weeks ={ current_week, current_week +1, current_week +2, current_week + 3, current_week + 4}
+  local weeks ={ current_week, current_week +1, current_week +2, current_week + 3, current_week + 4, current_week +5}
   return weeks
 end

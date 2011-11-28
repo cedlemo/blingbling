@@ -8,7 +8,7 @@ local type=type
 local cairo = require "oocairo"
 local capi = { image = image, widget = widget, timer=timer }
 local layout = require("awful.widget.layout")
-
+---Not ready for now --
 module("blingbling.clock")
 
 local data = setmetatable({}, { __mode = "k" })

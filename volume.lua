@@ -8,9 +8,89 @@ local type=type
 local cairo = require("oocairo")
 local capi = { image = image, widget = widget, timer = timer }
 local layout = require("awful.widget.layout")
-
 local string = require("string")
+---A graphical widget dedicated to the sound on your system.
 module("blingbling.volume")
+
+---Fill all the widget (width * height) with this color (default is transparent ) 
+--myvolume:set_background_color(string) -->"#rrggbbaa"
+--@name set_background_color
+--@class function
+--@graph graph the graph
+--@param color a string "#rrggbbaa" or "#rrggbb"
+
+--Define the form of the graph: use five growing bars instead of a triangle
+--myvolume:set_bar(boolean) --> true or false
+--@name set_bar
+--@class function
+--@param graph the graph
+--@param boolean true or false (default is false)
+
+--Define the top and bottom margin for the graph
+--myvolume:set_v_margin(integer)
+--@name set_v_margin
+--@class function
+--@param graph the graph
+--@param margin an integer for top and bottom margin
+
+--Define the left and right margin for the graph
+--myvolume:set_h_margin(integer)
+--@name set_h_margin
+--@class function
+--@param graph the graph
+--@param margin an integer for left and right margin
+
+---Set the color of the graph background
+--myvolume:set_filled_color(string) -->"#rrggbbaa"
+--@name set_filled_color
+--@class function
+--@param graph the graph
+--@param color a string "#rrggbbaa" or "#rrggbb"
+
+---Define the graph color
+--myvolume:set_graph_color(string) -->"#rrggbbaa"
+--@name set_graph_color
+--@class function
+--@param graph the graph
+--@param color a string "#rrggbbaa" or "#rrggbb"
+
+--Display text on the graph or not
+--myvolume:set_show_text(boolean) --> true or false
+--@name set_show_text
+--@class function
+--@param graph the graph
+--@param boolean true or false (default is false)
+
+--Define the color of the text
+--myvolume:set_text_color(string) -->"#rrggbbaa"
+--@name set_text_color
+--@class function
+--@param graph the graph
+--@param color a string "#rrggbbaa" or "#rrggbb" defaul is white
+
+--Define the background color of the text
+--myvolume:set_background_text_color(string) -->"#rrggbbaa"
+--@name set_background_text_color
+--@class
+--@param graph the graph
+--@param color a string "#rrggbbaa" or "#rrggbb"
+
+---Define the text font size
+--myvolume:set_font_size(integer)
+--@name set_font_size
+--@class function
+--@param graph the graph
+--@param size the font size
+
+---Define the template of the text to display
+--@usage myvolume:set_label(string)
+--By default the text is : (value_send_to_the_widget *100) .. "%"
+--static string: example set_label("Volume:") will display "Volume:" on the graph
+--dynamic string: use $percent in the string example set_label("Volume $percent %") will display "Volume 10%" 
+--@name set_label
+--@class function
+--@param graph the graph
+--@param text the text to display
 
 local data = setmetatable({}, { __mode = "k" })
 
@@ -241,6 +321,10 @@ local function set_master(parameters)
     local f=io.popen(cmd)
     f:close()
 end
+
+---Add a value to the graph
+--@param v_graph the volume graph
+--@param value the value between 0 and 1
 local function add_value(v_graph, value)
   if not v_graph then return end
   local value = value or 0
@@ -289,6 +373,9 @@ local function get_mpd_volume()
   f:close()
   return mpd_volume
 end
+---Link the widget to mpd's volume level 
+--myvolume:update_mpd()
+--@param v_graph the volume graph
 local function update_mpd(v_graph)
     local state
     local value
@@ -299,6 +386,12 @@ local function update_mpd(v_graph)
         data[v_graph].mastertimer:start()
 end
 
+---Link the widget to the master channel of your system (uses amixer)
+--@usage myvolume:set_master_control()
+--a left clic toggle mute/unmute
+--wheel up increase the volume 
+--wheel down decrease the volume
+--@param v_graph the volume graph
 local function set_master_control(v_graph)
     v_graph.widget:buttons(awful.util.table.join(
     awful.button({ }, 1, function()
@@ -312,6 +405,9 @@ local function set_master_control(v_graph)
     end)))
 end
 
+--- Set the graph height.
+-- @param v_graph The volume graph.
+-- @param height The height to set.
 function set_height(v_graph, height)
     if height >= 5 then
         data[v_graph].height = height
@@ -320,6 +416,9 @@ function set_height(v_graph, height)
     return v_graph
 end
 
+--- Set the graph width.
+-- @param v_graph The volume graph.
+-- @param width The width to set.
 function set_width(v_graph, width)
     if width >= 5 then
         data[v_graph].width = width
@@ -339,6 +438,10 @@ for _, prop in ipairs(properties) do
     end
 end
 
+--- Create a graph widget.
+-- @param args Standard widget() arguments. You should add width and height
+-- key to set graph geometry.
+-- @return A graph widget.
 function new(args)
     local args = args or {}
     args.type = "imagebox"

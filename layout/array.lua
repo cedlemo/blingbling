@@ -8,10 +8,21 @@ local helpers = require('blingbling.helpers')
 local util = require("awful.util")
 local default = require("awful.widget.layout.default")
 local margins = awful.widget.layout.margins
-
+---Array Layout
 module("blingbling.layout.array")
 
-
+---Global layout for your table
+--@class function
+--@name stack_lines
+--@usage <code>     my_wibox.widgets={{widget1, widget2, layout = blingbling.layout.array.line_center},
+--                      {widget1, widget2, layout = blingbling.layout.array.line_center},
+--                       layout = blingbling.layout.array.stack_lines
+--                       }
+--</code>
+--</br>There are 3 layouts for lines of your table:
+--     <ul><li>blingbling.layout.array.leftright : like leftright layout for awesome</li>
+--     <li>blingbling.layout.array.rightleft : like rightleft layout for awesome</li>
+--     <li> blingbling.layout.array.center : all line width is used and each widget is centered. (This layout check bottom and top margins of your widgets)</li></ul>
 function line(direction, bounds, widgets, screen)
   local geometries = { }
   local initial_width = bounds.width 
@@ -211,6 +222,7 @@ function line_center(bounds, widgets, screen)
   geometries.free.y = line_height + greatest_top_margin + greatest_bottom_margin
    return geometries
 end
+
 function stack_lines(bounds, widgets, screen)
   local geometries = { }
   local x = 0

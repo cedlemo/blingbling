@@ -13,7 +13,117 @@ local cairo = require "oocairo"
 local capi = { image = image, widget = widget, timer = timer }
 local layout = require("awful.widget.layout")
  
+---Mpd widget that use mpd vizualiser functionality.
 module("blingbling.mpd_visualizer")
+
+---Fill all the widget (width * height) with this color (default is transparent ) 
+--mympd:set_background_color(string) -->"#rrggbbaa"
+--@name set_background_color
+--@class function
+--@graph graph the mpd graph
+--@param color a string "#rrggbbaa" or "#rrggbb"
+
+--Define the top and bottom margin for the filed background and the graph
+--mympd:set_v_margin(integer)
+--@name set_v_margin
+--@class function
+--@param graph the mpd graph
+--@param margin an integer for top and bottom margin
+
+--Define the left and right margin for the filed background and the graph
+--mympd:set_h_margin(integer)
+--@name set_h_margin
+--@class function
+--@param graph the mpd graph
+--@param margin an integer for left and right margin
+
+---Draw a rectangle behind the graph, default color is black
+--mympd:set_filled(boolean) --> true or false
+--@name set_filled
+--@class function
+--@param graph the mpd graph
+--@param boolean true or false (default is false)
+
+---Set the color of the filled background
+--mympd:set_filled_color(string) -->"#rrggbbaa"
+--@name set_filled_color
+--@class function
+--@param graph the mpd graph
+--@param color a string "#rrggbbaa" or "#rrggbb"
+
+---Define the graph color
+--mympd:set_graph_color(string) -->"#rrggbbaa"
+--@name set_graph_color
+--@class function
+--@param graph the mpd graph
+--@param color a string "#rrggbbaa" or "#rrggbb"
+
+--Use a line to draw the pcm output
+--mympd:set_line(boolean) -->true or false (false by default, the graph use little rectangles)
+--@name set_line
+--@class function
+--@param graph the mpd graph
+--@param color a boolean true or false 
+
+--Display text on the graph or not
+--mympd:set_show_text(boolean) --> true or false
+--@name set_show_text
+--@class function
+--@param graph the mpd graph
+--@param boolean true or false (default is false)
+
+--Define the color of the text
+--mympd:set_text_color(string) -->"#rrggbbaa"
+--@name set_text_color
+--@class function
+--@param graph the mpd graph
+--@param color a string "#rrggbbaa" or "#rrggbb" defaul is white
+
+--Define the background color of the text
+--mympd:set_background_text_color(string) -->"#rrggbbaa"
+--@name set_background_text_color
+--@class
+--@param graph the mpd graph
+--@param color a string "#rrggbbaa" or "#rrggbb"
+
+---Define the text font size
+--mympd:set_font_size(integer)
+--@name set_font_size
+--@class function
+--@param graph the mpd graph
+--@param size the font size
+
+--Define the color of the background of the widget when errors occurs
+--mympd:set_error_background_color(string) -->"#rrggbbaa"
+--@name set_error_background_color
+--@class function
+--@param graph the mpd graph
+--@param color a string "#rrggbbaa" or "#rrggbb" defaul is black
+
+--Define the color of the text for errors
+--mympd:set_error_text_color(string) -->"#rrggbbaa"
+--@name set_error_text_color
+--@class function
+--@param graph the mpd graph
+--@param color a string "#rrggbbaa" or "#rrggbb" defaul is red
+
+---Define the client to launch when right click on the widget
+--mympd:set_launch_mpd_client(string)
+--By default a right clic launch "xterm -e ncmpcpp", you can modify this with the string parameter.
+--@name set_launch_mpd_client
+--@class function
+--@param graph the mpd graph
+--@param string the command to execute when right click
+
+---Define the template of the text to display
+--mympd:set_label(string)
+--</br>define what is the text to display. By default the text is : (artist > song > album)
+--</br>static string: example set_label("MPD:") will display "MPD:" on the graph
+--</br>dynamic string: use $artist, $title, $album in the string example set_label("$artist>$song") will display "Megadeth>Tornado of souls""
+--@name set_label
+--@class function
+--@param graph the mpd graph
+--@param text the text to display
 
 local data = setmetatable({}, { __mode = "k" })
 
@@ -327,6 +437,8 @@ local function generate(mpd_graph)
 mpd_graph.widget.image = capi.image.argb32(data[mpd_graph].width, data[mpd_graph].height, mpd_graph_surface:get_data())
 end
 
+---Update the mpd widget
+--@param mpd_graph the mdp graph
 function update(mpd_graph)
   data[mpd_graph].update_timer = capi.timer({timeout = 0.2})
   data[mpd_graph].update_timer:add_signal("timeout", function() data[mpd_graph].mpdinfos=check_mpd();generate(mpd_graph) end)
@@ -340,6 +452,9 @@ local function update_song_infos(mpd_graph)
   a_timer:start()
 end
 
+--- Set the graph height.
+-- @param graph The graph.
+-- @param height The height to set.
 function set_height(mpd_graph, height)
     if height >= 5 then
         data[mpd_graph].height = height
@@ -348,6 +463,9 @@ function set_height(mpd_graph, height)
     return mpd_graph
 end
 
+--- Set the graph width.
+-- @param graph The graph.
+-- @param width The width to set.
 function set_width(mpd_graph, width)
     if width >= 5 then
         data[mpd_graph].width = width
@@ -356,6 +474,15 @@ function set_width(mpd_graph, width)
     return mpd_graph
 end
 
+---Bind mpc commands to the mpd widget
+--</br>mympd:set_mpc_commands()
+--</br>a left clic toggle stop/start
+--</br>a right clic launch an mpd client in a console (xterm -e ncmpcpp by defau    lt can be customize with set_launch_mpd_client)
+--</br>wheel up increase the mpd volume
+--</br>wheel down decrease the mpd volume
+--</br>ctrl + wheel up to play the next song
+--</br>ctrl + wheel down to play the prev
+--@param mpd_graph the mpd graph
 function set_mpc_commands(mpd_graph)
 
   mpd_graph.widget:buttons(awful.util.table.join(
@@ -399,7 +526,10 @@ for _, prop in ipairs(properties) do
         end
     end
 end
-
+--- Create a graph widget.
+-- @param args Standard widget() arguments. You should add width and height
+-- key to set graph geometry.
+-- @return A graph widget.
 function new(args)
     local args = args or {}
     args.type = "imagebox"

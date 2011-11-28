@@ -14,7 +14,83 @@ local cairo = require("oocairo")
 local capi = { image = image, widget = widget, timer =timer }
 local layout = require("awful.widget.layout")
 
+---Net widget
 module("blingbling.net")
+
+---Set the interface we monitor:
+--mynet:set_interface(string) --> "eth0"
+--@name set_interface
+--@param graph the net graph
+
+---Fill all the widget (width * height) with this color (default is transparent ) 
+--mynet:set_background_color(string) -->"#rrggbbaa"
+--@name set_background_color
+--@class function
+--@graph graph the net graph
+--@param color a string "#rrggbbaa" or "#rrggbb"
+
+--Define the top and bottom margin for the filed background and the graph
+--mynet:set_v_margin(integer)
+--@name set_v_margin
+--@class function
+--@param graph the net graph
+--@param margin an integer for top and bottom margin
+
+--Define the left and right margin for the filed background and the graph
+--mynet:set_h_margin(integer)
+--@name set_h_margin
+--@class function
+--@param graph the net graph
+--@param margin an integer for left and right margin
+
+---Set the color of the graph (arrows) background
+--mynet:set_background_graph_color(string) -->"#rrggbbaa"
+--@name set_background_graph_color
+--@class function
+--@param graph the net graph
+--@param color a string "#rrggbbaa" or "#rrggbb"
+
+---Define the graph (arrows) color
+--mynet:set_graph_color(string) -->"#rrggbbaa"
+--@name set_graph_color
+--@class function
+--@param graph the net graph
+--@param color a string "#rrggbbaa" or "#rrggbb"
+
+--Define the graph (arrows) outline
+--mynet:set_graph_line_color(string) -->"#rrggbbaa"
+--@name set_graph_line_color
+--@class function
+--@param graph the net graph
+--@param color a string "#rrggbbaa" or "#rrggbb"
+
+--Display upload and download values
+--mynet:set_show_text(boolean) --> true or false
+--@name set_show_text
+--@class function
+--@param graph the net graph
+--@param boolean true or false (default is false)
+
+--Define the color of the text
+--mynet:set_text_color(string) -->"#rrggbbaa"
+--@name set_text_color
+--@class function
+--@param graph the net graph
+--@param color a string "#rrggbbaa" or "#rrggbb" defaul is white
+
+--Define the background color of the text
+--mynet:set_background_text_color(string) -->"#rrggbbaa"
+--@name set_background_text_color
+--@class
+--@param graph the net graph
+--@param color a string "#rrggbbaa" or "#rrggbb"
+
+---Define the text font size
+--mynet:set_font_size(integer)
+--@name set_font_size
+--@class function
+--@param graph the net graph
+--@param size the font size
 
 local data = setmetatable({}, { __mode = "k" })
 
@@ -288,6 +364,9 @@ if not n_graph then return end
   data[n_graph].timer_update:start()
 end
 
+--- Set the graph height.
+-- @param n_graph The net graph.
+-- @param height The height to set.
 function set_height(n_graph, height)
     if height >= 5 then
         data[n_graph].height = height
@@ -374,6 +453,11 @@ function set_ippopup(n_graph)
         hide_ippopup_infos(n_graph)
     end)
 end
+
+--- Create a net graph widget.
+-- @param args Standard widget() arguments. You should add width and height
+-- key to set graph geometry.
+-- @return A net graph widget.
 
 function new(args)
     local args = args or {}

@@ -9,7 +9,96 @@ local cairo = require("oocairo")
 local capi = { image = image, widget = widget }
 local layout = require("awful.widget.layout")
 
+---A progressbar widget which looks like a cylinder
 module("blingbling.progress_bar")
+
+---Fill all the widget (width * height) with this color (default is transparent ) 
+--mycairoprogressbar:set_background_color(string) -->"#rrggbbaa"
+--@name set_background_color
+--@class function
+--@graph graph the progressgraph
+--@param color a string "#rrggbbaa" or "#rrggbb"
+
+--Define the top and bottom margin for the filed background and the graph
+--mycairoprogressbar:set_v_margin(integer)
+--@name set_v_margin
+--@class function
+--@param graph the progressbar
+--@param margin an integer for top and bottom margin
+
+--Define the left and right margin for the filed background and the graph
+--mycairoprogressbar:set_h_margin(integer)
+--@name set_h_margin
+--@class function
+--@param graph the progressbar
+--@param margin an integer for left and right margin
+
+---Set the color to use to create the background gradiant of the graph, default color is black
+--mycairoprogressbar:set_background_graph_color(string) -->"#rrggbbaa"
+--@name set_background_graph_color
+--@class function
+--@param graph the progressbar
+--@param color a string "#rrggbbaa" or "#rrggbb"
+
+---Define the bar color
+--mycairoprogressbar:set_graph_color(string) -->"#rrggbbaa"
+--@name set_graph_color
+--@class function
+--@param graph the progressbar
+--@param color a string "#rrggbbaa" or "#rrggbb"
+
+--Set the graph to evolve horizontaly or verticaly
+--mycairoprogressbar:set_horizontal(boolean) --> true or false
+--@name set_horizontal
+--@class function
+--@param graph the progressbar
+--@param boolean true or false (default is true)
+
+--Invert the orientation of the graph 
+--If invert is true, the graph increase from top to bottom. If horizontal is set to true and invert to true, the graph will increase from right to left. Default is from left to right with horizontal set to true.
+--mycairoprogressbar:set_invert(boolean) --> true or false
+--@name set_horizontal
+--@class function
+--@param graph the progressbar
+--@param boolean true or false (default is false)
+
+--Display text on the graph or not
+--mycairoprogressbar:set_show_text(boolean) --> true or false
+--@name set_show_text
+--@class function
+--@param graph the progressbar
+--@param boolean true or false (default is false)
+
+--Define the color of the text
+--mycairoprogressbar:set_text_color(string) -->"#rrggbbaa"
+--@name set_text_color
+--@class function
+--@param graph the progressbar
+--@param color a string "#rrggbbaa" or "#rrggbb" defaul is white
+
+--Define the background color of the text
+--mycairoprogressbar:set_background_text_color(string) -->"#rrggbbaa"
+--@name set_background_text_color
+--@class
+--@param graph the progressbar
+--@param color a string "#rrggbbaa" or "#rrggbb"
+
+---Define the text font size
+--mycairoprogressbar:set_font_size(integer)
+--@name set_font_size
+--@class function
+--@param graph the progressbar
+--@param size the font size
+
+---Define the template of the text to display
+--mycairoprogressbar:set_label(string)
+--By default the text is : (value_send_to_the_widget *100) .. "%"
+--static string: example set_label("CPU usage:") will display "CUP usage:" on the graph
+--dynamic string: use $percent in the string example set_label("Load $percent %") will display "Load 10%" 
+--@name set_label
+--@class function
+--@param graph the progressbar
+--@param text the text to display
 
 local data = setmetatable({}, { __mode = "k" })
 
@@ -110,6 +199,9 @@ local function update(p_bar)
 
 end
 
+--- Add a value to the graph
+-- @param p_bar The graph.
+-- @param value The value between 0 and 1.
 local function add_value(p_bar, value)
   if not p_bar then return end
   local value = value or 0
@@ -124,6 +216,9 @@ local function add_value(p_bar, value)
   return p_bar
 end
 
+--- Set the graph height.
+-- @param p_bar The graph.
+-- @param height The height to set.
 function set_height(p_bar, height)
     if height >= 5 then
         data[p_bar].height = height
@@ -132,6 +227,9 @@ function set_height(p_bar, height)
     return p_bar
 end
 
+--- Set the graph width.
+-- @param p_bar The graph.
+-- @param width The width to set.
 function set_width(p_bar, width)
     if width >= 5 then
         data[p_bar].width = width
@@ -150,6 +248,11 @@ for _, prop in ipairs(properties) do
         end
     end
 end
+
+--- Create a graph widget.
+-- @param args Standard widget() arguments. You should add width and height
+-- key to set graph geometry.
+-- @return A graph widget.
 
 function new(args)
     local args = args or {}

@@ -11,7 +11,7 @@ local type = type
 local setmetatable = setmetatable
 local table = table
 local capi = { image = image , widget= widget}
-
+---Task warrior menu
 module("blingbling.task_warrior")
 
 local data = setmetatable( {}, { __mode = "k"})
@@ -88,20 +88,36 @@ local function display_menu(tw_menu)
 ))
 end
 
-
+--Set the icon for "set task done" action 
+--my_tasks:set_task_done_icon(an_image_file_name)
+--@param tw_menu a task warrior menu
+--@param an_image an image file name
 function set_task_done_icon(tw_menu,an_image)
   data[tw_menu].task_done_icon=an_image
   return tw_menu
 end
+
+---Set the icon for project
+--my_tasks:set_project_icon(an_image_file_name)
+--@param tw_menu a task warrior menu
+--@param an_image an image file name
 function set_project_icon(tw_menu,an_image)
   data[tw_menu].project_icon=an_image
   return tw_menu
 end
+
+---Set the icon for task
+--my_tasks:set_task_icon(an_image_file_name)
+--@param tw_menu a task warrior menu
+--@param an_image an image file name
 function set_task_icon(tw_menu,an_image)
   data[tw_menu].task_icon=an_image
   return tw_menu
 end
-
+---Create new task warrior menu:
+--my_tasks=blingbling.task_warrior.new(an_image_file_name)
+--@param menu_icon an image file 
+--@return tw_menu a task warrior menu
 function new(menu_icon)
   local tw_menu={}
   tw_menu.widget=capi.widget({ type = "imagebox"})

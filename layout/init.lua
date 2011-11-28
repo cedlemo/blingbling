@@ -16,7 +16,5 @@ module("blingbling.layout")
 -- @class table
 margins = setmetatable({}, { __mode = 'k' })
 
---require("awful.widget.layout.horizontal")
 require("blingbling.layout.array")
---require("awful.widget.layout.default")
 

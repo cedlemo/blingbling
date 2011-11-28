@@ -37,7 +37,7 @@ local layout = require("awful.widget.layout")
 local awbeautiful = require("beautiful")
 local tonumber = tonumber
 local helpers=require("blingbling.helpers")
---- Creation of menus.
+--- Creation of menus with auto-adjusted width.
 module("blingbling.menu")
 
 local cur_menu
@@ -400,32 +400,7 @@ end
 -- </ul>
 -- @param parent Specify the parent menu if we want to open a submenu, this value should never be set by the user.
 -- @param num Specify the parent's clicked item number if we want to open a submenu, this value should never be set by the user.
--- @usage The following function builds, and shows a menu of clients that match
--- a particular rule. Bound to a key, it can for example be used to select from
--- dozens of terminals open on several tags. With the use of
--- <code>match_any</code> instead of <code>match</code>, menu of clients with
--- different classes can also be build.
---
--- <p><code>
---                     function terminal_menu ()                           <br/>
--- &nbsp;                terms = {}                                        <br/>
--- &nbsp;                for i, c in pairs(client.get()) do                <br/>
--- &nbsp;&nbsp;            if awful.rules.match(c, {class = "URxvt"}) then <br/>
--- &nbsp;&nbsp;&nbsp;        terms[i] =                                    <br/>
--- &nbsp;&nbsp;&nbsp;          {c.name,                                    <br/>
--- &nbsp;&nbsp;&nbsp;           function()                                 <br/>
--- &nbsp;&nbsp;&nbsp;&nbsp;       awful.tag.viewonly(c:tags()[1])          <br/>
--- &nbsp;&nbsp;&nbsp;&nbsp;       client.focus = c                         <br/>
--- &nbsp;&nbsp;&nbsp;           end,                                       <br/>
--- &nbsp;&nbsp;&nbsp;           c.icon                                     <br/>
--- &nbsp;&nbsp;&nbsp;          }                                           <br/>
--- &nbsp;&nbsp;            end                                             <br/>
--- &nbsp;                end                                               <br/>
--- &nbsp;                m = awful.menu({items = terms})                   <br/>
--- &nbsp;                m:show({keygrabber=true})                         <br/>
--- &nbsp;                return m                                          <br/>
---                     end                                                 <br/>
---</code></p>
+
 function new(menu, parent, num, id)
     -- Create a table to store our menu informations
     local data = {}
@@ -489,4 +464,3 @@ end
 
 setmetatable(_M, { __call = function(_, ...) return new(...) end })
 
--- vim: filetype=lua:expandtab:shiftwidth=4:tabstop=8:softtabstop=4:encoding=utf-8:textwidth=80

@@ -16,8 +16,92 @@ local blingbling = { layout = require('blingbling.layout'), menu = require("blin
 local margins = awful.widget.layout.margins
 local setmetatable = setmetatable
 local beautiful = require('beautiful')
+---A calendar widget
 module('blingbling.calendar')
 
+--Define the margin (top, right, bottom, left) in the wibox
+--@class function
+--@name set_margin
+--@param calendar a calendar widget
+--@param margin an integer
+
+---Define the margin between all the table cell
+--@class function
+--@name set_inter_margin
+--@param calendar a calendar widget
+--@param inter_margin an integer
+
+---Define the color of the common cells in the table
+--@class function
+--@name set_cell_background_color
+--@param calendar a calendar widget
+--@param color a string like "#rrggbbaa" or "#rrggbb"
+
+---Define the padding between the text and the background
+--@class function
+--@name set_cell_padding
+--@param calendar a calendar widget
+--@param padding an integer
+
+---Define the size of the rounded corners of the cells
+--@class function
+--@name set_rounded_size
+--@param calendar a calendar widget
+--@param rounded_size an integer
+
+---Define the color of the text in common cells
+--@class function 
+--@name set_text_color
+--@param calendar a calendar widget
+--@param color a string like "#rrggbbaa" or "#rrggbb"
+
+---Define the font size in common cells
+--@class function
+--@name set_font_size
+--@param calendar a calendar widget
+--@param font_size an integer
+
+---Define the color of the title cells in the table
+--@class function
+--@name set_title_background_color
+--@param calendar a calendar widget
+--@param color a string like "#rrggbbaa" or "#rrggbb"
+
+---Define the color of the text in title cells
+--@class function 
+--@name set_title_text_color
+--@param calendar a calendar widget
+--@param color a string like "#rrggbbaa" or "#rrggbb"
+
+---Define the font size in title cells
+--@class function
+--@name set_title_font_size
+--@param calendar a calendar widget
+--@param font_size an integer
+
+---Define the color of the columns and lines titles cells in the table
+--@class function
+--@name set_columns_lines_titles_background_color
+--@param calendar a calendar widget
+--@param color a string like "#rrggbbaa" or "#rrggbb"
+
+---Define the color of the text in columns and lines titles cells
+--@class function 
+--@name set_columns_lines_titles_text_color
+--@param calendar a calendar widget
+--@param color a string like "#rrggbbaa" or "#rrggbb"
+
+---Define the font size in title columns and lines cells
+--@class function
+--@name set_columns_lines_titles_font_size
+--@param calendar a calendar widget
+--@param font_size an integer
+
+---Link calendar to remind and task warrior in order to get events informations for each day
+--@class function
+--@name set_link_to_external_calendar
+--@param calendar a calendar widget
+--@param boolean true or false (false by default)
 local data = setmetatable( {}, { __mode = "k"})
 
 local properties = { "width","margin", "inter_margin", "cell_background_color", "cell_padding", "rounded_size", "text_color", "font_size", "title_background_color", "title_text_color", "title_font_size", "columns_lines_titles_background_color", "columns_lines_titles_text_color", "columns_lines_titles_font_size", "link_to_external_calendar"}
@@ -560,17 +644,32 @@ for _, prop in ipairs(properties) do
    end
 end
 
+---Add new function in order to get events from external application
+--This method let the taskwarrior and remind links intact and add your founction
+--@usage my_cal:append_function_get_events_from(function(day, month, year)
+--s="third function ".. " " .. day .. " " .. month .." " ..year
+--return s
+--end)
+--This  function display in the menu the string "third function 26 11 2011" for example.
+--@param calendar a calendar
+--@param my_function a function that you write
 function append_function_get_events_from(calendar, my_function)
   table.insert(data[calendar].get_events_from, my_function)
   return calendar
 end
 
+---Add new function in order to get events from external application and remove the existing function
+--@param calendar a calendar
+--@param my_function a function that you write
 function clear_and_add_function_get_events_from(calendar, my_function)
   data[calendar].get_events_from={}
   table.insert(data[calendar].get_events_from, my_function)
   return calendar
 end
 
+---Create new calendar widget
+--@param args a table like {type = "imagebox", image = an image file name} or {type = "textbox", text = a string}
+--@return calendar a calendar 
 function new(args)
   local args =args or {}
   local calendar={}

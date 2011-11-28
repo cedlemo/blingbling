@@ -11,6 +11,7 @@ local setmetatable = setmetatable
 local table = table
 local capi = { image = image , widget= widget}
 
+---Dynamic menu based on udisks-glue events.
 module("blingbling.udisks_glue")
 
 local data = setmetatable( {}, { __mode = "k"})
@@ -160,31 +161,64 @@ function remove_device(ud_menu, device, mount_point, device_type )
   naughty.notify({title = device_type ..":", text = device .." removed", timeout = 10})
 end
 
+---Set the mount icon
+--@param ud_menu an udisks-glue menu
+--@param an_image an image file name
 function set_mount_icon(ud_menu,an_image)
   data[ud_menu].mount_icon=an_image
   return ud_menu
 end
+---Set the unmount icon
+--@param ud_menu an udisks-glue menu
+--@param an_image an image file name
 function set_umount_icon(ud_menu,an_image)
   data[ud_menu].umount_icon=an_image
   return ud_menu
 end
+---Set the detach icon
+--@param ud_menu an udisks-glue menu
+--@param an_image an image file name
 function set_detach_icon(ud_menu,an_image)
   data[ud_menu].detach_icon=an_image
   return ud_menu
 end
+---Set the eject icon
+--@param ud_menu an udisks-glue menu
+--@param an_image an image file name
 function set_eject_icon(ud_menu,an_image)
   data[ud_menu].eject_icon=an_image
   return ud_menu
 end
+---Set the usb device icon
+--@param ud_menu an udisks-glue menu
+--@param an_image an image file name
 function set_Usb_icon(ud_menu,an_image)
   data[ud_menu].Usb_icon=an_image
   return ud_menu
 end
+---Set the cdrom device icon
+--@param ud_menu an udisks-glue menu
+--@param an_image an image file name
 function set_Cdrom_icon(ud_menu,an_image)
   data[ud_menu].Cdrom_icon=an_image
   return ud_menu
 end
 
+---Create a new udisks-menu
+--@usage You must launch udisks-glue with the configuration file ( see man udisks-glue ) that I created.
+--</br> You need to modify this file according to the widget name you put in your rc.lua:
+--</br> for example, in your rc.lua: ud_glue=blingbling.udisks_glue.new(an_image_file_name)
+--</br> in the configuration file:
+--<code>
+--    match optical {
+--         automount = true
+--         automount_options = ro
+--         post_mount_command = "echo \'ud_glue:mount_device(\"%device_file\",\"%mount_point\",\"Cdrom\")\' | awesome-client"
+--         post_unmount_command = "echo \'ud_glue:unmount_device(\"%device_file\",\"%mount_point\",\"Cdrom\")\' | awesome-client"
+--         post_removal_command = "echo \'ud_glue:remove_device(\"%device_file\",\"%mount_point\",\"Cdrom\")\' | awesome-client"
+--     }</code>
+--@return ud_menu an udisks-glue menu
+--@param menu_icon an image file name
 function new(menu_icon)
   local ud_menu={}
   ud_menu.widget=capi.widget({ type = "imagebox"})

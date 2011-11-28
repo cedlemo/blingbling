@@ -1,4 +1,5 @@
 28-11-2011
+  general :         create documentation with luadoc
   value_text_box:   fix pb set_font_size that didn't work
   classical_graph:  fix pb outline graph was out of filled background when value = 100%
 26-11-2011

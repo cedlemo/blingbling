@@ -9,9 +9,90 @@ local cairo = require "oocairo"
 local capi = { image = image, widget = widget }
 local layout = require("awful.widget.layout")
 
+---A graph widget that uses tiles to represent data
 module("blingbling.tiled_graph")
 
 local data = setmetatable({}, { __mode = "k" })
+
+---Fill all the widget (width * height) with this color (default is transparent ) 
+--mytiledgraph:set_background_color(string) -->"#rrggbbaa"
+--@name set_background_color
+--@class function
+--@graph graph the tiled graph
+--@param color a string "#rrggbbaa" or "#rrggbb"
+
+--Define the top and bottom margin for the filed background and the graph
+--mytiledgraph:set_v_margin(integer)
+--@name set_v_margin
+--@class function
+--@param graph the tiled graph
+--@param margin an integer for top and bottom margin
+
+--Define the left and right margin for the filed background and the graph
+--mytiledgraph:set_h_margin(integer)
+--@name set_h_margin
+--@class function
+--@param graph the tiled graph
+--@param margin an integer for left and right margin
+
+---Set the color of the background tiles
+--mytiledgraph:set_background_tiles_color(string) -->"#rrggbbaa"
+--@name set_background_tiles_color
+--@class function
+--@param graph the tiled graph
+--@param color a string "#rrggbbaa" or "#rrggbb"
+
+---Define foreground tiles color 
+--mytiledgraph:set_tiles_graph_color(string) -->"#rrggbbaa"
+--@name set_tiles_graph_color
+--@class function
+--@param graph the tiled graph
+--@param color a string "#rrggbbaa" or "#rrggbb"
+
+---Invert the tiles graph color for the top tiles 
+--mytiledgraph:set_hat_top_tile(boolean) --> true or false
+--@name set_hat_top_tile
+--@class function
+--@param graph the tiled graph
+--@param color a boolean (true or false, false by default)
+
+--Display text on the graph or not
+--mytiledgraph:set_show_text(boolean) --> true or false
+--@name set_show_text
+--@class function
+--@param graph the tiled graph
+--@param boolean true or false (default is false)
+
+--Define the color of the text
+--mytiledgraph:set_text_color(string) -->"#rrggbbaa"
+--@name set_text_color
+--@class function
+--@param graph the tiled graph
+--@param color a string "#rrggbbaa" or "#rrggbb" defaul is white
+
+--Define the background color of the text
+--mytiledgraph:set_background_text_color(string) -->"#rrggbbaa"
+--@name set_background_text_color
+--@class
+--@param graph the tiled graph
+--@param color a string "#rrggbbaa" or "#rrggbb"
+
+---Define the text font size
+--mytiledgraph:set_font_size(integer)
+--@name set_font_size
+--@class function
+--@param graph the tiled graph
+--@param size the font size
+
+---Define the template of the text to display
+--mytiledgraph:set_label(string)
+--By default the text is : (value_send_to_the_widget *100) .. "%"
+--static string: example set_label("CPU usage:") will display "CUP usage:" on the graph
+--dynamic string: use $percent in the string example set_label("Load $percent %") will display "Load 10%" 
+--@name set_label
+--@class function
+--@param graph the tiled graph
+--@param text the text to display
 
 local properties = { "width", "height", "v_margin","h_margin", "background_color", "background_tiles_color", "tiles_graph_color", "hat_top_tile", "show_text", "text_color", "background_text_color" ,"label", "font_size"}
 
@@ -188,6 +269,9 @@ local function update(t_graph)
   t_graph.widget.image = capi.image.argb32(data[t_graph].width, data[t_graph].height, t_graph_surface:get_data())
 end
 
+--- Add a value to the graph
+-- @param t_graph the tiled graph.
+-- @param value The value between 0 and 1.
 local function add_value(t_graph, value)
   if not t_graph then return end
   local value = value or 0
@@ -204,6 +288,9 @@ local function add_value(t_graph, value)
   return t_graph
 end
 
+--- Set the graph height.
+-- @param t_graph The tiled graph.
+-- @param height The height to set.
 function set_height(t_graph, height)
     if height >= 5 then
         data[t_graph].height = height
@@ -212,6 +299,9 @@ function set_height(t_graph, height)
     return t_graph
 end
 
+--- Set the graph width.
+-- @param t_graph The tiled graph.
+-- @param width The width to set.
 function set_width(t_graph, width)
     if width >= 5 then
         data[t_graph].width = width
@@ -230,6 +320,11 @@ for _, prop in ipairs(properties) do
         end
     end
 end
+
+--- Create a graph widget.
+-- @param args Standard widget() arguments. You should add width and height
+-- key to set graph geometry.
+-- @return A graph widget.
 
 function new(args)
     local args = args or {}
