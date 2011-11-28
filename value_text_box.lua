@@ -9,7 +9,82 @@ local cairo = require("oocairo")
 local capi = { image = image, widget = widget }
 local layout = require("awful.widget.layout")
 
+---A text box that can display value and text with colors. 
 module("blingbling.value_text_box")
+
+---Fill all the widget with this color (default is transparent).
+--my_fs_root:set_background_color(string) -->"#rrggbbaa"
+--@name set_background_color
+--@class function
+--@param vt_box the value text box
+--@param color a string "#rrggbbaa" or "#rrggbb"
+
+---Set rounded corners for background and text background
+--my_fs_root:set_rounded_size(a) -> a in [0,1]
+--@name set_rounded_size
+--@class function
+--@param vt_box the value text box
+--@param rounded_size float in [0,1]
+
+--Define the top and bottom margin for the filed background and the graph
+--my_fs_root:set_v_margin(integer)
+--@name set_v_margin
+--@class function
+--@param vt_box the value text box
+--@param margin an integer for top and bottom margin
+
+--Define the left and right margin for the filed background and the graph
+--my_fs_root:set_h_margin(integer) 
+--@name set_h_margin
+--@class function
+--@param vt_box the value text box
+--@param margin an integer for left and right margin
+
+---Draw a rectangle behind the graph, default color is black
+--my_fs_root:set_filled(boolean) --> true or false
+--@name set_filled
+--@class function
+--@param vt_box the value text box
+--@param boolean true or false (default is false)
+
+---Set the color of the filled background
+--my_fs_root:set_filled_color(string) -->"#rrggbbaa"
+--@name set_filled_color
+--@class function
+--@param vt_box the value text box
+--@param color a string "#rrggbbaa" or "#rrggbb"
+
+---Define the color for all the text of the widget (white by default)
+--my_fs_root:set_default_text_color(string) -->"#rrggbbaa"
+--@name set_default_text_color
+--@class function
+--@param vt_box the value text box
+--@param color a string "#rrggbbaa" or "#rrggbb
+
+---Define the value text color depending on the limit given ( if value >= limit, we apply the color).
+--my_fs_root:set_values_text_color(table) -->{ {"#rrggbbaa", limit 1}, {"#rrggbbaa", limit 2}}
+--  By default the color is default_text_color(another example: {{"#88aa00ff",0},{"#d4aa00ff", 0.5},{"#d45500ff",0.75}})
+--@name set_values_text_color
+--@class function
+--@param vt_box the value text box
+--@param table table like { {"#rrggbbaa", limit 1}, {"#rrggbbaa", limit 2}}
+
+---Define the text font size
+--my_fs_root:set_font_size(integer)
+--@name set_font_size
+--@class function
+--@param vt_box the value text box
+--@param size the font size
+
+---Define the template of the text to display
+--mycairograph:set_label(string)
+--By default the text is : (value_send_to_the_widget *100) 
+--static string: example set_label("CPU usage:") will display "CUP usage:" on the graph
+--dynamic string: use $percent in the string example set_label("Load $percent %") will display "Load 10%" 
+--@name set_label
+--@class function
+--@param vt_box the value text box
+--@param text the text to display
 
 local data = setmetatable({}, { __mode = "k" })
 
@@ -145,6 +220,7 @@ local function update(vt_box)
         vt_box_context:set_source_rgba(r,g,b,a)
         ext = vt_box_context:text_extents(text)
         y=data[vt_box].height/2 + font_size/2 - padding/2 
+        vt_box_context:set_font_size(font_size)
         vt_box_context:move_to(x,y)
         vt_box_context:show_text(text)
         x=x+ext.width + ext.x_bearing
@@ -157,6 +233,7 @@ local function update(vt_box)
        
         y=data[vt_box].height/2 + font_size/2 - padding/2 
  
+        vt_box_context:set_font_size(font_size)
         vt_box_context:move_to(x,y)
         vt_box_context:show_text(text)
         x=x+ext.width --+ext.x_bearing
@@ -167,6 +244,9 @@ local function update(vt_box)
 
 end
 
+--- Add a value to the graph
+--@param vt_box the value text box
+--@param value The value between 0 and 1.
 local function add_value(vt_box, value)
   if not vt_box then return end
   local value = value or 0
@@ -181,6 +261,9 @@ local function add_value(vt_box, value)
   return vt_box
 end
 
+--- Set the graph height.
+-- @param graph The graph.
+-- @param height The height to set.
 function set_height(vt_box, height)
     if height >= 5 then
         data[vt_box].height = height
@@ -189,6 +272,9 @@ function set_height(vt_box, height)
     return vt_box
 end
 
+--- Set the graph width.
+-- @param graph The graph.
+-- @param width The width to set.
 function set_width(vt_box, width)
     if width >= 5 then
         data[vt_box].width = width
@@ -208,6 +294,10 @@ for _, prop in ipairs(properties) do
     end
 end
 
+--- Create a value text box widget.
+-- @param args Standard widget() arguments. You should add width and height
+-- key to set graph geometry.
+-- @return vt_box widget.
 function new(args)
     local args = args or {}
     args.type = "imagebox"

@@ -9,7 +9,116 @@ local cairo = require "oocairo"
 local capi = { image = image, widget = widget }
 local layout = require("awful.widget.layout")
 
+---A graph widget based on Awesome WM graph widget.
 module("blingbling.classical_graph")
+
+---Fill all the widget (width * height) with this color (default is transparent ) 
+--mycairograph:set_background_color(string) -->"#rrggbbaa"
+--@name set_background_color
+--@class function
+--@graph graph the graph
+--@param color a string "#rrggbbaa" or "#rrggbb"
+
+---Set rounded corners for background and graph background
+--mycairograph:set_rounded_size(a) -> a in [0,1]
+--@name set_rounded_size
+--@class function
+--@param graph the graph
+--@param rounded_size float in [0,1]
+
+--Define the top and bottom margin for the filed background and the graph
+--mycairograph:set_v_margin(integer)
+--@name set_v_margin
+--@class function
+--@param graph the graph
+--@param margin an integer for top and bottom margin
+
+--Define the left and right margin for the filed background and the graph
+--mycairograph:set_h_margin(integer)
+--@name set_h_margin
+--@class function
+--@param graph the graph
+--@param margin an integer for left and right margin
+
+---Draw a rectangle behind the graph, default color is black
+--mycairograph:set_filled(boolean) --> true or false
+--@name set_filled
+--@class function
+--@param graph the graph
+--@param boolean true or false (default is false)
+
+---Set the color of the filled background
+--mycairograph:set_filled_color(string) -->"#rrggbbaa"
+--@name set_filled_color
+--@class function
+--@param graph the graph
+--@param color a string "#rrggbbaa" or "#rrggbb"
+
+---Draw tiles behind the graph
+--mycairograph:set_tiles(boolean) --> true or false
+--@name set_tiles
+--@class function
+--@param graph the graph
+--@param boolean true or false (default is true)
+
+---Define tiles color
+--mycairograph:set_tiles_color(string) -->"#rrggbbaa"
+--@name set_tiles_color
+--@class function
+--@param graph the graph
+--@param color a string "#rrggbbaa" or "#rrggbb"
+
+---Define the graph color
+--mycairograph:set_graph_color(string) -->"#rrggbbaa"
+--@name set_graph_color
+--@class function
+--@param graph the graph
+--@param color a string "#rrggbbaa" or "#rrggbb"
+
+--Define the graph outline
+--mycairograph:set_graph_line_color(string) -->"#rrggbbaa"
+--@name set_graph_line_color
+--@class function
+--@param graph the graph
+--@param color a string "#rrggbbaa" or "#rrggbb"
+
+--Display text on the graph or not
+--mycairograph:set_show_text(boolean) --> true or false
+--@name set_show_text
+--@class function
+--@param graph the graph
+--@param boolean true or false (default is false)
+
+--Define the color of the text
+--mycairograph:set_text_color(string) -->"#rrggbbaa"
+--@name set_text_color
+--@class function
+--@param graph the graph
+--@param color a string "#rrggbbaa" or "#rrggbb" defaul is white
+
+--Define the background color of the text
+--mycairograph:set_background_text_color(string) -->"#rrggbbaa"
+--@name set_background_text_color
+--@class
+--@param graph the graph
+--@param color a string "#rrggbbaa" or "#rrggbb"
+
+---Define the text font size
+--mycairograph:set_font_size(integer)
+--@name set_font_size
+--@class function
+--@param graph the graph
+--@param size the font size
+
+---Define the template of the text to display
+--mycairograph:set_label(string)
+--By default the text is : (value_send_to_the_widget *100) .. "%"
+--static string: example set_label("CPU usage:") will display "CUP usage:" on the graph
+--dynamic string: use $percent in the string example set_label("Load $percent %") will display "Load 10%" 
+--@name set_label
+--@class function
+--@param graph the graph
+--@param text the text to display
 
 local data = setmetatable({}, { __mode = "k" })
 
@@ -133,7 +242,7 @@ local function update(graph)
   graph_context:move_to(x,y)
   graph_context:line_to(x,y)
   for i=1,max_column do
-    y_range=data[graph].height - (2 * v_margin)
+    y_range=data[graph].height - (2 * v_margin + 1)
     y= data[graph].height - (v_margin + ((data[graph].values[i]) * y_range))
     graph_context:line_to(x,y)
     x=x-3
@@ -186,6 +295,9 @@ local function update(graph)
   graph.widget.image = capi.image.argb32(data[graph].width, data[graph].height, graph_surface:get_data())
 end
 
+--- Add a value to the graph
+-- @param graph The graph.
+-- @param value The value between 0 and 1.
 local function add_value(graph, value)
   if not graph then return end
   local value = value or 0
@@ -203,6 +315,9 @@ local function add_value(graph, value)
   return graph
 end
 
+--- Set the graph height.
+-- @param graph The graph.
+-- @param height The height to set.
 function set_height(graph, height)
     if height >= 5 then
         data[graph].height = height
@@ -211,6 +326,9 @@ function set_height(graph, height)
     return graph
 end
 
+--- Set the graph width.
+-- @param graph The graph.
+-- @param width The width to set.
 function set_width(graph, width)
     if width >= 5 then
         data[graph].width = width
@@ -229,6 +347,10 @@ for _, prop in ipairs(properties) do
         end
     end
 end
+--- Create a graph widget.
+-- @param args Standard widget() arguments. You should add width and height
+-- key to set graph geometry.
+-- @return A graph widget.
 
 function new(args)
     local args = args or {}

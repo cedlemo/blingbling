@@ -1,7 +1,10 @@
+28-11-2011
+  value_text_box:   fix pb set_font_size that didn't work
+  classical_graph:  fix pb outline graph was out of filled background when value = 100%
 26-11-2011
-  calendar.lua: calendar can display menu for each date with informations from remind and task warrior
-                user can add function to bind calendar to external agenda and remove already created functions
+  calendar.lua:     calendar can display menu for each date with informations from remind and task warrior
+                    user can add function to bind calendar to external agenda and remove already created functions
 25-11-2011
-  array.layout: Modifications on the line_center layout. Now it can deal with widgets that have different width.
-  calendar.lua: display current month and current date
-                previous and next month buttons
+  array.layout:     Modifications on the line_center layout. Now it can deal with widgets that have different width.
+  calendar.lua:     display current month and current date
+                    previous and next month buttons
