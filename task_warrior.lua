@@ -16,7 +16,7 @@ module("blingbling.task_warrior")
 
 local data = setmetatable( {}, { __mode = "k"})
 
-
+--Get projects list from task warrior
 local function get_projects(tw_menu)
   data[tw_menu].projects={}
   local my_projects=awful.util.pread("task projects")
@@ -25,30 +25,33 @@ local function get_projects(tw_menu)
                           "\nProject%s*Tasks%s*Pri%:None%s*Pri%:L%s*Pri%:M%s*Pri%:H%s*",
                           "")
   --generate the list of projects
-  for project, project_tasks in string.gmatch(my_projects,"\n([%w%(%)%-]*)%s%s+(%d*)","%1 %2") do
+  for project, project_tasks in string.gmatch(my_projects,"\n([%w%(%)%-%_]*)%s%s+(%d*)","%1 %2") do
     project=string.gsub(project,"\n","")
-    --project=string.gsub(project,"%s*%d","")
     table.insert(data[tw_menu].projects, {name =project, nb_tasks = project_tasks} )
   end
 end
+
 local function generate_tasks_management_submenu(tw_menu, task_id)
   management_submenu={}
   table.insert(management_submenu,{ "Task "..task_id..": set done", "task done "..task_id, data[tw_menu].task_done_icon })
-  --helpers.dbg({data[tw_menu].task_done_icon})
-  return management_submenu
+ return management_submenu
 end
 local function get_tasks(tw_menu, project)
   local tasks={}
   if project=="\(none\)" then
     project=""
   end
-  local my_tasks=awful.util.pread("task project:\"".. project.."\" ls")
+  local my_tasks=awful.util.pread("task rc.defaultwidth=0 project:\"".. project.."\" minimal")
   --escape specific char ( need to be extend)
   project_pattern=string.gsub(project,"%-","%%%-")
+  project_pattern=string.gsub(project_pattern,"%_","%%%_")
+  --if project == "" then
+  --  project_pattern="%s+"
+  --end
   each_tasks={}
   each_tasks=helpers.split(my_tasks,"\n")
   for i,v in ipairs(each_tasks) do
-    for my_task_id, my_task in string.gmatch(v,"%s*(%d*)%s*"..project_pattern.."%s*[HMLN%s]%s(.*)","%1 %2") do
+    for my_task_id, my_task in string.gmatch(v,"%s*(%d*)%s+"..project_pattern.."%s+(.*)$","%1 %2") do
     table.insert(tasks, {my_task ,generate_tasks_management_submenu(tw_menu,my_task_id),data[tw_menu].task_icon})
     end
   end

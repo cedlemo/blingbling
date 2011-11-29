@@ -45,6 +45,8 @@ git clone git://github.com/cedlemo/blingbling.git
 
 Usage
 -----------
+The following is a basic usage. For a full documentation see the index.html generatate by luadoc.
+
 in your rc.lua (at the top of the file or just before you use blingbling widgets or functions), add:
 require("blingbling")
 
@@ -76,32 +78,6 @@ This is a text box that get a value between 0 and 1 and display it as text (like
   -You can use vicious to feed the graph:
   vicious.register(my_fs_root, vicious.widgets.fs, "${/ used_p}", 120)
 
-  -Customize the widget:
-      my_fs_root:set_width(integer)
-        width is auto adjusted if the width given by the user is inferior to the text width
-      my_fs_root:set_height(integer)      
-      my_fs_root:set_background_color(string) -->"#rrggbbaa"
-        fill all the widget (width * height) with this color (default is transparent )
-      my_fs_root:set_rounded_size(a) -> a in [0,1]
-        set rounded corners
-      my_fs_root:set_v_margin(integer)
-        define the top and bottom margin for the background and the text background
-      my_fs_root:set_h_margin(integer) 
-        define the right and left margin for the filed background and the text background
-      my_fs_root:set_filled(boolean) --> true or false
-        drawn a rectangle behind the text default color is black
-      my_fs_root:set_filled_color(string) -->"#rrggbbaa"
-      my_fs_root:set_default_text_color(string) -->"#rrggbbaa"
-        this define the color for all the text of the widget (white by default)
-      my_fs_root:set_values_text_color(table) -->{ {"#rrggbbaa", limit 1}, {"#rrggbbaa", limit 2}}
-        this define the value text color depending on the limit given ( if value >= limit, we apply the color.
-        By default the color is default_text_color(another example: {{"#88aa00ff",0},{"#d4aa00ff", 0.5},{"#d45500ff",0.75}})
-      my_fs_root:set_font_size(integer)
-      my_fs_root:set_label(string)
-        define what is the text to display. By default the text is : (value_send_to_the_widget *100)
-        static string: example set_label("CPU usage:") will display "CUP usage:" on the widget.
-        dynamic string: use $percent in the string example set_label("Load $percent %") will display "Load 10%" 
-
 *Classical graph: classical_graph.lua
 This widget drawn a common graph as the initial graph widget of Awesome but with more possibilities to customize it. (background transparency, displaying text on it). The stack graph is not implemented yet. It takes value in the range (0,1).
   -Create a graph and display it:
@@ -126,37 +102,6 @@ This widget drawn a common graph as the initial graph widget of Awesome but with
       mycairograph:set_width(300)
       vicious.register(mycairograph, vicious.widgets.cpu, '$1', 2)
   
-  -Customize the graph:
-      mycairograph:set_width(integer)
-      mycairograph:set_height(integer)      
-      mycairograph:set_background_color(string) -->"#rrggbbaa"
-        fill all the widget (width * height) with this color (default is transparent )
-      mycairograph:set_rounded_size(a) -> a in [0,1]
-        set rounded corners
-      mycairograph:set_v_margin(integer)
-        define the top and bottom margin for the filed background and the graph
-      mycairograph:set_h_margin(integer) 
-        define the right and left margin for the filed background and the graph
-      mycairograph:set_filled(boolean) --> true or false
-        drawn a rectangle behind the graph default color is black
-      mycairograph:set_filled_color(string) -->"#rrggbbaa"
-      mycairograph:set_tiles(boolean) --> true or false
-        drawn tiles behind the graph this is the default. Set false to not display them
-      mycairograph:set_tiles_color(string) -->"#rrggbbaa"
-      mycairograph:set_graph_color(string) -->"#rrggbbaa"
-        set the color that fill the graph
-      mycairograph:set_graph_line_color(string) -->"#rrggbbaa"
-        set the color of the line of the graph
-      mycairograph:set_show_text(boolean) --> true or false
-        does the widget must display text on the graph
-      mycairograph:set_text_color(string) -->"#rrggbbaa"
-      mycairograph:set_background_text_color(string) -->"#rrggbbaa"
-      mycairograph:set_font_size(integer)
-      mycairograph:set_label(string)
-        define what is the text to display. By default the text is : (value_send_to_the_widget *100) .. "%"
-        static string: example set_label("CPU usage:") will display "CUP usage:" on the graph
-        dynamic string: use $percent in the string example set_label("Load $percent %") will display "Load 10%" 
-
 *Tiled graph
 This widget is a graph like the Awesome graph widget but the values are represented with tiles. It takes value in the range (0,1)
   -Create a graph and display it:
@@ -181,30 +126,6 @@ This widget is a graph like the Awesome graph widget but the values are represen
       mytiledgraph:set_width(300)
       vicious.register(mytiledgraph, vicious.widgets.cpu, '$1', 2)
   
-  -Customize the graph:
-      mytiledgraph:set_width(integer)
-      mytiledgraph:set_height(integer)      
-      mytiledgraph:set_background_color(string) -->"#rrggbbaa"
-        fill all the widget (width * height) with this color (default is transparent )
-      mytiledgraph:set_v_margin(integer)
-        define the top and bottom margin for the filed background and the graph
-      mytiledgraph:set_h_margin(integer) 
-        define the right and left margin for the filed background and the graph
-      mytiledgraph:set_background_tiles_color(string) -->"#rrggbbaa"
-      mytiledgraph:set_tiles_graph_color(string) -->"#rrggbbaa"
-        set the color that fill the graph
-      mytiledgraph:set_hat_top_tile(boolean) --> true or false
-        change the color of the last tile for each represented value. The new color is the complementary of the color of the tiles graph color
-      mytiledgraph:set_show_text(boolean) --> true or false
-        does the widget must display text on the graph
-      mytiledgraph:set_text_color(string) -->"#rrggbbaa"
-      mytiledgraph:set_background_text_color(string) -->"#rrggbbaa"
-      mytiledgraph:set_font_size(integer)
-      mytiledgraph:set_label(string)
-        define what is the text to display. By default the text is : (value_send_to_the_widget *100) .. "%"
-        static string: example set_label("CPU usage:") will display "CUP usage:" on the graph
-        dynamic string: use $percent in the string example set_label("Load $percent %") will display "Load 10%" 
-
 *Progress graph
 This widget drawn a progress bar as the initial bar widget of Awesome but with more possibilities to customize it. (background transparency, displaying text on it). It takes value in the range (0,1).
   -Create a bar and display it:
@@ -230,39 +151,6 @@ This widget drawn a progress bar as the initial bar widget of Awesome but with m
       mycairoprogressbar:set_width(300)
       vicious.register(mycairoprogressbar, vicious.widgets.mem, '$1', 2)
   
-  -Customize the graph:
-      mycairoprogressbar:set_width(integer)
-      mycairoprogressbar:set_height(integer)
-      mycairoprogressbar:set_rounded_size(a) -> a in [0,1]
-        set rounded corners
-      mycairogrogressbar:set_horizontal(boolean) --> true or false
-        set the progress bar to increase/decrease horizontaly, from left to right
-      mycairoprogressbar:set_background_color(string) -->"#rrggbbaa"
-        fill all the widget (width * height) with this color (default is transparent )
-      mycairoprogressbar:set_v_margin(integer)
-        define the top and bottom margin for the filed background and the graph
-      mycairoprogressbar:set_h_margin(integer) 
-        define the right and left margin for the filed background and the graph
-      mycairoprogressbar:set_filled(boolean) --> true or false
-        drawn a rectangle behind the graph, default color is black
-      mycairoprogressbar:set_filled_color(string) -->"#rrggbbaa"
-      mycairoprogressbar:set_tiles(boolean) --> true or false
-        drawn tiles behind the graph this is the default. Set false to not display them
-      mycairoprogressbar:set_tiles_color(string) -->"#rrggbbaa"
-      mycairoprogressbar:set_graph_color(string) -->"#rrggbbaa"
-        set the color that fill the graph
-      mycairoprogressbar:set_graph_line_color(string) -->"#rrggbbaa"
-        set the color of the line of the graph
-      mycairoprogressbar:set_show_text(boolean) --> true or false
-        does the widget must display text on the graph
-      mycairoprogressbar:set_text_color(string) -->"#rrggbbaa"
-      mycairoprogressbar:set_background_text_color(string) -->"#rrggbbaa"
-      mycairoprogressbar:set_font_size(integer)
-      mycairoprogressbar:set_label(string)
-        define what is the text to display. By default the text is : (value_send_to_the_widget *100) .. "%"
-        static string: example set_label("CPU usage:") will display "CUP usage:" on the graph
-        dynamic string: use $percent in the string example set_label("Load $percent %") will display "Load 10%" 
-
 *Progress bar
 This widget drawn a progress bar as the initial bar widget of Awesome but it looks like a cylinder. It supports transparency, displaying text. User can set horizontal or vertical and make the graph increase/decrease from bottom to top, top to bottom, left to right and right to left. It takes value in the range (0,1).
 
@@ -286,32 +174,6 @@ This widget drawn a progress bar as the initial bar widget of Awesome but it loo
       mybar:set_height(18)
       mybar:set_width(60)
       vicious.register(mybar, vicious.widgets.mem, '$1', 2)
-
-  -Customize the graph:
-      mybar:set_width(integer)
-      mybar:set_height(integer)
-      mybar:set_background_color(string) -->"#rrggbbaa"
-        fill all the widget (width * height) with this color (default is transparent )
-      mybar:set_v_margin(integer)
-        define the top and bottom margin for the graph
-      mybar:set_h_margin(integer) 
-        define the right and left margin for the graph
-      mybar:set_background_graph_color(string) -->"#rrggbbaa"
-      mybar:set_graph_color(string) -->"#rrggbbaa"
-        set the color that fill the graph
-      mybar:set_show_text(boolean) --> true or false
-        does the widget must display text on the graph
-      mybar:set_horizontal(true)
-        set the widget to display an horizontal bar (vertical by default)
-      mybar:set_invert(true)
-        invert the graph by default the graph is vertical and increase fom bottom to top. If invert is true, the graph increase from top to bottom. If horizontal is set to true and invert to true, the graph will increase from right to left. Default is from left to right with horizontal set to true.
-      mybar:set_text_color(string) -->"#rrggbbaa"
-      mybar:set_background_text_color(string) -->"#rrggbbaa"
-      mybar:set_font_size(integer)
-      mybar:set_label(string)
-        define what is the text to display. By default the text is : (value_send_to_the_widget *100) .. "%"
-        static string: example set_label("Mem:") will display "Mem:" on the graph
-        dynamic string: use $percent in the string example set_label("Mem: $percent %") will display "Mem: 10%" .
 
 *Volume widget
 This graphical widget represent a value between 0 and 1 with a triangle or with bars. Lot of parameters can be customized and there are functions to get data from master or set commands for managing the sound.
@@ -341,29 +203,6 @@ This graphical widget represent a value between 0 and 1 with a triangle or with 
       a left clic toggle mute/unmute
       wheel up increase the volume 
       wheel down decrease the volume
-  
-  -Customize the graph:
-      myvolume:set_width(integer)
-      myvolume:set_height(integer)
-      myvolume:set_background_color(string) -->"#rrggbbaa"
-        fill all the widget (width * height) with this color (default is transparent )
-      myvolume:set_v_margin(integer)
-        define the top and bottom margin for the filed background and the graph
-      myvolume:set_h_margin(integer) 
-        define the right and left margin for the filed background and the graph
-      myvolume:set_background_graph_color(string) -->"#rrggbbaa"
-      myvolume:set_graph_color(string) -->"#rrggbbaa"
-        set the color that fill the graph
-      myvolume:set_show_text(boolean) --> true or false
-        does the widget must display text on the graph
-      myvolume:set_text_color(string) -->"#rrggbbaa"
-      myvolume:set_background_text_color(string) -->"#rrggbbaa"
-      myvolume:set_font_size(integer)
-      myvolume:set_label(string)
-        define what is the text to display. By default the text is : (value_send_to_the_widget *100) .. "%"
-        static string: example set_label("Volume:") will display "Volume:" on the graph
-        dynamic string: use $percent in the string example set_label("Volume: $percent %") will display "Volume: 10%" .
-
 
 *Mpd widget
 The most useless widget, but my favorite. This widget reads from the fifo of a local mpd server and display the raw data as a graph which evolves with the music played. There is method a to bind on it mpd commands ( play/stop, next/prev song, increase/decrease volume ) and displaying state and current song informations.
@@ -397,40 +236,6 @@ The most useless widget, but my favorite. This widget reads from the fifo of a l
       ctrl + wheel up to play the next song
       ctrl + wheel down to play the prev
   
-  -Customize the graph:
-      mympd:set_width(integer)
-      mympd:set_height(integer)
-      mympd:set_background_color(string) -->"#rrggbbaa"
-        fill all the widget (width * height) with this color (default is transparent )
-      mympd:set_v_margin(integer)
-        define the top and bottom margin for the filed background and the graph
-      mympd:set_h_margin(integer) 
-        define the right and left margin for the filed background and the graph
-      mympd:set_graph_color(string) -->"#rrggbbaa"
-      mympd:set_line(boolean) --> true or false
-        by default the graph is make with little squarre, if true the graph is a line
-      mympd:set_mpd_pass(string)
-        define mpd password
-      mympd:set_mpd_host(string)
-        define the host name where is the mpd server (127.0.0.1 by default)
-      mympd:set_mpd_port(integer)
-        define the mpd port to connect to (6600 by default)
-      mympd:set_launch_mpd_client(string)
-        define the command linked to right click on the widget
-      mympd:set_error_background_color(string) -->"#rrggbbaa"
-        define the color of the background when error messages are displayed
-      mympd:set_error_text_color
-        define the color of the text when error messages are displayed
-      mympd:set_show_text(boolean) --> true or false
-        does the widget must display text on the graph
-      mympd:set_text_color(string) -->"#rrggbbaa"
-      mympd:set_background_text_color(string) -->"#rrggbbaa"
-      mympd:set_font_size(integer)
-      mympd:set_label(string)
-        define what is the text to display. By default the text is : (artist > song > album)
-        static string: example set_label("MPD:") will display "MPD:" on the graph
-        dynamic string: use $artist, $title, $album in the string example set_label("$artist>$song") will display "Megadeth>Tornado of souls"" 
-
 *Net widget
 The net widget display two arrows (up and down). Colors of the arrows change with net activity. User can display text with current upload and download informations. User can define the interface (eth0, eth1...)
 
@@ -456,27 +261,6 @@ The net widget display two arrows (up and down). Colors of the arrows change wit
       external ip address
       external tor ip address (if tor is running).
       my_net:set_ippopup()
-  
-  -Customize the graph:
-      mynet:set_interface()
-        set the interface ("eth0" or "eth1" ...)
-      mynet:set_height(integer)
-      mynet:set_background_color(string) -->"#rrggbbaa"
-        fill all the widget (width * height) with this color (default is transparent )
-      mynet:set_v_margin(integer)
-        define the top and bottom margin for the graph
-      mynet:set_h_margin(integer) 
-        define the right and left margin for the graph
-      mynet:set_background_graph_color(string) -->"#rrggbbaa"
-      mynet:set_graph_color(string) -->"#rrggbbaa"
-        set the color that fill the arrows
-      mynet:set_graph_line_color(string) -->"#rrggbbaa"
-        set the color of the line of the arrows
-      mybar:set_show_text(boolean) --> true or false
-        does the widget must display text on the graph
-      mybar:set_text_color(string) -->"#rrggbbaa"
-      mybar:set_background_text_color(string) -->"#rrggbbaa"
-      mybar:set_font_size(integer)
 
 *Top popup
 The top popup is a popup created with naugthy that displays a top formated and colorized output. You can bind it to a widget (textbox or image or graph from blingbling). It adds a button fonctionnality to the widget, left click launch htop in a terminal. Furthermore wheel down/up refresh the popup with less or more lines.
@@ -641,37 +425,6 @@ It's a wibox that display a calendar of the current month with widgets. By defau
        return s
        end)
 
-  -Customize:
-    my_cal:set_width(integer)
-      define the width of the wibox, the height is auto-adjusted
-    my_cal:set_margin(integer)
-      define the margin in the wibox
-    my_cal:set_inter_margin(integer)
-      define the margin between the lines
-    my_cal:set_cell_background_color(string) -->"#rrggbbaa"
-      define the color of the days widgets
-    my_cal:set_cell_padding(integer)
-      define the padding between the text and the background of days widgets
-    my_cal:set_rounded_size(integer) -> a value in 0 to 1
-      define the size of the rounded corner
-    my_cal:set_text_color(string) -->"#rrggbbaa"
-      define the color of the text in the cell
-    my_cal:set_font_size(integer)
-      define the size of the text in the cell
-    my_cal:set_title_background_color(string) -->"#rrggbbaa"
-      define the background color of the title widget 
-    my_cal:set_title_text_color(string) -->"#rrggbbaa"
-      define the color of text int the title widget
-    my_cal:set_title_font_size(integer)
-      define the size of the text in the title widget
-    my_cal:set_columns_lines_titles_background_color(string) -->"#rrggbbaa"
-      define the color of the background of the titles of each columns or lines
-    my_cal:set_columns_lines_titles_text_color(string) -->"#rrggbbaa"
-      define the color of the text in titles of columns
-    my_cal:set_columns_lines_titles_font_size
-      define the size of the text in the titles of columns
-
-  
 Author
 -------
 

@@ -1,3 +1,5 @@
+29-11-2011
+  task_warrior.lua: fix pb with tasks menu (can't see full description only 80 chars)
 28-11-2011
   general :         create documentation with luadoc
   value_text_box:   fix pb set_font_size that didn't work
