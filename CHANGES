@@ -1,3 +1,5 @@
+30-11-2011
+  laptop_1280x800_rc.lua: update with new rc.lua from awesome 3.4.11
 29-11-2011
   task_warrior.lua: fix pb with tasks menu (can't see full description only 80 chars)
 28-11-2011
