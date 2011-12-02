@@ -21,6 +21,10 @@ Originally, I have written Blingbling for myself but I share it under the GNU GP
 *Table widget layout
 *Calendar
 
+Version: v1.0
+--------
+Blingbling v1.0 works for awesome 3.4.10 and 3.4.11. The next version (v2.0) will be adapted to the next release of awesome. 
+
 Dependencies
 ------------
 Blingbling require oocairo. The address of the website of the project is : http://oocairo.naquadah.org.
