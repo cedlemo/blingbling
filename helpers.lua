@@ -7,7 +7,6 @@ local table = table
 ---Functions used in blingbling.
 module("blingbling.helpers")
 
-widget_index={}
 
 ---Display values of variables in an awesome popup.
 --Each variables in vars is separated by a "|"
@@ -321,7 +320,7 @@ end
 --@param height the height of the rectangle
 --@param color a string "#rrggbb" or "#rrggbbaa" for the color of the rectangle
 --@param rounded_size a float value from 0 to 1 (0 is no rounded corner)
-function draw_rounded_corners_rectangle(cairo_context,x,y,width, height, color, rounded_size)
+function draw_rounded_corners_rectangle(cairo_context,x,y,width, height, color, rounded_size,border)
 --if rounded_size =0 it is a classical rectangle (whooooo!)  
   local height = height
   local width = width
@@ -347,6 +346,23 @@ function draw_rounded_corners_rectangle(cairo_context,x,y,width, height, color, 
   cairo_context:arc(x + radius*rounded_size,height -  radius*rounded_size, radius*rounded_size,PI*0.5, PI * 1)
   cairo_context:close_path()
   cairo_context:fill()
+
+  if border ~= nil then
+    cairo_context:set_line_width(1)
+
+    r,g,b,a=hexadecimal_to_rgba_percent(border)
+    cairo_context:set_source_rgba(r,g,b,a)
+    --top left corner
+    cairo_context:arc(x + radius*rounded_size,y + radius*rounded_size, radius*rounded_size,PI, PI * 1.5)
+    --top right corner
+    cairo_context:arc(width - radius*rounded_size,y + radius*rounded_size, radius*rounded_size,PI*1.5, PI * 2)
+    --bottom right corner
+    cairo_context:arc(width - radius*rounded_size,height -  radius*rounded_size, radius*rounded_size,PI*0, PI * 0.5)
+    --bottom left corner
+    cairo_context:arc(x + radius*rounded_size,height -  radius*rounded_size, radius*rounded_size,PI*0.5, PI * 1)
+    cairo_context:close_path()
+    cairo_context:stroke()
+  end
 
 end
 

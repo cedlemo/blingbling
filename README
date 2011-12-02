@@ -11,10 +11,11 @@ This version is for the next release of awesome.
 
 Parts of blingbling that works with the next release:
 
+*Classical graph --> renamed to line_graph (it works but need to be improve on graph display) 95%
+
 Parts to be adapted :
 
 *Value text box 
-*Classical graph
 *Tiled graph
 *Progress graph
 *Progress bar
