@@ -29,15 +29,15 @@ local data = setmetatable({}, { __mode = "k" })
 --@param color a string "#rrggbbaa" or "#rrggbb"
 
 ---Fill the graph area background with this color (default is none)
---mycairograph:set_graph_background(string) -->"#rrggbbaa"
+--mycairograph:set_graph_background_color(string) -->"#rrggbbaa"
 --@name set_graph_background_color
 --@class function
 --@param graph the graph
 --@param color a string "#rrggbbaa" or "#rrggbb"
 
 ---Set a border on the graph area background (default is none ) 
---mycairograph:set_background_border(string) -->"#rrggbbaa"
---@name set_background_border
+--mycairograph:set_graph_background_border(string) -->"#rrggbbaa"
+--@name set_graph_background_border
 --@class function
 --@graph graph the graph
 --@param color a string "#rrggbbaa" or "#rrggbb"
@@ -49,14 +49,14 @@ local data = setmetatable({}, { __mode = "k" })
 --@param graph the graph
 --@param rounded_size float in [0,1]
 
---Define the top and bottom padding for the graph area
+---Define the top and bottom padding for the graph area
 --mycairograph:set_v_padding(integer)
 --@name set_v_padding
 --@class function
 --@param graph the graph
 --@param padding an integer for top and bottom padding
 
---Define the left and right padding for the graph area
+---Define the left and right padding for the graph area
 --mycairograph:set_h_padding(integer)
 --@name set_h_padding
 --@class function
@@ -70,28 +70,28 @@ local data = setmetatable({}, { __mode = "k" })
 --@param graph the graph
 --@param color a string "#rrggbbaa" or "#rrggbb"
 
---Define the graph outline
+---Define the graph outline
 --mycairograph:set_graph_line_color(string) -->"#rrggbbaa"
 --@name set_graph_line_color
 --@class function
 --@param graph the graph
 --@param color a string "#rrggbbaa" or "#rrggbb"
 
---Display text on the graph or not
+---Display text on the graph or not
 --mycairograph:set_show_text(boolean) --> true or false
 --@name set_show_text
 --@class function
 --@param graph the graph
 --@param boolean true or false (default is false)
 
---Define the color of the text
+---Define the color of the text
 --mycairograph:set_text_color(string) -->"#rrggbbaa"
 --@name set_text_color
 --@class function
 --@param graph the graph
 --@param color a string "#rrggbbaa" or "#rrggbb" defaul is white
 
---Define the background color of the text
+---Define the background color of the text
 --mycairograph:set_background_text_color(string) -->"#rrggbbaa"
 --@name set_background_text_color
 --@class
