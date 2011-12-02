@@ -4,7 +4,15 @@ Blingbling is a graphical widget library for Awesome Windows Manager. Based on o
 
 Originally, I have written Blingbling for myself but I share it under the GNU GPL-v2 (http://www.gnu.org/licenses/old-licenses/gpl-2.0.html). It meens that for this version, I know it works for me but that all. Testers and feedbacks are welcome!
 
-*Value text box
+
+Version: v2.0
+--------
+This version is for the next release of awesome. 
+
+Parts of blingbling that works with the next release:
+
+Parts to be adapted :
+*Value text box 
 *Classical graph
 *Tiled graph
 *Progress graph
@@ -20,10 +28,6 @@ Originally, I have written Blingbling for myself but I share it under the GNU GP
 *Task warrior widget
 *Table widget layout
 *Calendar
-
-Version: v1.0
---------
-Blingbling v1.0 works for awesome 3.4.10 and 3.4.11. The next version (v2.0) will be adapted to the next release of awesome. 
 
 Dependencies
 ------------
