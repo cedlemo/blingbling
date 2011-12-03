@@ -1,0 +1,517 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+    <title>Reference</title>
+    <link rel="stylesheet" href="../luadoc.css" type="text/css" />
+	<!--meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/-->
+</head>
+
+<body>
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+<div id="main">
+
+<div id="navigation">
+
+
+<h1>LuaDoc</h1>
+<ul>
+	
+	<li><a href="../index.html">Index</a></li>
+	
+</ul>
+
+
+<!-- Module list -->
+
+<h1>Modules</h1>
+<ul>
+
+	<li>
+		<a href="../modules/blingbling.html">blingbling</a>
+	</li>
+
+	<li><strong>blingbling.graph</strong></li>
+	
+	<li>
+		<a href="../modules/blingbling.helpers.html">blingbling.helpers</a>
+	</li>
+
+	<li>
+		<a href="../modules/blingbling.line_graph.html">blingbling.line_graph</a>
+	</li>
+
+	<li>
+		<a href="../modules/blingbling.text_box.html">blingbling.text_box</a>
+	</li>
+
+	<li>
+		<a href="../modules/blingbling.value_text_box.html">blingbling.value_text_box</a>
+	</li>
+
+</ul>
+
+
+
+<!-- File list -->
+
+
+
+
+
+
+</div><!-- id="navigation" -->
+
+<div id="content">
+
+<h1>Module <code>blingbling.graph</code></h1>
+
+<p>A graph widget.</p>
+
+<p><b>Author:</b>
+<table class="authors_list">
+
+	<tr><td class="name">Julien Danjou &lt;julien@danjou.info&gt;</td></tr>
+
+</table>
+</p>
+
+
+<p>Copyright&copy; 2009 Julien Danjou</p>
+
+
+<p><small><b>Release:</b> v3.4-593-g4113292 </small></p>
+
+
+
+<h2>Functions</h2>
+<table class="function_list">
+
+	<tr>
+	<td class="name" nowrap><a href="#add_value">add_value</a>&nbsp;(graph, value, group)</td>
+	<td class="summary">Add a value to the graph </td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#new">new</a>&nbsp;(args)</td>
+	<td class="summary">Create a graph widget.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#set_background_color">set_background_color</a>&nbsp;(graph, color)</td>
+	<td class="summary">Set the graph background color.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#set_border_color">set_border_color</a>&nbsp;(graph, color)</td>
+	<td class="summary">Set the graph border color.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#set_color">set_color</a>&nbsp;(graph, color)</td>
+	<td class="summary">Set the graph foreground color.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#set_height">set_height</a>&nbsp;(graph, height)</td>
+	<td class="summary">Set the graph height.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#set_max_value">set_max_value</a>&nbsp;(graph, value)</td>
+	<td class="summary">Set the maximum value the graph should handle.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#set_scale">set_scale</a>&nbsp;(graph, scale)</td>
+	<td class="summary">Set the graph to automatically scale its values.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#set_stack">set_stack</a>&nbsp;(graph, stack)</td>
+	<td class="summary">Set the graph to draw stacks.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#set_stack_colors">set_stack_colors</a>&nbsp;(graph, stack_colors)</td>
+	<td class="summary">Set the graph stacking colors.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#set_width">set_width</a>&nbsp;(graph, width)</td>
+	<td class="summary">Set the graph width.</td>
+	</tr>
+
+</table>
+
+
+
+
+
+
+<br/>
+<br/>
+
+
+
+<h2><a name="functions"></a>Functions</h2>
+<dl class="function">
+
+
+
+<dt><a name="add_value"></a><strong>add_value</strong>&nbsp;(graph, value, group)</dt>
+<dd>
+Add a value to the graph
+
+
+<h3>Parameters</h3>
+<ul>
+	
+	<li>
+	  graph: The graph.
+	</li>
+	
+	<li>
+	  value: The value between 0 and 1.
+	</li>
+	
+	<li>
+	  group: The stack color group index.
+	</li>
+	
+</ul>
+
+
+
+
+
+
+
+
+</dd>
+
+
+
+
+<dt><a name="new"></a><strong>new</strong>&nbsp;(args)</dt>
+<dd>
+Create a graph widget.
+
+
+<h3>Parameters</h3>
+<ul>
+	
+	<li>
+	  args: Standard widget() arguments. You should add width and height key to set graph geometry.
+	</li>
+	
+</ul>
+
+
+
+
+
+
+<h3>Return value:</h3>
+A graph widget.
+
+
+
+</dd>
+
+
+
+
+<dt><a name="set_background_color"></a><strong>set_background_color</strong>&nbsp;(graph, color)</dt>
+<dd>
+Set the graph background color.
+
+
+<h3>Parameters</h3>
+<ul>
+	
+	<li>
+	  graph: The graph.
+	</li>
+	
+	<li>
+	  color: The graph background color.
+	</li>
+	
+</ul>
+
+
+
+
+
+
+
+
+</dd>
+
+
+
+
+<dt><a name="set_border_color"></a><strong>set_border_color</strong>&nbsp;(graph, color)</dt>
+<dd>
+Set the graph border color. If the value is nil, no border will be drawn.
+
+
+<h3>Parameters</h3>
+<ul>
+	
+	<li>
+	  graph: The graph.
+	</li>
+	
+	<li>
+	  color: The border color to set.
+	</li>
+	
+</ul>
+
+
+
+
+
+
+
+
+</dd>
+
+
+
+
+<dt><a name="set_color"></a><strong>set_color</strong>&nbsp;(graph, color)</dt>
+<dd>
+Set the graph foreground color.
+
+
+<h3>Parameters</h3>
+<ul>
+	
+	<li>
+	  graph: The graph.
+	</li>
+	
+	<li>
+	  color: The graph color.
+	</li>
+	
+</ul>
+
+
+
+
+
+
+
+
+</dd>
+
+
+
+
+<dt><a name="set_height"></a><strong>set_height</strong>&nbsp;(graph, height)</dt>
+<dd>
+Set the graph height.
+
+
+<h3>Parameters</h3>
+<ul>
+	
+	<li>
+	  graph: The graph.
+	</li>
+	
+	<li>
+	  height: The height to set.
+	</li>
+	
+</ul>
+
+
+
+
+
+
+
+
+</dd>
+
+
+
+
+<dt><a name="set_max_value"></a><strong>set_max_value</strong>&nbsp;(graph, value)</dt>
+<dd>
+Set the maximum value the graph should handle. If "scale" is also set, the graph never scales up below this value, but it automatically scales down to make all data fit.
+
+
+<h3>Parameters</h3>
+<ul>
+	
+	<li>
+	  graph: The graph.
+	</li>
+	
+	<li>
+	  value: The value.
+	</li>
+	
+</ul>
+
+
+
+
+
+
+
+
+</dd>
+
+
+
+
+<dt><a name="set_scale"></a><strong>set_scale</strong>&nbsp;(graph, scale)</dt>
+<dd>
+Set the graph to automatically scale its values. Default is false.
+
+
+<h3>Parameters</h3>
+<ul>
+	
+	<li>
+	  graph: The graph.
+	</li>
+	
+	<li>
+	  scale: A boolean value
+	</li>
+	
+</ul>
+
+
+
+
+
+
+
+
+</dd>
+
+
+
+
+<dt><a name="set_stack"></a><strong>set_stack</strong>&nbsp;(graph, stack)</dt>
+<dd>
+Set the graph to draw stacks. Default is false.
+
+
+<h3>Parameters</h3>
+<ul>
+	
+	<li>
+	  graph: The graph.
+	</li>
+	
+	<li>
+	  stack: A boolean value.
+	</li>
+	
+</ul>
+
+
+
+
+
+
+
+
+</dd>
+
+
+
+
+<dt><a name="set_stack_colors"></a><strong>set_stack_colors</strong>&nbsp;(graph, stack_colors)</dt>
+<dd>
+Set the graph stacking colors. Order matters.
+
+
+<h3>Parameters</h3>
+<ul>
+	
+	<li>
+	  graph: The graph.
+	</li>
+	
+	<li>
+	  stack_colors: A table with stacking colors.
+	</li>
+	
+</ul>
+
+
+
+
+
+
+
+
+</dd>
+
+
+
+
+<dt><a name="set_width"></a><strong>set_width</strong>&nbsp;(graph, width)</dt>
+<dd>
+Set the graph width.
+
+
+<h3>Parameters</h3>
+<ul>
+	
+	<li>
+	  graph: The graph.
+	</li>
+	
+	<li>
+	  width: The width to set.
+	</li>
+	
+</ul>
+
+
+
+
+
+
+
+
+</dd>
+
+
+</dl>
+
+
+
+
+
+
+</div> <!-- id="content" -->
+
+</div> <!-- id="main" -->
+
+<div id="about">
+	<p><a href="http://validator.w3.org/check?uri=referer"><img src="http://www.w3.org/Icons/valid-xhtml10" alt="Valid XHTML 1.0!" height="31" width="88" /></a></p>
+</div> <!-- id="about" -->
+
+</div> <!-- id="container" -->	
+</body>
+</html>

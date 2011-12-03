@@ -38,10 +38,22 @@
 		<a href="../modules/blingbling.html">blingbling</a>
 	</li>
 
+	<li>
+		<a href="../modules/blingbling.graph.html">blingbling.graph</a>
+	</li>
+
 	<li><strong>blingbling.helpers</strong></li>
 	
 	<li>
 		<a href="../modules/blingbling.line_graph.html">blingbling.line_graph</a>
+	</li>
+
+	<li>
+		<a href="../modules/blingbling.text_box.html">blingbling.text_box</a>
+	</li>
+
+	<li>
+		<a href="../modules/blingbling.value_text_box.html">blingbling.value_text_box</a>
 	</li>
 
 </ul>
@@ -113,6 +125,11 @@
 	<tr>
 	<td class="name" nowrap><a href="#draw_vertical_bar">draw_vertical_bar</a>&nbsp;(cairo_context, h_margin, v_margin, width, height, represent)</td>
 	<td class="summary">Draw a vertical bar with gradient color, so it looks like a cylinder, and it's height depends on a value.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#generate_rounded_rectangle_with_text">generate_rounded_rectangle_with_text</a>&nbsp;(cr, text, padding, background_color, text_color, font_size, rounded_size, border, cairo_context)</td>
+	<td class="summary">Generate a text in front of a centered rectangle with rounded corners (or not) in  a cairo context.</td>
 	</tr>
 
 	<tr>
@@ -599,6 +616,64 @@ Draw a vertical bar with gradient color, so it looks like a cylinder, and it's h
 	
 	<li>
 	  represent: a table {background_bar_color = "#rrggbb" or "#rrggbbaa", color = "#rrggbb" or "#rrggbbaa", value =the value used to calculate the height of the bar}
+	</li>
+	
+</ul>
+
+
+
+
+
+
+
+
+</dd>
+
+
+
+
+<dt><a name="generate_rounded_rectangle_with_text"></a><strong>generate_rounded_rectangle_with_text</strong>&nbsp;(cr, text, padding, background_color, text_color, font_size, rounded_size, border, cairo_context)</dt>
+<dd>
+Generate a text in front of a centered rectangle with rounded corners (or not) in  a cairo context. It returns a table ={ width = the width of the image, height = the height of the image}
+
+
+<h3>Parameters</h3>
+<ul>
+	
+	<li>
+	  cr: 
+	</li>
+	
+	<li>
+	  text: 
+	</li>
+	
+	<li>
+	  padding: the left/right/top/bottom padding used to center the text in the background rectangle
+	</li>
+	
+	<li>
+	  background_color: a string "#rrggbb" or "#rrggbbaa" for the color of the background rectangle
+	</li>
+	
+	<li>
+	  text_color: a string "#rrggbb" or "#rrggbbaa" for the color of the text
+	</li>
+	
+	<li>
+	  font_size: define the size of the font
+	</li>
+	
+	<li>
+	  rounded_size: a float value from 0 to 1 (0 is no rounded corner)
+	</li>
+	
+	<li>
+	  border: 
+	</li>
+	
+	<li>
+	  cairo_context: a cairo context already initialised with oocairo.context_create( )
 	</li>
 	
 </ul>

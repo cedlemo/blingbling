@@ -102,19 +102,53 @@ mytextclock = awful.widget.textclock()
 require('vicious')
 --Cpu graph:
 
---cpu=awful.widget.graph()
 require('blingbling')
+cpulabel=blingbling.text_box.new({text = "test"})
+cpulabel:set_padding(4)
+cpulabel:set_rounded_size(0.4)
 cpu=blingbling.line_graph.new()
 cpu:set_height(16)
 cpu:set_width(100)
-cpu:set_h_padding(3)
-cpu:set_v_padding(3)
+cpu:set_h_margin(2)
+cpu:set_v_margin(2)
 cpu:set_rounded_size(0.4)
---cpu:set_background_color("#444444")
---cpu:set_background_border("#ffffff")
+cpu:set_show_text(true)
+cpu:set_background_color("#00000044")
 cpu:set_graph_background_color("#000000")
---cpu:set_graph_background_border("#00ff00")
 vicious.register(cpu, vicious.widgets.cpu, '$1',2)
+
+--cpu1=blingbling.graph.new()
+--cpu1:set_height(16)
+--cpu1:set_width(100)
+--cpu1:set_h_margin(2)
+--cpu1:set_v_margin(2)
+--cpu1:set_rounded_size(0.4)
+--cpu1:set_show_text(true)
+--cpu1:set_background_color("#00000044")
+--cpu1:set_graph_background_color("#000000")
+--vicious.register(cpu1, vicious.widgets.cpu, '$1',2)
+
+mycore1 = blingbling.value_text_box.new()
+mycore1:set_width(25)
+mycore1:set_height(16)
+mycore1:set_text_background_color("#00000099")
+mycore1:set_rounded_size(0.6)
+mycore1:set_values_text_color({{"#88aa00ff",0},{"#d4aa00ff", 0.5},{"#d45500ff",0.75}})
+mycore1:set_font_size(8)
+mycore1:set_background_color("#00000044")
+mycore1:set_label("$percent%")
+vicious.register(mycore1, vicious.widgets.cpu, "$2")
+
+mycore2 = blingbling.value_text_box.new()
+mycore2:set_width(25)
+mycore2:set_height(16)
+mycore2:set_text_background_color("#00000099")
+mycore2:set_rounded_size(0.6)
+mycore2:set_values_text_color({{"#88aa00ff",0},{"#d4aa00ff", 0.5},{"#d45500ff",0.75}})
+mycore2:set_font_size(8)
+mycore2:set_background_color("#00000044")
+mycore2:set_label("$percent%")
+vicious.register(mycore2, vicious.widgets.cpu, "$3")
 
 -- Create a wibox for each screen and add it
 mywibox = {}
@@ -179,14 +213,17 @@ for s = 1, screen.count() do
     mytasklist[s] = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, mytasklist.buttons)
 
     -- Create the wibox
-    mywibox[s] = awful.wibox({ position = "top", screen = s })
+    mywibox[s] = awful.wibox({ position = "top", screen = s, height = 16 })
 
     -- Widgets that are aligned to the left
     local left_layout = wibox.layout.fixed.horizontal()
     left_layout:add(mylauncher)
     left_layout:add(mytaglist[s])
     left_layout:add(mypromptbox[s])
+    left_layout:add(cpulabel)
     left_layout:add(cpu)
+    left_layout:add(mycore1)
+    left_layout:add(mycore2)
     -- Widgets that are aligned to the right
     local right_layout = wibox.layout.fixed.horizontal()
     if s == 1 then right_layout:add(wibox.widget.systray()) end

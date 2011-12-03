@@ -39,11 +39,23 @@
 	</li>
 
 	<li>
+		<a href="../modules/blingbling.graph.html">blingbling.graph</a>
+	</li>
+
+	<li>
 		<a href="../modules/blingbling.helpers.html">blingbling.helpers</a>
 	</li>
 
 	<li><strong>blingbling.line_graph</strong></li>
 	
+	<li>
+		<a href="../modules/blingbling.text_box.html">blingbling.text_box</a>
+	</li>
+
+	<li>
+		<a href="../modules/blingbling.value_text_box.html">blingbling.value_text_box</a>
+	</li>
+
 </ul>
 
 
@@ -82,37 +94,37 @@
 
 	<tr>
 	<td class="name" nowrap><a href="#set_background_border">set_background_border</a>&nbsp;(color)</td>
-	<td class="summary">Set a border (width * height) with this color (default is none ) mycairograph:set_background_border(string) -->"#rrggbbaa" </td>
+	<td class="summary">Set a border (width * height) with this color (default is none ) </td>
 	</tr>
 
 	<tr>
 	<td class="name" nowrap><a href="#set_background_color">set_background_color</a>&nbsp;(color)</td>
-	<td class="summary">Fill all the widget (width * height) with this color (default is none ) mycairograph:set_background_color(string) -->"#rrggbbaa" </td>
+	<td class="summary">Fill all the widget (width * height) with this color (default is none ) </td>
 	</tr>
 
 	<tr>
 	<td class="name" nowrap><a href="#set_graph_background_border">set_graph_background_border</a>&nbsp;(color)</td>
-	<td class="summary">Set a border on the graph area background (default is none ) mycairograph:set_graph_background_border(string) -->"#rrggbbaa" </td>
+	<td class="summary">Set a border on the graph area background (default is none ) </td>
 	</tr>
 
 	<tr>
 	<td class="name" nowrap><a href="#set_graph_background_color">set_graph_background_color</a>&nbsp;(graph, color)</td>
-	<td class="summary">Fill the graph area background with this color (default is none) mycairograph:set_graph_background_color(string) -->"#rrggbbaa" </td>
+	<td class="summary">Fill the graph area background with this color (default is none) </td>
 	</tr>
 
 	<tr>
 	<td class="name" nowrap><a href="#set_graph_color">set_graph_color</a>&nbsp;(graph, color)</td>
-	<td class="summary">Define the graph color mycairograph:set_graph_color(string) -->"#rrggbbaa" </td>
+	<td class="summary">Define the graph color </td>
 	</tr>
 
 	<tr>
 	<td class="name" nowrap><a href="#set_graph_line_color">set_graph_line_color</a>&nbsp;(graph, color)</td>
-	<td class="summary">Define the graph outline mycairograph:set_graph_line_color(string) -->"#rrggbbaa" </td>
+	<td class="summary">Define the graph outline </td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#set_h_padding">set_h_padding</a>&nbsp;(graph, padding)</td>
-	<td class="summary">Define the left and right padding for the graph area mycairograph:set_h_padding(integer) </td>
+	<td class="name" nowrap><a href="#set_h_margin">set_h_margin</a>&nbsp;(graph, margin)</td>
+	<td class="summary">Define the left and right margin for the graph area </td>
 	</tr>
 
 	<tr>
@@ -122,32 +134,32 @@
 
 	<tr>
 	<td class="name" nowrap><a href="#set_label">set_label</a>&nbsp;(graph, text)</td>
-	<td class="summary">Define the template of the text to display mycairograph:set_label(string) By default the text is : (value_send_to_the_widget *100) ..</td>
+	<td class="summary">Define the template of the text to display </td>
 	</tr>
 
 	<tr>
 	<td class="name" nowrap><a href="#set_rounded_size">set_rounded_size</a>&nbsp;(graph, rounded_size)</td>
-	<td class="summary">Set rounded corners for background and graph background mycairograph:set_rounded_size(a) -> a in [0,1] </td>
+	<td class="summary">Set rounded corners for background and graph background </td>
 	</tr>
 
 	<tr>
 	<td class="name" nowrap><a href="#set_show_text">set_show_text</a>&nbsp;(graph, boolean)</td>
-	<td class="summary">Display text on the graph or not mycairograph:set_show_text(boolean) --> true or false </td>
+	<td class="summary">Display text on the graph or not </td>
 	</tr>
 
 	<tr>
 	<td class="name" nowrap><a href="#set_text_color">set_text_color</a>&nbsp;(graph, color)</td>
-	<td class="summary">Define the color of the text mycairograph:set_text_color(string) -->"#rrggbbaa" </td>
+	<td class="summary">Define the color of the text </td>
 	</tr>
 
 	<tr>
 	<td class="name" nowrap><a href="#set_text_font_size">set_text_font_size</a>&nbsp;(graph, size)</td>
-	<td class="summary">Define the text font size mycairograph:set_text_font_size(integer) </td>
+	<td class="summary">Define the text font size </td>
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#set_v_padding">set_v_padding</a>&nbsp;(graph, padding)</td>
-	<td class="summary">Define the top and bottom padding for the graph area mycairograph:set_v_padding(integer) </td>
+	<td class="name" nowrap><a href="#set_v_margin">set_v_margin</a>&nbsp;(graph, margin)</td>
+	<td class="summary">Define the top and bottom margin for the graph area </td>
 	</tr>
 
 	<tr>
@@ -237,7 +249,7 @@ A graph widget.
 
 <dt><a name="set_background_border"></a><strong>set_background_border</strong>&nbsp;(color)</dt>
 <dd>
-Set a border (width * height) with this color (default is none ) mycairograph:set_background_border(string) -->"#rrggbbaa"
+Set a border (width * height) with this color (default is none )
 
 
 <h3>Parameters</h3>
@@ -251,6 +263,9 @@ Set a border (width * height) with this color (default is none ) mycairograph:se
 
 
 
+
+<h3>Usage:</h3>
+mygraph:set_background_border(string) -->"#rrggbbaa"
 
 
 
@@ -263,7 +278,7 @@ Set a border (width * height) with this color (default is none ) mycairograph:se
 
 <dt><a name="set_background_color"></a><strong>set_background_color</strong>&nbsp;(color)</dt>
 <dd>
-Fill all the widget (width * height) with this color (default is none ) mycairograph:set_background_color(string) -->"#rrggbbaa"
+Fill all the widget (width * height) with this color (default is none )
 
 
 <h3>Parameters</h3>
@@ -277,6 +292,9 @@ Fill all the widget (width * height) with this color (default is none ) mycairog
 
 
 
+
+<h3>Usage:</h3>
+mygraph:set_background_color(string) -->"#rrggbbaa"
 
 
 
@@ -289,7 +307,7 @@ Fill all the widget (width * height) with this color (default is none ) mycairog
 
 <dt><a name="set_graph_background_border"></a><strong>set_graph_background_border</strong>&nbsp;(color)</dt>
 <dd>
-Set a border on the graph area background (default is none ) mycairograph:set_graph_background_border(string) -->"#rrggbbaa"
+Set a border on the graph area background (default is none )
 
 
 <h3>Parameters</h3>
@@ -303,6 +321,9 @@ Set a border on the graph area background (default is none ) mycairograph:set_gr
 
 
 
+
+<h3>Usage:</h3>
+mygraph:set_graph_background_border(string) -->"#rrggbbaa"
 
 
 
@@ -315,7 +336,7 @@ Set a border on the graph area background (default is none ) mycairograph:set_gr
 
 <dt><a name="set_graph_background_color"></a><strong>set_graph_background_color</strong>&nbsp;(graph, color)</dt>
 <dd>
-Fill the graph area background with this color (default is none) mycairograph:set_graph_background_color(string) -->"#rrggbbaa"
+Fill the graph area background with this color (default is none)
 
 
 <h3>Parameters</h3>
@@ -333,6 +354,9 @@ Fill the graph area background with this color (default is none) mycairograph:se
 
 
 
+
+<h3>Usage:</h3>
+mygraph:set_graph_background_color(string) -->"#rrggbbaa"
 
 
 
@@ -345,7 +369,7 @@ Fill the graph area background with this color (default is none) mycairograph:se
 
 <dt><a name="set_graph_color"></a><strong>set_graph_color</strong>&nbsp;(graph, color)</dt>
 <dd>
-Define the graph color mycairograph:set_graph_color(string) -->"#rrggbbaa"
+Define the graph color
 
 
 <h3>Parameters</h3>
@@ -363,6 +387,9 @@ Define the graph color mycairograph:set_graph_color(string) -->"#rrggbbaa"
 
 
 
+
+<h3>Usage:</h3>
+mygraph:set_graph_color(string) -->"#rrggbbaa"
 
 
 
@@ -375,7 +402,7 @@ Define the graph color mycairograph:set_graph_color(string) -->"#rrggbbaa"
 
 <dt><a name="set_graph_line_color"></a><strong>set_graph_line_color</strong>&nbsp;(graph, color)</dt>
 <dd>
-Define the graph outline mycairograph:set_graph_line_color(string) -->"#rrggbbaa"
+Define the graph outline
 
 
 <h3>Parameters</h3>
@@ -394,6 +421,9 @@ Define the graph outline mycairograph:set_graph_line_color(string) -->"#rrggbbaa
 
 
 
+<h3>Usage:</h3>
+mygraph:set_graph_line_color(string) -->"#rrggbbaa"
+
 
 
 
@@ -403,9 +433,9 @@ Define the graph outline mycairograph:set_graph_line_color(string) -->"#rrggbbaa
 
 
 
-<dt><a name="set_h_padding"></a><strong>set_h_padding</strong>&nbsp;(graph, padding)</dt>
+<dt><a name="set_h_margin"></a><strong>set_h_margin</strong>&nbsp;(graph, margin)</dt>
 <dd>
-Define the left and right padding for the graph area mycairograph:set_h_padding(integer)
+Define the left and right margin for the graph area
 
 
 <h3>Parameters</h3>
@@ -416,13 +446,16 @@ Define the left and right padding for the graph area mycairograph:set_h_padding(
 	</li>
 	
 	<li>
-	  padding: an integer for left and right margin
+	  margin: an integer for left and right margin
 	</li>
 	
 </ul>
 
 
 
+
+<h3>Usage:</h3>
+mygraph:set_h_margin(integer)
 
 
 
@@ -465,7 +498,7 @@ Set the graph height.
 
 <dt><a name="set_label"></a><strong>set_label</strong>&nbsp;(graph, text)</dt>
 <dd>
-Define the template of the text to display mycairograph:set_label(string) By default the text is : (value_send_to_the_widget *100) .. "%" static string: example set_label("CPU usage:") will display "CUP usage:" on the graph dynamic string: use $percent in the string example set_label("Load $percent %") will display "Load 10%"
+Define the template of the text to display
 
 
 <h3>Parameters</h3>
@@ -484,6 +517,9 @@ Define the template of the text to display mycairograph:set_label(string) By def
 
 
 
+<h3>Usage:</h3>
+mygraph:set_label(string) By default the text is : (value_send_to_the_widget *100) .. "%" static string: example set_label("CPU usage:") will display "CUP usage:" on the graph dynamic string: use $percent in the string example set_label("Load $percent %") will display "Load 10%"
+
 
 
 
@@ -495,7 +531,7 @@ Define the template of the text to display mycairograph:set_label(string) By def
 
 <dt><a name="set_rounded_size"></a><strong>set_rounded_size</strong>&nbsp;(graph, rounded_size)</dt>
 <dd>
-Set rounded corners for background and graph background mycairograph:set_rounded_size(a) -> a in [0,1]
+Set rounded corners for background and graph background
 
 
 <h3>Parameters</h3>
@@ -514,6 +550,9 @@ Set rounded corners for background and graph background mycairograph:set_rounded
 
 
 
+<h3>Usage:</h3>
+mygraph:set_rounded_size(a) -> a in [0,1]
+
 
 
 
@@ -525,7 +564,7 @@ Set rounded corners for background and graph background mycairograph:set_rounded
 
 <dt><a name="set_show_text"></a><strong>set_show_text</strong>&nbsp;(graph, boolean)</dt>
 <dd>
-Display text on the graph or not mycairograph:set_show_text(boolean) --> true or false
+Display text on the graph or not
 
 
 <h3>Parameters</h3>
@@ -544,6 +583,9 @@ Display text on the graph or not mycairograph:set_show_text(boolean) --> true or
 
 
 
+<h3>Usage:</h3>
+mygraph:set_show_text(boolean) --> true or false
+
 
 
 
@@ -555,7 +597,7 @@ Display text on the graph or not mycairograph:set_show_text(boolean) --> true or
 
 <dt><a name="set_text_color"></a><strong>set_text_color</strong>&nbsp;(graph, color)</dt>
 <dd>
-Define the color of the text mycairograph:set_text_color(string) -->"#rrggbbaa"
+Define the color of the text
 
 
 <h3>Parameters</h3>
@@ -574,6 +616,9 @@ Define the color of the text mycairograph:set_text_color(string) -->"#rrggbbaa"
 
 
 
+<h3>Usage:</h3>
+mygraph:set_text_color(string) -->"#rrggbbaa"
+
 
 
 
@@ -585,7 +630,7 @@ Define the color of the text mycairograph:set_text_color(string) -->"#rrggbbaa"
 
 <dt><a name="set_text_font_size"></a><strong>set_text_font_size</strong>&nbsp;(graph, size)</dt>
 <dd>
-Define the text font size mycairograph:set_text_font_size(integer)
+Define the text font size
 
 
 <h3>Parameters</h3>
@@ -604,6 +649,9 @@ Define the text font size mycairograph:set_text_font_size(integer)
 
 
 
+<h3>Usage:</h3>
+mygraph:set_text_font_size(integer)
+
 
 
 
@@ -613,9 +661,9 @@ Define the text font size mycairograph:set_text_font_size(integer)
 
 
 
-<dt><a name="set_v_padding"></a><strong>set_v_padding</strong>&nbsp;(graph, padding)</dt>
+<dt><a name="set_v_margin"></a><strong>set_v_margin</strong>&nbsp;(graph, margin)</dt>
 <dd>
-Define the top and bottom padding for the graph area mycairograph:set_v_padding(integer)
+Define the top and bottom margin for the graph area
 
 
 <h3>Parameters</h3>
@@ -626,13 +674,16 @@ Define the top and bottom padding for the graph area mycairograph:set_v_padding(
 	</li>
 	
 	<li>
-	  padding: an integer for top and bottom padding
+	  margin: an integer for top and bottom margin
 	</li>
 	
 </ul>
 
 
 
+
+<h3>Usage:</h3>
+mygraph:set_v_margin(integer)
 
 
 

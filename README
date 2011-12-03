@@ -11,8 +11,9 @@ This version is for the next release of awesome.
 
 Parts of blingbling that works with the next release:
 
-*Classical graph --> renamed to line_graph (it works but need to be improve on graph display) 95%
-
+*Classical graph --> renamed to line_graph (it works but not the outline, need to be rewrite) 95%
+*value_text_box --> ok 100 %
+*text_box --> ok (new widget) will be used in calendar 
 Parts to be adapted :
 
 *Value text box 
