@@ -15,98 +15,98 @@ module("blingbling.line_graph")
 local data = setmetatable({}, { __mode = "k" })
 
 ---Fill all the widget (width * height) with this color (default is none ) 
---mycairograph:set_background_color(string) -->"#rrggbbaa"
+--@usage mygraph:set_background_color(string) -->"#rrggbbaa"
 --@name set_background_color
 --@class function
 --@graph graph the graph
 --@param color a string "#rrggbbaa" or "#rrggbb"
 
 ---Set a border (width * height) with this color (default is none ) 
---mycairograph:set_background_border(string) -->"#rrggbbaa"
+--@usage mygraph:set_background_border(string) -->"#rrggbbaa"
 --@name set_background_border
 --@class function
 --@graph graph the graph
 --@param color a string "#rrggbbaa" or "#rrggbb"
 
 ---Fill the graph area background with this color (default is none)
---mycairograph:set_graph_background_color(string) -->"#rrggbbaa"
+--@usage mygraph:set_graph_background_color(string) -->"#rrggbbaa"
 --@name set_graph_background_color
 --@class function
 --@param graph the graph
 --@param color a string "#rrggbbaa" or "#rrggbb"
 
 ---Set a border on the graph area background (default is none ) 
---mycairograph:set_graph_background_border(string) -->"#rrggbbaa"
+--@usage mygraph:set_graph_background_border(string) -->"#rrggbbaa"
 --@name set_graph_background_border
 --@class function
 --@graph graph the graph
 --@param color a string "#rrggbbaa" or "#rrggbb"
 
 ---Set rounded corners for background and graph background
---mycairograph:set_rounded_size(a) -> a in [0,1]
+--@usage mygraph:set_rounded_size(a) -> a in [0,1]
 --@name set_rounded_size
 --@class function
 --@param graph the graph
 --@param rounded_size float in [0,1]
 
----Define the top and bottom padding for the graph area
---mycairograph:set_v_padding(integer)
---@name set_v_padding
+---Define the top and bottom margin for the graph area
+--@usage mygraph:set_v_margin(integer)
+--@name set_v_margin
 --@class function
 --@param graph the graph
---@param padding an integer for top and bottom padding
+--@param margin an integer for top and bottom margin
 
----Define the left and right padding for the graph area
---mycairograph:set_h_padding(integer)
---@name set_h_padding
+---Define the left and right margin for the graph area
+--@usage mygraph:set_h_margin(integer)
+--@name set_h_margin
 --@class function
 --@param graph the graph
---@param padding an integer for left and right margin
+--@param margin an integer for left and right margin
 
 ---Define the graph color
---mycairograph:set_graph_color(string) -->"#rrggbbaa"
+--@usage mygraph:set_graph_color(string) -->"#rrggbbaa"
 --@name set_graph_color
 --@class function
 --@param graph the graph
 --@param color a string "#rrggbbaa" or "#rrggbb"
 
 ---Define the graph outline
---mycairograph:set_graph_line_color(string) -->"#rrggbbaa"
+--@usage mygraph:set_graph_line_color(string) -->"#rrggbbaa"
 --@name set_graph_line_color
 --@class function
 --@param graph the graph
 --@param color a string "#rrggbbaa" or "#rrggbb"
 
 ---Display text on the graph or not
---mycairograph:set_show_text(boolean) --> true or false
+--@usage mygraph:set_show_text(boolean) --> true or false
 --@name set_show_text
 --@class function
 --@param graph the graph
 --@param boolean true or false (default is false)
 
 ---Define the color of the text
---mycairograph:set_text_color(string) -->"#rrggbbaa"
+--@usage mygraph:set_text_color(string) -->"#rrggbbaa"
 --@name set_text_color
 --@class function
 --@param graph the graph
 --@param color a string "#rrggbbaa" or "#rrggbb" defaul is white
 
 ---Define the background color of the text
---mycairograph:set_background_text_color(string) -->"#rrggbbaa"
+--@usage mygraph:set_background_text_color(string) -->"#rrggbbaa"
 --@name set_background_text_color
 --@class
 --@param graph the graph
 --@param color a string "#rrggbbaa" or "#rrggbb"
 
 ---Define the text font size
---mycairograph:set_text_font_size(integer)
+--@usage mygraph:set_text_font_size(integer)
 --@name set_text_font_size
 --@class function
 --@param graph the graph
 --@param size the font size
 
 ---Define the template of the text to display
---mycairograph:set_label(string)
+--@usage mygraph:set_label(string)
 --By default the text is : (value_send_to_the_widget *100) .. "%"
 --static string: example set_label("CPU usage:") will display "CUP usage:" on the graph
 --dynamic string: use $percent in the string example set_label("Load $percent %") will display "Load 10%" 
@@ -117,7 +117,7 @@ local data = setmetatable({}, { __mode = "k" })
 
 
 
-local properties = {    "width", "height", "h_padding", "v_padding",
+local properties = {    "width", "height", "h_margin", "v_margin",
                         "background_border", "background_color", 
                         "graph_background_border", "graph_background_color",
                         "rounded_size", "graph_color", "graph_line_color",
@@ -139,17 +139,18 @@ function draw(graph, wibox, cr, width, height)
         graph_border_width = 1
     end
     
-    local v_padding = 2
-    if data[graph].v_padding  and data[graph].v_padding <= height / 3 then
-      v_padding = data[graph].v_padding
+    local v_margin = 2
+    if data[graph].v_margin  and data[graph].v_margin <= height / 3 then
+      v_margin = data[graph].v_margin
     end
     
-    local h_padding = 2
-    if data[graph].h_padding and data[graph].h_padding <= width / 3 then
-       h_padding = data[graph].h_padding
+    local h_margin = 2
+    if data[graph].h_margin and data[graph].h_margin <= width / 3 then
+       h_margin = data[graph].h_margin
     end
-
-    cr:set_line_width(1)
+    
+    local line_width = 1
+    cr:set_line_width(line_width)
 
     -- Draw the widget background 
     if data[graph].background_color then
@@ -166,10 +167,10 @@ function draw(graph, wibox, cr, width, height)
     -- Draw the widget background 
     if data[graph].graph_background_color then
       helpers.draw_rounded_corners_rectangle(cr,
-                                                h_padding, --x
-                                                v_padding, --y
-                                                width - h_padding, 
-                                                height - v_padding,
+                                                h_margin, --x
+                                                v_margin, --y
+                                                width - h_margin, 
+                                                height - v_margin,
                                                 data[graph].graph_background_color,
                                                 data[graph].rounded_size,
                                                 data[graph].graph_background_border)
@@ -184,7 +185,8 @@ function draw(graph, wibox, cr, width, height)
     else
       less_value = height/2
     end
-    max_column=math.ceil((width - (2*h_padding + (data[graph].rounded_size * less_value)))/3)
+    max_column=math.ceil((width - (2*h_margin + 2*(data[graph].rounded_size * less_value)))/3)
+    
     --Check if the table graph values is empty / not initialized
     --if next(data[graph].values) == nil then
     if #data[graph].values == 0 or #data[graph].values ~= max_column then
@@ -192,27 +194,27 @@ function draw(graph, wibox, cr, width, height)
       data[graph].values={}
       for i=1,max_column do
         --the following line feed the graph with random value if you uncomment it and comment the line after it
-        --data[graph].values[i]=math.random(0,100) / 100
-        data[graph].values[i]=0
+        data[graph].values[i]=math.random(0,100) / 100
+        --data[graph].values[i]=0
       end
     end
-  
-    x=width -(h_padding + rounded_size * less_value)
-    y=height-(v_padding) 
+    --Fill the graph 
+    x=width -(h_margin + rounded_size * less_value)
+    y=height-(v_margin) 
   
     cr:new_path()
     cr:move_to(x,y)
     cr:line_to(x,y)
     for i=1,max_column do
-      y_range=height - (2 * v_padding)
-    
-      y= height - (v_padding + ((data[graph].values[i]) * y_range))
+      y_range=height - (2 * v_margin)
+      y= height - (v_margin + ((data[graph].values[i]) * y_range))
+      --y=height -v_margin
       cr:line_to(x,y)
       x=x-3
     end
-    y=height - (v_padding )
+    y=height - (v_margin )
     cr:line_to(x + 3 ,y) 
-    cr:line_to(width - h_padding,height - (v_padding))
+    cr:line_to(width - h_margin,height - (v_margin))
     cr:close_path()
   
     if data[graph].graph_color then
@@ -223,31 +225,42 @@ function draw(graph, wibox, cr, width, height)
     end
     cr:fill()
   
-
-    x=width - (h_padding + rounded_size * less_value)
-    y=height-(v_padding) 
- 
-    cr:new_path()
-    cr:move_to(x,y)
-    cr:line_to(x,y)
-    for i=1,max_column do
-      y_range=height - (2 * v_padding + 1)
-      y= height - (v_padding + ((data[graph].values[i]) * y_range))
-      cr:line_to(x,y)
-      x=x-3
-    end
-    x=h_padding + 3
-    cr:line_to(x,y)
-    y=height - (v_padding )
-    cr:line_to(x ,y) 
-    cr:set_line_width(1)
-    if data[graph].graph_line_color then
-      r,g,b,a=helpers.hexadecimal_to_rgba_percent(data[graph].graph_line_color)
-      cr:set_source_rgba(r, g, b,a)
-    else
-      cr:set_source_rgb(0.5, 0.7, 0.1)
-    end
-    cr:stroke()
+    --Draw the graph line
+--    if data[graph].graph_line_color then
+--      r,g,b,a=helpers.hexadecimal_to_rgba_percent(data[graph].graph_line_color)
+--      cr:set_source_rgba(r, g, b,a)
+--    else
+--      cr:set_source_rgba(0.5, 0.7, 0.1,1)
+--    end
+--    
+--    x=width - (h_margin + rounded_size * less_value)
+--    y=height-(v_margin) 
+-- 
+--    cr:new_path()
+--    for i=1,max_column do
+--      --First value
+--      if i == 1 and  data[graph].values[i] > 0 then
+--        cr:move_to(x,y)
+--        cr:line_to(x,y)
+--        y_range=height - (2 * v_margin)
+--        y= height - (v_margin + ((data[graph].values[i]) * y_range))
+--        cr:line_to(x,y)
+--      elseif i ~= 1 and i ~= #data[graph].values then
+--      --Other values
+--        if data[graph].values[i] > 0 then
+--          y_range=height - (2 * v_margin)
+--          y= height - (v_margin + ((data[graph].values[i]) * y_range))
+--          cr:line_to(x,y)
+--        elseif data[graph].values[i] <= 0 and data[graph].values[i-1] > 0 then
+--          cr:line_to(x -3 , height-(v_margin) )
+--          cr:move_to(x,height-(v_margin))
+--        elseif data[graph].values[i] <= 0 and data[graph].values[i-1] <= 0 then
+--          cr:move_to(x,height-(v_margin))
+--        end
+--      end
+--      x=x-3
+--    end
+--    cr:stroke()
     
     if data[graph].show_text == true then
     --Draw Text and it's background
@@ -272,7 +285,7 @@ function draw(graph, wibox, cr, width, height)
 
       helpers.draw_text_and_background(cr, 
                                         text, 
-                                        h_padding + rounded_size * less_value, 
+                                        h_margin + rounded_size * less_value, 
                                         height/2 , 
                                         data[graph].background_text_color, 
                                         data[graph].text_color,
