@@ -197,7 +197,6 @@ function display_new_month( calendar,month, year)
   --Update week numbers:
   local weeks_numbers = helpers.get_ISO8601_weeks_number_of_month(month,year)
   for i=1,6 do 
-    helpers.dbg({weeks_numbers[i]})
     local cell = helpers.generate_rounded_rectangle_with_text_in_image(weeks_numbers[i], 
                                                                         padding, 
                                                                         columns_lines_titles_background_color, 
