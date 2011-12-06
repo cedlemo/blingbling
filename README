@@ -11,12 +11,15 @@ This version is for the next release of awesome.
 
 Parts of blingbling that works with the next release:
 
-*Classical graph --> renamed to line_graph (it works but not the outline, need to be rewrite) 95%
-*value_text_box --> ok 100 %
+*Classical graph --> renamed to line_graph (it works but not the outline, need to be rewrite) (95%)
+*value_text_box --> ok (100 %)
 *text_box --> ok (new widget) will be used in calendar 
+*System shutdown/Reboot button --> ok (100%)
+*Udisks-glue widget menu --> ok (100%)
+*Table widget layout --> replaced by wibox/layout/array.lua (60%)
+
 Parts to be adapted :
 
-*Value text box 
 *Tiled graph
 *Progress graph
 *Progress bar
@@ -25,11 +28,8 @@ Parts to be adapted :
 *Net widget
 *Top popup
 *Netstat popup
-*System shutdown/Reboot button
-*Udisks-glue widget menu
 *Menu widget
 *Task warrior widget
-*Table widget layout
 *Calendar
 
 Author

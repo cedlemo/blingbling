@@ -3,6 +3,11 @@ require("blingbling.value_text_box")
 require("blingbling.text_box")
 --require("blingbling.graph")
 require("blingbling.line_graph")
+require("blingbling.wibox.layout")
+require("blingbling.wibox.layout.array")
+require("blingbling.calendar")
+require("blingbling.udisks_glue")
+require("blingbling.system")
 ---Graphical widget library for Awesome Windows Manager.
 module("blingbling")
 

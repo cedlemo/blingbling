@@ -33,10 +33,29 @@ do
     end)
 end
 -- }}}
-
+-- {{{ Manage applications at startup 
+function run_once(prg, args)
+  if not prg then
+    do return nil end
+  end
+  if not args then
+    args=""
+  end
+  awful.util.spawn_with_shell('pgrep -f -u $USER -x ' .. prg .. ' || (' .. prg .. ' ' .. args ..')')
+end
+run_once("nm-applet")
+run_once("xcompmgr",'xcompmgr -CcfF -I "20" -O "10" -D "1" -t "-5" -l "-5" -r "4.2" -o ".82" &')
+run_once("mpd")
+run_once("udisks-glue")
+-- }}}        
 -- {{{ Variable definitions
 -- Themes define colours, icons, and wallpapers
-beautiful.init("/usr/share/awesome/themes/default/theme.lua")
+-- {{{ Variable definitions
+--get $HOME from the environement system
+home   = os.getenv("HOME")
+--get XDG_CONFIG
+config_dir = awful.util.getdir("config")
+beautiful.init( config_dir .. "/themes/default/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
 terminal = "xterm"
@@ -100,9 +119,36 @@ mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
 mytextclock = awful.widget.textclock()
 
 require('vicious')
---Cpu graph:
-
 require('blingbling')
+--shutdown widget
+shutdown=blingbling.system.shutdownmenu(beautiful.shutdown, 
+                                        beautiful.accept, 
+                                        beautiful.cancel)
+--awful.widget.layout.margins[shutdown]={top=4}
+--reboot widget
+reboot=blingbling.system.rebootmenu(beautiful.reboot, 
+                                    beautiful.accept, 
+                                    beautiful.cancel)
+
+--udisks-glue menu
+udisks_glue=blingbling.udisks_glue.new(beautiful.udisks_glue)
+udisks_glue:set_mount_icon(beautiful.accept)
+udisks_glue:set_umount_icon(beautiful.cancel)
+udisks_glue:set_detach_icon(beautiful.cancel)
+udisks_glue:set_Usb_icon(beautiful.usb)
+udisks_glue:set_Cdrom_icon(beautiful.cdrom)
+
+--Calendar widget
+--In progress Not finished
+--my_cal =blingbling.calendar.new({type = "imagebox", image = beautiful.calendar})
+--my_cal:set_cell_padding(2)
+--my_cal:set_title_font_size(9)
+--my_cal:set_font_size(8)
+--my_cal:set_inter_margin(1)
+--my_cal:set_columns_lines_titles_font_size(8)
+--my_cal:set_columns_lines_titles_text_color("#d4aa00ff")
+
+--Cpu graph:
 cpulabel=blingbling.text_box.new({text = "test"})
 cpulabel:set_padding(4)
 cpulabel:set_rounded_size(0.4)
@@ -116,17 +162,6 @@ cpu:set_show_text(true)
 cpu:set_background_color("#00000044")
 cpu:set_graph_background_color("#000000")
 vicious.register(cpu, vicious.widgets.cpu, '$1',2)
-
---cpu1=blingbling.graph.new()
---cpu1:set_height(16)
---cpu1:set_width(100)
---cpu1:set_h_margin(2)
---cpu1:set_v_margin(2)
---cpu1:set_rounded_size(0.4)
---cpu1:set_show_text(true)
---cpu1:set_background_color("#00000044")
---cpu1:set_graph_background_color("#000000")
---vicious.register(cpu1, vicious.widgets.cpu, '$1',2)
 
 mycore1 = blingbling.value_text_box.new()
 mycore1:set_width(25)
@@ -155,6 +190,7 @@ mywibox = {}
 mypromptbox = {}
 mylayoutbox = {}
 mytaglist = {}
+testwibox={}
 mytaglist.buttons = awful.util.table.join(
                     awful.button({ }, 1, awful.tag.viewonly),
                     awful.button({ modkey }, 1, awful.client.movetotag),
@@ -227,8 +263,11 @@ for s = 1, screen.count() do
     -- Widgets that are aligned to the right
     local right_layout = wibox.layout.fixed.horizontal()
     if s == 1 then right_layout:add(wibox.widget.systray()) end
+    right_layout:add(udisks_glue.widget)
     right_layout:add(mytextclock)
     right_layout:add(mylayoutbox[s])
+    right_layout:add(reboot)
+    right_layout:add(shutdown)
 
     -- Now bring it all together (with the tasklist in the middle)
     local layout = wibox.layout.align.horizontal()
@@ -237,6 +276,24 @@ for s = 1, screen.count() do
     layout:set_right(right_layout)
 
     mywibox[s]:set_widget(layout)
+    
+    --Example of array layout
+    testwibox[s] = awful.wibox({ position = "bottom", screen = s, height = 200, width = 600 })
+    local top_layout = wibox.layout.fixed.horizontal()
+    top_layout:add(cpulabel)
+    top_layout:add(mytextclock)
+    top_layout:add(cpulabel)
+    local middle_layout = wibox.layout.fixed.horizontal()
+    middle_layout:add(cpulabel)
+    middle_layout:add(mycore2)
+    local bottom_layout = wibox.layout.fixed.horizontal()
+    bottom_layout:add(mycore1)
+    bottom_layout:add(mycore2)
+    local a_layout = blingbling.wibox.layout.array.stack()
+    a_layout:add_line(top_layout)
+    a_layout:add_line(middle_layout)
+    a_layout:add_line(bottom_layout)
+    testwibox[s]:set_widget(a_layout)
 end
 -- }}}
 
