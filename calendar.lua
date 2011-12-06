@@ -172,6 +172,10 @@ function display_new_month( calendar,month, year)
   local title_text_color = data[calendar].title_text_color or text_color
   local title_font_size = data[calendar].title_font_size or font_size + 2
   
+  local columns_lines_titles_background_color = data[calendar].columns_lines_titles_background_color or background_color
+  local columns_lines_titles_text_color = data[calendar].columns_lines_titles_text_color or text_color
+  local columns_lines_titles_font_size = data[calendar].columns_lines_titles_font_size or font_size
+  
   local cell =helpers.generate_rounded_rectangle_with_text_in_image(month_label.." "..year, 
                                                                     padding, 
                                                                     title_background_color, 
@@ -190,6 +194,19 @@ function display_new_month( calendar,month, year)
   if first_day_of_month == 0 then first_day_of_month = 7 end 
   data[calendar].first_day_widget = first_day_of_month
   
+  --Update week numbers:
+  local weeks_numbers = helpers.get_ISO8601_weeks_number_of_month(month,year)
+  for i=1,6 do 
+    helpers.dbg({weeks_numbers[i]})
+    local cell = helpers.generate_rounded_rectangle_with_text_in_image(weeks_numbers[i], 
+                                                                        padding, 
+                                                                        columns_lines_titles_background_color, 
+                                                                        columns_lines_titles_text_color, 
+                                                                        columns_lines_titles_font_size, 
+                                                                        rounded_size)
+    data[calendar].weeks_numbers_widgets[i].image = capi.image.argb32(cell.width, cell.height, cell.raw_image)
+  end
+
   local day_of_month = 0 
   for i=1,42 do
   --generate cells  before the first day
@@ -401,7 +418,7 @@ function generate_cal(calendar)
     margins[corner_widget]={top = inter_margin, bottom = inter_margin + 2}
 
   --generate cells for weeks numbers  
-  local weeks_numbers_widgets={}
+  data[calendar].weeks_numbers_widgets={}
   local weeks_numbers = helpers.get_ISO8601_weeks_number_of_month(month_displayed,year_displayed)
   for i=1,6 do 
     local cell = helpers.generate_rounded_rectangle_with_text_in_image(weeks_numbers[i], 
@@ -413,7 +430,7 @@ function generate_cal(calendar)
     local cell_widget= widget({ type ="imagebox", width=cell.width, height=cell.height })
     cell_widget.image = capi.image.argb32(cell.width, cell.height, cell.raw_image)
     margins[cell_widget]={top = inter_margin}
-    table.insert(weeks_numbers_widgets,cell_widget)
+    table.insert(data[calendar].weeks_numbers_widgets,cell_widget)
   end
 
   local classic_cell_height = 0
@@ -488,17 +505,17 @@ function generate_cal(calendar)
       {data[calendar].prev_month, data[calendar].displayed_month_year, data[calendar].next_month, layout = blingbling.layout.array.line_center },
       {corner_widget, day_widgets[1], day_widgets[2], day_widgets[3], day_widgets[4], 
        day_widgets[5], day_widgets[6], day_widgets[7], layout =blingbling.layout.array.line_center},
-      {weeks_numbers_widgets[1], data[calendar].days_of_month[1].widget,data[calendar].days_of_month[2].widget, data[calendar].days_of_month[3].widget, data[calendar].days_of_month[4].widget,
+      {data[calendar].weeks_numbers_widgets[1], data[calendar].days_of_month[1].widget,data[calendar].days_of_month[2].widget, data[calendar].days_of_month[3].widget, data[calendar].days_of_month[4].widget,
        data[calendar].days_of_month[5].widget,data[calendar].days_of_month[6].widget,data[calendar].days_of_month[7].widget,layout =blingbling.layout.array.line_center}, 
-      {weeks_numbers_widgets[2], data[calendar].days_of_month[8].widget,data[calendar].days_of_month[9].widget, data[calendar].days_of_month[10].widget, data[calendar].days_of_month[11].widget,
+      {data[calendar].weeks_numbers_widgets[2], data[calendar].days_of_month[8].widget,data[calendar].days_of_month[9].widget, data[calendar].days_of_month[10].widget, data[calendar].days_of_month[11].widget,
        data[calendar].days_of_month[12].widget,data[calendar].days_of_month[13].widget,data[calendar].days_of_month[14].widget,layout =blingbling.layout.array.line_center}, 
-      {weeks_numbers_widgets[3], data[calendar].days_of_month[15].widget,data[calendar].days_of_month[16].widget, data[calendar].days_of_month[17].widget, data[calendar].days_of_month[18].widget,
+      {data[calendar].weeks_numbers_widgets[3], data[calendar].days_of_month[15].widget,data[calendar].days_of_month[16].widget, data[calendar].days_of_month[17].widget, data[calendar].days_of_month[18].widget,
        data[calendar].days_of_month[19].widget,data[calendar].days_of_month[20].widget,data[calendar].days_of_month[21].widget,layout =blingbling.layout.array.line_center}, 
-      {weeks_numbers_widgets[4], data[calendar].days_of_month[22].widget,data[calendar].days_of_month[23].widget, data[calendar].days_of_month[24].widget, data[calendar].days_of_month[25].widget,
+      {data[calendar].weeks_numbers_widgets[4], data[calendar].days_of_month[22].widget,data[calendar].days_of_month[23].widget, data[calendar].days_of_month[24].widget, data[calendar].days_of_month[25].widget,
        data[calendar].days_of_month[26].widget,data[calendar].days_of_month[27].widget,data[calendar].days_of_month[28].widget,layout =blingbling.layout.array.line_center}, 
-      {weeks_numbers_widgets[5], data[calendar].days_of_month[29].widget,data[calendar].days_of_month[30].widget, data[calendar].days_of_month[31].widget, data[calendar].days_of_month[32].widget,
+      {data[calendar].weeks_numbers_widgets[5], data[calendar].days_of_month[29].widget,data[calendar].days_of_month[30].widget, data[calendar].days_of_month[31].widget, data[calendar].days_of_month[32].widget,
        data[calendar].days_of_month[33].widget,data[calendar].days_of_month[34].widget,data[calendar].days_of_month[35].widget,layout =blingbling.layout.array.line_center},    
-      {weeks_numbers_widgets[6], data[calendar].days_of_month[36].widget,data[calendar].days_of_month[37].widget, data[calendar].days_of_month[38].widget, data[calendar].days_of_month[39].widget,
+      {data[calendar].weeks_numbers_widgets[6], data[calendar].days_of_month[36].widget,data[calendar].days_of_month[37].widget, data[calendar].days_of_month[38].widget, data[calendar].days_of_month[39].widget,
        data[calendar].days_of_month[40].widget,data[calendar].days_of_month[41].widget,data[calendar].days_of_month[42].widget,layout =blingbling.layout.array.line_center},    
        layout = blingbling.layout.array.stack_lines 
                     }

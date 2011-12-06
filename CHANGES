@@ -1,3 +1,5 @@
+06-12-2011
+  calendar.lua:     fix pb with week numbers that doesn't update when next/prev month is clicked.
 30-11-2011
   laptop_1280x800_rc.lua: update with new rc.lua from awesome 3.4.11
 29-11-2011
