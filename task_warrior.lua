@@ -25,7 +25,7 @@ local function get_projects(tw_menu)
                           "\nProject%s*Tasks%s*Pri%:None%s*Pri%:L%s*Pri%:M%s*Pri%:H%s*",
                           "")
   --generate the list of projects
-  for project, project_tasks in string.gmatch(my_projects,"\n([%w%(%)%-%_]*)%s%s+(%d*)","%1 %2") do
+  for project, project_tasks in string.gmatch(my_projects,"\n([%w%(%)%-%_%.]*)%s%s+(%d*)","%1 %2") do
     project=string.gsub(project,"\n","")
     table.insert(data[tw_menu].projects, {name =project, nb_tasks = project_tasks} )
   end
@@ -45,6 +45,8 @@ local function get_tasks(tw_menu, project)
   --escape specific char ( need to be extend)
   project_pattern=string.gsub(project,"%-","%%%-")
   project_pattern=string.gsub(project_pattern,"%_","%%%_")
+  project_pattern=string.gsub(project_pattern,"%.","%%%.")
+
   --if project == "" then
   --  project_pattern="%s+"
   --end
