@@ -626,45 +626,6 @@ function draw_rounded_corners_vertical_graph(cairo_context,x,y,width, height, ba
   end
 end
 
----Generate a text in front of a centered rectangle with rounded corners (or not).
---It returns a table ={ width = the width of the image, height = the height of the image, raw_image= the image in a raw format}
---@param cairo_context a cairo context already initialised with oocairo.context_create( )
---@param padding the left/right/top/bottom padding used to center the text in the background rectangle
---@param background_color a string "#rrggbb" or "#rrggbbaa" for the color of the background rectangle
---@param text_color a string "#rrggbb" or "#rrggbbaa" for the color of the text
---@param font_size define the size of the font
---@param rounded_size a float value from 0 to 1 (0 is no rounded corner)
-function generate_rounded_rectangle_with_text_in_image(text, padding, background_color, text_color, font_size, rounded_size)
-  local data={}
-  local padding = padding or 2
-  --find the height and width of the image:
-  local cairo_surface=cairo.image_surface_create("argb32",20, 20)
-  local cr = cairo.context_create(cairo_surface)
-  cr:set_font_size(font_size)
-  local ext = cr:text_extents(text)
-  data.height = font_size + 2* padding
-  data.width = ext.width +ext.x_bearing*2 + 2*padding
-  
-  --recreate the cairo context with good width and height:
-  cairo_surface= nil
-  cr=nil
-  cairo_surface=cairo.image_surface_create("argb32",data.width, data.height)
-  cr = cairo.context_create(cairo_surface)
-
-  --draw the background
-  draw_rounded_corners_rectangle(cr,0,0,data.width, data.height, background_color, rounded_size)
-  
-  --draw the text
-  cr:move_to(padding, data.height - padding)
-  r,g,b,a=hexadecimal_to_rgba_percent(text_color)
-  cr:set_font_size(font_size)
-  cr:set_source_rgba(r,g,b,a)
-  cr:show_text(text)
-  
-  data.raw_image = cairo_surface:get_data()
-  return data
-end
-
 ---Generate a text in front of a centered rectangle with rounded corners (or not) in  a cairo context.
 --It returns a table ={ width = the width of the image, height = the height of the image} 
 --@param cairo_context a cairo context already initialised with oocairo.context_create( )
@@ -673,20 +634,21 @@ end
 --@param text_color a string "#rrggbb" or "#rrggbbaa" for the color of the text
 --@param font_size define the size of the font
 --@param rounded_size a float value from 0 to 1 (0 is no rounded corner)
-function generate_rounded_rectangle_with_text(cr, text, padding, background_color, text_color, font_size, rounded_size, border)
+function generate_rounded_rectangle_with_text(cr, width, height, text, padding, background_color, text_color, font_size, rounded_size, border)
   local data={}
   local padding = padding or 2
   --find the height and width of the image:
   cr:set_font_size(font_size)
   local ext = cr:text_extents(text)
-  data.height = font_size + 2* padding
-  data.width = ext.width  + 2*padding
+  
+  data.height = (font_size + 2* padding) > height and (font_size + 2* padding) or height
+  data.width = (ext.width +ext.x_bearing*2 + 2*padding) > width and (ext.width +ext.x_bearing *2  + 2*padding) or width
   
   --draw the background
   draw_rounded_corners_rectangle(cr,0,0,data.width, data.height, background_color, rounded_size, border)
   
   --draw the text
-  cr:move_to(padding, data.height - padding)
+  cr:move_to((data.width/2) -((ext.width+ext.x_bearing*2)/2), (data.height)/2 + (font_size/2))
   r,g,b,a=hexadecimal_to_rgba_percent(text_color)
   cr:set_font_size(font_size)
   cr:set_source_rgba(r,g,b,a)

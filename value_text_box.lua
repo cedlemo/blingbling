@@ -205,11 +205,11 @@ function draw(vt_box, wibox, cr, width, height)
     if data[vt_box].values_text_color  and type(data[vt_box].values_text_color) == "table" then
       for i,table in ipairs(data[vt_box].values_text_color) do
         if i == 1 then 
-          if value >= table[2] then
+          if value/100 >= table[2] then
             value_text_color = table[1]
           end
         elseif i ~= 1 then
-          if value >= table[2]  then
+          if value/100 >= table[2]  then
             value_text_color = table[1]
           end
         end

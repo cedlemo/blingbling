@@ -9,6 +9,7 @@ local string = string
 local color = require("gears.color")
 local base = require("wibox.widget.base")
 local helpers = require("blingbling.helpers")
+local cairo = require "oocairo"
 ---A simple text box with custumizable backrgound 
 module("blingbling.text_box")
 
@@ -71,6 +72,8 @@ function draw(t_box, wibox, cr, width, height)
   local rounded_size = data[t_box].rounded_size or 0
   local border = data[t_box].background_border or nil
   local geometries = helpers.generate_rounded_rectangle_with_text( cr, 
+                                        width,
+                                        height,
                                         data[t_box].text, 
                                         padding,
                                         background_color,
@@ -80,11 +83,44 @@ function draw(t_box, wibox, cr, width, height)
                                         border
                                         )
 
-  data[t_box].width= geometries.width 
-  data[t_box].height= geometries.height
+  --Part that manage the auto-size of the widget
+  if geometries.width >data[t_box].width then data[t_box].width= geometries.width end
+  if geometries.height > data[t_box].height then data[t_box].height= geometries.height end
+  return t_box
+end
+
+local function get_geometries(t_box, cr, width, height)
+  local padding = data[t_box].padding or 2
+  local background_color = data[t_box].background_color or "#000000aa"
+  local text_color = data[t_box].text_color or "#ffffffff"
+  local font_size = data[t_box].font_size or 9
+  local rounded_size = data[t_box].rounded_size or 0
+  local border = data[t_box].background_border or nil
+  local geometries = helpers.generate_rounded_rectangle_with_text( cr, 
+                                        width,
+                                        height,
+                                        data[t_box].text, 
+                                        padding,
+                                        background_color,
+                                        text_color,
+                                        font_size,
+                                        rounded_size,
+                                        border
+                                        )
+
+   return geometries
 end
 
 function fit(t_box, width, height)
+    local geometries={}
+    
+    local surface=cairo.image_surface_create("argb32",data[t_box].width, data[t_box].height)
+    local cr = cairo.context_create(surface)
+
+    geometries = get_geometries(t_box, cr, data[t_box].width, data[t_box].height)
+    data[t_box].width = geometries.width 
+    data[t_box].height = geometries.height
+    
     return data[t_box].width, data[t_box].height
 end
 
@@ -117,27 +153,27 @@ end
 
 --- Create a t_box widget.
 -- @usage myt_box=blingbling.text_box.new({text = "your text" })
--- @param text a table : { text = your_text } No need to set width or height, it depends on padding, font size and text length.
+-- @param text a table : { text = your_text } No need to set width or height, it depends on padding, font size and text length. But you can set a bigger width/height and the text will be centered.
 -- @return A t_box widget.
 function new(args)
     local args = args or {}
+    local t_box = base.make_widget()
+    data[t_box]={}
 
-    local width = args.width or 100
-    local height = args.height or 20
-
-    local text = args.text or "none"
+    local width = args.width or 5
+    local height = args.height or 5
+    data[t_box].width = width 
+    data[t_box].height = height
+    
+    --local text = args.text or "none"
+    data[t_box].text = args.text or "none"
 
     if width < 5 or height < 5 then return end
 
-    local t_box = base.make_widget()
-
-    data[t_box] = { width = width, height = height, text = text }
-
     -- Set methods
-    t_box.add_value = add_value
     t_box.draw = draw
     t_box.fit = fit
-
+    
     for _, prop in ipairs(properties) do
         t_box["set_" .. prop] = _M["set_" .. prop]
     end

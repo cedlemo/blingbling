@@ -5,6 +5,7 @@ local type = type
 local base = require("wibox.layout.base")
 local widget_base = require("wibox.widget.base")
 local helpers = require("blingbling.helpers")
+---Layout diplaying widget as a table
 module("blingbling.wibox.layout.array")
 
 -- Draw the given align layout. dir describes the orientation of the layout, "x"
@@ -13,7 +14,7 @@ local function draw(dir, layout, wibox, cr, width, height)
     local x=0
     local y=0
     local max_line_height=0
-    
+    local line_width = 0
     for i=1, #layout.line do
         local w, h = width, height
         _,max_line_height = layout.line[i]:fit(w,h)

@@ -39,7 +39,7 @@
 	</li>
 
 	<li>
-		<a href="../modules/blingbling.graph.html">blingbling.graph</a>
+		<a href="../modules/blingbling.calendar.html">blingbling.calendar</a>
 	</li>
 
 	<li><strong>blingbling.helpers</strong></li>
@@ -49,11 +49,31 @@
 	</li>
 
 	<li>
+		<a href="../modules/blingbling.system.html">blingbling.system</a>
+	</li>
+
+	<li>
 		<a href="../modules/blingbling.text_box.html">blingbling.text_box</a>
 	</li>
 
 	<li>
+		<a href="../modules/blingbling.udisks_glue.html">blingbling.udisks_glue</a>
+	</li>
+
+	<li>
 		<a href="../modules/blingbling.value_text_box.html">blingbling.value_text_box</a>
+	</li>
+
+	<li>
+		<a href="../modules/blingbling.wibox.layout.html">blingbling.wibox.layout</a>
+	</li>
+
+	<li>
+		<a href="../modules/blingbling.wibox.layout.array.html">blingbling.wibox.layout.array</a>
+	</li>
+
+	<li>
+		<a href="../modules/blingbling.wibox.layout.flex.html">blingbling.wibox.layout.flex</a>
 	</li>
 
 </ul>
@@ -128,13 +148,8 @@
 	</tr>
 
 	<tr>
-	<td class="name" nowrap><a href="#generate_rounded_rectangle_with_text">generate_rounded_rectangle_with_text</a>&nbsp;(cr, text, padding, background_color, text_color, font_size, rounded_size, border, cairo_context)</td>
+	<td class="name" nowrap><a href="#generate_rounded_rectangle_with_text">generate_rounded_rectangle_with_text</a>&nbsp;(cr, width, height, text, padding, background_color, text_color, font_size, rounded_size, border, cairo_context)</td>
 	<td class="summary">Generate a text in front of a centered rectangle with rounded corners (or not) in  a cairo context.</td>
-	</tr>
-
-	<tr>
-	<td class="name" nowrap><a href="#generate_rounded_rectangle_with_text_in_image">generate_rounded_rectangle_with_text_in_image</a>&nbsp;(text, padding, background_color, text_color, font_size, rounded_size, cairo_context)</td>
-	<td class="summary">Generate a text in front of a centered rectangle with rounded corners (or not).</td>
 	</tr>
 
 	<tr>
@@ -632,7 +647,7 @@ Draw a vertical bar with gradient color, so it looks like a cylinder, and it's h
 
 
 
-<dt><a name="generate_rounded_rectangle_with_text"></a><strong>generate_rounded_rectangle_with_text</strong>&nbsp;(cr, text, padding, background_color, text_color, font_size, rounded_size, border, cairo_context)</dt>
+<dt><a name="generate_rounded_rectangle_with_text"></a><strong>generate_rounded_rectangle_with_text</strong>&nbsp;(cr, width, height, text, padding, background_color, text_color, font_size, rounded_size, border, cairo_context)</dt>
 <dd>
 Generate a text in front of a centered rectangle with rounded corners (or not) in  a cairo context. It returns a table ={ width = the width of the image, height = the height of the image}
 
@@ -642,6 +657,14 @@ Generate a text in front of a centered rectangle with rounded corners (or not) i
 	
 	<li>
 	  cr: 
+	</li>
+	
+	<li>
+	  width: 
+	</li>
+	
+	<li>
+	  height: 
 	</li>
 	
 	<li>
@@ -670,56 +693,6 @@ Generate a text in front of a centered rectangle with rounded corners (or not) i
 	
 	<li>
 	  border: 
-	</li>
-	
-	<li>
-	  cairo_context: a cairo context already initialised with oocairo.context_create( )
-	</li>
-	
-</ul>
-
-
-
-
-
-
-
-
-</dd>
-
-
-
-
-<dt><a name="generate_rounded_rectangle_with_text_in_image"></a><strong>generate_rounded_rectangle_with_text_in_image</strong>&nbsp;(text, padding, background_color, text_color, font_size, rounded_size, cairo_context)</dt>
-<dd>
-Generate a text in front of a centered rectangle with rounded corners (or not). It returns a table ={ width = the width of the image, height = the height of the image, raw_image= the image in a raw format}
-
-
-<h3>Parameters</h3>
-<ul>
-	
-	<li>
-	  text: 
-	</li>
-	
-	<li>
-	  padding: the left/right/top/bottom padding used to center the text in the background rectangle
-	</li>
-	
-	<li>
-	  background_color: a string "#rrggbb" or "#rrggbbaa" for the color of the background rectangle
-	</li>
-	
-	<li>
-	  text_color: a string "#rrggbb" or "#rrggbbaa" for the color of the text
-	</li>
-	
-	<li>
-	  font_size: define the size of the font
-	</li>
-	
-	<li>
-	  rounded_size: a float value from 0 to 1 (0 is no rounded corner)
 	</li>
 	
 	<li>

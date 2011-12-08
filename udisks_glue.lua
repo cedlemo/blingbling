@@ -9,8 +9,8 @@ local pairs = pairs
 local type = type
 local setmetatable = setmetatable
 local table = table
---local capi = { image = image , widget= widget}
 local imagebox = require("wibox.widget.imagebox")
+---A dynamic menu for udisks-glue events
 module("blingbling.udisks_glue")
 
 local data = setmetatable( {}, { __mode = "k"})

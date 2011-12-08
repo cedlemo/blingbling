@@ -1,0 +1,524 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+    <title>Reference</title>
+    <link rel="stylesheet" href="../luadoc.css" type="text/css" />
+	<!--meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/-->
+</head>
+
+<body>
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+<div id="main">
+
+<div id="navigation">
+
+
+<h1>LuaDoc</h1>
+<ul>
+	
+	<li><a href="../index.html">Index</a></li>
+	
+</ul>
+
+
+<!-- Module list -->
+
+<h1>Modules</h1>
+<ul>
+
+	<li><strong>awful.menu</strong></li>
+	
+	<li>
+		<a href="../modules/blingbling.html">blingbling</a>
+	</li>
+
+	<li>
+		<a href="../modules/blingbling.calendar.html">blingbling.calendar</a>
+	</li>
+
+	<li>
+		<a href="../modules/blingbling.helpers.html">blingbling.helpers</a>
+	</li>
+
+	<li>
+		<a href="../modules/blingbling.line_graph.html">blingbling.line_graph</a>
+	</li>
+
+	<li>
+		<a href="../modules/blingbling.system.html">blingbling.system</a>
+	</li>
+
+	<li>
+		<a href="../modules/blingbling.text_box.html">blingbling.text_box</a>
+	</li>
+
+	<li>
+		<a href="../modules/blingbling.udisks_glue.html">blingbling.udisks_glue</a>
+	</li>
+
+	<li>
+		<a href="../modules/blingbling.value_text_box.html">blingbling.value_text_box</a>
+	</li>
+
+	<li>
+		<a href="../modules/blingbling.wibox.layout.html">blingbling.wibox.layout</a>
+	</li>
+
+	<li>
+		<a href="../modules/blingbling.wibox.layout.array.html">blingbling.wibox.layout.array</a>
+	</li>
+
+	<li>
+		<a href="../modules/blingbling.wibox.layout.flex.html">blingbling.wibox.layout.flex</a>
+	</li>
+
+</ul>
+
+
+
+<!-- File list -->
+
+
+
+
+
+
+</div><!-- id="navigation" -->
+
+<div id="content">
+
+<h1>Module <code>awful.menu</code></h1>
+
+<p></p>
+
+<p><b>Authors:</b>
+<table class="authors_list">
+
+	<tr><td class="name">Damien Leone &lt;damien.leone@gmail.com&gt;</td></tr>
+
+	<tr><td class="name">Julien Danjou &lt;julien@danjou.info&gt;</td></tr>
+
+	<tr><td class="name">dodo</td></tr>
+
+</table>
+</p>
+
+
+<p>Copyright&copy; 2008, 2011 Damien Leone, Julien Danjou, dodo</p>
+
+
+<p><small><b>Release:</b> v3.4-593-g4113292 </small></p>
+
+
+
+<h2>Functions</h2>
+<table class="function_list">
+
+	<tr>
+	<td class="name" nowrap><a href="#add">add</a>&nbsp;(menu, args, index, args.new, args.theme)</td>
+	<td class="summary">Add a new menu entry </td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#clients">clients</a>&nbsp;(menu, args, args.keygrabber)</td>
+	<td class="summary">Build a popup menu with running clients and shows it.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#entry">entry</a>&nbsp;(parent, args)</td>
+	<td class="summary">Default awful.menu.entry constructor </td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#get_root">get_root</a>&nbsp;(menu)</td>
+	<td class="summary">Get the elder parent so for example when you kill it, it will destroy the whole family.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#hide">hide</a>&nbsp;(menu)</td>
+	<td class="summary">Hide a menu popup.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#new">new</a>&nbsp;(args, parent)</td>
+	<td class="summary">Create a menu popup.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#show">show</a>&nbsp;(menu, args, args.keygrabber, args.coords)</td>
+	<td class="summary">Show a menu.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#toggle">toggle</a>&nbsp;(menu, args, args.keygrabber, args.coords)</td>
+	<td class="summary">Toggle menu visibility.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#update">update</a>&nbsp;(menu)</td>
+	<td class="summary">Update menu content </td>
+	</tr>
+
+</table>
+
+
+
+
+<h2>Tables</h2>
+<table class="table_list">
+
+	<tr>
+	<td class="name" nowrap><a href="#menu_keys">menu_keys</a></td>
+	<td class="summary">Key bindings for menu navigation.</td>
+	</tr>
+
+</table>
+
+
+
+<br/>
+<br/>
+
+
+
+<h2><a name="functions"></a>Functions</h2>
+<dl class="function">
+
+
+
+<dt><a name="add"></a><strong>add</strong>&nbsp;(menu, args, index, args.new, args.theme)</dt>
+<dd>
+Add a new menu entry
+
+
+<h3>Parameters</h3>
+<ul>
+	
+	<li>
+	  menu: The parent menu
+	</li>
+	
+	<li>
+	  args: The item params
+	</li>
+	
+	<li>
+	  index: (Optional) the index where the new entry will inserted
+	</li>
+	
+	<li>
+	  args.new: (Default: awful.menu.entry) The menu entry constructor
+	</li>
+	
+	<li>
+	  args.theme: (Optional) The menu entry theme
+	</li>
+	
+</ul>
+
+
+
+
+
+
+
+
+</dd>
+
+
+
+
+<dt><a name="clients"></a><strong>clients</strong>&nbsp;(menu, args, args.keygrabber)</dt>
+<dd>
+Build a popup menu with running clients and shows it.
+
+
+<h3>Parameters</h3>
+<ul>
+	
+	<li>
+	  menu: Menu table, see new() function for more informations
+	</li>
+	
+	<li>
+	  args: 
+	</li>
+	
+	<li>
+	  args.keygrabber: A boolean enabling or not the keyboard navigation.
+	</li>
+	
+</ul>
+
+
+
+
+
+
+<h3>Return value:</h3>
+The menu.
+
+
+
+</dd>
+
+
+
+
+<dt><a name="entry"></a><strong>entry</strong>&nbsp;(parent, args)</dt>
+<dd>
+Default awful.menu.entry constructor
+
+
+<h3>Parameters</h3>
+<ul>
+	
+	<li>
+	  parent: The parent menu
+	</li>
+	
+	<li>
+	  args: the item params
+	</li>
+	
+</ul>
+
+
+
+
+
+
+<h3>Return value:</h3>
+table with 'widget', 'cmd', 'akey' and all the properties the user wants to change
+
+
+
+</dd>
+
+
+
+
+<dt><a name="get_root"></a><strong>get_root</strong>&nbsp;(menu)</dt>
+<dd>
+Get the elder parent so for example when you kill it, it will destroy the whole family.
+
+
+<h3>Parameters</h3>
+<ul>
+	
+	<li>
+	  menu: The sub menu of the menu family.
+	</li>
+	
+</ul>
+
+
+
+
+
+
+
+
+</dd>
+
+
+
+
+<dt><a name="hide"></a><strong>hide</strong>&nbsp;(menu)</dt>
+<dd>
+Hide a menu popup.
+
+
+<h3>Parameters</h3>
+<ul>
+	
+	<li>
+	  menu: The menu to hide.
+	</li>
+	
+</ul>
+
+
+
+
+
+
+
+
+</dd>
+
+
+
+
+<dt><a name="new"></a><strong>new</strong>&nbsp;(args, parent)</dt>
+<dd>
+Create a menu popup.
+
+
+<h3>Parameters</h3>
+<ul>
+	
+	<li>
+	  args: Table containing the menu informations.<br/> <ul> <li> Key items: Table containing the displayed items. Each element is a table by default (when element 'new' is awful.menu.entry) containing: item name, triggered action, submenu table or function, item icon (optional). </li> <li> Keys theme.[fg|bg]_[focus|normal], theme.border_color, theme.border_width, theme.submenu_icon, theme.height and theme.width override the default display for your menu and/or of your menu entry, each of them are optional. </li> <li> Key auto_expand controls the submenu auto expand behaviour by setting it to true (default) or false. </li> </ul>
+	</li>
+	
+	<li>
+	  parent: Specify the parent menu if we want to open a submenu, this value should never be set by the user.
+	</li>
+	
+</ul>
+
+
+
+
+<h3>Usage:</h3>
+The following function builds, and shows a menu of clients that match a particular rule. Bound to a key, it can for example be used to select from dozens of terminals open on several tags. With the use of <code>match_any</code> instead of <code>match</code>, menu of clients with different classes can also be build.  <p><code> function terminal_menu ()                           <br/> &nbsp;                terms = {}                                        <br/> &nbsp;                for i, c in pairs(client.get()) do                <br/> &nbsp;&nbsp;            if awful.rules.match(c, {class = "URxvt"}) then <br/> &nbsp;&nbsp;&nbsp;        terms[i] =                                    <br/> &nbsp;&nbsp;&nbsp;          {c.name,                                    <br/> &nbsp;&nbsp;&nbsp;           function()                                 <br/> &nbsp;&nbsp;&nbsp;&nbsp;       awful.tag.viewonly(c:tags()[1])          <br/> &nbsp;&nbsp;&nbsp;&nbsp;       client.focus = c                         <br/> &nbsp;&nbsp;&nbsp;           end,                                       <br/> &nbsp;&nbsp;&nbsp;           c.icon                                     <br/> &nbsp;&nbsp;&nbsp;          }                                           <br/> &nbsp;&nbsp;            end                                             <br/> &nbsp;                end                                               <br/> &nbsp;                m = awful.menu(terms)                             <br/> &nbsp;                m:show({keygrabber=true})                         <br/> &nbsp;                return m                                          <br/> end                                                 <br/> </code></p>
+
+
+
+
+
+</dd>
+
+
+
+
+<dt><a name="show"></a><strong>show</strong>&nbsp;(menu, args, args.keygrabber, args.coords)</dt>
+<dd>
+Show a menu.
+
+
+<h3>Parameters</h3>
+<ul>
+	
+	<li>
+	  menu: The menu to show.
+	</li>
+	
+	<li>
+	  args: 
+	</li>
+	
+	<li>
+	  args.keygrabber: A boolean enabling or not the keyboard navigation.
+	</li>
+	
+	<li>
+	  args.coords: Menu position defaulting to mouse.coords()
+	</li>
+	
+</ul>
+
+
+
+
+
+
+
+
+</dd>
+
+
+
+
+<dt><a name="toggle"></a><strong>toggle</strong>&nbsp;(menu, args, args.keygrabber, args.coords)</dt>
+<dd>
+Toggle menu visibility.
+
+
+<h3>Parameters</h3>
+<ul>
+	
+	<li>
+	  menu: The menu to show if it's hidden, or to hide if it's shown.
+	</li>
+	
+	<li>
+	  args: 
+	</li>
+	
+	<li>
+	  args.keygrabber: A boolean enabling or not the keyboard navigation.
+	</li>
+	
+	<li>
+	  args.coords: Menu position {x,y}
+	</li>
+	
+</ul>
+
+
+
+
+
+
+
+
+</dd>
+
+
+
+
+<dt><a name="update"></a><strong>update</strong>&nbsp;(menu)</dt>
+<dd>
+Update menu content
+
+
+<h3>Parameters</h3>
+<ul>
+	
+	<li>
+	  menu: The mnenu to update.
+	</li>
+	
+</ul>
+
+
+
+
+
+
+
+
+</dd>
+
+
+</dl>
+
+
+
+
+<h2><a name="tables"></a>Tables</h2>
+<dl class="table">
+
+<dt><a name="menu_keys"></a><strong>menu_keys</strong></dt>
+<dd>Key bindings for menu navigation. Keys are: up, down, exec, enter, back, close. Value are table with a list of valid keys for the action, i.e. menu_keys.up =  { "j", "k" } will bind 'j' and 'k' key to up action. This is common to all created menu.
+
+
+
+</dd>
+
+
+</dl>
+
+
+
+</div> <!-- id="content" -->
+
+</div> <!-- id="main" -->
+
+<div id="about">
+	<p><a href="http://validator.w3.org/check?uri=referer"><img src="http://www.w3.org/Icons/valid-xhtml10" alt="Valid XHTML 1.0!" height="31" width="88" /></a></p>
+</div> <!-- id="about" -->
+
+</div> <!-- id="container" -->	
+</body>
+</html>

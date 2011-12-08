@@ -1,0 +1,261 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+    <title>Reference</title>
+    <link rel="stylesheet" href="../luadoc.css" type="text/css" />
+	<!--meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/-->
+</head>
+
+<body>
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+<div id="main">
+
+<div id="navigation">
+
+
+<h1>LuaDoc</h1>
+<ul>
+	
+	<li><a href="../index.html">Index</a></li>
+	
+</ul>
+
+
+<!-- Module list -->
+
+<h1>Modules</h1>
+<ul>
+
+	<li>
+		<a href="../modules/blingbling.html">blingbling</a>
+	</li>
+
+	<li>
+		<a href="../modules/blingbling.calendar.html">blingbling.calendar</a>
+	</li>
+
+	<li>
+		<a href="../modules/blingbling.helpers.html">blingbling.helpers</a>
+	</li>
+
+	<li>
+		<a href="../modules/blingbling.line_graph.html">blingbling.line_graph</a>
+	</li>
+
+	<li>
+		<a href="../modules/blingbling.system.html">blingbling.system</a>
+	</li>
+
+	<li>
+		<a href="../modules/blingbling.text_box.html">blingbling.text_box</a>
+	</li>
+
+	<li>
+		<a href="../modules/blingbling.udisks_glue.html">blingbling.udisks_glue</a>
+	</li>
+
+	<li>
+		<a href="../modules/blingbling.value_text_box.html">blingbling.value_text_box</a>
+	</li>
+
+	<li>
+		<a href="../modules/blingbling.wibox.layout.html">blingbling.wibox.layout</a>
+	</li>
+
+	<li>
+		<a href="../modules/blingbling.wibox.layout.array.html">blingbling.wibox.layout.array</a>
+	</li>
+
+	<li><strong>blingbling.wibox.layout.flex</strong></li>
+	
+</ul>
+
+
+
+<!-- File list -->
+
+
+
+
+
+
+</div><!-- id="navigation" -->
+
+<div id="content">
+
+<h1>Module <code>blingbling.wibox.layout.flex</code></h1>
+
+<p>Dispatch widgets horizontaly, positions are not fixed</p>
+
+
+
+
+
+<h2>Functions</h2>
+<table class="function_list">
+
+	<tr>
+	<td class="name" nowrap><a href="#draw_flex">draw_flex</a>&nbsp;(widgets_align, widgets, wibox, cr, width, height, dir)</td>
+	<td class="summary">Draw a flex layout.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#horizontal_left">horizontal_left</a>&nbsp;()</td>
+	<td class="summary">Returns a new horizontal flex layout.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#horizontal_middle">horizontal_middle</a>&nbsp;()</td>
+	<td class="summary">Returns a new horizontal flex layout.</td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#horizontal_right">horizontal_right</a>&nbsp;()</td>
+	<td class="summary">Returns a new horizontal flex layout.</td>
+	</tr>
+
+</table>
+
+
+
+
+
+
+<br/>
+<br/>
+
+
+
+<h2><a name="functions"></a>Functions</h2>
+<dl class="function">
+
+
+
+<dt><a name="draw_flex"></a><strong>draw_flex</strong>&nbsp;(widgets_align, widgets, wibox, cr, width, height, dir)</dt>
+<dd>
+Draw a flex layout. Each widget gets an equal share of the available space
+
+
+<h3>Parameters</h3>
+<ul>
+	
+	<li>
+	  widgets_align: 
+	</li>
+	
+	<li>
+	  widgets: The widgets to draw.
+	</li>
+	
+	<li>
+	  wibox: 
+	</li>
+	
+	<li>
+	  cr: The cairo context to use.
+	</li>
+	
+	<li>
+	  width: The available width.
+	</li>
+	
+	<li>
+	  height: The available height.
+	</li>
+	
+	<li>
+	  dir: "x" for a horizontal layout and "y" for vertical.
+	</li>
+	
+</ul>
+
+
+
+
+
+
+<h3>Return value:</h3>
+The total space needed by the layout.
+
+
+
+</dd>
+
+
+
+
+<dt><a name="horizontal_left"></a><strong>horizontal_left</strong>&nbsp;()</dt>
+<dd>
+Returns a new horizontal flex layout. A flex layout shares the available space equally among all widgets and the widgets are left aligned in this space. Widgets can be added via :add(widget). Note:if a widget width is greater than the space per widgets defined, then the flex layout use the remaining space and calculate the mean space between each widgets
+
+
+
+
+
+
+
+
+
+</dd>
+
+
+
+
+<dt><a name="horizontal_middle"></a><strong>horizontal_middle</strong>&nbsp;()</dt>
+<dd>
+Returns a new horizontal flex layout. A flex layout shares the available space equally among all widgets and the widgets are centered in this space. Widgets can be added via :add(widget). Note:if a widget width is greater than the space per widgets defined, then the flex layout use the remaining space and calculate the mean space between each widgets
+
+
+
+
+
+
+
+
+
+</dd>
+
+
+
+
+<dt><a name="horizontal_right"></a><strong>horizontal_right</strong>&nbsp;()</dt>
+<dd>
+Returns a new horizontal flex layout. A flex layout shares the available space equally among all widgets and the widgets are right aligned in this space. Widgets can be added via :add(widget). Note:if a widget width is greater than the space per widgets defined, then the flex layout use the remaining space and calculate the mean space between each widgets
+
+
+
+
+
+
+
+
+
+</dd>
+
+
+</dl>
+
+
+
+
+
+
+</div> <!-- id="content" -->
+
+</div> <!-- id="main" -->
+
+<div id="about">
+	<p><a href="http://validator.w3.org/check?uri=referer"><img src="http://www.w3.org/Icons/valid-xhtml10" alt="Valid XHTML 1.0!" height="31" width="88" /></a></p>
+</div> <!-- id="about" -->
+
+</div> <!-- id="container" -->	
+</body>
+</html>
