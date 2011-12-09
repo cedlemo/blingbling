@@ -1,3 +1,5 @@
+09-12-2011
+  helpers.lua:      fix pb with progress_graph (unable to modify graph_line_color and outline was arround the graph)
 07-12-2011
   task_warrior.lua: fix pb with project names, now menu can deal with name containing "-", "_", and "."
 06-12-2011
