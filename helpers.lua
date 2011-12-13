@@ -587,7 +587,7 @@ function draw_rounded_corners_vertical_graph(cairo_context,x,y,width, height, ba
         ratio = (value - limit_2) / (1 - limit_2)
         cairo_context:arc(width -1 - radius*rounded_size,height -1 -  radius*rounded_size, radius*rounded_size,PI*0  , PI * 0.5)
         cairo_context:arc(x+1 + radius*rounded_size,height -1 -  radius*rounded_size, radius*rounded_size,PI*0.5, PI * 1)
-        cairo_context:arc(x+1 + radius*rounded_size,y-1 + radius*rounded_size, radius*rounded_size,PI, PI * (1+(0.5* ratio)) )
+        cairo_context:arc(x+1 + radius*rounded_size,y+1 + radius*rounded_size, radius*rounded_size,PI, PI * (1+(0.5* ratio)) )
         cairo_context:arc(width -1 - radius*rounded_size,y+1 + radius*rounded_size, radius*rounded_size,PI*(2 -(0.5* ratio)), PI *2)
         cairo_context:close_path()
         cairo_context:stroke()
