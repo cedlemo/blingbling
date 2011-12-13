@@ -196,7 +196,7 @@ local function update(graph)
   else
     less_value = data[graph].height/2
   end
-  max_column=math.ceil((data[graph].width - (2*h_margin + (rounded_size * less_value)))/3)
+  max_column=math.ceil((data[graph].width - (2*h_margin + 2*(rounded_size * less_value)))/3)
   --Check if the table graph values is empty / not initialized
   --if next(data[graph].values) == nil then
   if #data[graph].values == 0 or #data[graph].values ~= max_column then
@@ -247,8 +247,7 @@ local function update(graph)
     graph_context:line_to(x,y)
     x=x-3
   end
-  x=h_margin + 3
-  graph_context:line_to(x,y)
+  x=x+ 3
   y=data[graph].height - (v_margin )
   graph_context:line_to(x ,y) 
   graph_context:set_line_width(1)

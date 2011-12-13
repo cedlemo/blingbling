@@ -1,4 +1,5 @@
 13-12-2011
+  classical_graph:  fix pb with graph which was drawn out of is allocate space when rounded corners.
   helpers.lua:      fix pb with fction for progress_graph (and outline was arround the graph with 100% value)
 09-12-2011
   helpers.lua:      fix pb with progress_graph (unable to modify graph_line_color and outline was arround the graph)
