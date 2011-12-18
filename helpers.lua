@@ -350,6 +350,41 @@ function draw_rounded_corners_rectangle(cairo_context,x,y,width, height, color, 
 
 end
 
+---Set a rectangle width rounded corners that define the area to draw.
+--@param cairo_context a cairo context already initialised with oocairo.context_create( )
+--@param x the x coordinate of the left top corner
+--@param y the y corrdinate of the left top corner
+--@param width the width of the rectangle
+--@param height the height of the rectangle
+--@param rounded_size a float value from 0 to 1 (0 is no rounded corner)
+function clip_rounded_corners_rectangle(cairo_context,x,y,width, height, rounded_size)
+--if rounded_size =0 it is a classical rectangle (whooooo!)  
+  local height = height
+  local width = width
+  local x = x
+  local y = y
+  local rounded_size = rounded_size or 0.4
+  if height > width then
+    radius=0.5 * width
+  else
+    radius=0.5 * height
+  end
+
+  PI = 2*math.asin(1)
+  --top left corner
+  cairo_context:arc(x + radius*rounded_size,y + radius*rounded_size, radius*rounded_size,PI, PI * 1.5)
+  --top right corner
+  cairo_context:arc(width - radius*rounded_size,y + radius*rounded_size, radius*rounded_size,PI*1.5, PI * 2)
+  --bottom right corner
+  cairo_context:arc(width - radius*rounded_size,height -  radius*rounded_size, radius*rounded_size,PI*0, PI * 0.5)
+  --bottom left corner
+  cairo_context:arc(x + radius*rounded_size,height -  radius*rounded_size, radius*rounded_size,PI*0.5, PI * 1)
+  cairo_context:close_path()
+  cairo_context:clip()
+
+end
+
+
 ---Draw a foreground rounded corners rectangle which width depends on a value, and a background rounded corners rectangle.
 --@param cairo_context a cairo context already initialised with oocairo.context_create( )
 --@param x the x coordinate of the left top corner

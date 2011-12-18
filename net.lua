@@ -412,12 +412,18 @@ local function show_ippopup_infos(n_graph)
       --get gateway
       gateway=string.match(string.match(all_infos,"default%svia%s[%d]+%.[d%]+%.[%d]+%.[%d]+"), "[%d]+%.[d%]+%.[%d]+%.[%d]+")
       --get external ip configuration
-      local ext_ip = awful.util.pread("curl --silent -S http://automation.whatismyip.com/n09230945.asp")
-      data[n_graph].ext_ip = ext_ip
+      local ext_ip = awful.util.pread("curl --silent --connect-timeout 3 -S http://automation.whatismyip.com/n09230945.asp 2>&1")
+      --if time out then no external ip
+      if string.match(ext_ip,"timed%sout%!") then
+        data[n_graph].ext_ip = "n/a" 
+      else
+        data[n_graph].ext_ip = ext_ip
+      end
+
       --get tor external configuration
       local tor_ext_ip
       --we check that the tor address have not been checked or that the elapsed time from the last request is not < 300 sec. whereas whatsmyip block the request
-      if data[n_graph].tor_ext_ip_timer == nil or data[n_graph].tor_ext_ip_timer + 300 < os.time() then
+      if (data[n_graph].tor_ext_ip_timer == nil or data[n_graph].tor_ext_ip_timer + 300 < os.time()) and data[n_graph].ext_ip ~= "n/a" then
         if awful.util.pread("pgrep tor") ~= "" then
           tor_ext_ip = awful.util.pread("curl --silent -S -x socks4a://localhost:9050 http://automation.whatismyip.com/n09230945.asp") 
         else
@@ -425,11 +431,15 @@ local function show_ippopup_infos(n_graph)
         end
         data[n_graph].tor_ext_ip=tor_ext_ip
         data[n_graph].tor_ext_ip_timer=os.time()
+      --if local ip is ok but not the external ip, then we can't get external tor ip
+      elseif data[n_graph].ext_ip == "n/a" then
+        tor_ext_ip="n/a"
+      --we get the last value of tor_ext_ip of the last recent check.
       else
         tor_ext_ip= data[n_graph].tor_ext_ip
       end
       local separator ="\n|\n"
-      text="Local Ip:\t"..ip_addr..separator.."Gateway:\t\t".. gateway..separator .."External Ip:\t"..ext_ip .. separator .. "Tor External Ip:\t" .. tor_ext_ip
+      text="Local Ip:\t"..ip_addr..separator.."Gateway:\t\t".. gateway..separator .."External Ip:\t"..data[n_graph].ext_ip .. separator .. "Tor External Ip:\t" .. tor_ext_ip
     else
       text="Wire is not connected on " .. interface
     end

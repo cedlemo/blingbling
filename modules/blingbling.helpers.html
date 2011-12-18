@@ -53,10 +53,6 @@
 	<li><strong>blingbling.helpers</strong></li>
 	
 	<li>
-		<a href="../modules/blingbling.layout.array.html">blingbling.layout.array</a>
-	</li>
-
-	<li>
 		<a href="../modules/blingbling.menu.html">blingbling.menu</a>
 	</li>
 
@@ -90,6 +86,10 @@
 
 	<li>
 		<a href="../modules/blingbling.tiled_graph.html">blingbling.tiled_graph</a>
+	</li>
+
+	<li>
+		<a href="../modules/blingbling.two_values_graph.html">blingbling.two_values_graph</a>
 	</li>
 
 	<li>
@@ -129,6 +129,11 @@
 
 <h2>Functions</h2>
 <table class="function_list">
+
+	<tr>
+	<td class="name" nowrap><a href="#clip_rounded_corners_rectangle">clip_rounded_corners_rectangle</a>&nbsp;(cairo_context, x, y, width, height, rounded_size)</td>
+	<td class="summary">Set a rectangle width rounded corners that define the area to draw.</td>
+	</tr>
 
 	<tr>
 	<td class="name" nowrap><a href="#dbg">dbg</a>&nbsp;(vars)</td>
@@ -214,6 +219,52 @@
 
 <h2><a name="functions"></a>Functions</h2>
 <dl class="function">
+
+
+
+<dt><a name="clip_rounded_corners_rectangle"></a><strong>clip_rounded_corners_rectangle</strong>&nbsp;(cairo_context, x, y, width, height, rounded_size)</dt>
+<dd>
+Set a rectangle width rounded corners that define the area to draw.
+
+
+<h3>Parameters</h3>
+<ul>
+	
+	<li>
+	  cairo_context: a cairo context already initialised with oocairo.context_create( )
+	</li>
+	
+	<li>
+	  x: the x coordinate of the left top corner
+	</li>
+	
+	<li>
+	  y: the y corrdinate of the left top corner
+	</li>
+	
+	<li>
+	  width: the width of the rectangle
+	</li>
+	
+	<li>
+	  height: the height of the rectangle
+	</li>
+	
+	<li>
+	  rounded_size: a float value from 0 to 1 (0 is no rounded corner)
+	</li>
+	
+</ul>
+
+
+
+
+
+
+
+
+</dd>
+
 
 
 

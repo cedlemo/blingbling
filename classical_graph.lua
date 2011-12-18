@@ -191,6 +191,14 @@ local function update(graph)
   --if rounded, make sure that graph don't begin or end outside background
   --check for the less value between hight and height:
   rounded_size = data[graph].rounded_size or 0
+    helpers.clip_rounded_corners_rectangle(graph_context,
+                                   h_margin, --x
+                                   v_margin, --y
+                                   data[graph].width - h_margin, 
+                                   data[graph].height - v_margin,
+                                   rounded_size
+                                    )
+  
   if data[graph].height > data[graph].width then
     less_value = data[graph].width/2
   else

@@ -1,3 +1,7 @@
+17-12-2011 
+  net.lua:          fix pb with curl command when no external ip available
+  classical_graph:  fix pb when value=zero line graph is outside the graph area
+  helpers.dbg:      add function clip_rounded_corners_rectangle
 13-12-2011
   classical_graph:  fix pb with graph which was drawn out of is allocate space when rounded corners.
   helpers.lua:      fix pb with fction for progress_graph (and outline was arround the graph with 100% value)
