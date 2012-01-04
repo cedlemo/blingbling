@@ -398,10 +398,10 @@ local function set_master_control(v_graph)
       set_master("toggle")
     end),
     awful.button({ }, 5, function()
-      set_master("2-")
+      set_master("2%-")
     end),
     awful.button({ }, 4, function()
-      set_master("2+")
+      set_master("2%+")
     end)))
 end
 
