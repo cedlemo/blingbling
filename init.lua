@@ -9,6 +9,7 @@ require("blingbling.calendar")
 require("blingbling.udisks_glue")
 require("blingbling.system")
 require("blingbling.volume")
+require("blingbling.progress_bar")
 ---Graphical widget library for Awesome Windows Manager.
 module("blingbling")
 
