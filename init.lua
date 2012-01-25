@@ -8,6 +8,7 @@ require("blingbling.wibox.layout.array")
 require("blingbling.calendar")
 require("blingbling.udisks_glue")
 require("blingbling.system")
+require("blingbling.volume")
 ---Graphical widget library for Awesome Windows Manager.
 module("blingbling")
 
