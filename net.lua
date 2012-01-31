@@ -254,7 +254,6 @@ end
       data[n_graph].graph_line_color , 
       false)
   
-  --helpers.dbg({type(data[n_graph][interface.."_state"]), type(data[n_graph][interface.."_carrier"]) }) 
   if data[n_graph][interface.."_state"] ~= "up" or data[n_graph][interface.."_carrier"] ~= "1" then
      n_graph_context:move_to(data[n_graph].width*2/5, v_margin)
      n_graph_context:line_to(data[n_graph].width*3/5,data[n_graph].height - v_margin)
