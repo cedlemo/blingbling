@@ -17,7 +17,7 @@ local imagebox = require("wibox.widget.imagebox")
 local beautiful = require('beautiful')
 local helpers = require('blingbling.helpers')
 local blingbling = { layout = require('blingbling.wibox.layout'), text_box= require('blingbling.text_box')}
----A calendar widget
+
 module('blingbling.calendar')
 
 local data = setmetatable( {}, { __mode = "k"})

@@ -1,9 +1,13 @@
+09-12-2011:
+  progress_graph:       created
+  superproperties.lua:  created , define default values that are common to all widgets
+  helpers.lua:          fix pbs with progress bar functions
 08-12-2011:
-  layout flex:      add layout flex: only horizontal, possibility to position widgets (left, middle, right) in their allocate space. If widget width is
-                    greater than allocated space, layout manage widgets to avoid superposition.
+  layout flex:          add layout flex: only horizontal, possibility to position widgets (left, middle, right) in their allocate space. If widget width is
+                        greater than allocated space, layout manage widgets to avoid superposition.
 07-12-2011
-  text_box:         user can modify hight/width, if they are > to auto-calculated height/width, they are effective and text is centered.
-  value_text_box:   fix pb with color table for text
+  text_box:             user can modify hight/width, if they are > to auto-calculated height/width, they are effective and text is centered.
+  value_text_box:       fix pb with color table for text
 06-12-2011
-  text_box:         fix pb with auto size of text box
+  text_box:             fix pb with auto size of text box
   

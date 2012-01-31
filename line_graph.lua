@@ -9,6 +9,7 @@ local string = string
 local color = require("gears.color")
 local base = require("wibox.widget.base")
 local helpers = require("blingbling.helpers")
+local superproperties = require('blingbling.superproperties')
 --- A graph widget.
 module("blingbling.line_graph")
 
@@ -99,8 +100,8 @@ local data = setmetatable({}, { __mode = "k" })
 --@param color a string "#rrggbbaa" or "#rrggbb"
 
 ---Define the text font size
---@usage mygraph:set_text_font_size(integer)
---@name set_text_font_size
+--@usage mygraph:set_font_size(integer)
+--@name set_font_size
 --@class function
 --@param graph the graph
 --@param size the font size
@@ -121,7 +122,7 @@ local properties = {    "width", "height", "h_margin", "v_margin",
                         "background_border", "background_color", 
                         "graph_background_border", "graph_background_color",
                         "rounded_size", "graph_color", "graph_line_color",
-                        "show_text", "text_color", "text_font_size",
+                        "show_text", "text_color", "font_size",
                         "text_background_color", "label"
                    }
 
@@ -129,25 +130,49 @@ function draw(graph, wibox, cr, width, height)
     local max_value = data[graph].max_value
     local values = data[graph].values
 
-    local background_border_width = 0
-    if data[graph].background_border_color then
-        background_border_width = 1
-    end
+    -- Set the values we need
+    local value = data[graph].value
+    
+--    local background_border_width = 0
+--    if data[graph].background_border then
+--        background_border_width = 1
+--    end
 
     local graph_border_width = 0
-    if data[graph].graph_border_color then
+    if data[graph].graph_background_border then
         graph_border_width = 1
     end
     
-    local v_margin = 2
-    if data[graph].v_margin  and data[graph].v_margin <= height / 3 then
-      v_margin = data[graph].v_margin
+    local v_margin =  superproperties.v_margin 
+    if data[graph].v_margin and data[graph].v_margin <= data[graph].height/4 then 
+        v_margin = data[graph].v_margin 
     end
     
-    local h_margin = 2
-    if data[graph].h_margin and data[graph].h_margin <= width / 3 then
-       h_margin = data[graph].h_margin
+    local h_margin = superproperties.h_margin
+    if data[graph].h_margin and data[graph].h_margin <= data[graph].width / 3 then 
+        h_margin = data[graph].h_margin 
     end
+    
+    local background_border = data[graph].background_border or superproperties.background_border
+    
+    local background_color = data[graph].background_color or superproperties.background_color
+    
+    local rounded_size = data[graph].rounded_size or 0
+
+    local graph_background_color = data[graph].graph_background_color or superproperties.graph_background_color
+    
+    local graph_background_border = data[graph].graph_background_border or superproperties.graph_background_border
+    
+    local graph_color = data[graph].graph_color or superproperties.graph_color
+
+    local graph_line_color = data[graph].graph_line_color or superproperties.graph_line_color
+
+    local text_color = data[graph].text_color or superproperties.text_color
+
+    local background_text_color = data[graph].background_text_color or superproperties.background_text_color
+
+    local font_size =data[graph].font_size or superproperties.font_size
+    
     
     local line_width = 1
     cr:set_line_width(line_width)
@@ -157,36 +182,62 @@ function draw(graph, wibox, cr, width, height)
       helpers.draw_rounded_corners_rectangle(cr,
                                                 0, --x
                                                 0, --y
-                                                width, 
-                                                height,
-                                                data[graph].background_color,
-                                                data[graph].rounded_size,
-                                                data[graph].background_border)
+                                                data[graph].width, 
+                                                data[graph].height,
+                                                background_color,
+                                                rounded_size,
+                                                background_border)
      end
 
-    -- Draw the widget background 
+    -- Draw the graph background 
+    --if background_border is set, graph background  must not be drawn on it 
+    local h_padding = 0
+    local v_padding = 0
+
+    if background_border ~= nil and h_margin < 1 then
+      h_padding = 1
+    else 
+      h_padding = h_margin + 1
+    end
+    if background_border ~= nil and v_margin < 1 then
+      v_padding = 1 
+    else
+      v_padding = v_margin + 1
+    end
+
     if data[graph].graph_background_color then
       helpers.draw_rounded_corners_rectangle(cr,
-                                                h_margin, --x
-                                                v_margin, --y
-                                                width - h_margin, 
-                                                height - v_margin,
-                                                data[graph].graph_background_color,
-                                                data[graph].rounded_size,
-                                                data[graph].graph_background_border)
+                                                h_padding, --x
+                                                v_padding, --y
+                                                data[graph].width - h_padding, 
+                                                data[graph].height - v_padding ,
+                                                graph_background_color,
+                                                rounded_size,
+                                                graph_background_border)
      end
+    helpers.clip_rounded_corners_rectangle(cr,
+                                   h_padding, --x
+                                   v_padding, --y
+                                   data[graph].width - h_padding, 
+                                   data[graph].height - v_padding,
+                                   rounded_size
+                                    )
     --Drawn the graph
+    --if graph_background_border is set, graph must not be drawn on it 
+
+    if graph_background_border ~= nil then
+      h_padding = h_padding + 1
+      v_padding = v_padding + 1
+    end
     --find nb values we can draw every 3 px
     --if rounded, make sure that graph don't begin or end outside background
-    --check for the less value between hight and height:
-    rounded_size = data[graph].rounded_size or 0
-    if height > width then
-      less_value = width/2
+    --check for the less value between hight and height to calculate the space for rounded size:
+    if data[graph].height > data[graph].width then
+      less_value = data[graph].width/2
     else
-      less_value = height/2
+      less_value = data[graph].height/2
     end
-    max_column=math.ceil((width - (2*h_margin + 2*(data[graph].rounded_size * less_value)))/3)
-    
+    max_column=math.ceil((data[graph].width - (2*h_padding +2*(rounded_size * less_value)))/3) 
     --Check if the table graph values is empty / not initialized
     --if next(data[graph].values) == nil then
     if #data[graph].values == 0 or #data[graph].values ~= max_column then
@@ -194,87 +245,56 @@ function draw(graph, wibox, cr, width, height)
       data[graph].values={}
       for i=1,max_column do
         --the following line feed the graph with random value if you uncomment it and comment the line after it
-        data[graph].values[i]=math.random(0,100) / 100
-        --data[graph].values[i]=0
+        --data[graph].values[i]=math.random(0,100) / 100
+        data[graph].values[i]=0
       end
     end
     --Fill the graph 
-    x=width -(h_margin + rounded_size * less_value)
-    y=height-(v_margin) 
+    x=data[graph].width -(h_padding + rounded_size * less_value)
+    y=data[graph].height-(v_padding) 
   
     cr:new_path()
     cr:move_to(x,y)
     cr:line_to(x,y)
     for i=1,max_column do
-      y_range=height - (2 * v_margin)
-      y= height - (v_margin + ((data[graph].values[i]) * y_range))
-      --y=height -v_margin
+      y_range=data[graph].height - (2 * v_margin)
+      y= data[graph].height - (v_padding + ((data[graph].values[i]) * y_range))
       cr:line_to(x,y)
       x=x-3
     end
-    y=height - (v_margin )
+    y=data[graph].height - (v_padding )
     cr:line_to(x + 3 ,y) 
-    cr:line_to(width - h_margin,height - (v_margin))
+    cr:line_to(width - h_padding,data[graph].height - (v_padding))
     cr:close_path()
   
-    if data[graph].graph_color then
-      r,g,b,a=helpers.hexadecimal_to_rgba_percent(data[graph].graph_color)
-      cr:set_source_rgba(r, g, b, a)
-    else
-      cr:set_source_rgba(0.5, 0.7, 0.1, 0.7)
-    end
+    r,g,b,a=helpers.hexadecimal_to_rgba_percent(graph_color)
+    cr:set_source_rgba(r, g, b, a)
     cr:fill()
   
     --Draw the graph line
---    if data[graph].graph_line_color then
---      r,g,b,a=helpers.hexadecimal_to_rgba_percent(data[graph].graph_line_color)
---      cr:set_source_rgba(r, g, b,a)
---    else
---      cr:set_source_rgba(0.5, 0.7, 0.1,1)
---    end
+    r,g,b,a=helpers.hexadecimal_to_rgba_percent(graph_line_color)
+    cr:set_source_rgba(r, g, b,a)
 --    
---    x=width - (h_margin + rounded_size * less_value)
---    y=height-(v_margin) 
+    x=data[graph].width - (h_padding + rounded_size * less_value)
+    y=data[graph].height-(v_padding) 
 -- 
---    cr:new_path()
---    for i=1,max_column do
---      --First value
---      if i == 1 and  data[graph].values[i] > 0 then
---        cr:move_to(x,y)
---        cr:line_to(x,y)
---        y_range=height - (2 * v_margin)
---        y= height - (v_margin + ((data[graph].values[i]) * y_range))
---        cr:line_to(x,y)
---      elseif i ~= 1 and i ~= #data[graph].values then
---      --Other values
---        if data[graph].values[i] > 0 then
---          y_range=height - (2 * v_margin)
---          y= height - (v_margin + ((data[graph].values[i]) * y_range))
---          cr:line_to(x,y)
---        elseif data[graph].values[i] <= 0 and data[graph].values[i-1] > 0 then
---          cr:line_to(x -3 , height-(v_margin) )
---          cr:move_to(x,height-(v_margin))
---        elseif data[graph].values[i] <= 0 and data[graph].values[i-1] <= 0 then
---          cr:move_to(x,height-(v_margin))
---        end
---      end
---      x=x-3
---    end
---    cr:stroke()
+    cr:new_path()
+    cr:move_to(x,y)
+    cr:line_to(x,y)
+    for i=1,max_column do
+      y_range=data[graph].height - (2 * h_margin + 1)
+      y= data[graph].height - (v_margin + ((data[graph].values[i]) * y_range))
+      cr:line_to(x,y)
+      x=x-3
+    end
+    x=x + 3
+    y=data[graph].height - (v_padding )
+    cr:line_to(x ,y) 
+    cr:stroke()
     
     if data[graph].show_text == true then
     --Draw Text and it's background
-      if data[graph].text_font_size == nil then
-        data[graph].text_font_size = 9
-      end
-      cr:set_font_size(data[graph].text_font_size)
-    
-      if data[graph].background_text_color == nil then
-        data[graph].background_text_color = "#000000dd" 
-      end
-      if data[graph].text_color == nil then
-        data[graph].text_color = "#ffffffff" 
-      end    
+      cr:set_font_size(font_size)
     
       local value = data[graph].values[1] * 100
       if data[graph].label then
@@ -285,10 +305,10 @@ function draw(graph, wibox, cr, width, height)
 
       helpers.draw_text_and_background(cr, 
                                         text, 
-                                        h_margin + rounded_size * less_value, 
-                                        height/2 , 
-                                        data[graph].background_text_color, 
-                                        data[graph].text_color,
+                                        h_padding + rounded_size * less_value, 
+                                        data[graph].height/2 , 
+                                        background_text_color, 
+                                        text_color,
                                         false,
                                         true,
                                         false,
@@ -301,6 +321,8 @@ function fit(graph, width, height)
 end
 
 --- Add a value to the graph
+-- For compatibility between old and new awesome widget, add_value can be replaced by set_value
+-- @usage mygraph:add_value(a) or mygraph:set_value(a)
 -- @param graph The graph.
 -- @param value The value between 0 and 1.
 -- @param group The stack color group index.
@@ -373,6 +395,7 @@ function new(args)
     data[graph] = { width = width, height = height, values = {} }
 
     -- Set methods
+    graph.set_value = add_value
     graph.add_value = add_value
     graph.draw = draw
     graph.fit = fit

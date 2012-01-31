@@ -71,15 +71,15 @@ local data = setmetatable({}, { __mode = "k" })
 --@param rounded_size float in [0,1]
 
 ---Define the color for all the text of the widget (white by default)
---@usage myvt_box:set_default_text_color(string) -->"#rrggbbaa"
---@name set_default_text_color
+--@usage myvt_box:set_text_color(string) -->"#rrggbbaa"
+--@name set_text_color
 --@class function
 --@param vt_box the value text box
 --@param color a string "#rrggbbaa" or "#rrggbb
 
 ---Define the value text color depending on the limit given ( if value >= limit, we apply the color).
 --@usage myvt_box:set_values_text_color(table) -->{ {"#rrggbbaa", limit 1}, {"#rrggbbaa", limit 2}}
---  By default the color is default_text_color(another example: {{"#88aa00ff",0},{"#d4aa00ff", 0.5},{"#d45500ff",0.75}})
+--  By default the color is text_color(another example: {{"#88aa00ff",0},{"#d4aa00ff", 0.5},{"#d45500ff",0.75}})
 --@name set_values_text_color
 --@class function
 --@param vt_box the value text box
@@ -105,13 +105,13 @@ local data = setmetatable({}, { __mode = "k" })
 local properties = {    "width", "height", "h_margin", "v_margin", "padding",
                         "background_border", "background_color", 
                         "text_background_border", "text_background_color",
-                        "rounded_size", "default_text_color", "values_text_color", 
+                        "rounded_size", "text_color", "values_text_color", 
                         "font_size", "label"
                    }
 
 function draw(vt_box, wibox, cr, width, height)
   local v_margin =  2 
-  if data[vt_box].v_margin and data[vt_box].v_margin <= data[vt_box].height/4 then 
+  if data[vt_box].v_margin and data[vt_box].v_margin <= data[vt_box].height/3 then 
     v_margin = data[vt_box].v_margin 
   end
   local h_margin = 2
@@ -170,8 +170,6 @@ function draw(vt_box, wibox, cr, width, height)
   end  
     --draw the value
 
-    --get the colors used to display the value
-
     --analyse the label :
     label_parts={}
     label_length = string.len(label)
@@ -196,12 +194,22 @@ function draw(vt_box, wibox, cr, width, height)
         table.insert(label_parts,{label_parts[#label_parts][2] + 1, label_length})
       end
     end
-    x= h_margin + padding
+   
+    --Position the  x start of the text. If rounded_corner, then we move the text on the right
+    local move_because_of_rounded_corners=0
+    if width> height then
+      move_because_of_rounded_corners=((height/2) * rounded_size)/2
+    else
+      move_because_of_rounded_corners=((width/2) * rounded_size)/2
+    end
+    x= h_margin + padding + move_because_of_rounded_corners
     y= 0 
     --Draw the text:
 
-    local default_text_color = data[vt_box].default_text_color or "#ffffffff"
+    local default_text_color = data[vt_box].text_color or "#ffffffff"
     local value_text_color = default_text_color 
+    --get the colors used to display the value
+
     if data[vt_box].values_text_color  and type(data[vt_box].values_text_color) == "table" then
       for i,table in ipairs(data[vt_box].values_text_color) do
         if i == 1 then 
@@ -227,7 +235,7 @@ function draw(vt_box, wibox, cr, width, height)
         r,g,b,a = helpers.hexadecimal_to_rgba_percent(value_text_color)
         cr:set_source_rgba(r,g,b,a)
         ext = cr:text_extents(text)
-        y=data[vt_box].height/2 + font_size/2 - padding/2 
+        y=math.floor(data[vt_box].height/2 + font_size/2 - padding/2) 
         cr:set_font_size(font_size)
         cr:move_to(x,y)
         cr:show_text(text)
@@ -239,7 +247,7 @@ function draw(vt_box, wibox, cr, width, height)
         cr:set_source_rgba(r,g,b,a)
         ext = cr:text_extents(text)
        
-        y=data[vt_box].height/2 + font_size/2 - padding/2 
+        y=math.floor(data[vt_box].height/2 + font_size/2 - padding/2) 
  
         cr:set_font_size(font_size)
         cr:move_to(x,y)
@@ -255,9 +263,10 @@ function fit(vt_box, width, height)
 end
 
 --- Add a value to the vt_box
+-- For compatibility between old and new awesome widget, add_value can be replaced by set_value
+-- @usage myvt_box:add_value(a) or myvt_box:set_value(a)
 -- @param vt_box The vt_box.
 -- @param value The value between 0 and 1.
--- @param group The stack color group index.
 local function add_value(vt_box, value)
     if not vt_box then return end
 
@@ -323,6 +332,7 @@ function new(args)
     data[vt_box] = { width = width, height = height }
 
     -- Set methods
+    vt_box.set_value = set_value
     vt_box.add_value = add_value
     vt_box.draw = draw
     vt_box.fit = fit

@@ -1,6 +1,6 @@
 local table = table
 local awful =require("awful")
----Dialog menus for system reboot and shutdown
+---Dialog menus for reboot/shutdown your system
 module("blingbling.system")
 
 local shutdown_cmd= 'dbus-send --system --print-reply --dest="org.freedesktop.ConsoleKit" /org/freedesktop/ConsoleKit/Manager org.freedesktop.ConsoleKit.Manager.Stop'

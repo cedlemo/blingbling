@@ -5,7 +5,6 @@ local type = type
 local base = require("wibox.layout.base")
 local widget_base = require("wibox.widget.base")
 local helpers = require("blingbling.helpers")
----Layout diplaying widget as a table
 module("blingbling.wibox.layout.array")
 
 -- Draw the given align layout. dir describes the orientation of the layout, "x"

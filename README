@@ -16,13 +16,14 @@ Parts of blingbling that works with the next release:
 *text_box --> ok (new widget) will be used in calendar 
 *System shutdown/Reboot button --> ok (100%)
 *Udisks-glue widget menu --> ok (100%)
-*Table widget layout --> replaced by wibox/layout/array.lua (60%)
+*Table widget layout --> replaced by wibox/layout/array.lua (100%)
 *flex layout --> ok (100%)
-*calendar --> see current day (ok), change month(ok), get external agenda/to do events(ok), widgets displaying events need to be improvedi, margins not managed (95%)
+*calendar --> see current day(ok), change month(ok), get external agenda/to do events(ok), widgets displaying events need to be improved, margins not managed (95%)
+*Progress graph --> ok (100%)  
+
 Parts to be adapted :
 
 *Tiled graph
-*Progress graph
 *Progress bar
 *Volume graph
 *Mpd widget
