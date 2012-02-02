@@ -102,6 +102,7 @@ module('blingbling.calendar')
 --@name set_link_to_external_calendar
 --@param calendar a calendar widget
 --@param boolean true or false (false by default)
+
 local data = setmetatable( {}, { __mode = "k"})
 
 local properties = { "width","margin", "inter_margin", "cell_background_color", "cell_padding", "rounded_size", "text_color", "font_size", "title_background_color", "title_text_color", "title_font_size", "columns_lines_titles_background_color", "columns_lines_titles_text_color", "columns_lines_titles_font_size", "link_to_external_calendar"}
@@ -315,8 +316,12 @@ function generate_cal(calendar)
   local screen_h = screen_geometry.y + screen_geometry.height
   local mouse_coords = capi.mouse.coords()
   local all_lines_height = 0
-
+  
   local day_labels = { "Mo", "Tu", "We", "Th", "Fr","Sa" , "Su"}
+  if data[calendar].day_labels ~= nil then
+    day_labels = data[calendar].day_labels
+  end
+    
   data[calendar].days_of_month={}
   local weeks_of_year={}
   local current_day_of_month= tonumber(os.date("%d")) 
@@ -649,6 +654,36 @@ function add_focus(calendar)
     end
   end
 end
+
+---Modify the label for the days
+--@class function
+--@name set_day_labels
+--@param calendar a calendar widget
+--@param your_day_labels a table with seven elements
+
+function set_day_labels(calendar, your_day_labels )
+  if type(your_day_labels) ~= "table" then
+    data[calendar].day_labels =nil
+  else
+    nb_val = 0
+    for i,v in ipairs(your_day_labels) do
+      nb_val = 1 + nb_val
+    end
+    if nb_val ~= 7 then
+      data[calendar].day_labels =nil
+    else
+      data[calendar].day_labels ={}
+      for i,v in ipairs(your_day_labels) do
+        if string.len(v) >= 2 then
+          table.insert(data[calendar].day_labels,string.sub(v,1,2)) 
+        else
+          table.insert(data[calendar].day_labels,v + " ")
+        end
+      end
+    end
+  end
+end
+
 -- Build properties function
 for _, prop in ipairs(properties) do
     if not _M["set_" .. prop] then
@@ -721,6 +756,7 @@ function new(args)
  
   bind_click_to_toggle_visibility(calendar)
   calendar.append_function_get_events_from = append_function_get_events_from
+  calendar.set_day_labels = set_day_labels
   calendar.clear_and_add_function_get_events_from = clear_and_add_function_get_events_from
   return calendar
 end
