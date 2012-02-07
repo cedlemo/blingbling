@@ -771,11 +771,28 @@ function set_calendar_title(calendar, your_string )
   end
   return calendar
 end
+
 function set_calendar_locale(calendar, your_local)
   os.setlocale(your_local)
   data[calendar].day_labels ={}
+  --variable for lenght check --> hungarian abbreviate day name not the same length
+  local max_day_lenght=0
+
   for i=6,12 do 
     table.insert(data[calendar].day_labels,(os.date("%a",os.time({month=2,day=i,year=2012})))) 
+    --check the length for utf-8 string
+    local _,utf8_str_len =string.gsub(os.date("%a",os.time({month=2,day=i,year=2012})), "[^\128-\193]","")
+    if utf8_str_len > max_day_lenght then
+      max_day_lenght = utf8_str_len
+    end
+  end
+  --check length and add space at the begining
+  for i,v in ipairs(data[calendar].day_labels) do
+   local _,utf8_str_len =string.gsub(v, "[^\128-\193]","") 
+   local diff = max_day_lenght - utf8_str_len
+   if diff ~= 0 then
+    data[calendar].day_labels[i]=string.rep(" ",diff) .. v
+   end
   end
   data[calendar].month_labels = {}
   for i=1,12 do 
@@ -833,9 +850,25 @@ function new(args)
   end
   
   data[calendar].day_labels ={}
+    --variable for lenght check --> hungarian abbreviate day name not the same length
+  local max_day_lenght=0
   for i=6,12 do 
     table.insert(data[calendar].day_labels,(os.date("%a",os.time({month=2,day=i,year=2012})))) 
+    --check the length for utf-8 string
+    local _,utf8_str_len =string.gsub(os.date("%a",os.time({month=2,day=i,year=2012})), "[^\128-\193]","")
+    if utf8_str_len > max_day_lenght then
+      max_day_lenght = utf8_str_len
+    end
   end
+  --check length and add space at the begining
+  for i,v in ipairs(data[calendar].day_labels) do
+    local _,utf8_str_len =string.gsub(v, "[^\128-\193]","") 
+    local diff = max_day_lenght - utf8_str_len
+    if diff ~= 0 then
+      data[calendar].day_labels[i]=string.rep(" ",diff) .. v
+    end
+  end
+  
   data[calendar].month_labels = {}
   for i=1,12 do 
     table.insert(data[calendar].month_labels,os.date("%B",os.time({month=i,day=1,year=2012}))) 
