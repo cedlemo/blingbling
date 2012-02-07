@@ -163,6 +163,8 @@ function bind_click_to_toggle_visibility(calendar)
 end
 
 function display_new_month( calendar,month, year)
+  local month_label = { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" }
+  
   local month_label = os.date("%B", os.time{year=year, month=month, day=01})
   local padding = data[calendar].cell_padding or 4 
   local background_color = data[calendar].cell_background_color or "#00000066"
@@ -177,7 +179,22 @@ function display_new_month( calendar,month, year)
   local columns_lines_titles_text_color = data[calendar].columns_lines_titles_text_color or text_color
   local columns_lines_titles_font_size = data[calendar].columns_lines_titles_font_size or font_size
   
-  local cell =helpers.generate_rounded_rectangle_with_text_in_image(month_label.." "..year, 
+  local calendar_title =""
+  if data[calendar].calendar_title == nil then
+    calendar_title = month_label.." "..year
+  else
+    if data[calendar].month_labels ~= nil then
+      y = year
+      m = data[calendar].month_labels[month]
+    else
+      y = year
+      m = month_label[month]
+    end
+    calendar_title = string.gsub(data[calendar].calendar_title, "$year", y)
+    calendar_title = string.gsub(calendar_title, "$month", m)
+  end
+  
+  local cell =helpers.generate_rounded_rectangle_with_text_in_image(calendar_title, 
                                                                     padding, 
                                                                     title_background_color, 
                                                                     title_text_color, 
@@ -318,6 +335,7 @@ function generate_cal(calendar)
   local all_lines_height = 0
   
   local day_labels = { "Mo", "Tu", "We", "Th", "Fr","Sa" , "Su"}
+  local month_label = { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" }
   if data[calendar].day_labels ~= nil then
     day_labels = data[calendar].day_labels
   end
@@ -343,9 +361,23 @@ function generate_cal(calendar)
   local max_day_cells = 42 
   local day_of_month = 0 
   local day_widgets={}
-  
+  local calendar_title =""
+  if data[calendar].calendar_title == nil then
+    calendar_title = os.date("%B %Y")
+  else
+    if data[calendar].month_labels ~= nil then
+      y = year_displayed
+      m = data[calendar].month_labels[tonumber(os.date("%m"))]
+    else
+      y = year_displayed
+      m = month_label[month_displayed]
+    end
+    calendar_title = string.gsub(data[calendar].calendar_title, "$year", y)
+    calendar_title = string.gsub(calendar_title, "$month", m)
+  end
+
   --generate title cells with displayed month and year
-  local cell_month_year =helpers.generate_rounded_rectangle_with_text_in_image(os.date("%B %Y"), 
+  local cell_month_year =helpers.generate_rounded_rectangle_with_text_in_image(calendar_title, 
                                                                     padding, 
                                                                     title_background_color, 
                                                                     title_text_color, 
@@ -674,14 +706,67 @@ function set_day_labels(calendar, your_day_labels )
     else
       data[calendar].day_labels ={}
       for i,v in ipairs(your_day_labels) do
-        if string.len(v) >= 2 then
-          table.insert(data[calendar].day_labels,string.sub(v,1,2)) 
+        --check the length for utf-8 string
+        local _,utf8_str_len =string.gsub(v, "[^\128-\193]","")
+        if utf8_str_len >= 2 then
+          --get 2 first utf-8 char and set them in a string
+          local uchar =""
+          local index = 0
+          local utf8_str =""
+          for uchar in string.gfind(v, "([%z\1-\127\194-\244][\128-\191]*)") do
+            index = index + 1
+            if index <= 2 then
+              utf8_str = utf8_str .. uchar 
+            else
+              break
+            end
+          end
+          table.insert(data[calendar].day_labels,utf8_str) 
         else
-          table.insert(data[calendar].day_labels,v + " ")
+          table.insert(data[calendar].day_labels,v .. " ")
         end
       end
     end
   end
+end
+---Modify the label for the months 
+--@class function
+--@name set_month_labels
+--@param calendar a calendar widget
+--@param your_month_labels a table with twelve elements
+
+function set_month_labels(calendar, your_month_labels )
+  if type(your_month_labels) ~= "table" then
+    data[calendar].month_labels =nil
+  else
+    nb_val = 0
+    for i,v in ipairs(your_month_labels) do
+      nb_val = 1 + nb_val
+    end
+    if nb_val ~= 12 then
+      data[calendar].month_labels =nil
+    else
+      data[calendar].month_labels ={}
+      for i,v in ipairs(your_month_labels) do
+        table.insert(data[calendar].month_labels,v) 
+      end
+    end
+  end
+  return calendar
+end
+---Define the format of the calendar
+--User can set a string containing $month and $year
+--@class function
+--@param calendar a calendar widget
+--@param your_string a string
+function set_calendar_title(calendar, your_string )
+  data[calendar].calendar_title =""
+  if type(your_string) == "string" and your_string ~= nil then
+    data[calendar].calendar_title = your_string
+  else
+    data[calendar].calendar_title = nil
+  end
+  return calendar
 end
 
 -- Build properties function
@@ -757,6 +842,8 @@ function new(args)
   bind_click_to_toggle_visibility(calendar)
   calendar.append_function_get_events_from = append_function_get_events_from
   calendar.set_day_labels = set_day_labels
+  calendar.set_month_labels = set_month_labels
+  calendar.set_calendar_title = set_calendar_title
   calendar.clear_and_add_function_get_events_from = clear_and_add_function_get_events_from
   return calendar
 end
