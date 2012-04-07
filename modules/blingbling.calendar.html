@@ -146,6 +146,11 @@
 	</tr>
 
 	<tr>
+	<td class="name" nowrap><a href="#set_calendar_title">set_calendar_title</a>&nbsp;(calendar, your_string)</td>
+	<td class="summary">Define the format of the calendar User can set a string containing $month and $year </td>
+	</tr>
+
+	<tr>
 	<td class="name" nowrap><a href="#set_cell_background_color">set_cell_background_color</a>&nbsp;(calendar, color)</td>
 	<td class="summary">Define the color of the common cells in the table </td>
 	</tr>
@@ -171,6 +176,11 @@
 	</tr>
 
 	<tr>
+	<td class="name" nowrap><a href="#set_day_labels">set_day_labels</a>&nbsp;(calendar, your_day_labels)</td>
+	<td class="summary">Modify the label for the days </td>
+	</tr>
+
+	<tr>
 	<td class="name" nowrap><a href="#set_font_size">set_font_size</a>&nbsp;(calendar, font_size)</td>
 	<td class="summary">Define the font size in common cells </td>
 	</tr>
@@ -183,6 +193,11 @@
 	<tr>
 	<td class="name" nowrap><a href="#set_link_to_external_calendar">set_link_to_external_calendar</a>&nbsp;(calendar, boolean)</td>
 	<td class="summary">Link calendar to remind and task warrior in order to get events informations for each day </td>
+	</tr>
+
+	<tr>
+	<td class="name" nowrap><a href="#set_month_labels">set_month_labels</a>&nbsp;(calendar, your_month_labels)</td>
+	<td class="summary">Modify the label for the months </td>
 	</tr>
 
 	<tr>
@@ -311,6 +326,36 @@ Create new calendar widget
 
 <h3>Return value:</h3>
 calendar a calendar
+
+
+
+</dd>
+
+
+
+
+<dt><a name="set_calendar_title"></a><strong>set_calendar_title</strong>&nbsp;(calendar, your_string)</dt>
+<dd>
+Define the format of the calendar User can set a string containing $month and $year
+
+
+<h3>Parameters</h3>
+<ul>
+	
+	<li>
+	  calendar: a calendar widget
+	</li>
+	
+	<li>
+	  your_string: a string
+	</li>
+	
+</ul>
+
+
+
+
+
 
 
 
@@ -469,6 +514,36 @@ Define the color of the text in columns and lines titles cells
 
 
 
+<dt><a name="set_day_labels"></a><strong>set_day_labels</strong>&nbsp;(calendar, your_day_labels)</dt>
+<dd>
+Modify the label for the days
+
+
+<h3>Parameters</h3>
+<ul>
+	
+	<li>
+	  calendar: a calendar widget
+	</li>
+	
+	<li>
+	  your_day_labels: a table with seven elements
+	</li>
+	
+</ul>
+
+
+
+
+
+
+
+
+</dd>
+
+
+
+
 <dt><a name="set_font_size"></a><strong>set_font_size</strong>&nbsp;(calendar, font_size)</dt>
 <dd>
 Define the font size in common cells
@@ -543,6 +618,36 @@ Link calendar to remind and task warrior in order to get events informations for
 	
 	<li>
 	  boolean: true or false (false by default)
+	</li>
+	
+</ul>
+
+
+
+
+
+
+
+
+</dd>
+
+
+
+
+<dt><a name="set_month_labels"></a><strong>set_month_labels</strong>&nbsp;(calendar, your_month_labels)</dt>
+<dd>
+Modify the label for the months
+
+
+<h3>Parameters</h3>
+<ul>
+	
+	<li>
+	  calendar: a calendar widget
+	</li>
+	
+	<li>
+	  your_month_labels: a table with twelve elements
 	</li>
 	
 </ul>

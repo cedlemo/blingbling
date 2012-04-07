@@ -33,7 +33,7 @@ end
 
 local function generate_tasks_management_submenu(tw_menu, task_id)
   management_submenu={}
-  table.insert(management_submenu,{ "Task "..task_id..": set done", "task done "..task_id, data[tw_menu].task_done_icon })
+  table.insert(management_submenu,{ "Task "..task_id..": set done", "task "..task_idi .. " done", data[tw_menu].task_done_icon })
  return management_submenu
 end
 local function get_tasks(tw_menu, project)
