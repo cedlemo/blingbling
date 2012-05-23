@@ -19,18 +19,23 @@ local processpopup = nil
 local processstats = nil
 local proc_offset = 25
 
-local function hide_process_info()
+local function hide_ps_info()
   if processpopup ~= nil then
     naughty.destroy(processpopup)
     processpopup = nil
     proc_offset = 25
   end
 end
-local function show_process_info(inc_proc_offset, title_color,user_color, root_color)
+
+local function pscmd(sortspec)
+  return awful.util.pread('/bin/ps --sort ' .. sortspec ..  ',-s -eo fname,user,%cpu,%mem,pid,gid,ppid,tname,label | /usr/bin/head -n '..proc_offset)
+end
+
+local function show_ps_info(sortspec, inc_proc_offset, title_color,user_color, root_color)
   local save_proc_offset = proc_offset
-	hide_process_info()
+	hide_ps_info()
 	proc_offset = save_proc_offset + inc_proc_offset
-  processstats = awful.util.pread('/bin/ps --sort -c,-s -eo fname,user,%cpu,%mem,pid,gid,ppid,tname,label | /usr/bin/head -n '..proc_offset)
+        processstats = pscmd(sortspec)
 	processstats = colorize(processstats, "COMMAND", title_color)
 	processstats = colorize(processstats, "USER", title_color)
 	processstats = colorize(processstats, "%%CPU", title_color)
@@ -47,6 +52,15 @@ local function show_process_info(inc_proc_offset, title_color,user_color, root_c
 	timeout = 0, hover_timeout = 0.5,
 	})
 end
+
+local function show_process_info(inc_proc_offset, title_color,user_color, root_color)
+	show_ps_info("-c", inc_proc_offset, title_color, user_color, root_color)
+end
+
+local function show_mem_info(inc_proc_offset, title_color,user_color, root_color)
+	show_ps_info("-pmem", inc_proc_offset, title_color, user_color, root_color)
+end
+
 ---Top popup
 --It binds a colorized output of the top command to a widget, and the possibility to launch htop with a click on the widget.
 --</br>Example blingbling.popups.htop(mycairograph,{ title_color = "#rrggbbaa", user_color    = "#rrggbbaa", root_color="#rrggbbaa", terminal = "urxvt"})
@@ -61,7 +75,7 @@ mywidget:add_signal("mouse::enter", function()
     show_process_info(0, args["title_color"], args["user_color"],args["root_color"])
     end)
 mywidget:add_signal("mouse::leave", function()
-    hide_process_info()
+    hide_ps_info()
     end)
 
 mywidget:buttons(awful.util.table.join(
@@ -80,6 +94,32 @@ mywidget:buttons(awful.util.table.join(
        end)
     ))
 end
+
+function memtop(mywidget, args)
+	mywidget:add_signal("mouse::enter", function()
+		show_mem_info(0, args["title_color"], args["user_color"],args["root_color"])
+  	end)
+	mywidget:add_signal("mouse::leave", function()
+		hide_ps_info()
+  	end)
+
+	mywidget:buttons(awful.util.table.join(
+		awful.button({ }, 4, function()
+			show_mem_info(-1, args["title_color"], args["user_color"],args["root_color"])
+		end),
+		awful.button({ }, 5, function()
+	    show_mem_info(1, args["title_color"], args["user_color"],args["root_color"])
+		end),
+		awful.button({ }, 1, function()
+			if args["terminal"] then
+				awful.util.spawn_with_shell(args["terminal"] .. " -e htop --sort-key PERCENT_MEM")
+	    else
+				awful.util.spawn_with_shell("xterm" .. " -e htop --sort-key PERCENT_MEM")
+      end
+    end)
+  ))
+end
+
 local netpopup = nil
 local function get_netinfo( my_title_color, my_established_color, my_listen_color)
   str=awful.util.pread('/bin/netstat -pa -u -t | grep -v TIME_WAIT')
