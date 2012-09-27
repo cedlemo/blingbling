@@ -148,7 +148,7 @@ local function update(p_graph)
 
 --Generate Background (background widget)
   if data[p_graph].background_color then
-    helpers.draw_rounded_corners_rectangle( graph_context,
+    helpers.draw_rounded_corners_rectangle( p_graph_context,
                                             0,
                                             0,
                                             data[p_graph].width, 
