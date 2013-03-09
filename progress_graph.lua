@@ -121,6 +121,7 @@ local properties = {    "width", "height", "v_margin", "h_margin",
                         "graph_color", "graph_line_color","show_text", "text_color", 
                         "background_text_color" ,"label", "font_size","horizontal"}
 
+<<<<<<< HEAD
 function progressgraph.draw(p_graph, wibox, cr, width, height)
     -- We want one pixel wide lines
     cr:set_line_width(1)
@@ -158,6 +159,11 @@ function progressgraph.draw(p_graph, wibox, cr, width, height)
     --Generate Background (background widget)
     if data[p_graph].background_color then
         helpers.draw_rounded_corners_rectangle( cr,
+=======
+--Generate Background (background widget)
+  if data[p_graph].background_color then
+    helpers.draw_rounded_corners_rectangle( p_graph_context,
+>>>>>>> 7ade7fe3887086d7228432c70fb1bd695ef5d4f2
                                             0,
                                             0,
                                             data[p_graph].width, 
