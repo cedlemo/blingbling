@@ -8,11 +8,11 @@ The current version is the v2.0 and works with Awesome WM 3.5. There are a lot o
 
 ###Version: v2.0
 
-*line_graph
-*progress_graph
-*triangular_progress_graph
-*value_text_box
-*volume
+*  line_graph
+*  progress_graph
+*  triangular_progress_graph
+*  value_text_box
+*  volume
 
 ####Installation
 ($XDG_CONFIG_HOME usually ~/.config)
@@ -22,6 +22,7 @@ The current version is the v2.0 and works with Awesome WM 3.5. There are a lot o
 
 ####Use:
 In your rc.lua:
+
     require("blingbling")
 
 Create a line graph and fill it with vicious for example (you can configure the widget with a table or with the related methods ):
@@ -52,6 +53,7 @@ Create some progress graphs :
     end
 
 Add those widgets to your wibox:
+
     for i=1,4 do
       left_layout:add(cores_graphs[i])
     end
@@ -90,22 +92,22 @@ Create a volume widget (triangular progress bar with specific methods):
 ###Version: v1.0
 
 Blingbling v1.0 works for awesome 3.4.10 and 3.4.11.
-*Value text box
-*Classical graph
-*Tiled graph
-*Progress graph
-*Progress bar
-*Volume graph
-*Mpd widget
-*Net widget
-*Top popup
-*Netstat popup
-*System shutdown/Reboot button
-*Udisks-glue widget menu
-*Menu widget
-*Task warrior widget
-*Table widget layout
-*Calendar
+*  Value text box
+*  Classical graph
+*  Tiled graph
+*  Progress graph
+*  Progress bar
+*  Volume graph
+*  Mpd widget
+*  Net widget
+*  Top popup
+*  Netstat popup
+*  System shutdown/Reboot button
+*  Udisks-glue widget menu
+*  Menu widget
+*  Task warrior widget
+*  Table widget layout
+*  Calendar
 
 ####Dependencies
 

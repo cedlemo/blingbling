@@ -138,21 +138,13 @@ function progressgraph.draw(p_graph, wibox, cr, width, height)
     end
     
     local background_border = data[p_graph].background_border or superproperties.background_border
-    
     local background_color = data[p_graph].background_color or superproperties.background_color
-    
-    local rounded_size = data[p_graph].rounded_size or 0
-
+    local rounded_size = data[p_graph].rounded_size or superproperties.rounded_size
     local graph_background_color = data[p_graph].graph_background_color or superproperties.graph_background_color
-    
     local graph_color = data[p_graph].graph_color or superproperties.graph_color
-
     local graph_line_color = data[p_graph].graph_line_color or superproperties.graph_line_color
-
     local text_color = data[p_graph].text_color or superproperties.text_color
-
     local background_text_color = data[p_graph].background_text_color or superproperties.background_text_color
-
     local font_size =data[p_graph].font_size or superproperties.font_size
     
     --Generate Background (background widget)

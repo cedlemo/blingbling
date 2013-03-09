@@ -155,27 +155,18 @@ function linegraph.draw(graph, wibox, cr, width, height)
     end
     
     local background_border = data[graph].background_border or superproperties.background_border
-    
     local background_color = data[graph].background_color or superproperties.background_color
-    
-    local rounded_size = data[graph].rounded_size or 0
-
+    local rounded_size = data[graph].rounded_size or superproperties.rounded_size
     local graph_background_color = data[graph].graph_background_color or superproperties.graph_background_color
-    
     local graph_background_border = data[graph].graph_background_border or superproperties.graph_background_border
-    
     local graph_color = data[graph].graph_color or superproperties.graph_color
-
     local graph_line_color = data[graph].graph_line_color or superproperties.graph_line_color
-
     local text_color = data[graph].text_color or superproperties.text_color
-
     local background_text_color = data[graph].background_text_color or superproperties.background_text_color
-
     local font_size =data[graph].font_size or superproperties.font_size
     
     
-    local line_width = 0.5
+    local line_width = 1
     cr:set_line_width(line_width)
     cr:set_antialias("subpixel") 
     -- Draw the widget background 
@@ -226,19 +217,21 @@ function linegraph.draw(graph, wibox, cr, width, height)
     --Drawn the graph
     --if graph_background_border is set, graph must not be drawn on it 
 
-    if graph_background_border ~= nil then
+    if helpers.is_transparent(graph_background_border) == false then
       h_padding = h_padding + 1
       v_padding = v_padding + 1
     end
-    --find nb values we can draw every 3 px
+    --find nb values we can draw every column_length px
     --if rounded, make sure that graph don't begin or end outside background
     --check for the less value between hight and height to calculate the space for rounded size:
+    local column_length = 6
+    
     if data[graph].height > data[graph].width then
       less_value = data[graph].width/2
     else
       less_value = data[graph].height/2
     end
-    max_column=math.ceil((data[graph].width - (2*h_padding +2*(rounded_size * less_value)))/3) 
+    max_column=math.ceil((data[graph].width - (2*h_padding +2*(rounded_size * less_value)))/column_length) 
     --Check if the table graph values is empty / not initialized
     --if next(data[graph].values) == nil then
     if #data[graph].values == 0 or #data[graph].values ~= max_column then
@@ -261,11 +254,11 @@ function linegraph.draw(graph, wibox, cr, width, height)
       y_range=data[graph].height - (2 * v_margin)
       y= data[graph].height - (v_padding + ((data[graph].values[i]) * y_range))
       cr:line_to(x,y)
-      x=x-3
+      x=x-column_length
     end
     y=data[graph].height - (v_padding )
-    cr:line_to(x + 3 ,y) 
-    cr:line_to(width - h_padding,data[graph].height - (v_padding))
+    cr:line_to(x + column_length ,y) 
+    cr:line_to(width - h_padding,data[graph].height - (v_padding ))
     cr:close_path()
   
     r,g,b,a=helpers.hexadecimal_to_rgba_percent(graph_color)
@@ -280,17 +273,17 @@ function linegraph.draw(graph, wibox, cr, width, height)
     y=data[graph].height-(v_padding) 
 -- 
     cr:new_path()
-    cr:move_to(x,y)
-    cr:line_to(x,y)
+    cr:move_to(x,y )
+    cr:line_to(x,y )
     for i=1,max_column do
       y_range=data[graph].height - (2 * h_margin + 1)
       y= data[graph].height - (v_margin + ((data[graph].values[i]) * y_range))
-      cr:line_to(x,y)
-      x=x-3
+      cr:line_to(x,y )
+      x=x-column_length
     end
-    x=x + 3
+    x=x + column_length
     y=data[graph].height - (v_padding )
-    cr:line_to(x ,y) 
+    cr:line_to(x ,y ) 
     cr:stroke()
     
     if data[graph].show_text == true then
@@ -340,7 +333,6 @@ local function add_value(graph, value, group)
     local values = data[graph].values
     table.remove(values, #values)
     table.insert(values,1,value)
-   
     graph:emit_signal("widget::updated")
     return graph
 end

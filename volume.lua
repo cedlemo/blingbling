@@ -31,7 +31,7 @@ function volume.draw(volume_graph, wibox, cr, width, height)
     
   local background_border = data[volume_graph].background_border or superproperties.background_border
   local background_color = data[volume_graph].background_color or superproperties.background_color
-  local rounded_size = data[volume_graph].rounded_size or 0
+  local rounded_size = data[volume_graph].rounded_size or superproperties.rounded_size
   local graph_background_color = data[volume_graph].graph_background_color or superproperties.graph_background_color
   local graph_color = data[volume_graph].graph_color or superproperties.graph_color
   local graph_line_color = data[volume_graph].graph_line_color or superproperties.graph_line_color

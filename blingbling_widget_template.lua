@@ -17,6 +17,28 @@ local data = setmetatable({}, { __mode = "k" })
 local properties = {}
 
 function widgetname.draw(graphtype, wibox, cr, width, height)
+
+    local v_margin =  superproperties.v_margin 
+    if data[p_graph].v_margin and data[p_graph].v_margin <= data[p_graph].height/4 then 
+        v_margin = data[p_graph].v_margin 
+    end
+    
+    local h_margin = superproperties.h_margin
+    if data[p_graph].h_margin and data[p_graph].h_margin <= data[p_graph].width / 3 then 
+        h_margin = data[p_graph].h_margin 
+    end
+
+    local background_border = data[graph].background_border or superproperties.background_border
+    local background_color = data[graph].background_color or superproperties.background_color
+    local rounded_size = data[graph].rounded_size or superproperties.rounded_size
+    local graph_background_color = data[graph].graph_background_color or superproperties.graph_background_color
+    local graph_background_border = data[graph].graph_background_border or superproperties.graph_background_border
+    local graph_color = data[graph].graph_color or superproperties.graph_color
+    local graph_line_color = data[graph].graph_line_color or superproperties.graph_line_color
+    local text_color = data[graph].text_color or superproperties.text_color
+    local background_text_color = data[graph].background_text_color or superproperties.background_text_color
+    local font_size =data[graph].font_size or superproperties.font_size
+
 end
 
 function widgetname.fit(graphtype, width, height)

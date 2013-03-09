@@ -45,6 +45,29 @@ function helpers.hexadecimal_to_rgba_percent(my_color)
   return r/255,v/255,b/255,a/255
 end
 
+---Check if an hexadecimal color is fully transparent.
+--Returns true or false
+--@param my_color a string "#rrggbb" or "#rrggbbaa"
+function helpers.is_transparent(my_color)
+  --check if color is a valid hex color else return white
+  if string.find(my_color,"#[0-f][0-f][0-f][0-f][0-f]") then
+  --delete #
+    local my_color=string.gsub(my_color,"^#","")
+    if string.sub(my_color,7,8) == "" then
+      return false
+    else
+      local alpha=string.format("%d", "0x"..string.sub(my_color,7,8))
+
+      if alpha/1 == 0 then
+        return true
+      else
+        return false
+      end
+    end
+  else
+    return false
+   end
+end
 ---Split string in different parts which are returned in a table. The delimiter of each part is a pattern given in argument
 --@param str the string to split
 --@param pat the pattern delimiter

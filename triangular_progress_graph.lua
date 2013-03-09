@@ -108,9 +108,8 @@ function triangular_progressgraph.draw(tp_graph, wibox, cr, width, height)
     h_margin = data[tp_graph].h_margin 
   end
     
-  local background_border = data[tp_graph].background_border or superproperties.background_border
   local background_color = data[tp_graph].background_color or superproperties.background_color
-  local rounded_size = data[tp_graph].rounded_size or 0
+  local rounded_size = data[tp_graph].rounded_size or superproperties.rounded_size
   local graph_background_color = data[tp_graph].graph_background_color or superproperties.graph_background_color
   local graph_color = data[tp_graph].graph_color or superproperties.graph_color
   local graph_line_color = data[tp_graph].graph_line_color or superproperties.graph_line_color
