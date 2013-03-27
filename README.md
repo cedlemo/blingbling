@@ -13,6 +13,7 @@ The current version is the v2.0 and works with Awesome WM 3.5. There are a lot o
 *  triangular_progress_graph
 *  value_text_box
 *  volume
+*  popups
 
 ####Installation
 ($XDG_CONFIG_HOME usually ~/.config)
@@ -88,6 +89,48 @@ Create a volume widget (triangular progress bar with specific methods):
     volume_master:update_master()
     volume_master:set_master_control()
 
+Add popups to one or more widget with blinbling.popups module:
+
+    --Example with cpu_graph created previously with default color :
+    blingbling.popups.htop(cpu_graph, { terminal =  terminal })
+
+    --Example with custom colors:
+    blingbling.popups.htop(cpu_graph, { title_color = beautiful.notify_font_color_1 , user_color = beautiful.notify_font_color_2 , root_color = beautiful.notify_font_color_3 , terminal =  terminal })
+
+Global theming for blingbling.
+
+You can provide default theme for blingbling instead of configuring colors for each widgets. You just need to create a blingbling table in your theme.lua file and override values that can be find in superproperties.lua:
+
+    theme.blingbling = {
+    htop_title_color = "#ff0000",
+    htop_user_color = "#00ff00"
+  }
+
+Values that can be modified are:
+
+Theme values for graph or value_text_box objects: 
+
+*  h_margin
+*  v_margin
+*  background_border
+*  background_color
+*  graph_background_color
+*  graph_background_border
+*  rounded_size
+*  graph_color
+*  graph_line_color
+*  text_color
+*  font_size
+*  background_text_color
+
+ Theme values for popups module:
+
+*  htop_title_color
+*  htop_user_color
+*  htop_root_color
+*  netstat_title_color
+*  nestat_established_color
+*  netstat_listen_color
 
 ###Version: v1.0
 

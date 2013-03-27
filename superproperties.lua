@@ -1,15 +1,25 @@
----Define default values   
+---Define default theme values   
+local beautiful = require("beautiful")
+local blingbling_theme= (type(beautiful.blingbling) == "table") and beautiful.blingbling  or {}
+
 return {
-  h_margin = 2 ;
-  v_margin = 2 ;
-  background_border = nil ;
-  background_color = "#00000000" ;
-  graph_background_color ="#00000066" ;
-  graph_background_border="#00000000" ;
-  rounded_size=0 ;
-  graph_color="#7fb21966" ;
-  graph_line_color="#7fb219" ;
-  text_color="ffffff" ;
-  font_size=9 ;
-  background_text_color ="#00000066" ;
+  h_margin = blingbling_theme.h_margin or 2 ;
+  v_margin = blingbling_theme.v_margin or 2 ;
+  background_border = blingbling_theme.background_border or nil ;
+  background_color = blingbling_theme.background_color or "#00000000" ;
+  graph_background_color = blingbling_theme.graph_background_color or "#00000066" ;
+  graph_background_border= blingbling_theme.graph_background_border or "#00000000" ;
+  rounded_size= blingbling_theme.rounded_size or 0 ;
+  graph_color= blingbling_theme.graph_color or "#7fb21966" ;
+  graph_line_color= blingbling_theme.graph_line_color or "#7fb219" ;
+  text_color= blingbling_theme.text_color or "ffffff" ;
+  font_size= blingbling_theme.font_size or 9 ;
+  background_text_color = blingbling_theme.background_text_color or "#00000066" ;
+--theme values for popups module:
+  htop_title_color = blingbling_theme.htop_title_color or "#7fb219";
+  htop_user_color = blingbling_theme.htop_user_color or "#7fb219";
+  htop_root_color = blingbling_theme.htop_root_color or "#000000";
+  netstat_title_color = blingbling_theme.netstat_title_color or "#7fb219";
+  nestat_established_color = blingbling_theme.nestat_established_color or "#7fb219";
+  netstat_listen_color = blingbling_theme.netstat_listen_color or "#f38915";
 }
