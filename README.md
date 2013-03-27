@@ -104,7 +104,7 @@ You can provide default theme for blingbling instead of configuring colors for e
     theme.blingbling = {
     htop_title_color = "#ff0000",
     htop_user_color = "#00ff00"
-  }
+    }
 
 Values that can be modified are:
 
@@ -123,7 +123,7 @@ Theme values for graph or value_text_box objects:
 *  font_size
 *  background_text_color
 
- Theme values for popups module:
+Theme values for popups module:
 
 *  htop_title_color
 *  htop_user_color
