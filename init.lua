@@ -8,6 +8,7 @@ return
   triangular_progressgraph = require("blingbling.triangular_progress_graph");
   volume = require("blingbling.volume");
   popups = require("blingbling.popups");
+  net = require("blingbling.net")
 }
 
 --TODO adapt net.lua

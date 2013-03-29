@@ -261,8 +261,8 @@ end
 local function update_mpd(volume_graph)
     local state
     local value
-    data[volume_graph].mastertimer = capi.timer({timeout = 0.5})
-    data[volume_graph].mastertimer:add_signal("timeout", function() 
+    data[volume_graph].mastertimer = timer({timeout = 0.5})
+    data[volume_graph].mastertimer:connect_signal("timeout", function() 
       value = get_mpd_volume(); set_value(volume_graph,value/100) 
     end)
         data[volume_graph].mastertimer:start()

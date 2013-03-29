@@ -14,6 +14,7 @@ The current version is the v2.0 and works with Awesome WM 3.5. There are a lot o
 *  value_text_box
 *  volume
 *  popups
+*  net
 
 ####Installation
 ($XDG_CONFIG_HOME usually ~/.config)
@@ -26,6 +27,7 @@ In your rc.lua:
 
     require("blingbling")
 
+#####line_graph
 Create a line graph and fill it with vicious for example (you can configure the widget with a table or with the related methods ):
 
     cpu_graph = blingbling.line_graph({ height = 18,
@@ -43,7 +45,7 @@ Create a line graph and fill it with vicious for example (you can configure the 
     --cpu_graph:set_graph_background_color("#00000033")
     vicious.register(cpu_graph, vicious.widgets.cpu,'$1',2)
 
-    
+#####progress_graph
 Create some progress graphs :
 
     cores_graph_conf ={height = 18, width = 8, rounded_size = 0.3}
@@ -59,6 +61,7 @@ Add those widgets to your wibox:
       left_layout:add(cores_graphs[i])
     end
 
+#####value_text_box
 Create a value text box:
 
     home_fs_usage=blingbling.value_text_box({height = 18, width = 40, v_margin = 4})
@@ -78,17 +81,20 @@ Create a value text box:
     
     vicious.register(home_fs_usage, vicious.widgets.fs, "${/home used_p}", 120 )
 
+#####triangular_progress_graph
 Create a triangular progress graph (can be feed with vicious too):
 
     triangular = blingbling.triangular_progressgraph({height = 18, width = 40, bar = true, v_margin = 2, h_margin = 2})
     triangular:set_value(0.7)
 
+#####volume
 Create a volume widget (triangular progress bar with specific methods):
 
     volume_master = blingbling.volume({height = 18, width = 40, bar =true, show_text = true, label ="$percent%"})
     volume_master:update_master()
     volume_master:set_master_control()
 
+#####popups
 Add popups to one or more widget with blinbling.popups module:
 
     --Example with cpu_graph created previously with default color :
@@ -97,7 +103,13 @@ Add popups to one or more widget with blinbling.popups module:
     --Example with custom colors:
     blingbling.popups.htop(cpu_graph, { title_color = beautiful.notify_font_color_1 , user_color = beautiful.notify_font_color_2 , root_color = beautiful.notify_font_color_3 , terminal =  terminal })
 
-Global theming for blingbling.
+#####net
+Create a net widget with a popup that display connection informations:
+
+    netwidget = blingbling.net({interface = "eth0", show_text = true})
+    netwidget:set_ippopup()
+
+#####Global theming for blingbling.
 
 You can provide default theme for blingbling instead of configuring colors for each widgets. You just need to create a blingbling table in your theme.lua file and override values that can be find in superproperties.lua:
 
