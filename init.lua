@@ -9,10 +9,6 @@ return
   volume = require("blingbling.volume");
   popups = require("blingbling.popups");
   net = require("blingbling.net")
+  task_warrior = require("blingbling.task_warrior")
 }
-
---TODO adapt net.lua
---TODO check utility of group in add_value
---TODO system.lua
---TODO udisks_glue.lua
 

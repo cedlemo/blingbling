@@ -15,6 +15,7 @@ The current version is the v2.0 and works with Awesome WM 3.5. There are a lot o
 *  volume
 *  popups
 *  net
+*  task_warrior
 
 ####Installation
 ($XDG_CONFIG_HOME usually ~/.config)
@@ -109,6 +110,11 @@ Create a net widget with a popup that display connection informations:
     netwidget = blingbling.net({interface = "eth0", show_text = true})
     netwidget:set_ippopup()
 
+#####task_warrior
+Create a new task_warrior menu:
+
+    task_w = blingbling.task_warrior({ menu_icon = file_path, project_icon = file_path, task_icon = file_path ,task_done_icon = file_path, width})
+    task_w:set_project_icon(themes_dir .. "/test/titlebar/maximized_focus_active.png")
 #####Global theming for blingbling.
 
 You can provide default theme for blingbling instead of configuring colors for each widgets. You just need to create a blingbling table in your theme.lua file and override values that can be find in superproperties.lua:
@@ -143,6 +149,11 @@ Theme values for popups module:
 *  netstat_title_color
 *  nestat_established_color
 *  netstat_listen_color
+
+Theme value for taskwarrior:
+
+*  menu_width
+
 
 ###Version: v1.0
 
