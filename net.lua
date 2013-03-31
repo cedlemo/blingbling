@@ -385,7 +385,7 @@ function net.new(args)
       data[n_graph][v] = args[v] 
     end
     if args.interface then
-      data[n_graph].interface = interface
+      data[n_graph].interface = args.interface
     end
     data[n_graph].nets = {}
     --or
