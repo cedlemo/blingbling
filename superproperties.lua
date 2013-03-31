@@ -22,4 +22,5 @@ return {
   netstat_title_color = blingbling_theme.netstat_title_color or "#7fb219";
   nestat_established_color = blingbling_theme.nestat_established_color or "#7fb219";
   netstat_listen_color = blingbling_theme.netstat_listen_color or "#f38915";
+  menu_width = blingbling_theme.menu_width or 300;
 }
