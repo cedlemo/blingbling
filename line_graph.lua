@@ -122,7 +122,7 @@ local properties = {    "width", "height", "h_margin", "v_margin",
                         "background_border", "background_color", 
                         "graph_background_border", "graph_background_color",
                         "rounded_size", "graph_color", "graph_line_color",
-                        "show_text", "text_color", "font_size",
+                        "show_text", "text_color", "font_size", "font",
                         "text_background_color", "label"
                    }
 
@@ -164,7 +164,7 @@ function linegraph.draw(graph, wibox, cr, width, height)
     local text_color = data[graph].text_color or superproperties.text_color
     local background_text_color = data[graph].background_text_color or superproperties.background_text_color
     local font_size =data[graph].font_size or superproperties.font_size
-    
+    local font = data[graph].font or superproperties.font
     
     local line_width = 1
     cr:set_line_width(line_width)
@@ -289,6 +289,12 @@ function linegraph.draw(graph, wibox, cr, width, height)
     if data[graph].show_text == true then
     --Draw Text and it's background
       cr:set_font_size(font_size)
+
+      if type(font) == "string" then
+        cr:select_font_face(font,nil,nil)
+      elseif type(font) == "table" then
+        cr:select_font_face(font.family or "Sans", font.slang or "normal", font.weight or "normal")
+      end
     
       local value = data[graph].values[1] * 100
       if data[graph].label then

@@ -119,7 +119,7 @@ local properties = {    "width", "height", "v_margin", "h_margin",
                         "background_border","background_color",
                         "graph_background_color","rounded_size",
                         "graph_color", "graph_line_color","show_text", "text_color", 
-                        "background_text_color" ,"label", "font_size","horizontal"}
+                        "background_text_color" ,"label", "font_size","font","horizontal"}
 
 function progressgraph.draw(p_graph, wibox, cr, width, height)
     -- We want one pixel wide lines
@@ -146,6 +146,7 @@ function progressgraph.draw(p_graph, wibox, cr, width, height)
     local text_color = data[p_graph].text_color or superproperties.text_color
     local background_text_color = data[p_graph].background_text_color or superproperties.background_text_color
     local font_size =data[p_graph].font_size or superproperties.font_size
+    local font = data[p_graph].font or superproperties.font
     
     --Generate Background (background widget)
     if data[p_graph].background_color then
@@ -188,7 +189,13 @@ function progressgraph.draw(p_graph, wibox, cr, width, height)
 
     if data[p_graph].show_text == true then
         cr:set_font_size(font_size)
-    
+
+        if type(font) == "string" then
+          cr:select_font_face(font,nil,nil)
+        elseif type(font) == "table" then
+          cr:select_font_face(font.family or "Sans", font.slang or "normal", font.weight or "normal")
+        end
+        
         local value = data[p_graph].value * 100
         if data[p_graph].label then
             text=string.gsub(data[p_graph].label,"$percent", value)

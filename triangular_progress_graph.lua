@@ -94,7 +94,7 @@ local superproperties = require('blingbling.superproperties')
 local triangular_progressgraph = { mt = {} }
 
 local data = setmetatable({}, { __mode = "k" })
-local properties = {"width", "height", "v_margin", "h_margin", "background_color", "graph_background_color", "graph_color","graph_line_color","show_text", "text_color", "background_text_color" ,"label", "font_size", "bar"}
+local properties = {"width", "height", "v_margin", "h_margin", "background_color", "graph_background_color", "graph_color","graph_line_color","show_text", "text_color", "background_text_color" ,"label", "font_size","font", "bar"}
 
 function triangular_progressgraph.draw(tp_graph, wibox, cr, width, height)
 
@@ -116,6 +116,7 @@ function triangular_progressgraph.draw(tp_graph, wibox, cr, width, height)
   local text_color = data[tp_graph].text_color or superproperties.text_color
   local background_text_color = data[tp_graph].background_text_color or superproperties.background_text_color
   local font_size =data[tp_graph].font_size or superproperties.font_size
+  local font = data[tp_graph].font or superproperties.font
 
 --Generate Background (background color and Tiles)
     r,g,b,a = helpers.hexadecimal_to_rgba_percent(background_color)
@@ -239,6 +240,12 @@ function triangular_progressgraph.draw(tp_graph, wibox, cr, width, height)
 
     cr:set_font_size(font_size)
   
+    if type(font) == "string" then
+      cr:select_font_face(font,nil,nil)
+    elseif type(font) == "table" then
+      cr:select_font_face(font.family or "Sans", font.slang or "normal", font.weight or "normal")
+    end
+
     local value = data[tp_graph].value * 100
     
     if data[tp_graph].label then

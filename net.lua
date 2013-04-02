@@ -19,7 +19,7 @@ local superproperties = require('blingbling.superproperties')
 local net = { mt = {} }
 
 local data = setmetatable({}, { __mode = "k" })
-local properties = {"interface", "width", "height", "v_margin", "h_margin", "background_color", "filled", "filled_color", "background_graph_color","graph_color", "graph_line_color","show_text", "text_color", "background_text_color" ,"label", "font_size","horizontal"}
+local properties = {"interface", "width", "height", "v_margin", "h_margin", "background_color", "filled", "filled_color", "background_graph_color","graph_color", "graph_line_color","show_text", "text_color", "background_text_color" ,"label", "font_size","font", "horizontal"}
 
 function net.draw(n_graph, wibox, cr, width, height)
 
@@ -43,6 +43,7 @@ function net.draw(n_graph, wibox, cr, width, height)
   local text_color = data[n_graph].text_color or superproperties.text_color
   local background_text_color = data[n_graph].background_text_color or superproperties.background_text_color
   local font_size =data[n_graph].font_size or superproperties.font_size
+  local font = data[n_graph].font or superproperties.font
 
   local interface=""
   if data[n_graph].interface == nil then
@@ -51,7 +52,14 @@ function net.draw(n_graph, wibox, cr, width, height)
   interface = data[n_graph].interface 
   
   if data[n_graph].show_text then
-    --search the good width to display all text and graph and modify the widget width if necessary
+    cr:set_font_size(font_size)
+
+    if type(font) == "string" then
+      cr:select_font_face(font,nil,nil)
+    elseif type(font) == "table" then
+      cr:select_font_face(font.family or "Sans", font.slang or "normal", font.weight or "normal")
+    end
+  --search the good width to display all text and graph and modify the widget width if necessary
     --Adapt widget width with max lenght text
     local text_reference="1.00mb"
     local ext=cr:text_extents(text_reference)

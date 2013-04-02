@@ -9,6 +9,7 @@ local string = string
 local color = require("gears.color")
 local base = require("wibox.widget.base")
 local helpers = require("blingbling.helpers")
+local superproperties = require("blingbling.superproperties")
 ---A text box that can display value and text with colors. 
 --module("blingbling.value_text_box")
 
@@ -105,27 +106,48 @@ local data = setmetatable({}, { __mode = "k" })
 
 local properties = {    "width", "height", "h_margin", "v_margin", "padding",
                         "background_border", "background_color", 
-                        "text_background_border", "text_background_color",
+                        "background_text_border", "background_text_color",
                         "rounded_size", "text_color", "values_text_color", 
-                        "font_size", "label"
+                        "font_size", "font", "label"
                    }
 
 function value_text_box.draw(vt_box, wibox, cr, width, height)
-  local v_margin =  2 
+  local v_margin =  superproperties.v_margin  
   if data[vt_box].v_margin and data[vt_box].v_margin <= data[vt_box].height/3 then 
     v_margin = data[vt_box].v_margin 
   end
-  local h_margin = 2
+  local h_margin = superproperties.h_margin 
   if data[vt_box].h_margin and data[vt_box].h_margin <= data[vt_box].width / 3 then 
     h_margin = data[vt_box].h_margin 
   end
-  local padding = data[vt_box].padding or 2
-  local font_size = data[vt_box].font_size or 9
+  --local padding = data[vt_box].padding or 2
+  --local font_size = data[vt_box].font_size or 9
+  local padding = data[vt_box].padding or superproperties.padding
+  local background_border = data[vt_box].background_border or superproperties.background_border
+  local background_color = data[vt_box].background_color or superproperties.background_color
+  local rounded_size = data[vt_box].rounded_size or superproperties.rounded_size
+  local graph_background_color = data[vt_box].graph_background_color or superproperties.graph_background_color
+  local graph_background_border = data[vt_box].graph_background_border or superproperties.graph_background_border
+  local graph_color = data[vt_box].graph_color or superproperties.graph_color
+  local graph_line_color = data[vt_box].graph_line_color or superproperties.graph_line_color
+  local text_color = data[vt_box].text_color or superproperties.text_color
+  local background_text_color = data[vt_box].background_text_color or superproperties.background_text_color
+  local font_size =data[vt_box].font_size or superproperties.font_size
+  local font = data[vt_box].font or superproperties.font
   --find the width of our image
   local value = (data[vt_box].value or 0) * 100
   local label = data[vt_box].label or "$percent"
   local text = string.gsub(label,"$percent", value)
+
   cr:set_font_size(font_size)
+
+  if type(font) == "string" then
+    cr:select_font_face(font,nil,nil)
+  elseif type(font) == "table" then
+    cr:select_font_face(font.family or "Sans", font.slang or "normal", font.weight or "normal")
+  end
+      
+  
   local ext = cr:text_extents(text)
   local height = ( (font_size + 2* padding + 2* v_margin) > data[vt_box].height ) and font_size + 2* padding + 2* v_margin or data[vt_box].height
   local width = ( math.ceil(ext.width +2*ext.x_bearing+ 2*padding + 2* h_margin) > data[vt_box].width ) and  math.ceil(ext.width +2*ext.x_bearing+ 2*padding + 2* h_margin) or data[vt_box].width
@@ -137,8 +159,6 @@ function value_text_box.draw(vt_box, wibox, cr, width, height)
     data[vt_box].height = height
   end
   
-  local rounded_size = data[vt_box].rounded_size or 0
-  
   --Generate Background (background widget)
   if data[vt_box].background_color then
     helpers.draw_rounded_corners_rectangle( cr,
@@ -146,9 +166,9 @@ function value_text_box.draw(vt_box, wibox, cr, width, height)
                                             0,
                                             data[vt_box].width, 
                                             data[vt_box].height,
-                                            data[vt_box].background_color, 
+                                            background_color, 
                                             rounded_size,
-                                            data[vt_box].background_border
+                                            background_border
                                             )
   
   end
@@ -164,9 +184,9 @@ function value_text_box.draw(vt_box, wibox, cr, width, height)
                                             y,
                                             data[vt_box].width - h_margin, 
                                             data[vt_box].height - v_margin, 
-                                            data[vt_box].text_background_color, 
+                                            background_text_color, 
                                             rounded_size,
-                                            data[vt_box].text_background_border
+                                            background_text_border
                                             )
   end  
     --draw the value

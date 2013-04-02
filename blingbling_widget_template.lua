@@ -38,6 +38,7 @@ function widgetname.draw(graphtype, wibox, cr, width, height)
     local text_color = data[graph].text_color or superproperties.text_color
     local background_text_color = data[graph].background_text_color or superproperties.background_text_color
     local font_size =data[graph].font_size or superproperties.font_size
+    local font = data[graph].font or superproperties.font
 
 end
 

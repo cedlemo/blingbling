@@ -15,7 +15,7 @@ local superproperties = require('blingbling.superproperties')
 local volume = { mt = {} }
 
 local data = setmetatable({}, { __mode = "k" })
-local properties = {"width", "height", "v_margin", "h_margin", "background_color", "graph_background_color", "graph_color","show_text", "text_color", "background_text_color" ,"label", "font_size", "bar"}
+local properties = {"width", "height", "v_margin", "h_margin", "background_color", "graph_background_color", "graph_color","show_text", "text_color", "background_text_color" ,"label", "font_size","font", "bar"}
 
 function volume.draw(volume_graph, wibox, cr, width, height)
 
@@ -38,6 +38,7 @@ function volume.draw(volume_graph, wibox, cr, width, height)
   local text_color = data[volume_graph].text_color or superproperties.text_color
   local background_text_color = data[volume_graph].background_text_color or superproperties.background_text_color
   local font_size =data[volume_graph].font_size or superproperties.font_size
+  local font = data[volume_graph].font or superproperties.font
 
 
   r,g,b,a = helpers.hexadecimal_to_rgba_percent(background_color)
@@ -159,7 +160,13 @@ function volume.draw(volume_graph, wibox, cr, width, height)
   if data[volume_graph].show_text == true  then 
 
     cr:set_font_size(font_size)
-  
+
+    if type(font) == "string" then
+      cr:select_font_face(font,nil,nil)
+    elseif type(font) == "table" then
+      cr:select_font_face(font.family or "Sans", font.slang or "normal", font.weight or "normal")
+    end
+        
     local value = data[volume_graph].value * 100
     
     if data[volume_graph].label then
@@ -327,8 +334,8 @@ end
 -- key to set graph geometry.
 -- @return A graph widget.
 function volume.new(args)
-    args.type = "imagebox"
     local args = args or {}
+    args.type = "imagebox"
 
     args.width = args.width or 100
     args.height = args.height or 20
