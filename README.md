@@ -16,6 +16,7 @@ The current version is the v2.0 and works with Awesome WM 3.5. There are a lot o
 *  popups
 *  net
 *  task_warrior
+*  udisks_glue
 
 ####Installation
 ($XDG_CONFIG_HOME usually ~/.config)
@@ -115,6 +116,14 @@ Create a new task_warrior menu:
 
     task_w = blingbling.task_warrior({ menu_icon = file_path, project_icon = file_path, task_icon = file_path ,task_done_icon = file_path, width})
     task_w:set_project_icon(themes_dir .. "/test/titlebar/maximized_focus_active.png")
+
+#####udisks_glue
+Create a menu which displaying mounted media with actions like mount/unmount/detach/eject. Must be used with .udisks-glue.conf that I created. ( The name of the variable containing the widget must be the same in your rc.lua and in the .udisks-glue.conf).
+
+    udisks_glue=blingbling.udisks_glue.new({ menu_icon = themes_dir .. "/test/titlebar/maximized_focus_active.png"})
+
+note: udisks-glue have not been updated since one or 2 years. Furthermore it doesn't work with logind which is used in a lot of distributions. So I think that I have to find another way to manage external media.
+
 #####Global theming for blingbling.
 
 You can provide default theme for blingbling instead of configuring colors for each widgets. You just need to create a blingbling table in your theme.lua file and override values that can be find in superproperties.lua:
