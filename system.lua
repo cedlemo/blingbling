@@ -2,7 +2,6 @@ local table = table
 local awful = require("awful")
 
 ---Two menu launchers for reboot and shutdown your system.
-module("blingbling.system")
 
 local shutdown_cmd= 'systemctl poweroff'
 local reboot_cmd='systemctl reboot'
