@@ -10,7 +10,7 @@ return
   popups = require("blingbling.popups");
   net = require("blingbling.net");
   task_warrior = require("blingbling.task_warrior");
-  udisks_glue = require("blingbling.udisks_glue")
-  system = require(blingbling.system")
+  udisks_glue = require("blingbling.udisks_glue");
+  system = require("blingbling.system")
 }
 
