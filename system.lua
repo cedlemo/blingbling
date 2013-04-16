@@ -34,7 +34,7 @@ end
 
 ---Reboot menu launcher
 --Create a button with an accept/cancel menu for reboot the system: reboot=blingbling.system.rebootmenu(launcher_image, menu_dialog_image_ok, menu_.dialog_image_cancel)
---@param an_image an image file that will be displayed in the wibox
+--@param button_image an image file that will be displayed in the wibox
 --@param accept_image an image file for the accept menu entry
 --@param cancel_image an image file for the cancel menu entry
 local function rebootmenu(button_image, accept_image, cancel_image)
