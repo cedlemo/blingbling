@@ -38,8 +38,7 @@ local function unmounted_submenu(ud_menu,a_device)
 end
 local function unmount_multiple_partitions(ud_menu, mount_points)
   for _,m in ipairs(mount_points) do
-    print(m)
-    udisks_send(ud_menu, "unmount", m)
+      awful.util.pread(udisks_send(ud_menu, "unmount", m))
   end
 end
 local function generate_menu(ud_menu)
