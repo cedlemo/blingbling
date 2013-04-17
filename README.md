@@ -17,6 +17,7 @@ The current version is the v2.0 and works with Awesome WM 3.5. There are a lot o
 *  net
 *  task_warrior
 *  udisks_glue
+*  system
 
 ####Installation
 ($XDG_CONFIG_HOME usually ~/.config)
@@ -124,6 +125,18 @@ Create a menu which displaying mounted media with actions like mount/unmount/det
 
 note: udisks-glue have not been updated since one or 2 years. Furthermore it doesn't work with logind which is used in a lot of distributions. So I think that I have to find another way to manage external media.
 
+#####system
+Provide buttons with menu in order to reboot or shutdown the system. User can set icon for menu, accept and cancel actions.
+
+    shutdown=blingbling.system.shutdownmenu(beautiful.shutdown,
+                                            beautiful.accept,
+                                            beautiful.cancel)
+
+    reboot=blingbling.system.rebootmenu(beautiful.reboot,
+                                        beautiful.accept,
+                                        beautiful.cancel)
+
+
 #####Global theming for blingbling.
 
 You can provide default theme for blingbling instead of configuring colors for each widgets. You just need to create a blingbling table in your theme.lua file and override values that can be find in superproperties.lua:
@@ -200,7 +213,12 @@ Check your package manager to see if you can install an already packaged version
     git checkout v1.0
 
 
-Author
+Author:
 -------
 
 cedlemo contact: cedlemo at gmx dot com
+
+Contributors
+-------
+
+quizzmaster
