@@ -36,10 +36,11 @@ local function unmounted_submenu(ud_menu,a_device)
   }
   return my_submenu
 end
-local function unmount_multiple_partitions(ud_menu, mount_points)
+local function unmount_multiple_partitions(ud_menu, a_device, mount_points)
   for _,m in ipairs(mount_points) do
       awful.util.pread(udisks_send(ud_menu, "unmount", m))
   end
+  remove_device(ud_menu, a_device, nil, "Usb" )
 end
 local function generate_menu(ud_menu)
 --all_devices={device_name={partition_1,partition_2}
@@ -69,7 +70,7 @@ local function generate_menu(ud_menu)
         end
       end
       if check_remain_mounted_partition == 1 then
-        table.insert(my_submenu,{"unmount all", unmount_multiple_partitions(ud_menu, mounted_partitions ), data[ud_menu]["umount_icon"]})
+        table.insert(my_submenu,{"unmount all", unmount_multiple_partitions(ud_menu, k, mounted_partitions ), data[ud_menu]["umount_icon"]})
         --table.insert(my_submenu,{"Can\'t "..action, {{k .." busy"}}, data[ud_menu][action.."_icon"]})
       else
         table.insert(my_submenu,{action, udisks_send(ud_menu, action, k), data[ud_menu][action.."_icon"]})
