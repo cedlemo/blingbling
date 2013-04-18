@@ -51,7 +51,7 @@ local function generate_menu(ud_menu)
     for k,v in pairs(data[ud_menu].all_devices) do
       local device_type=data[ud_menu].devices_type[k]
       local action=""
-      if device_type == "Usb" then
+      if device_type == "USB" then
         action="detach"
       else
         action="eject"
@@ -103,9 +103,9 @@ local function display_menu(ud_menu)
 ))
 end
 
-function mount_device(ud_menu,device, mount_point, device_type) 
+function mount_device(ud_menu,device, mount_point, device_type, filesystem) 
 --  generate the device_name
-  if device_type == "Usb" then
+  if device_type == "USB" then
     device_name = string.gsub(device,"%d*","")
   else 
     device_name=device
@@ -131,19 +131,23 @@ function mount_device(ud_menu,device, mount_point, device_type)
   data[ud_menu].partition_state[device]="mounted"
   data[ud_menu].menu:hide()  
   data[ud_menu].menu_visible = "false"
-  naughty.notify({title = device_type..":", text =device .. " mounted on" .. mount_point, timeout = 10})
+  -- naughty.notify({title = device_type..":", text =device .. " mounted on" .. mount_point, timeout = 10})
+  naughty.notify({title = "Udisks " .. device_type .. " " .. filesystem .. ":", text =device .. " mounted on" .. mount_point, icon="/home/michael/.config/icons/usb_eject.png", timeout = 10, width = 300})
+
 end
 
 function unmount_device(ud_menu, device, mount_point, device_type)
   data[ud_menu].partition_state[device]="unmounted"
   data[ud_menu].menu:hide()  
   data[ud_menu].menu_visible = "false"
-  naughty.notify({title = device_type..":", text = device .." unmounted", timeout = 10})
+  -- naughty.notify({title = device_type..":", text = device .." unmounted", timeout = 10})
+  naughty.notify({title = device_type ..":", text = device .." removed", icon="/home/michael/.config/icons/usb_unmount.png", timeout = 10, width = 300})
+
 end
 
 function remove_device(ud_menu, device, mount_point, device_type )
   local device_name=""
-  if device_type == "Usb" then
+  if device_type == "USB" then
     device_name=string.gsub(device,"%d*","")
   else
     device_name = device
@@ -164,7 +168,8 @@ function remove_device(ud_menu, device, mount_point, device_type )
   end
   data[ud_menu].menu:hide()  
   data[ud_menu].menu_visible = "false"
-  naughty.notify({title = device_type ..":", text = device .." removed", timeout = 10})
+  -- naughty.notify({title = device_type ..":", text = device .." removed", timeout = 10})
+  naughty.notify({title = device_type ..":", text = device .." removed", icon="/home/michael/.config/icons/usb_remove.png", timeout = 10, width = 300})
 end
 
 function set_mount_icon(ud_menu,an_image)
