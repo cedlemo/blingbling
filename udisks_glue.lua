@@ -37,10 +37,12 @@ local function unmounted_submenu(ud_menu,a_device)
   return my_submenu
 end
 local function unmount_multiple_partitions(ud_menu, a_device, mount_points)
-  for _,m in ipairs(mount_points) do
-      awful.util.pread(udisks_send(ud_menu, "unmount", m))
+	local command = ""
+	for _,m in ipairs(mount_points) do
+    command = command .. udisks_send(ud_menu, "unmount", m)..";"
   end
-  remove_device(ud_menu, a_device, nil, "Usb" )
+  command = command .. udisks_send(ud_menu, "detach", a_device)
+  return command
 end
 local function generate_menu(ud_menu)
 --all_devices={device_name={partition_1,partition_2}
