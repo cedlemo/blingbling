@@ -10,6 +10,7 @@ local type = type
 local setmetatable = setmetatable
 local table = table
 local wibox = require("wibox")
+local debug = debug
 
 local udisks_glue = { mt = {} }
 
@@ -37,21 +38,20 @@ local function unmounted_submenu(ud_menu,a_device)
   return my_submenu
 end
 local function unmount_multiple_partitions(ud_menu, a_device, mount_points)
-	local command = ""
-	for _,m in ipairs(mount_points) do
-    command = command .. udisks_send(ud_menu, "unmount", m)..";"
+  local command = "bash -c \""
+  for _,m in ipairs(mount_points) do
+		command = command .. udisks_send(ud_menu, "unmount", m)..";"
   end
-  command = command .. udisks_send(ud_menu, "detach", a_device)
-  return command
+  command = command .. udisks_send(ud_menu, "detach", a_device) .. "\""
+	return command
 end
 local function generate_menu(ud_menu)
 --all_devices={device_name={partition_1,partition_2}
 --devices_type={device_name=Usb or Cdrom}
 --partition_state={partition_name = mounted or unmounted}
-  my_menu={}
-  debug=1 
+  local my_menu={}
   if next(data[ud_menu].all_devices) ~= nil then
-    for k,v in pairs(data[ud_menu].all_devices) do
+		for k,v in pairs(data[ud_menu].all_devices) do
       local device_type=data[ud_menu].devices_type[k]
       local action=""
       if device_type == "Usb" then
@@ -106,7 +106,7 @@ local function display_menu(ud_menu)
 ))
 end
 
-function mount_device(ud_menu,device, mount_point, device_type) 
+function udisks_glue.mount_device(ud_menu,device, mount_point, device_type) 
 --  generate the device_name
   if device_type == "Usb" then
     device_name = string.gsub(device,"%d*","")
@@ -116,11 +116,9 @@ function mount_device(ud_menu,device, mount_point, device_type)
 --  add all_devices entry:
 --  check if device is already registred
   if data[ud_menu].all_devices[device_name] == nil then
---      device not yet registred
       data[ud_menu].all_devices[device_name]={device}
       data[ud_menu].devices_type[device_name] = device_type
-  else
---      device, registred, check if partition already registred      
+  else    
       partition_already_registred = 0
       for i, v in ipairs(data[ud_menu].all_devices[device_name]) do
         if v == device then
@@ -135,6 +133,7 @@ function mount_device(ud_menu,device, mount_point, device_type)
   data[ud_menu].menu:hide()  
   data[ud_menu].menu_visible = "false"
   naughty.notify({title = device_type..":", text =device .. " mounted on" .. mount_point, timeout = 10})
+  return ud_menu 
 end
 
 function unmount_device(ud_menu, device, mount_point, device_type)
@@ -214,7 +213,7 @@ function udisks_glue.new(args)
                   detach_icon=args.detach_icon,
                   eject_icon=args.eject_icon,
                   } 
-  ud_menu.mount_device = mount_device
+	ud_menu.mount_device = udisks_glue.mount_device
   ud_menu.unmount_device = unmount_device
   ud_menu.remove_device = remove_device
   ud_menu.set_mount_icon = set_mount_icon
