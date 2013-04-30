@@ -19,6 +19,9 @@ The current version is the v2.0 and works with Awesome WM 3.5. There are a lot o
 *  udisks_glue
 *  system
 
+This part is an adaptation of some of the wlourf awesome stuff : http://wlourf.deviantart.com/art/widgets-for-awesome-wm-v1-3-269061228.
+*  wlourf circle
+
 ####Installation
 ($XDG_CONFIG_HOME usually ~/.config)
 
@@ -135,6 +138,18 @@ Provide buttons with menu in order to reboot or shutdown the system. User can se
     reboot=blingbling.system.rebootmenu(beautiful.reboot,
                                         beautiful.accept,
                                         beautiful.cancel)
+
+#####wlourf circle graph
+This is the circle graph of wlourf that you can feed with vicious.
+
+    circle = blingbling.wlourf_circle_graph({radius= 5, height = 18, width = 36, show_text = true, label = "cpu", h_margin = 2, v_margin = 0 --[[, font = {family = "Times New Roman", slang = "italic", weight = "bold"}]]})
+    circle:set_graph_colors({{"#88aa00ff",0}, --all value > 0 will be displaying using this color
+                           {"#d4aa00ff", 0.5},
+                           {"#d45500ff",0.77}})
+    --set the value directly
+    --circle:add_value(0.5)
+    --or use vicious
+    vicious.register(circle, vicious.widgets.cpu,'$1',2)
 
 
 #####Global theming for blingbling.

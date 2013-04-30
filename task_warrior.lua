@@ -50,9 +50,9 @@ local function get_tasks(tw_menu, project)
   end
   local my_tasks=awful.util.pread("task rc.defaultwidth=0 project:\"".. project.."\" minimal ")
   --escape specific char ( need to be extended)
-  project_pattern=string.gsub(project,"%-","%%%-") or ""
-  project_pattern=string.gsub(project_pattern,"%_","%%%_") or ""
-  project_pattern=string.gsub(project_pattern,"%.","%%%.") or ""
+  project_pattern=string.gsub(project,"%-","%%-") or ""
+  project_pattern=string.gsub(project_pattern,"%_","%%_") or ""
+  project_pattern=string.gsub(project_pattern,"%.","%%.") or ""
 
   each_tasks={}
   each_tasks=helpers.split(my_tasks,"\n")
