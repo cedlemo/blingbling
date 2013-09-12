@@ -18,6 +18,7 @@ The current version is the v2.0 and works with Awesome WM 3.5. There are a lot o
 *  task_warrior
 *  udisks_glue
 *  system
+*  clock
 
 This part is an adaptation of some of the wlourf awesome stuff : http://wlourf.deviantart.com/art/widgets-for-awesome-wm-v1-3-269061228.
 *  wlourf circle
@@ -74,7 +75,7 @@ Create a value text box:
     --home_fs_usage:set_height(16)
     --home_fs_usage:set_width(40)
     --home_fs_usage:set_v_margin(2)
-    home_fs_usage:set_text_background_color("#00000099")
+    home_fs_usage:set_background_text_color("#00000099")
     home_fs_usage:set_values_text_color({{"#88aa00ff",0}, --all value > 0 will be displaying using this color
                               {"#d4aa00ff", 0.75},
                               {"#d45500ff",0.77}})
@@ -138,6 +139,15 @@ Provide buttons with menu in order to reboot or shutdown the system. User can se
     reboot=blingbling.system.rebootmenu(beautiful.reboot,
                                         beautiful.accept,
                                         beautiful.cancel)
+    lock=blingbling.system.lockmenu() --icons have been set in theme via the theme.bligbling table
+		logout=blingbling.system.logoutmenu() --icons have been set in theme via the theme.blingbling table
+
+
+#####clock
+This part provides a clock displaying month, day of month and day of week in japanese (kanji form)
+
+    mytextclock = blingbling.clock.japanese(" %m、%d、%w、<span color=\"#999999\">%H<span color=\""..blingbling.helpers.rgb(20,31,82).."\">時</span>%M<span color=\""..blingbling.helpers.rgb(20,31,82).."\">分</span> </span>")
+
 
 #####wlourf circle graph
 This is the circle graph of wlourf that you can feed with vicious.
@@ -191,6 +201,12 @@ Theme value for taskwarrior:
 
 *  menu_width
 
+Theme value for system (icons):
+
+*  shutdown
+*  reboot
+*  lock
+*  logout
 
 ###Version: v1.0
 
