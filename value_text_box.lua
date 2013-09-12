@@ -174,7 +174,7 @@ function value_text_box.draw(vt_box, wibox, cr, width, height)
   end
   
   --Draw nothing, or filled ( value background)
-  if data[vt_box].text_background_color then
+  if data[vt_box].background_text_color then
     --draw rounded corner rectangle
     local x=h_margin
     local y=v_margin

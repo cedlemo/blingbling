@@ -1,6 +1,7 @@
 local table = table
 local awful = require("awful")
-local awesome = require("awesome")
+local superproperties = require('blingbling.superproperties')
+--local awesome = require("awesome")
 ---Three menu launchers for main, reboot and shutdown your system.
 
 local shutdown_cmd= 'systemctl poweroff'
@@ -15,16 +16,16 @@ local lock_cmd='xscreensaver-command -lock'
 --@param lock_image the image that will be displayed with the lock option
 local function mainmenu(main_image, shutdown_image, reboot_image, logout_image, lock_image)
   if not shutdown_image then
-    shutdown_image = nil
+    shutdown_image = superproperties.shutdown or nil
   end
   if not reboot_image then
-    reboot_image = nil
+    reboot_image = superproperties.reboot or nil
   end
   if not logout_image then
-    logout_image = nil
+    logout_image = superproperties.logout or nil
   end
-  if not shutdown_image then
-    logout_image = nil
+  if not lock_image then
+    lock_image = nil
   end
 
   powermenu = awful.menu({ items = { 
@@ -44,15 +45,45 @@ end
 --@param accept_image an image file for the accept menu entry
 --@param cancel_image an image file for the cancel menu entry
 local function shutdownmenu(button_image, accept_image, cancel_image)
-  if not accept_image then
-    accept_image = nil
+  if not button_image then
+		button_image = superproperties.shutdown or nil
+	end
+	if not accept_image then
+    accept_image = superproperties.accept or nil
   end
   if not cancel_image then
-    cancel_image = nil
+    cancel_image = superproperties.cancel or nil
   end
   
   shutdownmenu = awful.menu({ items = { 
                                         { "Shutdown", shutdown_cmd, accept_image },
+                                        { "Cancel", "", cancel_image }
+                                      }
+                            })
+
+  shutdownbutton = awful.widget.launcher({ image = button_image,
+                                           menu = shutdownmenu })
+  return shutdownbutton
+end
+
+---Lock menu launcher
+--Create a button with an accept/cancel menu for locking the system: shutdown=blingbling.system.lockmenu(launcher_image, menu_dialog_image_ok, menu_.dialog_image_cancel)
+--@param button_image an image file that will be displayed in the wibox
+--@param accept_image an image file for the accept menu entry
+--@param cancel_image an image file for the cancel menu entry
+local function lockmenu(button_image, accept_image, cancel_image)
+  if not button_image then
+		button_image = superproperties.lock or nil
+	end
+	if not accept_image then
+    accept_image = superproperties.accept or nil
+  end
+  if not cancel_image then
+    cancel_image = superproperties.cancel or nil
+  end
+  
+  shutdownmenu = awful.menu({ items = { 
+                                        { "Lock", lock_cmd, accept_image },
                                         { "Cancel", "", cancel_image }
                                       }
                             })
@@ -68,11 +99,14 @@ end
 --@param accept_image an image file for the accept menu entry
 --@param cancel_image an image file for the cancel menu entry
 local function rebootmenu(button_image, accept_image, cancel_image)
-  if not accept_image then
-    accept_image = nil
+  if not buttom_image then
+		button_image = superproperties.reboot or nil
+	end
+	if not accept_image then
+    accept_image = superproperties.accept or nil
   end
   if not cancel_image then
-    cancel_image = nil
+    cancel_image = superproperties.cancel or nil
   end
   rebootmenu = awful.menu({ items = { 
                                       { "Reboot", reboot_cmd, accept_image },
@@ -84,9 +118,35 @@ local function rebootmenu(button_image, accept_image, cancel_image)
                                            menu = rebootmenu })
   return rebootbutton
 end
+---Logout menu launcher
+--Create a button with an accept/cancel menu for reboot the system: logout=blingbling.system.logouttmenu(launcher_image, menu_dialog_image_ok, menu_.dialog_image_cancel)
+--@param button_image an image file that will be displayed in the wibox
+--@param accept_image an image file for the accept menu entry
+--@param cancel_image an image file for the cancel menu entry
+local function logoutmenu(button_image, accept_image, cancel_image)
+  if not buttom_image then
+		button_image = superproperties.logout or nil
+	end
+	if not accept_image then
+    accept_image = superproperties.accept or nil
+  end
+  if not cancel_image then
+    cancel_image = superproperties.cancel or nil
+  end
+  logoutmenu = awful.menu({ items = { 
+                                      { "Reboot", awesome.quit, accept_image },
+                                      { "Cancel", "" , cancel_image}
+                                    }
+                          })
 
+  logoutbutton = awful.widget.launcher({ image = button_image,
+                                           menu = rebootmenu })
+  return logoutbutton
+end
 return {
   shutdownmenu = shutdownmenu;
   rebootmenu = rebootmenu;
-  mainmenu = mainmenu
+	lockmenu = lockmenu;
+  mainmenu = mainmenu;
+	logoutmenu = logoutmenu
 }

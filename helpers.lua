@@ -45,6 +45,24 @@ function helpers.hexadecimal_to_rgba_percent(my_color)
   return r/255,v/255,b/255,a/255
 end
 
+---Get red green blue value in parameters and return hexadecimal string
+function helpers.rgb(red, green, blue)
+	if type(red) == "number" or type(green) == "number" or type(blue) == "number" then
+		return "#"..string.format("%02x",red)..string.format("%02x",green)..string.format("%02x",blue)
+	else
+	  return nil
+	end
+end
+
+---Get red green blue and alpha value in parameters and return hexadecimal string
+function helpers.rgba(red, green, blue, alpha)
+	if type(red) == "number" or type(green) == "number" or type(blue) == "number" or type(alpha) == "number" then
+		return "#"..string.format("%02x",red)..string.format("%02x",green)..string.format("%02x",blue)..string.format("%02x",alpha * 255)
+	else
+		return nil
+	end
+end
+
 ---Check if an hexadecimal color is fully transparent.
 --Returns true or false
 --@param my_color a string "#rrggbb" or "#rrggbbaa"

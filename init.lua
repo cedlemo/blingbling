@@ -12,6 +12,7 @@ return
   task_warrior = require("blingbling.task_warrior");
   udisks_glue = require("blingbling.udisks_glue");
 	wlourf_circle_graph = require("blingbling.wlourf_circle_graph");
-  system = require("blingbling.system")
+  system = require("blingbling.system");
+	clock = require("blingbling.clock");
 }
 

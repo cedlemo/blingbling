@@ -24,7 +24,14 @@ return {
   netstat_title_color = blingbling_theme.netstat_title_color or "#7fb219";
   nestat_established_color = blingbling_theme.nestat_established_color or "#7fb219";
   netstat_listen_color = blingbling_theme.netstat_listen_color or "#f38915";
---theme value for value_text_box
+--theme values for value_text_box
   padding = blingbling_theme.padding or 2;
   menu_width = blingbling_theme.menu_width or 300;
+--theme values for system menus
+	reboot = blingbling_theme.reboot or nil;
+	shutdown = blingbling_theme.shutdown or nil;
+	logout = blingbling_theme.logout or nil;
+	accept = blingbling_theme.accept or nil;
+	cancel = blingbling_theme.cancel or nil;
+	lock = blingbling_theme.lock or nil
 }
