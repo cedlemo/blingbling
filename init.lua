@@ -13,6 +13,8 @@ return
   udisks_glue = require("blingbling.udisks_glue");
 	wlourf_circle_graph = require("blingbling.wlourf_circle_graph");
   system = require("blingbling.system");
+	text_box = require("blingbling.text_box");
 	clock = require("blingbling.clock");
+	tagslist = require("blingbling.tagslist")
 }
 

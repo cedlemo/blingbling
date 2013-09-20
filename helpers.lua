@@ -10,6 +10,7 @@ local print = print
 --module("blingbling.helpers")
 
 local helpers={}
+
 ---Display values of variables in an awesome popup.
 --Each variables in vars is separated by a "|"
 --@param vars a table of variable
@@ -362,7 +363,7 @@ end
 --@param width the width of the rectangle
 --@param height the height of the rectangle
 --@param color a string "#rrggbb" or "#rrggbbaa" for the color of the rectangle
---@param rounded_size a float value from 0 to 1 (0 is no rounded corner)
+--@param rounded_size a float value from 0 to 1 (0 is no rounded corner) or a table of float value
 --@param border color a string "#rrggbb" or "#rrggbbaa" for the color of the border
 function helpers.draw_rounded_corners_rectangle(cairo_context,x,y,width, height, color, rounded_size,border)
 --if rounded_size =0 it is a classical rectangle (whooooo!)  
@@ -370,7 +371,21 @@ function helpers.draw_rounded_corners_rectangle(cairo_context,x,y,width, height,
   local width = width
   local x = x
   local y = y
-  local rounded_size = rounded_size or 0.4
+  local rounded_sizes = {}
+	
+	if type(rounded_size) == "number" then
+		rounded_sizes[1]=rounded_size or 0
+		rounded_sizes[2]=rounded_size or 0
+		rounded_sizes[3]=rounded_size or 0
+		rounded_sizes[4]=rounded_size or 0
+	elseif type(rounded_size) == "table" then
+		rounded_sizes[1]=rounded_size[1] or 0
+		rounded_sizes[2]=rounded_size[2] or 0
+		rounded_sizes[3]=rounded_size[3] or 0
+		rounded_sizes[4]=rounded_size[4] or 0
+	end
+	
+	local rounded_size = rounded_size or 0
   if height > width then
     radius=0.5 * width
   else
@@ -381,13 +396,13 @@ function helpers.draw_rounded_corners_rectangle(cairo_context,x,y,width, height,
   r,g,b,a=helpers.hexadecimal_to_rgba_percent(color)
   cairo_context:set_source_rgba(r,g,b,a)
   --top left corner
-  cairo_context:arc(x + radius*rounded_size,y + radius*rounded_size, radius*rounded_size,PI, PI * 1.5)
+  cairo_context:arc(x + radius*rounded_sizes[1],y + radius*rounded_sizes[1], radius*rounded_sizes[1],PI, PI * 1.5)
   --top right corner
-  cairo_context:arc(width - radius*rounded_size,y + radius*rounded_size, radius*rounded_size,PI*1.5, PI * 2)
+  cairo_context:arc(width - radius*rounded_sizes[2],y + radius*rounded_sizes[2], radius*rounded_sizes[2],PI*1.5, PI * 2)
   --bottom right corner
-  cairo_context:arc(width - radius*rounded_size,height -  radius*rounded_size, radius*rounded_size,PI*0, PI * 0.5)
+  cairo_context:arc(width - radius*rounded_sizes[3],height -  radius*rounded_sizes[3], radius*rounded_sizes[3],PI*0, PI * 0.5)
   --bottom left corner
-  cairo_context:arc(x + radius*rounded_size,height -  radius*rounded_size, radius*rounded_size,PI*0.5, PI * 1)
+  cairo_context:arc(x + radius*rounded_sizes[4],height -  radius*rounded_sizes[4], radius*rounded_sizes[4],PI*0.5, PI * 1)
   cairo_context:close_path()
   cairo_context:fill()
 
@@ -397,13 +412,13 @@ function helpers.draw_rounded_corners_rectangle(cairo_context,x,y,width, height,
     r,g,b,a=helpers.hexadecimal_to_rgba_percent(border)
     cairo_context:set_source_rgba(r,g,b,a)
     --top left corner
-    cairo_context:arc(x +1 + radius*rounded_size,y+1 + radius*rounded_size, radius*rounded_size,PI, PI * 1.5)
+    cairo_context:arc(x +1 + radius*rounded_sizes[1],y+1 + radius*rounded_sizes[1], radius*rounded_sizes[1],PI, PI * 1.5)
     --top right corner
-    cairo_context:arc(width -1 - radius*rounded_size,y +1+ radius*rounded_size, radius*rounded_size,PI*1.5, PI * 2)
+    cairo_context:arc(width -1 - radius*rounded_sizes[2],y +1+ radius*rounded_sizes[2], radius*rounded_sizes[2],PI*1.5, PI * 2)
     --bottom right corner
-    cairo_context:arc(width -1 - radius*rounded_size,height -1 -  radius*rounded_size, radius*rounded_size,PI*0, PI * 0.5)
+    cairo_context:arc(width -1 - radius*rounded_sizes[3],height -1 -  radius*rounded_sizes[3], radius*rounded_sizes[3],PI*0, PI * 0.5)
     --bottom left corner
-    cairo_context:arc(x +1 + radius*rounded_size,height -1 -  radius*rounded_size, radius*rounded_size,PI*0.5, PI * 1)
+    cairo_context:arc(x +1 + radius*rounded_sizes[4],height -1 -  radius*rounded_sizes[4], radius*rounded_sizes[4],PI*0.5, PI * 1)
     cairo_context:close_path()
     cairo_context:stroke()
   end

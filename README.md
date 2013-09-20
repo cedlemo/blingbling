@@ -6,6 +6,8 @@ Originally, I have written Blingbling for myself but I share it under the GNU GP
 
 The current version is the v2.0 and works with Awesome WM 3.5. There are a lot of changes between the v1.0 and the v2.0 and I don't have finished to adapt all the widgets of the last version yet.
 
+<img src="https://raw.github.com/cedlemo/blingbling/master/config_example/japanese2_screen.png" width="576" height="324" alt="Screenshot">
+
 ###Version: v2.0
 
 *  line_graph
@@ -19,6 +21,8 @@ The current version is the v2.0 and works with Awesome WM 3.5. There are a lot o
 *  udisks_glue
 *  system
 *  clock
+*  tagslist
+*  text_box
 
 This part is an adaptation of some of the wlourf awesome stuff : http://wlourf.deviantart.com/art/widgets-for-awesome-wm-v1-3-269061228.
 *  wlourf circle
@@ -147,6 +151,27 @@ Provide buttons with menu in order to reboot or shutdown the system. User can se
 This part provides a clock displaying month, day of month and day of week in japanese (kanji form)
 
     mytextclock = blingbling.clock.japanese(" %m、%d、%w、<span color=\"#999999\">%H<span color=\""..blingbling.helpers.rgb(20,31,82).."\">時</span>%M<span color=\""..blingbling.helpers.rgb(20,31,82).."\">分</span> </span>")
+
+
+#####tex_box
+
+
+#####tagslist
+This object is an adaptation of the taglist object from awesome. Tags are blingbling.text_box. Users can set a background color, a background border, a default text background color and a text background border color. Tags can have rounded corners. The text background color use the theme color ( bg default/focus) like the text color. If you don't set a background color and set the h_margin and v_margin parameter, the background text color will fill the totality of the tag's surface.
+
+Just replace the line 
+
+    mytaglist[s] = awful.widget.taglist(s, awful.widget.taglist.filter.all, mytaglist.buttons)
+
+with
+
+    mytag[s]=blingbling.tagslist(s,  awful.widget.taglist.filter.all, mytaglist.buttons, {--[[height = 16,--]] width = 30,
+	                                                                                       --[[background_border="#00000033",--]] background_color = "#00000055", 
+	                                                                                       rounded_size = {0, 0.4,0,0.4}--[[rounded_size=0.4--]], 
+																																												 h_margin =2, v_margin = 2})
+then add mytaglist[s] in the wibox :
+
+  left_layout:add(wibox.layout.margin(mytag[s],0,0,1,1))
 
 
 #####wlourf circle graph
