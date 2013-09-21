@@ -1,6 +1,6 @@
 ##Blingbling:
 
-Blingbling is a graphical widget library for Awesome Windows Manager. The goal of the Blingbling library is to provide more fancy, customisable and easy to setup graphical widgets, popups or signals for Awesome WM.
+Blingbling is a graphical widget library for Awesome Windows Manager. The goal of the Blingbling library is to provide more fancy, customizable and easy to setup graphical widgets, popups or signals for Awesome WM.
 
 Originally, I have written Blingbling for myself but I share it under the GNU GPL-v2 (http://www.gnu.org/licenses/old-licenses/gpl-2.0.html). Testers and feedbacks are welcome!
 
@@ -167,11 +167,11 @@ with
 
     mytag[s]=blingbling.tagslist(s,  awful.widget.taglist.filter.all, mytaglist.buttons, {--[[height = 16,--]] width = 30,
 	                                                                                       --[[background_border="#00000033",--]] background_color = "#00000055", 
-	                                                                                       rounded_size = {0, 0.4,0,0.4}--[[rounded_size=0.4--]], 
-																																												 h_margin =2, v_margin = 2})
+                                                                                         rounded_size = {0, 0.4,0,0.4}--[[rounded_size=0.4--]], 
+                                                                                         h_margin =2, v_margin = 2})
 then add mytaglist[s] in the wibox :
 
-  left_layout:add(wibox.layout.margin(mytag[s],0,0,1,1))
+    left_layout:add(wibox.layout.margin(mytag[s],0,0,1,1))
 
 
 #####wlourf circle graph
