@@ -123,6 +123,7 @@ menubar.utils.terminal = terminal -- Set the terminal for applications that requ
 local blingbling = require("blingbling")
 --mytextclock = awful.widget.textclock(" %a %b %d, <span color=\"#999999\">%H<span color=\""..blingbling.helpers.rgb(20,31,82).."\">時</span>%M<span color=\""..blingbling.helpers.rgb(20,31,82).."\">分</span> </span>")
 mytextclock = blingbling.clock.japanese(" %m、%d、%w、<span color=\"#999999\">%H<span color=\""..blingbling.helpers.rgb(20,31,82).."\">時</span>%M<span color=\""..blingbling.helpers.rgb(20,31,82).."\">分</span> </span>")
+calendar = blingbling.calendar()
 -- Create a wibox for each screen and add it
 mywibox = {}
 mypromptbox = {}
@@ -278,7 +279,10 @@ mytasklist.buttons = awful.util.table.join(
 	mytag={}
 	--test = blingbling.text_box()
 for s = 1, screen.count() - 1 do
-	mytag[s]=blingbling.tagslist(s,  awful.widget.taglist.filter.all, mytaglist.buttons, {--[[height = 16,--]] width = 30,--[[background_border="#00000033",--]] background_color = "#00000055", rounded_size = {0, 0.4,0,0.4}, h_margin =2, v_margin = 2})
+	mytag[s]=blingbling.tagslist(s,  awful.widget.taglist.filter.all, mytaglist.buttons--, {--[[height = 16,--]] width = 30,
+																																												--[[background_border="#00000033",--]] --background_color = "#00000055", 
+																																												--rounded_size = {0, 0.4,0,0.4},--[[rounded_size=0.4,--]] 
+																																												--[[h_margin =2, v_margin = 2}--]])
     -- Create a promptbox for each screen
     mypromptbox[s] = awful.widget.prompt()
     -- Create an imagebox widget which will contains an icon indicating which layout we're using.
@@ -300,7 +304,7 @@ for s = 1, screen.count() - 1 do
     -- Widgets that are aligned to the left
     local left_layout = wibox.layout.fixed.horizontal()
     left_layout:add(mylauncher)
-    left_layout:add(wibox.layout.margin(mytag[s],0,0,1,1))
+    left_layout:add(wibox.layout.margin(mytag[s],0,0,2,1))
 		--left_layout:add(wibox.layout.margin(mytaglist[s],0,0,1,1))
     left_layout:add(mypromptbox[s])
 		left_layout:add(cpu_graph)
@@ -315,6 +319,7 @@ for s = 1, screen.count() - 1 do
     if s == 1 then right_layout:add(wibox.widget.systray()) end
 		right_layout:add(volume_bar)
 		right_layout:add(mytextclock)
+		right_layout:add(calendar)
     right_layout:add(mylayoutbox[s])
 		right_layout:add(reboot)
 		right_layout:add(shutdown)
@@ -482,8 +487,12 @@ awful.rules.rules = {
     { rule = { class = "gimp" },
       properties = { floating = true } },
     -- Set Firefox to always map on tags number 2 of screen 1.
-    -- { rule = { class = "Firefox" },
-    --   properties = { tag = tags[1][2] } },
+     { rule_any = { class = {"Firefox", "Chromium" },
+       properties = { tag = tags[1][2] } }},
+     { rule = { class = "Thunderbird" },
+       properties = { tag = tags[1][3] } },
+     { rule = { class = "Tuxguitar" },
+       properties = { tag = tags[1][6] } },
 }
 -- }}}
 
