@@ -134,7 +134,22 @@ theme.blingbling = {
     logout = theme_dir .. "/logout.png",
     accept = theme_dir .. "/ok.png",
     cancel = theme_dir .. "/cancel.png",
-    lock = theme_dir .. "/lock.png"
+    lock = theme_dir .. "/lock.png",
+    tagslist = {    normal ={   background_color = "#00000055",
+                                background_text_color = "#00000000", --no color
+                                rounded_size = { 0, 0.4,0,0.4 },
+                                text_color = theme.fg_normal,
+                                font = "Droid Sans"
+                            },
+                    focus ={    background_color = "#00000055",
+                                background_text_color = theme.bg_focus,
+                                rounded_size = { 0, 0.4,0,0.4 },
+                                font = "Droid Sans"
+                            }
+    }
 }
+theme.blingbling.tagslist.urgent = theme.blingbling.tagslist.focus
+theme.blingbling.tagslist.occupied = theme.blingbling.tagslist.normal
+
 return theme
 -- vim: filetype=lua:expandtab:shiftwidth=4:tabstop=8:softtabstop=4:textwidth=80

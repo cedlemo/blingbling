@@ -15,40 +15,75 @@ local fixed = require("wibox.layout.fixed")
 local surface = require("gears.surface")
 local helpers = require("blingbling.helpers")
 local text_box = require("blingbling.text_box")
+local superproperties = require("blingbling.superproperties")
 local taglist = { mt = {} }
 taglist.filter = {}
 
 local function taglist_customize(t, style)
-		if not style then style = {} end
-    local theme = beautiful.get()
-    local fg_focus = style.fg_focus or theme.taglist_fg_focus or theme.fg_focus
-    local bg_focus = style.bg_focus or theme.taglist_bg_focus or theme.bg_focus
-    local fg_urgent = style.fg_urgent or theme.taglist_fg_urgent or theme.fg_urgent
-    local bg_urgent = style.bg_urgent or theme.taglist_bg_urgent or theme.bg_urgent
-    local bg_occupied = style.bg_occupied or theme.taglist_bg_occupied
-    local fg_occupied = style.fg_occupied or theme.taglist_fg_occupied
+		if (not style or (type(style) ~= "table")) then 
+			style = {} 
+		end
+		local style_normal = {}
+		local style_focus = {}
+		local style_urgent = {}
+		local style_occupied = {}
+		
+		if style.normal and type(style.normal) == "table" then	
+			for k, v in pairs(superproperties.tagslist.normal) do	
+				style_normal[v] = style.normal[v] or superproperties.tagslist.normal[v]
+			end
+		else
+			style_normal = superproperties.tagslist.normal
+		end
+		
+		if style.focus and type(style.focus) == "table" then	
+			for k, v in pairs(superproperties.tagslist.focus) do	
+				style_focus[v] = style.focus[v] or superproperties.tagslist.focus[v]
+			end
+		else
+			style_focus = superproperties.tagslist.focus
+		end
+		
+		if style.urgent and type(style.urgent) == "table" then	
+			for k, v in pairs(superproperties.tagslist.urgent) do	
+				style_urgent[v] = style.urgent[v] or superproperties.tagslist.urgent[v]
+			end
+		else
+			style_urgent = superproperties.tagslist.urgent
+		end
+		
+		if style.occupied and type(style.occupied) == "table" then	
+			for k, v in pairs(superproperties.tagslist.occupied) do	
+				style_occupied[v] = style.occupied[v] or superproperties.tagslist.occupied[v]
+			end
+		else
+			style_occupied = superproperties.tagslist.occupied
+		end
+			
+		--style_focus = style.focus or superproperties.tagslist.focus
+		--style_urgent = style.urgent or superproperties.tagslist.urgent
+		--style_occupied = style.occupied or superproperties.tagslist.occupied
+    
+		local current_style = style_normal
+		local theme = beautiful.get()
     local taglist_squares_sel = style.squares_sel or theme.taglist_squares_sel
     local taglist_squares_unsel = style.squares_unsel or theme.taglist_squares_unsel
     local taglist_squares_sel_empty = style.squares_sel_empty or theme.taglist_squares_sel_empty
     local taglist_squares_unsel_empty = style.squares_unsel_empty or theme.taglist_squares_unsel_empty
-    local taglist_squares_resize = theme.taglist_squares_resize or style.squares_resize or "true"
-    local taglist_disable_icon = style.taglist_disable_icon or theme.taglist_disable_icon or false
-    local font = style.font or theme.taglist_font or theme.font or ""
+    local taglist_squares_resize = style.squares_resize or theme.taglist_squares_resize or true
+    local taglist_disable_icon = style.taglist_disable_icon or theme.taglist_disable_icon or true
 		local text = ""
     local sel = capi.client.focus
-    local bg_color = nil
-    local fg_color = nil
     local bg_image
     local icon
     local bg_resize = false
     local is_selected = false
     if t.selected then
-        bg_color = bg_focus
-        fg_color = fg_focus
-    end
+			current_style = style_focus
+		end
+
     if sel then
         if taglist_squares_sel then
-            -- Check that the selected clients is tagged with 't'.
             local seltags = sel:tags()
             for _, v in ipairs(seltags) do
                 if v == t then
@@ -70,8 +105,7 @@ local function taglist_customize(t, style)
                 bg_image = taglist_squares_unsel
                 bg_resize = taglist_squares_resize == "true"
             end
-            if bg_occupied then bg_color = bg_occupied end
-            if fg_occupied then fg_color = fg_occupied end
+            current_style = style_occupied
         else
             if taglist_squares_unsel_empty then
                 bg_image = taglist_squares_unsel_empty
@@ -80,8 +114,7 @@ local function taglist_customize(t, style)
         end
         for k, c in pairs(cls) do
             if c.urgent then
-                if bg_urgent then bg_color = bg_urgent end
-                if fg_urgent then fg_color = fg_urgent end
+                current_style = style_urgent
                 break
             end
         end
@@ -96,15 +129,12 @@ local function taglist_customize(t, style)
             icon = surface.load(tag.geticon(t))
         end
     end
-		style.background_text_color = bg_color
-		style.text_color = fg_color
-		return text , style, bg_image, not taglist_disable_icon and icon or nil
+		return text , current_style, bg_image, not taglist_disable_icon and icon or nil
 end
 
 local function taglist_update_style(w, buttons, style, data, tags)
     -- update the widgets, creating them if needed
     w:reset()
-			--helpers.dbg({#tags})
     for i, o in ipairs(tags) do
         local text, style, icon = taglist_customize(o, style)
 				local cache = data[o]
@@ -142,9 +172,15 @@ local function taglist_update_style(w, buttons, style, data, tags)
         if not pcall(tb.set_text, tb, text) then
             tb:set_text("<i>&lt;Invalid text&gt;</i>")
         end
-				--tb:set_text(text)
+				tb:set_h_margin(style.h_margin)
+				tb:set_v_margin(style.v_margin)
+				tb:set_rounded_size(style.rounded_size)
 				tb:set_text_color(style.text_color)
+				tb:set_font(style.font)
+				tb:set_font_size(style.font_size)
+				tb:set_background_color(style.background_color)
 				tb:set_background_text_color(style.background_text_color)
+				
 				bgb:set_bg(bg)
         if type(bg_image) == "function" then
             bg_image = bg_image(tb,o,m,objects,i)

@@ -67,7 +67,7 @@ local data = setmetatable({}, { __mode = "k" })
 --@param t_box the value text box
 --@param rounded_size float in [0,1]
 
----Define the color of the text of 
+---Define the color of the text  
 --@usage myt_box:set_text_color(string) 
 --@name set_text_color
 --@class function
@@ -84,8 +84,15 @@ local data = setmetatable({}, { __mode = "k" })
 local properties = {    "width", "height", "h_margin", "v_margin", 
                         "background_border", "background_color", 
                         "background_text_border", "background_text_color",
-                        "rounded_size", "text_color", "font_size", "font", "label"
+                        "rounded_size", "text_color", "font_size", "font"
                    }
+
+ -- Setup a pango layout for the given textbox and cairo context
+local function setup_layout(t_box, width, height)
+	local layout = t_box._layout
+  layout.width = pango.units_from_double(width)
+  layout.height = pango.units_from_double(height)
+end
 
 local function draw( t_box, wibox, cr, width, height)
 
@@ -102,37 +109,20 @@ local function draw( t_box, wibox, cr, width, height)
     font = (font.family or "Sans") ..(font.slang or "normal") ..( font.weight or "normal")
   end
   
-	--Get the layout size
-	layout = pango.Layout.new(pangocairo.font_map_get_default():create_context())
+	layout = t_box._layout
+	cr:update_layout(layout)
 	font_desc = pango.FontDescription.from_string(font .. " " .. font_size)
 	layout:set_font_description(font_desc)
 	layout.text = text
   layout:set_markup("<span color='"..text_color.."'>"..text.."</span>" )
   local ink, logical = layout:get_pixel_extents()
-  --check if layout size >= wibox size 
-	--yes wibox size = layout size
-	--no don't touch wibox size but get a padding in order to move the layout
 	local height =0
 	local width = 0
-	local h_padding=0
-	local v_padding=0
-	
-	if data[t_box].width <= logical.width then
-		width = logical.width
-	else
-		width = data[t_box].width
-		h_padding = math.ceil( (width - logical.width)/2)
-	end
-	
-	if data[t_box].height <= logical.height then
-		height = logical.height
-	else
-		height = data[t_box].height
-		v_padding = math.ceil( (height - logical.height)/2)
-	end
+	width = logical.width
+  data[t_box].width = logical.width
+	height = logical.height
+  data[t_box].height = logical.height
 
-	data[t_box].width = width
-	data[t_box].height = height
 	local v_margin =  superproperties.v_margin  
   if data[t_box].v_margin and data[t_box].v_margin <= height/3 then 
     v_margin = data[t_box].v_margin 
@@ -141,16 +131,9 @@ local function draw( t_box, wibox, cr, width, height)
   if data[t_box].h_margin and data[t_box].h_margin <= width / 3 then 
     h_margin = data[t_box].h_margin 
   end
-	layout.width = pango.units_from_double(width)
-  layout.height = pango.units_from_double(height)
-
-  if data[t_box].width == nil or data[t_box].width < width then
-    data[t_box].width = width
-  end
-  if data[t_box].height == nil or data[t_box].height < height then
-    data[t_box].height = height
-  end
-  --Generate Background (background widget)
+	setup_layout(t_box, width, height)
+  
+	--Generate Background (background widget)
   if data[t_box].background_color then
     helpers.draw_rounded_corners_rectangle( cr,
                                             0,
@@ -181,12 +164,19 @@ local function draw( t_box, wibox, cr, width, height)
                                             )
   end  
 
-  cr:move_to(h_padding,v_padding)
+  cr:move_to(0,0)
 	cr:show_layout(layout)
 end
 
-function text_box.fit(t_box, width, height)
-    return data[t_box].width, data[t_box].height
+function text_box:fit( width, height)
+	setup_layout(self, width, height)
+	local ink, logical = self._layout:get_pixel_extents()
+		 
+	if logical.width == 0 or logical.height == 0 then
+	   return 0, 0
+	end
+	 
+	return logical.width, logical.height
 end
 
 --- Add a text to the t_box
@@ -197,9 +187,10 @@ end
 local function set_text(t_box, string)
     if not t_box then return end
 
-    local text = string or ""
-   
+		local text = string or ""
+		
     data[t_box].text = text
+		t_box._layout.text = text
     t_box:emit_signal("widget::updated")
     return t_box
 end
@@ -253,11 +244,13 @@ function text_box.new(args)
     local t_box = base.make_widget()
     data[t_box] = {}
     
-
+		data[t_box].text = args.text or ""
     for _, v in ipairs(properties) do
       data[t_box][v] = args[v] 
     end
-    
+    local ctx = pangocairo.font_map_get_default():create_context()
+    t_box._layout = pango.Layout.new(ctx)
+
     -- Set methods
     t_box.set_text = set_text
     t_box.draw = draw

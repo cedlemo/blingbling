@@ -33,5 +33,44 @@ return {
 	logout = blingbling_theme.logout or nil;
 	accept = blingbling_theme.accept or nil;
 	cancel = blingbling_theme.cancel or nil;
-	lock = blingbling_theme.lock or nil
+	lock = blingbling_theme.lock or nil;
+--theme values for tagslist	
+	tagslist=	{
+						normal ={ background_color = blingbling_theme.tagslist.normal.background_color or beautiful.bg_normal,
+											background_text_color = blingbling_theme.tagslist.normal.background_text_color or "#00000000",
+											text_color = blingbling_theme.tagslist.normal.text_color or beautiful.fg_normal,
+											h_margin = blingbling_theme.tagslist.normal.h_margin or blingbling_theme.h_margin or 2 ,
+											v_margin = blingbling_theme.tagslist.normal.v_margin or blingbling_theme.v_margin or 2,
+											rounded_size = blingbling_theme.tagslist.normal.rounded_size or blingbling_theme.rounded_size or 0,
+											font_size= blingbling_theme.tagslist.normal.font_size or 9,
+											font = blingbling_theme.tagslist.normal.font or "sans"
+											},
+						focus = { background_color = blingbling_theme.tagslist.focus.background_color or beautiful.taglist_bg_focus or beautiful.bg_focus,
+											background_text_color = blingbling_theme.tagslist.focus.background_text_color or "#00000000",
+											text_color = blingbling_theme.tagslist.focus.text_color or beautiful.taglist_fg_focus or beautiful.fg_focus,
+											h_margin = blingbling_theme.tagslist.focus.h_margin or blingbling_theme.h_margin or 2 ,
+											v_margin = blingbling_theme.tagslist.focus.v_margin or blingbling_theme.v_margin or 2,
+											rounded_size = blingbling_theme.tagslist.focus.rounded_size or blingbling_theme.rounded_size or 0,
+											font_size= blingbling_theme.tagslist.focus.font_size or  9,
+											font = blingbling_theme.tagslist.normal.font or "sans"
+											},
+						urgent = { background_color = blingbling_theme.tagslist.urgent.background_color or  beautiful.taglist_bg_urgent or beautiful.bg_urgent or beautiful.taglist_bg_focus or beautiful.bg_focus,
+											background_text_color = blingbling_theme.tagslist.urgent.background_text_color or  "#00000000",
+											text_color = blingbling_theme.tagslist.urgent.text_color or  beautiful.taglist_fg_urgent or beautiful.fg_urgent or beautiful.taglist_fg_focus or beautiful.fg_focus,
+											h_margin = blingbling_theme.h_margin or 2 ,
+											v_margin = blingbling_theme.v_margin or 2,
+											rounded_size = blingbling_theme.tagslist.urgent.rounded_size or  blingbling_theme.rounded_size or 0,
+											font_size= blingbling_theme.tagslist.urgent.font_size or   9,
+											font = blingbling_theme.tagslist.urgent.font or  "sans"
+											},
+						occupied={background_color = blingbling_theme.tagslist.occupied.background_color or  beautiful.taglist_bg_occupied or beautiful.bg_occupied or beautiful.taglist_bg_focus or beautiful.bg_focus,
+											background_text_color = blingbling_theme.tagslist.occupied.background_text_color or "#00000000",
+											text_color = blingbling_theme.tagslist.occupied.text_color or beautiful.fg_occupied or beautiful.fg_occupied or beautiful.taglist_fg_focus or beautiful.fg_focus,
+											h_margin = blingbling_theme.h_margin or 2 ,
+											v_margin = blingbling_theme.v_margin or 2,
+											rounded_size = blingbling_theme.tagslist.occupied.rounded_size or blingbling_theme.rounded_size or 0,
+											font_size= blingbling_theme.tagslist.occupied.font_size or 9,
+											font = blingbling_theme.tagslist.occupied.font or "sans"
+											}
+						}
 }

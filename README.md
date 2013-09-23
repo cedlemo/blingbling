@@ -154,10 +154,16 @@ This part provides a clock displaying month, day of month and day of week in jap
 
 
 #####tex_box
+The blingbling.text_box are widget like Awesome textbox but with more parameters. 
+* background_color the color used to fill the background
+* background_text_color a background color that will be set between the background and the text
+* h_margin v_margin margin between the text background and the wibox
+* rounded_size the size for rounded corners : this can be a number that applies for all corners or a table of 4 values { upper left, upper right, lower right, lower left }
+* text_color, font, font_size
 
 
 #####tagslist
-This object is an adaptation of the taglist object from awesome. Tags are blingbling.text_box. Users can set a background color, a background border, a default text background color and a text background border color. Tags can have rounded corners. The text background color use the theme color ( bg default/focus) like the text color. If you don't set a background color and set the h_margin and v_margin parameter, the background text color will fill the totality of the tag's surface.
+This object is an adaptation of the taglist object from awesome. Tags are blingbling.text_box. Users can provide a style for the tags as the last argument. The style must be a table with the 4 keys corresponding to the states of a tag (normal, focus, urgent, occupied). Each value of this keys are tables with style paramaters of text_box widget. (width, height, h_margin, v_margin, background_color, background_text_color, rounded_size, text_color, font_size, font.
 
 Just replace the line 
 
@@ -165,10 +171,8 @@ Just replace the line
 
 with
 
-    mytag[s]=blingbling.tagslist(s,  awful.widget.taglist.filter.all, mytaglist.buttons, {--[[height = 16,--]] width = 30,
-	                                                                                       --[[background_border="#00000033",--]] background_color = "#00000055", 
-                                                                                         rounded_size = {0, 0.4,0,0.4}--[[rounded_size=0.4--]], 
-                                                                                         h_margin =2, v_margin = 2})
+    mytag[s]=blingbling.tagslist(s,  awful.widget.taglist.filter.all, mytaglist.buttons --[[, { normal = {}, focus ={}, urgent={}, occupied={} }--]])
+
 then add mytaglist[s] in the wibox :
 
     left_layout:add(wibox.layout.margin(mytag[s],0,0,1,1))
