@@ -227,9 +227,8 @@ function value_text_box.draw(vt_box, wibox, cr, width, height)
     y= 0 
     --Draw the text:
 
-    local default_text_color = data[vt_box].text_color or "#ffffffff"
-    local value_text_color = default_text_color 
-    --get the colors used to display the value
+    local default_text_color = text_color 
+		local value_text_color = default_text_color 
 
     if data[vt_box].values_text_color  and type(data[vt_box].values_text_color) == "table" then
       for i,table in ipairs(data[vt_box].values_text_color) do
