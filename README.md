@@ -38,6 +38,10 @@ In your rc.lua:
 
     require("blingbling")
 
+#####Documentation
+You can find a full documentation on each widgets in the doc directory, just open the index.html file.
+
+
 #####line_graph
 Create a line graph and fill it with vicious for example (you can configure the widget with a table or with the related methods ):
 
