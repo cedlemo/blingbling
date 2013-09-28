@@ -13,8 +13,9 @@ local superproperties = require("blingbling.superproperties")
 local lgi = require("lgi")
 local pango = lgi.Pango
 local pangocairo = lgi.PangoCairo
----A text box  
-
+local util = require('awful.util')
+---A text box.  
+--@module blingbling.text_box
 local text_box = { mt = {} }
 local data = setmetatable({}, { __mode = "k" })
 
@@ -25,56 +26,47 @@ local data = setmetatable({}, { __mode = "k" })
 --@param t_box the value text box
 --@param color a string "#rrggbbaa" or "#rrggbb"
 
----Set a border (width * height) with this color (default is none ) 
---@usage myt_box:set_background_border(string) -->"#rrggbbaa"
---@name set_background_border
---@class function
---@t_box t_box the t_box
---@param color a string "#rrggbbaa" or "#rrggbb"
-
----Fill the text area (text height/width + padding) background with this color (default is none)
+---Fill the text area (text height/width + padding) background with this color (default is none).
 --@usage myt_box:set_text_background_color(string) -->"#rrggbbaa"
 --@name set_text_background_color
 --@class function
---@param t_box the t_box
 --@param color a string "#rrggbbaa" or "#rrggbb"
 
----Set a border on the text area background (default is none ) 
+---Set a border on the text area background (default is none ). 
 --@usage myt_box:set_text_background_border(string) -->"#rrggbbaa"
 --@name set_text_background_border
 --@class function
---@t_box t_box the t_box
 --@param color a string "#rrggbbaa" or "#rrggbb"
 
----Define the top and bottom margin for the text background 
+---Define the top and bottom margin for the text background .
 --@usage myt_box:set_v_margin(integer)
 --@name set_v_margin
 --@class function
 --@param t_box the value text box
 --@param margin an integer for top and bottom margin
 
----Define the left and right margin for the text background
+---Define the left and right margin for the text background.
 --@usage myt_box:set_h_margin(integer) 
 --@name set_h_margin
 --@class function
 --@param t_box the value text box
 --@param margin an integer for left and right margin
 
----Set rounded corners for background and text background
+---Set rounded corners for background and text background.
 --@usage myt_box:set_rounded_size(a) -> a in [0,1]
 --@name set_rounded_size
 --@class function
 --@param t_box the value text box
 --@param rounded_size float in [0,1]
 
----Define the color of the text  
+---Define the color of the text.
 --@usage myt_box:set_text_color(string) 
 --@name set_text_color
 --@class function
 --@param t_box the value text box
 --@param color a string "#rrggbb" 
 
----Define the text font size
+---Define the text font size.
 --@usage myt_box:set_font_size(integer)
 --@name set_font_size
 --@class function
@@ -82,8 +74,8 @@ local data = setmetatable({}, { __mode = "k" })
 --@param size the font size
 
 local properties = {    "width", "height", "h_margin", "v_margin", 
-                        "background_border", "background_color", 
-                        "background_text_border", "background_text_color",
+                        "background_color", 
+                        "background_text_border", "text_background_color",
                         "rounded_size", "text_color", "font_size", "font"
                    }
 
@@ -96,11 +88,10 @@ end
 
 local function draw( t_box, wibox, cr, width, height)
 
-  local background_border = data[t_box].background_border or superproperties.background_border
   local background_color = data[t_box].background_color or superproperties.background_color
 	local rounded_size = data[t_box].rounded_size or superproperties.rounded_size
   local text_color = data[t_box].text_color or superproperties.text_color
-  local background_text_color = data[t_box].background_text_color or superproperties.background_text_color
+  local text_background_color = data[t_box].text_background_color or superproperties.text_background_color
   local font_size =data[t_box].font_size or superproperties.font_size
   local font = data[t_box].font or superproperties.font
   local text = data[t_box].text
@@ -111,17 +102,23 @@ local function draw( t_box, wibox, cr, width, height)
   
 	layout = t_box._layout
 	cr:update_layout(layout)
-	font_desc = pango.FontDescription.from_string(font .. " " .. font_size)
+	local font_desc = pango.FontDescription.from_string(font .. " " .. font_size)
 	layout:set_font_description(font_desc)
 	layout.text = text
   layout:set_markup("<span color='"..text_color.."'>"..text.."</span>" )
   local ink, logical = layout:get_pixel_extents()
 	local height =0
 	local width = 0
+	if util.escape("<<") == text then
+		helpers.dbg({"text_box:draw",data[t_box].width,data[t_box].height})
+	end
 	width = logical.width
   data[t_box].width = logical.width
 	height = logical.height
   data[t_box].height = logical.height
+	if util.escape("<<") == text then
+		helpers.dbg({"text_box:draw up size",data[t_box].width,data[t_box].height, font})
+	end
 
 	local v_margin =  superproperties.v_margin  
   if data[t_box].v_margin and data[t_box].v_margin <= height/3 then 
@@ -141,14 +138,11 @@ local function draw( t_box, wibox, cr, width, height)
                                             data[t_box].width, 
                                             data[t_box].height,
                                             background_color, 
-                                            rounded_size,
-                                            background_border
-                                            )
-  
+                                            rounded_size)
   end
   
   --Draw nothing, or filled ( value background)
-  if data[t_box].background_text_color then
+  if data[t_box].text_background_color then
     --draw rounded corner rectangle
     local x=h_margin
     local y=v_margin
@@ -158,7 +152,7 @@ local function draw( t_box, wibox, cr, width, height)
                                             y,
                                             data[t_box].width - h_margin, 
                                             data[t_box].height - v_margin, 
-                                            background_text_color, 
+                                            text_background_color, 
                                             rounded_size,
                                             background_text_border
                                             )
@@ -166,12 +160,21 @@ local function draw( t_box, wibox, cr, width, height)
 
   cr:move_to(0,0)
 	cr:show_layout(layout)
+	if util.escape("<<") == text then
+		helpers.dbg({"textbox:draw end",data[t_box].width,data[t_box].height, font})
+	end
 end
 
 function text_box:fit( width, height)
+  local font =data[self].font or superproperties.font
+  local font_size =data[self].font_size or superproperties.font_size
+	local font_desc = pango.FontDescription.from_string(font .. " " .. font_size)
+	self._layout:set_font_description(font_desc)
 	setup_layout(self, width, height)
 	local ink, logical = self._layout:get_pixel_extents()
-		 
+	if data[self].text and util.escape("<<") == data[self].text then
+		helpers.dbg({"textbox:fit", logical.width, logical.height, font})	 
+	end
 	if logical.width == 0 or logical.height == 0 then
 	   return 0, 0
 	end
@@ -179,11 +182,10 @@ function text_box:fit( width, height)
 	return logical.width, logical.height
 end
 
---- Add a text to the t_box
--- For compatibility between old and new awesome widget, add_value can be replaced by set_value
--- @usage myt_box:add_value(a) or myt_box:set_value(a)
+--- Add a text to the t_box.
+-- @usage myt_box:set_text(a_text) 
 -- @param t_box The t_box.
--- @param text a string.
+-- @param string a string.
 local function set_text(t_box, string)
     if not t_box then return end
 
@@ -197,7 +199,6 @@ end
 
 
 --- Set the t_box height.
--- @param t_box The t_box.
 -- @param height The height to set.
 function text_box:set_height( height)
     if height >= 5 then
@@ -208,7 +209,6 @@ function text_box:set_height( height)
 end
 
 --- Set the t_box width.
--- @param t_box The t_box.
 -- @param width The width to set.
 function text_box:set_width( width)
     if width >= 5 then

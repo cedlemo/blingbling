@@ -13,9 +13,68 @@ local superproperties = require('blingbling.superproperties')
 
 local circle_graph = { mt = {} }
 
+---Circle graph from wlourf.
+--@module blingbling.wlourf_circle_graph
+
+---Define the top and bottom margin for the graph area.
+--@usage circle:set_v_margin(integer)
+--@name set_v_margin
+--@class function
+--@param margin an integer for top and bottom margin
+
+---Define the left and right margin for the graph area.
+--@usage circle:set_h_margin()
+--@name set_h_margin
+--@class function 
+--@param margin an integer for left and right margin
+
+---Set the radius of the circle.
+--@usage circle:set_radius(integer)
+--@name set_radius
+--@class function
+--@param radius an integer value for the radius of the circle
+
+---Set the default color for the graph.
+--@usage circle:set_graph_color(string) -->"#rrggbbaa"
+--@name set_graph_color
+--@class function
+--@param color a string "#rrggbbaa" or "#rrggbb" 
+
+---Set the colors and theirs ranges for the graph.
+--@usage circle:set_graph_colors({{"#88aa00ff",0}, --all value > 0 will be displayed using this color
+--{"#d4aa00ff", 0.5},
+--{"#d45500ff",0.77}})
+--@name set_graph_colors
+--@class function
+--@param colors a table of tables {color , float } with color a string "#rrggbbaa" or "#rrggbb" and float which is 0<=float<=1
+
+---Display text on the graph or not.
+--@usage circle:set_show_text(boolean) --> true or false
+--@name set_show_text
+--@class function
+--@param boolean true or false (default is false)
+
+---Define the text's font .
+--@usage circle:set_font(string)
+--@name set_font
+--@class function
+--@param font a string that contains the font name family and weight
+
+---Define the text font size.
+--@usage circle:set_font_size(integer)
+--@name set_font_size
+--@class function
+--@param size the font size
+
+---Define the text to display.
+--@usage circle:set_label(string)
+--@name set_label
+--@class function
+--@param text the text to display
+
+
 local data = setmetatable({}, { __mode = "k" })
-local properties = {"width", "height", "h_margin", "v_margin", "radius", "graph_colors", "graph_color",
-                        "show_text", "text_color", "font_size", "font", "label"}
+local properties = {"width", "height", "h_margin", "v_margin", "radius", "graph_colors", "graph_color", "show_text", "font_size", "font", "label"}
 
 function circle_graph.draw(c_graph, wibox, cr, width, height)
 
@@ -91,7 +150,7 @@ function circle_graph.fit(c_graph, width, height)
 end
 
 --- Set the c_graph value.
--- @param p_graph The progress bar.
+-- @param c_graph The progress bar.
 -- @param value The progress bar value between 0 and 1.
 local function set_value(c_graph, value)
     local value = value or 0
@@ -102,7 +161,6 @@ local function set_value(c_graph, value)
 end
 
 --- Set the c_graph height.
--- @param c_graph The graph.
 -- @param height The height to set.
 function circle_graph:set_height( height)
     if height >= 5 then
@@ -113,7 +171,6 @@ function circle_graph:set_height( height)
 end
 
 --- Set the graph width.
--- @param graph The graph.
 -- @param width The width to set.
 function circle_graph:set_width( width)
     if width >= 5 then
@@ -155,8 +212,6 @@ function circle_graph.new(args)
       data[c_graph][v] = args[v] 
     end
 
-    --data[c_graph].values = {}
-    --or
     data[c_graph].value = 0
     data[c_graph].max_value = 1
     -- Set methods

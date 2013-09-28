@@ -1,3 +1,4 @@
+--@author cedlemo
 local os = os
 local string = string
 local awful = require("awful")
@@ -12,7 +13,8 @@ local days_of_month_in_kanas={"ついたち","ふつか","みっか","よっか"
 											"ジュウイチニチ","ジュウニニチ","ジュウサンニチ","じゅうよっか", "ジュウゴニチ","ジュウロクニチ","ジュウシチニチ","ジュウハチニチ","ジュウクニチ","はつか",
 											"ニジュウイチニチ","ニジュウニニチ","ニジュウサンニチ","にじゅうよっか", "ニジュウゴニチ","ニジュウロクニチ","ニジュウシチニチ","ニジュウハチニチ","ニジュウクニチ","サンジュウニチ","サンジュウイチニチ"
 }
---kanas_days_of_month={}
+---A clock module 
+--@module blingbling.clock
 
 local function get_day_of_month_in_kanji(n)
 	if n<=10 then
@@ -76,6 +78,12 @@ local function japanese_clock(string)
 		})
 	return clock
 end
+---A clock that displays the date and the time in kanjis. This clock have a popup that shows the current date in your langage.
+--@usage myclock = blingbling.japanese_clock() --then just add it in your wibox like a classical widget
+--@name japanese_clock
+--@class function
+--@return a clock widget
+
 return {
 	japanese = japanese_clock
 }

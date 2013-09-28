@@ -1,3 +1,4 @@
+--@author cedlemo
 local capi = { screen = screen,
                awesome = awesome,
                client = client }
@@ -16,6 +17,9 @@ local surface = require("gears.surface")
 local helpers = require("blingbling.helpers")
 local text_box = require("blingbling.text_box")
 local superproperties = require("blingbling.superproperties")
+---Tagslist widget. Based on the original taglist widget from awesome
+--@module blingbling.tagslist
+
 local taglist = { mt = {} }
 taglist.filter = {}
 
@@ -60,10 +64,6 @@ local function taglist_customize(t, style)
 			style_occupied = superproperties.tagslist.occupied
 		end
 			
-		--style_focus = style.focus or superproperties.tagslist.focus
-		--style_urgent = style.urgent or superproperties.tagslist.urgent
-		--style_occupied = style.occupied or superproperties.tagslist.occupied
-    
 		local current_style = style_normal
 		local theme = beautiful.get()
     local taglist_squares_sel = style.squares_sel or theme.taglist_squares_sel
@@ -179,7 +179,7 @@ local function taglist_update_style(w, buttons, style, data, tags)
 				tb:set_font(style.font)
 				tb:set_font_size(style.font_size)
 				tb:set_background_color(style.background_color)
-				tb:set_background_text_color(style.background_text_color)
+				tb:set_text_background_color(style.text_background_color)
 				
 				bgb:set_bg(bg)
         if type(bg_image) == "function" then
@@ -207,7 +207,13 @@ end
 function taglist.gettag(widget)
     return common.tagwidgets[widget]
 end
-
+---Create a new tagslist widget
+--@usage mytags = blingbling.tagslist(screen, filter, buttons,{normal={blingbling.text_box parameters}, focus = {blingbling.text_box parameters},urgent = {blingbling.text_box parameters}, occupied = {blingbling.text_box parameters}}, an awful.layout)
+--@param screen an integer for the screen of the tagslist
+--@param filter a filtering function the default check if the current tag is not empty and return true if so.
+--@param buttons a table of awful.button (mytaglist.buttons from the default rc.lua of awesome for example)
+--@param style an optional table with contains 4 tables of text_box parameters in order to change the apparence of the tag based on its state (normal, focus, urgent, occupied)
+--@param base_widget an awful.layout (horizontal or vertical)
 function taglist.new(screen, filter, buttons, style, base_widget)
 	local w = base_widget or fixed.horizontal()
   local data = setmetatable({}, { __mode = 'k' })

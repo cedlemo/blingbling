@@ -87,7 +87,7 @@ end
 tags = {}
 for s = 1, screen.count() do
     -- Each screen has its own tag table.
-    tags[s] = awful.tag({ "  一  ", "  二  ", "  三  ", "  四  ", "  五  ", "  六  " }, s, layouts[1])
+    tags[s] = awful.tag({ "  一⇋ Main   ", "  二⇋ Devel.   ", "  三⇋  Admin.  ", "  四⇋  www/Web  ", "  五⇋ Misc  ", "  六  " }, s, layouts[1])
     --tags[s] = awful.tag({ " [[ ⇋  Main ]]", " [[ ⇋ 四 Devel. ]]", " [[ ⇋  Admin. ]]", " [[ ⇋  www/Web ]]", " [[ ⇋ Misc ]] "}, s, layouts[1])
 end
 -- }}}
@@ -182,7 +182,8 @@ mytasklist.buttons = awful.util.table.join(
                                       show_text = true,
                                       label = "Cpu: $percent %",
                                       rounded_size = 0.3,
-                                      graph_background_color = blingbling.helpers.rgba(47,28,28,0.7),
+																			background_color = blingbling.helpers.rgba(47,28,28,0.0),
+                                      graph_background_color = blingbling.helpers.rgba(47,28,28,0.0),
                                       font = "Droid Sans Mono"
                                      })
   --cpu_graph:set_graph_background_color("#00000033")
@@ -195,8 +196,9 @@ mytasklist.buttons = awful.util.table.join(
                                       show_text = true,
                                       label = "Mem: $percent %",
                                       rounded_size = 0.3,
-                                      graph_background_color = blingbling.helpers.rgba(9,15,43,0.4),
-                                      font = "Droid Sans Mono"
+                                      graph_background_color = "#30303000",--blingbling.helpers.rgba(9,15,43,0.0),
+                                      text_background_color = "#000000",
+																			font = "Droid Sans Mono"
                                      })
 
 	vicious.register(mem_graph, vicious.widgets.mem, '$1', 2)
@@ -209,10 +211,11 @@ mytasklist.buttons = awful.util.table.join(
 	--home_fs_usage:set_height(16)
 	--home_fs_usage:set_width(40)
 	--home_fs_usage:set_v_margin(2)
-	home_fs_usage:set_background_text_color("#222222")
-	home_fs_usage:set_values_text_color({{"#88aa00ff",0}, --all value > 0 will be displaying using this color
-	                          {"#d4aa00ff", 0.75},
-														{"#d45500ff",0.77}})
+	home_fs_usage:set_text_background_color("#222222")
+	home_fs_usage:set_values_text_color({{blingbling.helpers.rgb(59,162,117),0}, --all value > 0 will be displaying using this color
+	                          {blingbling.helpers.rgb(96,149,197), 0.5},
+														{blingbling.helpers.rgb(181,136,88),0.77}})
+	home_fs_usage:set_text_color("#999999")
 	--There is no maximum number of color that users can set, just put the lower values at first. 
 	home_fs_usage:set_text_color(beautiful.textbox_widget_as_label_font_color)
 	home_fs_usage:set_rounded_size(0.4)
@@ -226,10 +229,10 @@ mytasklist.buttons = awful.util.table.join(
 	--root_fs_usage:set_height(16)
 	--root_fs_usage:set_width(40)
 	--root_fs_usage:set_v_margin(2)
-	root_fs_usage:set_background_text_color("#222222")
-	root_fs_usage:set_values_text_color({{"#88aa00ff",0}, --all value > 0 will be displaying using this color
-	                          {"#d4aa00ff", 0.75},
-														{"#d45500ff",0.77}})
+	root_fs_usage:set_text_background_color("#222222")
+	root_fs_usage:set_values_text_color({{blingbling.helpers.rgb(59,162,117),0}, --all value > 0 will be displaying using this color
+	                          {blingbling.helpers.rgb(96,149,197), 0.5},
+														{blingbling.helpers.rgb(181,136,88),0.77}})
 	--There is no maximum number of color that users can set, just put the lower values at first. 
 	root_fs_usage:set_text_color(beautiful.textbox_widget_as_label_font_color)
 	root_fs_usage:set_rounded_size(0.4)
@@ -243,11 +246,10 @@ mytasklist.buttons = awful.util.table.join(
 	--data0_fs_usage:set_height(16)
 	--data0_fs_usage:set_width(40)
 	--data0_fs_usage:set_v_margin(2)
-	data0_fs_usage:set_background_text_color("#222222")
-	data0_fs_usage:set_values_text_color({{"#88aa00ff",0}, --all value > 0 will be displaying using this color
-	                          {"#d4aa00ff", 0.75},
-														{"#d45500ff",0.77}})
-	--There is no maximum number of color that users can set, just put the lower values at first. 
+	data0_fs_usage:set_text_background_color("#222222")
+	data0_fs_usage:set_values_text_color({{blingbling.helpers.rgb(59,162,117),0}, --all value > 0 will be displaying using this color
+	                          {blingbling.helpers.rgb(96,149,197), 0.5},
+														{blingbling.helpers.rgb(181,136,88),0.77}})	--There is no maximum number of color that users can set, just put the lower values at first. 
 	data0_fs_usage:set_text_color(beautiful.textbox_widget_as_label_font_color)
 	data0_fs_usage:set_rounded_size(0.4)
 	data0_fs_usage:set_font_size(8)
@@ -260,11 +262,10 @@ mytasklist.buttons = awful.util.table.join(
 	--data1_fs_usage:set_height(16)
 	--data1_fs_usage:set_width(40)
 	--data1_fs_usage:set_v_margin(2)
-	data1_fs_usage:set_background_text_color("#222222")
-	data1_fs_usage:set_values_text_color({{"#88aa00ff",0}, --all value > 0 will be displaying using this color
-	                          {"#d4aa00ff", 0.75},
-														{"#d45500ff",0.77}})
-	--There is no maximum number of color that users can set, just put the lower values at first. 
+	data1_fs_usage:set_text_background_color("#222222")
+	data1_fs_usage:set_values_text_color({{blingbling.helpers.rgb(59,162,117),0}, --all value > 0 will be displaying using this color
+	                          {blingbling.helpers.rgb(96,149,197), 0.5},
+														{blingbling.helpers.rgb(181,136,88),0.77}})	--	--There is no maximum number of color that users can set, just put the lower values at first. 
 	data1_fs_usage:set_text_color(beautiful.textbox_widget_as_label_font_color)
 	data1_fs_usage:set_rounded_size(0.4)
 	data1_fs_usage:set_font_size(8)
@@ -279,10 +280,11 @@ mytasklist.buttons = awful.util.table.join(
 	mytag={}
 	--test = blingbling.text_box()
 for s = 1, screen.count() - 1 do
-	mytag[s]=blingbling.tagslist(s,  awful.widget.taglist.filter.all, mytaglist.buttons--, {--[[height = 16,--]] width = 30,
+	mytag[s]=blingbling.tagslist(s,  awful.widget.taglist.filter.all, mytaglist.buttons--, {--height = 16, width = 30,
 																																												--[[background_border="#00000033",--]] --background_color = "#00000055", 
 																																												--rounded_size = {0, 0.4,0,0.4},--[[rounded_size=0.4,--]] 
-																																												--[[h_margin =2, v_margin = 2}--]])
+																																												--h_margin =1, v_margin = 1}
+																																												)
     -- Create a promptbox for each screen
     mypromptbox[s] = awful.widget.prompt()
     -- Create an imagebox widget which will contains an icon indicating which layout we're using.
@@ -299,12 +301,12 @@ for s = 1, screen.count() - 1 do
     mytasklist[s] = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, mytasklist.buttons)
 
     -- Create the wibox
-    mywibox[s] = awful.wibox({ position = "top", screen = s })
+    mywibox[s] = awful.wibox({ height = 18, position = "top", screen = s })
 
     -- Widgets that are aligned to the left
     local left_layout = wibox.layout.fixed.horizontal()
     left_layout:add(mylauncher)
-    left_layout:add(wibox.layout.margin(mytag[s],0,0,2,1))
+    left_layout:add(wibox.layout.margin(mytag[s],0,0,2,2))
 		--left_layout:add(wibox.layout.margin(mytaglist[s],0,0,1,1))
     left_layout:add(mypromptbox[s])
 		left_layout:add(cpu_graph)
@@ -487,7 +489,7 @@ awful.rules.rules = {
     { rule = { class = "gimp" },
       properties = { floating = true } },
     -- Set Firefox to always map on tags number 2 of screen 1.
-     { rule_any = { class = {"Firefox", "Chromium" },
+     { rule_any = { class = {"Navigator","Firefox", "Chromium" },
        properties = { tag = tags[1][2] } }},
      { rule = { class = "Thunderbird" },
        properties = { tag = tags[1][3] } },

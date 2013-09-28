@@ -1,3 +1,5 @@
+-- @author cedlemo  
+
 local helpers = require("blingbling.helpers")
 local awful = require("awful")
 local naughty = require("naughty")
@@ -12,6 +14,9 @@ local type = type
 local setmetatable = setmetatable
 local table = table
 local print = print
+
+---Task warrior menu
+--@module blingbling.task_warrior
 
 local task_warrior = { mt = {} }
 
@@ -43,6 +48,7 @@ local function generate_tasks_management_submenu(tw_menu, task_id)
   table.insert(management_submenu,{ "Task "..task_id..": set done", "task "..task_id .. " done > /dev/null 2>&1", data[tw_menu].task_done_icon })
  return management_submenu
 end
+
 local function get_tasks(tw_menu, project)
   local tasks={}
   if project=="(none)" then
@@ -63,6 +69,7 @@ local function get_tasks(tw_menu, project)
   end
   return tasks
 end
+
 local function generate_menu(tw_menu)
   my_menu={}
   my_submenu={}
@@ -85,8 +92,6 @@ end
 local function display_menu(tw_menu)
   tw_menu:buttons(awful.util.table.join(
     awful.button({ }, 1, function()
-      --data[tw_menu].menu:toggle()
-      --generate_menu(tw_menu )
       if data[tw_menu].menu_visible == "false" then
         data[tw_menu].menu_visible = "true"
         generate_menu(tw_menu )
@@ -103,8 +108,8 @@ local function display_menu(tw_menu)
 ))
 end
 
---Set the icon for "set task done" action 
---my_tasks:set_task_done_icon(an_image_file_name)
+---Set the icon for "set task done" menu item.
+--@usage my_tasks:set_task_done_icon(an_image_file_name)
 --@param tw_menu a task warrior menu
 --@param an_image an image file name
 function task_warrior.set_task_done_icon(tw_menu,an_image)
@@ -112,8 +117,8 @@ function task_warrior.set_task_done_icon(tw_menu,an_image)
   return tw_menu
 end
 
----Set the icon for project
---my_tasks:set_project_icon(an_image_file_name)
+---Set the icon for project menu item.
+--@usage my_tasks:set_project_icon(an_image_file_name)
 --@param tw_menu a task warrior menu
 --@param an_image an image file name
 function set_project_icon(tw_menu,an_image)
@@ -121,17 +126,17 @@ function set_project_icon(tw_menu,an_image)
   return tw_menu
 end
 
----Set the icon for task
---my_tasks:set_task_icon(an_image_file_name)
+---Set the icon for task menu item.
+--@usage my_tasks:set_task_icon(an_image_file_name)
 --@param tw_menu a task warrior menu
 --@param an_image an image file name
 function set_task_icon(tw_menu,an_image)
   data[tw_menu].task_icon=an_image
   return tw_menu
 end
----Create new task warrior menu:
---my_tasks=blingbling.task_warrior.new(an_image_file_name)
---@param menu_icon an image file 
+---Create new task warrior menu.
+--@usage my_tasks=blingbling.task_warrior.new({ menu_icon = an_icon_file, width = integer --[[optional--]], project_icon = an_icon_file --[[optional--]], task_icon = an_icon_file --[[optional--]], task_icon_done = an_icon_file --[[optional--]]} )
+--@param args a table 
 --@return tw_menu a task warrior menu
 function task_warrior.new(args)
   local args = args or {}

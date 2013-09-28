@@ -11,7 +11,7 @@ local base = require("wibox.widget.base")
 local helpers = require("blingbling.helpers")
 local superproperties = require("blingbling.superproperties")
 ---A text box that can display value and text with colors. 
---module("blingbling.value_text_box")
+--@module blingbling.value_text_box
 
 local value_text_box = { mt = {} }
 local data = setmetatable({}, { __mode = "k" })
@@ -20,63 +20,48 @@ local data = setmetatable({}, { __mode = "k" })
 --@usage myvt_box:set_background_color(string) -->"#rrggbbaa"
 --@name set_background_color
 --@class function
---@param vt_box the value text box
 --@param color a string "#rrggbbaa" or "#rrggbb"
 
----Set a border (width * height) with this color (default is none ) 
---@usage myvt_box:set_background_border(string) -->"#rrggbbaa"
---@name set_background_border
---@class function
---@vt_box vt_box the vt_box
---@param color a string "#rrggbbaa" or "#rrggbb"
-
----Fill the text area (text height/width + padding) background with this color (default is none)
+---Fill the text area (text height/width + padding) background with this color (default is none).
 --@usage myvt_box:set_text_background_color(string) -->"#rrggbbaa"
 --@name set_text_background_color
 --@class function
---@param vt_box the vt_box
 --@param color a string "#rrggbbaa" or "#rrggbb"
 
----Set a border on the text area background (default is none ) 
+---Set a border on the text area background (default is none ). 
 --@usage myvt_box:set_text_background_border(string) -->"#rrggbbaa"
 --@name set_text_background_border
 --@class function
---@vt_box vt_box the vt_box
 --@param color a string "#rrggbbaa" or "#rrggbb"
 
----Define the top and bottom margin for the text background 
+---Define the top and bottom margin for the text background. 
 --@usage myvt_box:set_v_margin(integer)
 --@name set_v_margin
 --@class function
---@param vt_box the value text box
 --@param margin an integer for top and bottom margin
 
----Define the left and right margin for the text background
+---Define the left and right margin for the text background.
 --@usage myvt_box:set_h_margin(integer) 
 --@name set_h_margin
 --@class function
---@param vt_box the value text box
 --@param margin an integer for left and right margin
 
----Define the padding between the text and it's background
+---Define the padding between the text and it's background.
 --@usage myvt_box:set_padding(integer) 
 --@name set_h_margin
 --@class function
---@param vt_box the value text box
 --@param padding an integer for the text padding
 
----Set rounded corners for background and text background
+---Set rounded corners for background and text background.
 --@usage myvt_box:set_rounded_size(a) -> a in [0,1]
 --@name set_rounded_size
 --@class function
---@param vt_box the value text box
 --@param rounded_size float in [0,1]
 
----Define the color for all the text of the widget (white by default)
+---Define the color for all the text of the widget (white by default).
 --@usage myvt_box:set_text_color(string) -->"#rrggbbaa"
 --@name set_text_color
 --@class function
---@param vt_box the value text box
 --@param color a string "#rrggbbaa" or "#rrggbb
 
 ---Define the value text color depending on the limit given ( if value >= limit, we apply the color).
@@ -84,29 +69,26 @@ local data = setmetatable({}, { __mode = "k" })
 --  By default the color is text_color(another example: {{"#88aa00ff",0},{"#d4aa00ff", 0.5},{"#d45500ff",0.75}})
 --@name set_values_text_color
 --@class function
---@param vt_box the value text box
 --@param table table like { {"#rrggbbaa", limit 1}, {"#rrggbbaa", limit 2}}
 
----Define the text font size
+---Define the text font size.
 --@usage myvt_box:set_font_size(integer)
 --@name set_font_size
 --@class function
---@param vt_box the value text box
 --@param size the font size
 
----Define the template of the text to display
+---Define the template of the text to display.
 --@usage myvt_box:set_label(string)
 --By default the text is : (value_send_to_the_widget *100) 
 --static string: example set_label("CPU usage:") will display "CUP usage:" on the vt_box
 --dynamic string: use $percent in the string example set_label("Load $percent %") will display "Load 10%" 
 --@name set_label
 --@class function
---@param vt_box the value text box
 --@param text the text to display
 
 local properties = {    "width", "height", "h_margin", "v_margin", "padding",
-                        "background_border", "background_color", 
-                        "background_text_border", "background_text_color",
+                        "background_color", 
+                        "background_text_border", "text_background_color",
                         "rounded_size", "text_color", "values_text_color", 
                         "font_size", "font", "label"
                    }
@@ -120,10 +102,7 @@ function value_text_box.draw(vt_box, wibox, cr, width, height)
   if data[vt_box].h_margin and data[vt_box].h_margin <= data[vt_box].width / 3 then 
     h_margin = data[vt_box].h_margin 
   end
-  --local padding = data[vt_box].padding or 2
-  --local font_size = data[vt_box].font_size or 9
   local padding = data[vt_box].padding or superproperties.padding
-  local background_border = data[vt_box].background_border or superproperties.background_border
   local background_color = data[vt_box].background_color or superproperties.background_color
   local rounded_size = data[vt_box].rounded_size or superproperties.rounded_size
   local graph_background_color = data[vt_box].graph_background_color or superproperties.graph_background_color
@@ -131,7 +110,7 @@ function value_text_box.draw(vt_box, wibox, cr, width, height)
   local graph_color = data[vt_box].graph_color or superproperties.graph_color
   local graph_line_color = data[vt_box].graph_line_color or superproperties.graph_line_color
   local text_color = data[vt_box].text_color or superproperties.text_color
-  local background_text_color = data[vt_box].background_text_color or superproperties.background_text_color
+  local text_background_color = data[vt_box].text_background_color or superproperties.text_background_color
   local font_size =data[vt_box].font_size or superproperties.font_size
   local font = data[vt_box].font or superproperties.font
   --find the width of our image
@@ -167,14 +146,12 @@ function value_text_box.draw(vt_box, wibox, cr, width, height)
                                             data[vt_box].width, 
                                             data[vt_box].height,
                                             background_color, 
-                                            rounded_size,
-                                            background_border
-                                            )
+                                            rounded_size)
   
   end
   
   --Draw nothing, or filled ( value background)
-  if data[vt_box].background_text_color then
+  if data[vt_box].text_background_color then
     --draw rounded corner rectangle
     local x=h_margin
     local y=v_margin
@@ -184,7 +161,7 @@ function value_text_box.draw(vt_box, wibox, cr, width, height)
                                             y,
                                             data[vt_box].width - h_margin, 
                                             data[vt_box].height - v_margin, 
-                                            background_text_color, 
+                                            text_background_color, 
                                             rounded_size,
                                             background_text_border
                                             )
@@ -282,7 +259,7 @@ function value_text_box.fit(vt_box, width, height)
     return data[vt_box].width, data[vt_box].height
 end
 
---- Add a value to the vt_box
+--- Add a value to the vt_box.
 -- For compatibility between old and new awesome widget, add_value can be replaced by set_value
 -- @usage myvt_box:add_value(a) or myvt_box:set_value(a)
 -- @param vt_box The vt_box.
@@ -303,7 +280,6 @@ end
 
 
 --- Set the vt_box height.
--- @param vt_box The vt_box.
 -- @param height The height to set.
 function value_text_box:set_height( height)
     if height >= 5 then
@@ -314,7 +290,6 @@ function value_text_box:set_height( height)
 end
 
 --- Set the vt_box width.
--- @param vt_box The vt_box.
 -- @param width The width to set.
 function value_text_box:set_width( width)
     if width >= 5 then
@@ -336,8 +311,7 @@ for _, prop in ipairs(properties) do
 end
 
 --- Create a vt_box widget.
--- @param args Standard widget() arguments. You should add width and height
--- key to set vt_box geometry.
+-- @param args Standard widget() arguments. You can add width and height keys to set vt_box geometry.
 -- @return A vt_box widget.
 function value_text_box.new(args)
     local args = args or {}

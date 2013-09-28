@@ -1,4 +1,6 @@
 Check all values in superproperties and in all files some of them doesn't match so user cannot modify some parameters:
-example with value_text_box and background_text_color
-remove border for backgrounds 
+-->example with value_text_box and background_text_color (done)
+remove border for backgrounds (done)
+remove border for text background
+add superproperties values for task_warrior
 Check in all files the usage of local values that have been set using user_value or superproperties value or nil

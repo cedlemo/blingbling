@@ -1,3 +1,5 @@
+--@author cedlemo
+--@module blingbling
 return
 {
   superproperties = require("blingbling.superproperties");

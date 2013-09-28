@@ -12,10 +12,13 @@ local helpers = require("blingbling.helpers")
 local awful = require("awful")
 local superproperties = require('blingbling.superproperties')
 
+---Volume widget
+--@module blingbling.volume
+
 local volume = { mt = {} }
 
 local data = setmetatable({}, { __mode = "k" })
-local properties = {"width", "height", "v_margin", "h_margin", "background_color", "graph_background_color", "graph_color","show_text", "text_color", "background_text_color" ,"label", "font_size","font", "bar"}
+local properties = {"width", "height", "v_margin", "h_margin", "background_color", "graph_background_color", "graph_color","show_text", "text_color", "text_background_color" ,"label", "font_size","font", "bar"}
 
 function volume.draw(volume_graph, wibox, cr, width, height)
 
@@ -36,7 +39,7 @@ function volume.draw(volume_graph, wibox, cr, width, height)
   local graph_color = data[volume_graph].graph_color or superproperties.graph_color
   local graph_line_color = data[volume_graph].graph_line_color or superproperties.graph_line_color
   local text_color = data[volume_graph].text_color or superproperties.text_color
-  local background_text_color = data[volume_graph].background_text_color or superproperties.background_text_color
+  local text_background_color = data[volume_graph].text_background_color or superproperties.text_background_color
   local font_size =data[volume_graph].font_size or superproperties.font_size
   local font = data[volume_graph].font or superproperties.font
 
@@ -178,7 +181,7 @@ function volume.draw(volume_graph, wibox, cr, width, height)
                                       text, 
                                       h_margin, 
                                       (data[volume_graph].height/2) , 
-                                      background_text_color, 
+                                      text_background_color, 
                                       text_color,
                                       false,
                                       true,
@@ -262,8 +265,8 @@ local function get_mpd_volume()
   f:close()
   return mpd_volume
 end
----Link the widget to mpd's volume level 
---myvolume:update_mpd()
+---Link the widget to mpd's volume level. 
+--@usage myvolume:update_mpd()
 --@param volume_graph the volume graph
 local function update_mpd(volume_graph)
     local state
@@ -275,13 +278,12 @@ local function update_mpd(volume_graph)
         data[volume_graph].mastertimer:start()
 end
 
----Link the widget to the master channel of your system (uses amixer)
+---Link the widget to the master channel of your system (uses amixer).
+--a left clic toggle mute/unmute, wheel up to increase the volume and wheel down to decrease the volume
 --@usage myvolume:set_master_control()
---a left clic toggle mute/unmute
---wheel up increase the volume 
---wheel down decrease the volume
+--@class function
 --@param volume_graph the volume graph
-local function set_master_control(volume_graph)
+function set_master_control(volume_graph)
     volume_graph:buttons(awful.util.table.join(
     awful.button({ }, 1, function()
       set_master("toggle")
@@ -294,9 +296,8 @@ local function set_master_control(volume_graph)
     end)))
 end
 
---- Set the volume_graph height.
--- @param volume_graph The graph.
--- @param height The height to set.
+---Set the volume_graph height.
+--@param height The height to set.
 function volume:set_height( height)
     if height >= 5 then
         data[self].height = height
@@ -305,11 +306,8 @@ function volume:set_height( height)
     return self
 end
 
-
-
---- Set the graph width.
--- @param graph The graph.
--- @param width The width to set.
+---Set the graph width.
+--@param width The width to set.
 function volume:set_width( width)
     if width >= 5 then
         data[self].width = width
@@ -329,7 +327,7 @@ for _, prop in ipairs(properties) do
     end
 end
 
---- Create a volume_graph widget.
+---Create a volume_graph widget.
 -- @param args Standard widget() arguments. You should add width and height
 -- key to set graph geometry.
 -- @return A graph widget.
@@ -353,7 +351,7 @@ function volume.new(args)
     data[volume_graph].value = 0
     data[volume_graph].max_value = 1
     -- Set methods
-    --volume_graph.set_value = set_value
+    volume_graph.set_value = set_value
     volume_graph.update_master = update_master
     volume_graph.update_mpd= update_mpd
     volume_graph.set_master_control = set_master_control

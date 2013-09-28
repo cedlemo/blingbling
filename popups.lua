@@ -1,11 +1,13 @@
 --local beautiful = require("beautiful")
+--@author cedlemo
 local naughty = require("naughty")
 local os = require("os")
 local awful = require("awful")
 local helpers =require("blingbling.helpers")
 local string = require("string")
 local superproperties = require('blingbling.superproperties')
-
+---Differents popups for Awesome widgets
+--@module blingbling.popups
 local function colorize(string, pattern, color)
   
  local mystring=""
@@ -45,7 +47,7 @@ local function show_process_info(inc_proc_offset, title_color,user_color, root_c
 	timeout = 0, hover_timeout = 0.5,
 	})
 end
----Top popup
+---Top popup.
 --It binds a colorized output of the top command to a widget, and the possibility to launch htop with a click on the widget.
 --</br>Example blingbling.popups.htop(mycairograph,{ title_color = "#rrggbbaa", user_color    = "#rrggbbaa", root_color="#rrggbbaa", terminal = "urxvt"})
 --</br>The terminal parameter is not mandatory, htop will be launch in xterm. Mandatory arguments:
@@ -113,7 +115,7 @@ local function show_netinfo(c1,c2,c3)
   timeout = 0, hover_timeout = 0.5,
 })
 end
----Netstat popup
+---Netstat popup.
 --It binds a colorized output of the netstat command to a widget.
 --</br>Example: blingbling.popups.netstat(net,{ title_color = "#rrggbbaa", established_color= "#rrggbbaa", listen_color="#rrggbbaa"})
 --</br>Mandatory arguments:

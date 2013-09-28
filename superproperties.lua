@@ -1,4 +1,7 @@
----Define default theme values   
+--@author cedlemo
+---Centralize theming values for blingbling widgets
+--Users can create a theme.blingbling table in theirs theme.lua and defines some values for theirs widgets.
+--@module blingbling.superproperties
 local beautiful = require("beautiful")
 local blingbling_theme= (type(beautiful.blingbling) == "table") and beautiful.blingbling  or {}
 
@@ -15,7 +18,7 @@ return {
   text_color= blingbling_theme.text_color or "ffffff" ;
   font_size= blingbling_theme.font_size or 9 ;
   font = blingbling_theme.font or "sans";
-  background_text_color = blingbling_theme.background_text_color or "#00000066" ;
+  text_background_color = blingbling_theme.text_background_color or "#00000066" ;
   background_text_border = blingbling_theme.background_text_border or "#ffffff";
 --theme values for popups module:
   htop_title_color = blingbling_theme.htop_title_color or "#7fb219";
@@ -37,7 +40,7 @@ return {
 --theme values for tagslist	
 	tagslist=	{
 						normal ={ background_color = blingbling_theme.tagslist.normal.background_color or beautiful.bg_normal,
-											background_text_color = blingbling_theme.tagslist.normal.background_text_color or "#00000000",
+											text_background_color = blingbling_theme.tagslist.normal.text_background_color or "#00000000",
 											text_color = blingbling_theme.tagslist.normal.text_color or beautiful.fg_normal,
 											h_margin = blingbling_theme.tagslist.normal.h_margin or blingbling_theme.h_margin or 2 ,
 											v_margin = blingbling_theme.tagslist.normal.v_margin or blingbling_theme.v_margin or 2,
@@ -46,7 +49,7 @@ return {
 											font = blingbling_theme.tagslist.normal.font or "sans"
 											},
 						focus = { background_color = blingbling_theme.tagslist.focus.background_color or beautiful.taglist_bg_focus or beautiful.bg_focus,
-											background_text_color = blingbling_theme.tagslist.focus.background_text_color or "#00000000",
+											text_background_color = blingbling_theme.tagslist.focus.text_background_color or "#00000000",
 											text_color = blingbling_theme.tagslist.focus.text_color or beautiful.taglist_fg_focus or beautiful.fg_focus,
 											h_margin = blingbling_theme.tagslist.focus.h_margin or blingbling_theme.h_margin or 2 ,
 											v_margin = blingbling_theme.tagslist.focus.v_margin or blingbling_theme.v_margin or 2,
@@ -55,7 +58,7 @@ return {
 											font = blingbling_theme.tagslist.normal.font or "sans"
 											},
 						urgent = { background_color = blingbling_theme.tagslist.urgent.background_color or  beautiful.taglist_bg_urgent or beautiful.bg_urgent or beautiful.taglist_bg_focus or beautiful.bg_focus,
-											background_text_color = blingbling_theme.tagslist.urgent.background_text_color or  "#00000000",
+											text_background_color = blingbling_theme.tagslist.urgent.text_background_color or  "#00000000",
 											text_color = blingbling_theme.tagslist.urgent.text_color or  beautiful.taglist_fg_urgent or beautiful.fg_urgent or beautiful.taglist_fg_focus or beautiful.fg_focus,
 											h_margin = blingbling_theme.h_margin or 2 ,
 											v_margin = blingbling_theme.v_margin or 2,
@@ -64,7 +67,7 @@ return {
 											font = blingbling_theme.tagslist.urgent.font or  "sans"
 											},
 						occupied={background_color = blingbling_theme.tagslist.occupied.background_color or  beautiful.taglist_bg_occupied or beautiful.bg_occupied or beautiful.taglist_bg_focus or beautiful.bg_focus,
-											background_text_color = blingbling_theme.tagslist.occupied.background_text_color or "#00000000",
+											text_background_color = blingbling_theme.tagslist.occupied.text_background_color or "#00000000",
 											text_color = blingbling_theme.tagslist.occupied.text_color or beautiful.fg_occupied or beautiful.fg_occupied or beautiful.taglist_fg_focus or beautiful.fg_focus,
 											h_margin = blingbling_theme.h_margin or 2 ,
 											v_margin = blingbling_theme.v_margin or 2,

@@ -1,3 +1,4 @@
+--@author cedlemo
 local helpers = require("blingbling.helpers")
 local awful = require("awful")
 local naughty = require("naughty")
@@ -11,6 +12,8 @@ local setmetatable = setmetatable
 local table = table
 local wibox = require("wibox")
 local debug = debug
+---A menu for udisks-glue informations and actions
+--@module blingbling.udisks_glue
 
 local udisks_glue = { mt = {} }
 
@@ -168,27 +171,50 @@ function remove_device(ud_menu, device, mount_point, device_type )
   data[ud_menu].menu_visible = "false"
   naughty.notify({title = device_type ..":", text = device .." removed", timeout = 10})
 end
-
+---Define the icon for the mount action in the menu.
+--@usage ud_widget:set_mount_icon(icon)
+--@param ud_menu the udisk-glue menu widget or nothing if you use widget:set_mount_icon
+--@param an_image an image file name
 function set_mount_icon(ud_menu,an_image)
   data[ud_menu].mount_icon=an_image
   return ud_menu
 end
+---Define the icon for the umount action in the menu.
+--@usage ud_widget:set_umount_icon(icon)
+--@param ud_menu the udisk-glue menu widget or nothing if you use widget:set_umount_icon
+--@param an_image an image file name
 function set_umount_icon(ud_menu,an_image)
   data[ud_menu].umount_icon=an_image
   return ud_menu
 end
+---Define the icon for the detach action in the menu.
+--@usage ud_widget:set_detach_icon(icon)
+--@param ud_menu the udisk-glue menu widget or nothing if you use widget:set_detach_icon
+--@param an_image an image file name
 function set_detach_icon(ud_menu,an_image)
   data[ud_menu].detach_icon=an_image
   return ud_menu
 end
+---Define the icon for eject action in the menu.
+--@usage ud_widget:set_eject_icon(icon)
+--@param ud_menu the udisk-glue menu widget or nothing if you use widget:set_eject_icon
+--@param an_image an image file name
 function set_eject_icon(ud_menu,an_image)
   data[ud_menu].eject_icon=an_image
   return ud_menu
 end
+---Define the icon for usb devices in the menu.
+--@usage ud_widget:set_Usb_icon(icon)
+--@param ud_menu the udisk-glue menu widget or nothing if you use widget:set_Usb_icon
+--@param an_image an image file name
 function set_Usb_icon(ud_menu,an_image)
   data[ud_menu].Usb_icon=an_image
   return ud_menu
 end
+---Define the icon for Cdrom devices in the menu.
+--@usage ud_widget:set_Cdrom_icon(icon)
+--@param ud_menu the udisk-glue menu widget or nothing if you use widget:set_Cdrom_icon
+--@param an_image an image file name
 function set_Cdrom_icon(ud_menu,an_image)
   data[ud_menu].Cdrom_icon=an_image
   return ud_menu

@@ -16,10 +16,86 @@ local base = require("wibox.widget.base")
 local helpers = require("blingbling.helpers")
 local superproperties = require('blingbling.superproperties')
 
+---Net widget displays two arrows as graph for download/upload activities
+--@module blingbling.widget
+
+---Set the net interface used to get information, default is eth0.
+--@usage mynet:set_interface(string)
+--@name set_interface
+--@class function
+--@param interface a string
+
+---Define the top and bottom margin for the graph area.
+--@usage mynet:set_v_margin(integer)
+--@name set_v_margin
+--@class function
+--@param margin an integer for top and bottom margin
+
+---Define the left and right margin for the graph area.
+--@usage mynet:set_h_margin()
+--@name set_h_margin
+--@class function 
+--@param margin an integer for left and right margin
+
+---Fill all the widget (width * height) with this color (default is none ).
+--@usage mynet:set_background_color(string) -->"#rrggbbaa"
+--@name set_background_color
+--@class function
+--@param color a string "#rrggbbaa" or "#rrggbb"
+
+---Fill the graph area background with this color (default is none).
+--@usage mynet:set_background_graph_color(string) -->"#rrggbbaa"
+--@name set_background_graph_color
+--@class function
+--@param color a string "#rrggbbaa" or "#rrggbb"
+
+---Define the graph/arrows color.
+--@usage mynet:set_graph_color(string) -->"#rrggbbaa"
+--@name set_graph_color
+--@class function
+--@param color a string "#rrggbbaa" or "#rrggbb"
+
+---Set an outline on the arrows with this color.
+--@usage mynet:set_graph_line_color(string) -->"#rrggbbaa"
+--@name set_graph_line_color
+--@class function
+--@param color a string "#rrggbbaa" or "#rrggbb"
+
+---Display or not upload/download informations.
+--@usage mynet:set_show_text(boolean) --> true or false
+--@name set_show_text
+--@class function
+--@param boolean true or false default is false
+
+---Define the text color.
+--@usage mynet:set_text_color(string) -->"#rrggbbaa"
+--@name set_text_color
+--@class function
+--@param color a string "#rrggbbaa" or "#rrggbb"
+
+---Set a color behind the text.
+--@usage mynet:set_text_background_color(string) -->"#rrggbbaa"
+--@name set_text_background_color
+--@class function
+--@param color a string "#rrggbbaa" or "#rrggbb"
+
+---Set the size of the font to use.
+--@usage mynet:set_font_size(integer)
+--@name set_font_size
+--@class function
+--@param size the font size
+
+---Set the font to use.
+--@usage mynet:set_font(string)
+--@name set_font
+--@class function
+--@param font a string that contains the font name family and weight
+
+
 local net = { mt = {} }
 
 local data = setmetatable({}, { __mode = "k" })
-local properties = {"interface", "width", "height", "v_margin", "h_margin", "background_color", "filled", "filled_color", "background_graph_color","graph_color", "graph_line_color","show_text", "text_color", "background_text_color" ,"label", "font_size","font", "horizontal"}
+local properties = {"interface", "width", "height", "v_margin", "h_margin", "background_color", "background_graph_color","graph_color", "graph_line_color","show_text", "text_color", "text_background_color" , "font_size","font" }
 
 function net.draw(n_graph, wibox, cr, width, height)
 
@@ -41,7 +117,7 @@ function net.draw(n_graph, wibox, cr, width, height)
   local graph_color = data[n_graph].graph_color or superproperties.graph_color
   local graph_line_color = data[n_graph].graph_line_color or superproperties.graph_line_color
   local text_color = data[n_graph].text_color or superproperties.text_color
-  local background_text_color = data[n_graph].background_text_color or superproperties.background_text_color
+  local text_background_color = data[n_graph].text_background_color or superproperties.text_background_color
   local font_size =data[n_graph].font_size or superproperties.font_size
   local font = data[n_graph].font or superproperties.font
 
@@ -183,7 +259,7 @@ function net.draw(n_graph, wibox, cr, width, height)
                                         down_text, 
                                         data[n_graph].width -h_margin, 
                                         v_margin , 
-                                        background_text_color, 
+                                        text_background_color, 
                                         text_color,
                                         false,
                                         false,
@@ -194,7 +270,7 @@ function net.draw(n_graph, wibox, cr, width, height)
                                         up_text, 
                                         h_margin, 
                                         height -v_margin , 
-                                        background_text_color, 
+                                        text_background_color, 
                                         text_color,
                                         false,
                                         false,
@@ -330,17 +406,18 @@ local function show_ippopup_infos(n_graph)
 
 end
 
-local function set_ippopup(n_graph)
-  n_graph:connect_signal("mouse::enter", function()
-      show_ippopup_infos(n_graph)
+---Add a popup on the widget that displays informations on the current network connection.
+--@usage mynet:set_ippopup()
+function net:set_ippopup()
+  self:connect_signal("mouse::enter", function()
+      show_ippopup_infos(self)
     end)
-  n_graph:connect_signal("mouse::leave", function()
-        hide_ippopup_infos(n_graph)
+  self:connect_signal("mouse::leave", function()
+        hide_ippopup_infos(self)
     end)
 end
 
 --- Set the n_graph height.
--- @param n_graph The graph.
 -- @param height The height to set.
 function net:set_height( height)
     if height >= 5 then
@@ -351,7 +428,6 @@ function net:set_height( height)
 end
 
 --- Set the graph width.
--- @param graph The graph.
 -- @param width The width to set.
 function net:set_width( width)
     if width >= 5 then
@@ -373,8 +449,8 @@ for _, prop in ipairs(properties) do
 end
 
 --- Create a n_graph widget.
--- @param args Standard widget() arguments. You should add width and height
--- key to set graph geometry.
+--@usage mynet = blingbling.net({width = 100, height = 20, interface = "eth0"})
+-- @param args Standard widget() arguments. You should add width and height and interface
 -- @return A graph widget.
 function net.new(args)
     

@@ -11,77 +11,71 @@ local base = require("wibox.widget.base")
 local helpers = require("blingbling.helpers")
 local superproperties = require('blingbling.superproperties')
 
----Fill all the widget (width * height) with this color (default is transparent ) 
---myvolume:set_background_color(string) -->"#rrggbbaa"
+---Triangular progress graph widget.
+--@module blingbling.triangular_progress_graph
+
+---Fill all the widget (width * height) with this color (default is transparent ). 
+--@usage myvolume:set_background_color(string) -->"#rrggbbaa"
 --@name set_background_color
 --@class function
---@graph graph the graph
 --@param color a string "#rrggbbaa" or "#rrggbb"
 
---Define the form of the graph: use five growing bars instead of a triangle
---myvolume:set_bar(boolean) --> true or false
+---Define the form of the graph: use five growing bars instead of a triangle.
+--@usage myvolume:set_bar(boolean) --> true or false
 --@name set_bar
 --@class function
---@param graph the graph
 --@param boolean true or false (default is false)
 
---Define the top and bottom margin for the graph
---myvolume:set_v_margin(integer)
+---Define the top and bottom margin for the graph.
+--@usage myvolume:set_v_margin(integer)
 --@name set_v_margin
 --@class function
---@param graph the graph
 --@param margin an integer for top and bottom margin
 
---Define the left and right margin for the graph
---myvolume:set_h_margin(integer)
+---Define the left and right margin for the graph.
+--@usage myvolume:set_h_margin(integer)
 --@name set_h_margin
 --@class function
---@param graph the graph
 --@param margin an integer for left and right margin
 
----Set the color of the graph background
---myvolume:set_filled_color(string) -->"#rrggbbaa"
+---Set the color of the graph background.
+--@usage myvolume:set_filled_color(string) -->"#rrggbbaa"
 --@name set_filled_color
 --@class function
---@param graph the graph
 --@param color a string "#rrggbbaa" or "#rrggbb"
 
----Define the graph color
---myvolume:set_graph_color(string) -->"#rrggbbaa"
+----Define the graph color.
+--@usage myvolume:set_graph_color(string) -->"#rrggbbaa"
 --@name set_graph_color
 --@class function
---@param graph the graph
 --@param color a string "#rrggbbaa" or "#rrggbb"
 
---Display text on the graph or not
---myvolume:set_show_text(boolean) --> true or false
+---Display text on the graph or not.
+--@usage myvolume:set_show_text(boolean) --> true or false
 --@name set_show_text
 --@class function
---@param graph the graph
 --@param boolean true or false (default is false)
 
---Define the color of the text
---myvolume:set_text_color(string) -->"#rrggbbaa"
+---Define the color of the text.
+--@usage myvolume:set_text_color(string) -->"#rrggbbaa"
 --@name set_text_color
 --@class function
---@param graph the graph
 --@param color a string "#rrggbbaa" or "#rrggbb" defaul is white
 
---Define the background color of the text
---myvolume:set_background_text_color(string) -->"#rrggbbaa"
---@name set_background_text_color
---@class
---@param graph the graph
+---Define the background color of the text.
+--@usage myvolume:set_text_background_color(string) -->"#rrggbbaa"
+--@name set_text_background_color
+--@class function
 --@param color a string "#rrggbbaa" or "#rrggbb"
 
----Define the text font size
+---Define the text font size.
 --myvolume:set_font_size(integer)
 --@name set_font_size
 --@class function
 --@param graph the graph
 --@param size the font size
 
----Define the template of the text to display
+---Define the template of the text to display.
 --@usage myvolume:set_label(string)
 --By default the text is : (value_send_to_the_widget *100) .. "%"
 --static string: example set_label("Volume:") will display "Volume:" on the graph
@@ -94,7 +88,7 @@ local superproperties = require('blingbling.superproperties')
 local triangular_progressgraph = { mt = {} }
 
 local data = setmetatable({}, { __mode = "k" })
-local properties = {"width", "height", "v_margin", "h_margin", "background_color", "graph_background_color", "graph_color","graph_line_color","show_text", "text_color", "background_text_color" ,"label", "font_size","font", "bar"}
+local properties = {"width", "height", "v_margin", "h_margin", "background_color", "graph_background_color", "graph_color","graph_line_color","show_text", "text_color", "text_background_color" ,"label", "font_size","font", "bar"}
 
 function triangular_progressgraph.draw(tp_graph, wibox, cr, width, height)
 
@@ -114,7 +108,7 @@ function triangular_progressgraph.draw(tp_graph, wibox, cr, width, height)
   local graph_color = data[tp_graph].graph_color or superproperties.graph_color
   local graph_line_color = data[tp_graph].graph_line_color or superproperties.graph_line_color
   local text_color = data[tp_graph].text_color or superproperties.text_color
-  local background_text_color = data[tp_graph].background_text_color or superproperties.background_text_color
+  local text_background_color = data[tp_graph].text_background_color or superproperties.text_background_color
   local font_size =data[tp_graph].font_size or superproperties.font_size
   local font = data[tp_graph].font or superproperties.font
 
@@ -257,7 +251,7 @@ function triangular_progressgraph.draw(tp_graph, wibox, cr, width, height)
                                       text, 
                                       h_margin, 
                                       (data[tp_graph].height/2) , 
-                                      background_text_color, 
+                                      text_background_color, 
                                       text_color,
                                       false,
                                       true,
@@ -271,33 +265,9 @@ function triangular_progressgraph.fit(tp_graph, width, height)
     return data[tp_graph].width, data[tp_graph].height
 end
 
---- Add a value to the tp_graph
--- For compatibility between old and new awesome widget, add_value can be replaced by set_value
--- @usage mygraph:add_value(a) or mygraph:set_value(a)
--- @param tp_graph The tp_graph.
--- @param value The value between 0 and 1.
--- @param group The stack color group index.
---local function add_value(tp_graph, value, group)
---    if not graph then return end
---
---    local value = value or 0
---    local values = data[tp_graph].values
---   
---   if string.find(value, "nan") then
---       value=0
---    end
---   
---    local values = data[tp_graph].values
---    table.remove(values, #values)
---    table.insert(values,1,value)
---   
---    tp_graph:emit_signal("widget::updated")
---    return tp_graph
---end
---or
---- Set the tp_graph value.
--- @param p_graph The progress bar.
--- @param value The progress bar value between 0 and 1.
+---Set the tp_graph value.
+--@param tp_graph The progress bar.
+--@param value The progress bar value between 0 and 1.
 local function set_value(tp_graph, value)
     local value = value or 0
     local max_value = data[tp_graph].max_value
@@ -306,8 +276,7 @@ local function set_value(tp_graph, value)
     return tp_graph
 end
 
---- Set the tp_graph height.
--- @param tp_graph The graph.
+---Set the tp_graph height.
 -- @param height The height to set.
 function triangular_progressgraph:set_height( height)
     if height >= 5 then
@@ -317,9 +286,8 @@ function triangular_progressgraph:set_height( height)
     return self
 end
 
---- Set the graph width.
--- @param graph The graph.
--- @param width The width to set.
+---Set the tp_graph width.
+--@param width The width to set.
 function triangular_progressgraph:set_width( width)
     if width >= 5 then
         data[self].width = width

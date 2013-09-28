@@ -1,20 +1,26 @@
+--@author cedlemo
 local table = table
 local awful = require("awful")
 local superproperties = require('blingbling.superproperties')
---local awesome = require("awesome")
----Three menu launchers for main, reboot and shutdown your system.
 
+---launchers for reboot, shutdown, shutdown, logout or lock menus for your system.
+--@module blingbling.system
+
+local system = {}
 local shutdown_cmd= 'systemctl poweroff'
 local reboot_cmd='systemctl reboot'
 local lock_cmd='xscreensaver-command -lock'
 
---- Main menu launcher
+---Main menu launcher.
 --Create a button which will spawn a menu allowing the user to shutdown, reboot, logout and lock screen
+--Only the first parameter is mandatory. The other values can be nil and specified in the theme.lua via the theme.blingbling table. See the superproperties module documentation.
+--@usage mymainmenu = system.mainmenu(main_image, shutdown_image, reboot_image, logout_image, lock_image)
+--@param main_image the image that will be displayed with the shutdown option
 --@param shutdown_image the image that will be displayed with the shutdown option
 --@param reboot_image the image that will be displayed with the reboot option
 --@param logout_image the image that will be displayed with the logout option
 --@param lock_image the image that will be displayed with the lock option
-local function mainmenu(main_image, shutdown_image, reboot_image, logout_image, lock_image)
+function system.mainmenu(main_image, shutdown_image, reboot_image, logout_image, lock_image)
   if not shutdown_image then
     shutdown_image = superproperties.shutdown or nil
   end
@@ -39,12 +45,14 @@ local function mainmenu(main_image, shutdown_image, reboot_image, logout_image, 
                                  menu = powermenu })
 end
 
----Shutdown menu launcher
---Create a button with an accept/cancel menu for shutdown the system: shutdown=blingbling.system.shutdownmenu(launcher_image, menu_dialog_image_ok, menu_.dialog_image_cancel)
+---Shutdown menu launcher.
+--Create a button with an accept/cancel menu for shutdown the system 
+--No mandatory parameter. All values can be nil and specified in the theme.lua via the theme.blingbling table. See the superproperties module documentation.
+--@usage shutdown=blingbling.system.shutdownmenu(launcher_image, menu_dialog_image_ok, menu_.dialog_image_cancel)
 --@param button_image an image file that will be displayed in the wibox
 --@param accept_image an image file for the accept menu entry
 --@param cancel_image an image file for the cancel menu entry
-local function shutdownmenu(button_image, accept_image, cancel_image)
+function system.shutdownmenu(button_image, accept_image, cancel_image)
   if not button_image then
 		button_image = superproperties.shutdown or nil
 	end
@@ -66,12 +74,14 @@ local function shutdownmenu(button_image, accept_image, cancel_image)
   return shutdownbutton
 end
 
----Lock menu launcher
---Create a button with an accept/cancel menu for locking the system: shutdown=blingbling.system.lockmenu(launcher_image, menu_dialog_image_ok, menu_.dialog_image_cancel)
+---Lock menu launcher.
+--Create a button with an accept/cancel menu for locking the system: 
+--No mandatory parameter. All values can be nil and specified in the theme.lua via the theme.blingbling table. See the superproperties module documentation.
+--@usage shutdown=blingbling.system.lockmenu(launcher_image, menu_dialog_image_ok, menu_.dialog_image_cancel)
 --@param button_image an image file that will be displayed in the wibox
 --@param accept_image an image file for the accept menu entry
 --@param cancel_image an image file for the cancel menu entry
-local function lockmenu(button_image, accept_image, cancel_image)
+function system.lockmenu(button_image, accept_image, cancel_image)
   if not button_image then
 		button_image = superproperties.lock or nil
 	end
@@ -93,12 +103,14 @@ local function lockmenu(button_image, accept_image, cancel_image)
   return shutdownbutton
 end
 
----Reboot menu launcher
---Create a button with an accept/cancel menu for reboot the system: reboot=blingbling.system.rebootmenu(launcher_image, menu_dialog_image_ok, menu_.dialog_image_cancel)
+---Reboot menu launcher.
+--Create a button with an accept/cancel menu for reboot the system: 
+--No mandatory parameter. All values can be nil and specified in the theme.lua via the theme.blingbling table. See the superproperties module documentation.
+--@usage reboot=blingbling.system.rebootmenu(launcher_image, menu_dialog_image_ok, menu_.dialog_image_cancel)
 --@param button_image an image file that will be displayed in the wibox
 --@param accept_image an image file for the accept menu entry
 --@param cancel_image an image file for the cancel menu entry
-local function rebootmenu(button_image, accept_image, cancel_image)
+function system.rebootmenu(button_image, accept_image, cancel_image)
   if not buttom_image then
 		button_image = superproperties.reboot or nil
 	end
@@ -118,12 +130,14 @@ local function rebootmenu(button_image, accept_image, cancel_image)
                                            menu = rebootmenu })
   return rebootbutton
 end
----Logout menu launcher
---Create a button with an accept/cancel menu for reboot the system: logout=blingbling.system.logouttmenu(launcher_image, menu_dialog_image_ok, menu_.dialog_image_cancel)
+---Logout menu launcher.
+--Create a button with an accept/cancel menu for reboot the system: 
+--No mandatory parameter. All values can be nil and specified in the theme.lua via the theme.blingbling table. See the superproperties module documentation.
+--@usage logout=blingbling.system.logouttmenu(launcher_image, menu_dialog_image_ok, menu_.dialog_image_cancel)
 --@param button_image an image file that will be displayed in the wibox
 --@param accept_image an image file for the accept menu entry
 --@param cancel_image an image file for the cancel menu entry
-local function logoutmenu(button_image, accept_image, cancel_image)
+function system.logoutmenu(button_image, accept_image, cancel_image)
   if not buttom_image then
 		button_image = superproperties.logout or nil
 	end
@@ -134,19 +148,19 @@ local function logoutmenu(button_image, accept_image, cancel_image)
     cancel_image = superproperties.cancel or nil
   end
   logoutmenu = awful.menu({ items = { 
-                                      { "Reboot", awesome.quit, accept_image },
+                                      { "Logout", awesome.quit, accept_image },
                                       { "Cancel", "" , cancel_image}
                                     }
                           })
 
   logoutbutton = awful.widget.launcher({ image = button_image,
-                                           menu = rebootmenu })
+                                           menu = logoutmenu })
   return logoutbutton
 end
-return {
-  shutdownmenu = shutdownmenu;
-  rebootmenu = rebootmenu;
-	lockmenu = lockmenu;
-  mainmenu = mainmenu;
-	logoutmenu = logoutmenu
-}
+return system--{
+  --shutdownmenu = shutdownmenu;
+  --rebootmenu = rebootmenu;
+	--lockmenu = lockmenu;
+  --mainmenu = mainmenu;
+	--logoutmenu = logoutmenu
+--}

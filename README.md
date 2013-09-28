@@ -80,7 +80,7 @@ Create a value text box:
     --home_fs_usage:set_width(40)
     --home_fs_usage:set_v_margin(2)
     home_fs_usage:set_background_text_color("#00000099")
-    home_fs_usage:set_values_text_color({{"#88aa00ff",0}, --all value > 0 will be displaying using this color
+    home_fs_usage:set_values_text_color({{"#88aa00ff",0}, --all value > 0 will be displayed using this color
                               {"#d4aa00ff", 0.75},
                               {"#d45500ff",0.77}})
     --There is no maximum number of color that users can set, just put the lower values at first. 
@@ -127,7 +127,7 @@ Create a new task_warrior menu:
     task_w:set_project_icon(themes_dir .. "/test/titlebar/maximized_focus_active.png")
 
 #####udisks_glue
-Create a menu which displaying mounted media with actions like mount/unmount/detach/eject. Must be used with .udisks-glue.conf that I created. ( The name of the variable containing the widget must be the same in your rc.lua and in the .udisks-glue.conf).
+Create a menu which displays mounted media with actions like mount/unmount/detach/eject. Must be used with .udisks-glue.conf that I created. ( The name of the variable containing the widget must be the same in your rc.lua and in the .udisks-glue.conf).
 
     udisks_glue=blingbling.udisks_glue.new({ menu_icon = themes_dir .. "/test/titlebar/maximized_focus_active.png"})
 
@@ -148,7 +148,7 @@ Provide buttons with menu in order to reboot or shutdown the system. User can se
 
 
 #####clock
-This part provides a clock displaying month, day of month and day of week in japanese (kanji form)
+This part provides a clock which displays month, day of month and day of week in japanese (kanji form)
 
     mytextclock = blingbling.clock.japanese(" %m、%d、%w、<span color=\"#999999\">%H<span color=\""..blingbling.helpers.rgb(20,31,82).."\">時</span>%M<span color=\""..blingbling.helpers.rgb(20,31,82).."\">分</span> </span>")
 
@@ -182,7 +182,7 @@ then add mytaglist[s] in the wibox :
 This is the circle graph of wlourf that you can feed with vicious.
 
     circle = blingbling.wlourf_circle_graph({radius= 5, height = 18, width = 36, show_text = true, label = "cpu", h_margin = 2, v_margin = 0 --[[, font = {family = "Times New Roman", slang = "italic", weight = "bold"}]]})
-    circle:set_graph_colors({{"#88aa00ff",0}, --all value > 0 will be displaying using this color
+    circle:set_graph_colors({{"#88aa00ff",0}, --all value > 0 will be displayed using this color
                            {"#d4aa00ff", 0.5},
                            {"#d45500ff",0.77}})
     --set the value directly

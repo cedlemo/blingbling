@@ -1,3 +1,4 @@
+--@author cedlemo
 local setmetatable = setmetatable
 local ipairs = ipairs
 local type = type
@@ -8,94 +9,87 @@ local base = require("wibox.widget.base")
 local color = require("gears.color")
 local superproperties = require('blingbling.superproperties')
 --- A progress graph widget.
----module("blingbling.progress_graph")
+--@module blingbling.progress_graph
 
 local progressgraph = { mt = {} }
----Fill all the widget (width * height) with this color (default is none ) 
+---Fill all the widget (width * height) with this color (default is none ). 
 --@usage mygraph:set_background_color(string) -->"#rrggbbaa"
 --@name set_background_color
 --@class function
---@graph graph the graph
+--@param graph the graph
 --@param color a string "#rrggbbaa" or "#rrggbb"
 
----Set a border (width * height) with this color (default is none ) 
---@usage mygraph:set_background_border(string) -->"#rrggbbaa"
---@name set_background_border
---@class function
---@graph graph the graph
---@param color a string "#rrggbbaa" or "#rrggbb"
-
----Fill the graph area background with this color (default is none)
+---Fill the graph area background with this color (default is none).
 --@usage mygraph:set_graph_background_color(string) -->"#rrggbbaa"
 --@name set_graph_background_color
 --@class function
 --@param graph the graph
 --@param color a string "#rrggbbaa" or "#rrggbb"
 
----Set rounded corners for background and graph background
+---Set rounded corners for background and graph background.
 --@usage mygraph:set_rounded_size(a) -> a in [0,1]
 --@name set_rounded_size
 --@class function
 --@param graph the graph
 --@param rounded_size float in [0,1]
 
----Define the top and bottom margin for the graph area
+---Define the top and bottom margin for the graph area.
 --@usage mygraph:set_v_margin(integer)
 --@name set_v_margin
 --@class function
 --@param graph the graph
 --@param margin an integer for top and bottom margin
 
----Define the left and right margin for the graph area
+---Define the left and right margin for the graph area.
 --@usage mygraph:set_h_margin(integer)
 --@name set_h_margin
 --@class function
 --@param graph the graph
 --@param margin an integer for left and right margin
 
----Define the graph color
+---Define the graph color.
 --@usage mygraph:set_graph_color(string) -->"#rrggbbaa"
 --@name set_graph_color
 --@class function
 --@param graph the graph
 --@param color a string "#rrggbbaa" or "#rrggbb"
 
----Define the graph outline
+---Define the graph outline.
 --@usage mygraph:set_graph_line_color(string) -->"#rrggbbaa"
 --@name set_graph_line_color
 --@class function
 --@param graph the graph
 --@param color a string "#rrggbbaa" or "#rrggbb"
 
----Display text on the graph or not
+---Display text on the graph or not.
 --@usage mygraph:set_show_text(boolean) --> true or false
 --@name set_show_text
 --@class function
 --@param graph the graph
 --@param boolean true or false (default is false)
 
----Define the color of the text
+---Define the color of the text.
 --@usage mygraph:set_text_color(string) -->"#rrggbbaa"
 --@name set_text_color
 --@class function
 --@param graph the graph
 --@param color a string "#rrggbbaa" or "#rrggbb" defaul is white
 
----Define the background color of the text
---@usage mygraph:set_background_text_color(string) -->"#rrggbbaa"
---@name set_background_text_color
---@class
+---Define the background color of the text.
+--@usage mygraph:set_text_background_color(string) -->"#rrggbbaa"
+--@name set_text_background_color
+--@class function
 --@param graph the graph
 --@param color a string "#rrggbbaa" or "#rrggbb"
 
----Define the text font size
+---Define the text font size.
 --@usage mygraph:set_font_size(integer)
 --@name set_font_size
 --@class function
 --@param graph the graph
 --@param size the font size
 
----Define the template of the text to display
+---Define the template of the text to display.
 --@usage mygraph:set_label(string)
 --By default the text is : (value_send_to_the_widget *100) .. "%"
 --static string: example set_label("CPU usage:") will display "CUP usage:" on the graph
@@ -105,7 +99,7 @@ local progressgraph = { mt = {} }
 --@param graph the graph
 --@param text the text to display
 
----Define if the graph should increase/decrease horizontaly
+---Define if the graph should increase/decrease horizontaly.
 --@usage mygraph:set_horizontal(boolean) --> true or false
 --@name set_horizontal
 --@class function
@@ -116,10 +110,10 @@ local data = setmetatable({}, { __mode = "k" })
 
 
 local properties = {    "width", "height", "v_margin", "h_margin",
-                        "background_border","background_color",
+                        "background_color",
                         "graph_background_color","rounded_size",
                         "graph_color", "graph_line_color","show_text", "text_color", 
-                        "background_text_color" ,"label", "font_size","font","horizontal"}
+                        "text_background_color" ,"label", "font_size","font","horizontal"}
 
 function progressgraph.draw(p_graph, wibox, cr, width, height)
     -- We want one pixel wide lines
@@ -137,28 +131,25 @@ function progressgraph.draw(p_graph, wibox, cr, width, height)
         h_margin = data[p_graph].h_margin 
     end
     
-    local background_border = data[p_graph].background_border or superproperties.background_border
     local background_color = data[p_graph].background_color or superproperties.background_color
     local rounded_size = data[p_graph].rounded_size or superproperties.rounded_size
     local graph_background_color = data[p_graph].graph_background_color or superproperties.graph_background_color
     local graph_color = data[p_graph].graph_color or superproperties.graph_color
     local graph_line_color = data[p_graph].graph_line_color or superproperties.graph_line_color
     local text_color = data[p_graph].text_color or superproperties.text_color
-    local background_text_color = data[p_graph].background_text_color or superproperties.background_text_color
+    local text_background_color = data[p_graph].text_background_color or superproperties.text_background_color
     local font_size =data[p_graph].font_size or superproperties.font_size
     local font = data[p_graph].font or superproperties.font
     
     --Generate Background (background widget)
     if data[p_graph].background_color then
-        helpers.draw_rounded_corners_rectangle( cr,
-                                            0,
-                                            0,
-                                            data[p_graph].width, 
-                                            data[p_graph].height,
-                                            background_color, 
-                                            rounded_size, 
-                                            background_border)
-  
+      helpers.draw_rounded_corners_rectangle( cr,
+                                              0,
+                                              0,
+                                              data[p_graph].width, 
+                                              data[p_graph].height,
+                                              background_color, 
+                                              rounded_size)
     end
   
     --draw a graph with graph_background_color
@@ -208,7 +199,7 @@ function progressgraph.draw(p_graph, wibox, cr, width, height)
                                         text, 
                                         data[p_graph].width/2, 
                                         data[p_graph].height/2 , 
-                                        background_text_color, 
+                                        text_background_color, 
                                         text_color,
                                         true,
                                         true,
@@ -219,7 +210,7 @@ function progressgraph.draw(p_graph, wibox, cr, width, height)
                                         text, 
                                         h_margin, 
                                         data[p_graph].height/2 , 
-                                        background_text_color, 
+                                        text_background_color, 
                                         text_color,
                                         false,
                                         true,
@@ -246,7 +237,6 @@ function set_value(p_graph, value)
 end
 
 --- Set the p_graph height.
--- @param p_graph The p_graph.
 -- @param height The height to set.
 function progressgraph:set_height( height)
     data[self].height = height
@@ -255,7 +245,6 @@ function progressgraph:set_height( height)
 end
 
 --- Set the p_graph width.
--- @param p_graph The p_graph.
 -- @param width The width to set.
 function progressgraph:set_width( width)
     data[self].width = width
@@ -316,4 +305,4 @@ function progressgraph.mt:__call(...)
 end
 return setmetatable(progressgraph, progressgraph.mt)
 
--- vim: filetype=lua:expandtab:shiftwidth=4:tabstop=8:softtabstop=4:textwidth=80
+-- vim: filetype=lua:expandtab:shiftwidth=2:tabstop=8:softtabstop=2:textwidth=80

@@ -11,115 +11,98 @@ local base = require("wibox.widget.base")
 local helpers = require("blingbling.helpers")
 local superproperties = require('blingbling.superproperties')
 
+---Graph widget.
+--@module blingbling.linegraph
+
 local linegraph = { mt = {} }
 
 local data = setmetatable({}, { __mode = "k" })
 
----Fill all the widget (width * height) with this color (default is none ) 
+---Fill all the widget (width * height) with this color (default is none ). 
 --@usage mygraph:set_background_color(string) -->"#rrggbbaa"
 --@name set_background_color
 --@class function
---@graph graph the graph
 --@param color a string "#rrggbbaa" or "#rrggbb"
 
----Set a border (width * height) with this color (default is none ) 
---@usage mygraph:set_background_border(string) -->"#rrggbbaa"
---@name set_background_border
---@class function
---@graph graph the graph
---@param color a string "#rrggbbaa" or "#rrggbb"
-
----Fill the graph area background with this color (default is none)
+---Fill the graph area background with this color (default is none).
 --@usage mygraph:set_graph_background_color(string) -->"#rrggbbaa"
 --@name set_graph_background_color
 --@class function
---@param graph the graph
 --@param color a string "#rrggbbaa" or "#rrggbb"
 
----Set a border on the graph area background (default is none ) 
---@usage mygraph:set_graph_background_border(string) -->"#rrggbbaa"
---@name set_graph_background_border
---@class function
---@graph graph the graph
---@param color a string "#rrggbbaa" or "#rrggbb"
-
----Set rounded corners for background and graph background
+---Set rounded corners for background and graph background.
 --@usage mygraph:set_rounded_size(a) -> a in [0,1]
 --@name set_rounded_size
 --@class function
---@param graph the graph
 --@param rounded_size float in [0,1]
 
----Define the top and bottom margin for the graph area
+---Define the top and bottom margin for the graph area.
 --@usage mygraph:set_v_margin(integer)
 --@name set_v_margin
 --@class function
---@param graph the graph
 --@param margin an integer for top and bottom margin
 
----Define the left and right margin for the graph area
+---Define the left and right margin for the graph area.
 --@usage mygraph:set_h_margin(integer)
 --@name set_h_margin
 --@class function
---@param graph the graph
 --@param margin an integer for left and right margin
 
----Define the graph color
+---Define the graph color.
 --@usage mygraph:set_graph_color(string) -->"#rrggbbaa"
 --@name set_graph_color
 --@class function
---@param graph the graph
 --@param color a string "#rrggbbaa" or "#rrggbb"
 
----Define the graph outline
+---Define the graph outline.
 --@usage mygraph:set_graph_line_color(string) -->"#rrggbbaa"
 --@name set_graph_line_color
 --@class function
---@param graph the graph
 --@param color a string "#rrggbbaa" or "#rrggbb"
 
----Display text on the graph or not
+---Display text on the graph or not.
 --@usage mygraph:set_show_text(boolean) --> true or false
 --@name set_show_text
 --@class function
---@param graph the graph
 --@param boolean true or false (default is false)
 
----Define the color of the text
+---Define the color of the text.
 --@usage mygraph:set_text_color(string) -->"#rrggbbaa"
 --@name set_text_color
 --@class function
---@param graph the graph
 --@param color a string "#rrggbbaa" or "#rrggbb" defaul is white
 
----Define the background color of the text
---@usage mygraph:set_background_text_color(string) -->"#rrggbbaa"
---@name set_background_text_color
---@class
---@param graph the graph
+---Define the background color of the text.
+--@usage mygraph:set_text_background_color(string) -->"#rrggbbaa"
+--@name set_text_background_color
+--@class function
 --@param color a string "#rrggbbaa" or "#rrggbb"
 
----Define the text font size
+---Define the text's font .
+--@usage mygraph:set_font(string)
+--@name set_font
+--@class function
+--@param font a string that contains the font name family and weight
+
+---Define the text font size.
 --@usage mygraph:set_font_size(integer)
 --@name set_font_size
 --@class function
---@param graph the graph
 --@param size the font size
 
----Define the template of the text to display
+---Define the template of the text to display.
 --@usage mygraph:set_label(string)
 --By default the text is : (value_send_to_the_widget *100) .. "%"
 --static string: example set_label("CPU usage:") will display "CUP usage:" on the graph
 --dynamic string: use $percent in the string example set_label("Load $percent %") will display "Load 10%" 
 --@name set_label
 --@class function
---@param graph the graph
 --@param text the text to display
 
 
 
 local properties = {    "width", "height", "h_margin", "v_margin",
-                        "background_border", "background_color", 
+                        "background_color", 
                         "graph_background_border", "graph_background_color",
                         "rounded_size", "graph_color", "graph_line_color",
                         "show_text", "text_color", "font_size", "font",
@@ -134,11 +117,6 @@ function linegraph.draw(graph, wibox, cr, width, height)
     -- Set the values we need
     local value = data[graph].value
     
---    local background_border_width = 0
---    if data[graph].background_border then
---        background_border_width = 1
---    end
-
     local graph_border_width = 0
     if data[graph].graph_background_border then
         graph_border_width = 1
@@ -154,7 +132,6 @@ function linegraph.draw(graph, wibox, cr, width, height)
         h_margin = data[graph].h_margin 
     end
     
-    local background_border = data[graph].background_border or superproperties.background_border
     local background_color = data[graph].background_color or superproperties.background_color
     local rounded_size = data[graph].rounded_size or superproperties.rounded_size
     local graph_background_color = data[graph].graph_background_color or superproperties.graph_background_color
@@ -162,23 +139,23 @@ function linegraph.draw(graph, wibox, cr, width, height)
     local graph_color = data[graph].graph_color or superproperties.graph_color
     local graph_line_color = data[graph].graph_line_color or superproperties.graph_line_color
     local text_color = data[graph].text_color or superproperties.text_color
-    local background_text_color = data[graph].background_text_color or superproperties.background_text_color
+    local text_background_color = data[graph].text_background_color or superproperties.text_background_color
     local font_size =data[graph].font_size or superproperties.font_size
     local font = data[graph].font or superproperties.font
     
     local line_width = 1
     cr:set_line_width(line_width)
     cr:set_antialias("subpixel") 
-    -- Draw the widget background 
+    -- Draw the widget background if user have given a color 
     if data[graph].background_color then
-      helpers.draw_rounded_corners_rectangle(cr,
-                                                0, --x
-                                                0, --y
-                                                data[graph].width, 
-                                                data[graph].height,
-                                                background_color,
-                                                rounded_size,
-                                                background_border)
+      helpers.draw_rounded_corners_rectangle(	cr,
+                                              0, --x
+                                              0, --y
+                                              data[graph].width, 
+                                              data[graph].height,
+                                              background_color,
+                                              rounded_size
+                                            )
      end
 
     -- Draw the graph background 
@@ -213,14 +190,10 @@ function linegraph.draw(graph, wibox, cr, width, height)
                                    data[graph].width - h_padding, 
                                    data[graph].height - v_padding,
                                    rounded_size
-                                    )
+                                   )
     --Drawn the graph
     --if graph_background_border is set, graph must not be drawn on it 
 
-    if helpers.is_transparent(graph_background_border) == false then
-      h_padding = h_padding + 1
-      v_padding = v_padding + 1
-    end
     --find nb values we can draw every column_length px
     --if rounded, make sure that graph don't begin or end outside background
     --check for the less value between hight and height to calculate the space for rounded size:
@@ -268,10 +241,8 @@ function linegraph.draw(graph, wibox, cr, width, height)
     --Draw the graph line
     r,g,b,a=helpers.hexadecimal_to_rgba_percent(graph_line_color)
     cr:set_source_rgba(r, g, b,a)
---    
     x=data[graph].width - (h_padding + rounded_size * less_value)
     y=data[graph].height-(v_padding) 
--- 
     cr:new_path()
     cr:move_to(x,y )
     cr:line_to(x,y )
@@ -307,7 +278,7 @@ function linegraph.draw(graph, wibox, cr, width, height)
                                         text, 
                                         h_padding + rounded_size * less_value, 
                                         data[graph].height/2 , 
-                                        background_text_color, 
+                                        text_background_color, 
                                         text_color,
                                         false,
                                         true,
@@ -320,12 +291,12 @@ function linegraph.fit(graph, width, height)
     return data[graph].width, data[graph].height
 end
 
---- Add a value to the graph
--- For compatibility between old and new awesome widget, add_value can be replaced by set_value
--- @usage mygraph:add_value(a) or mygraph:set_value(a)
--- @param graph The graph.
--- @param value The value between 0 and 1.
--- @param group The stack color group index.
+---Add a value to the graph.
+--For compatibility between old and new awesome widget, add_value can be replaced by set_value
+--@usage mygraph:add_value(a) or mygraph:set_value(a)
+--@param graph the graph
+--@param value The value between 0 and 1.
+--@param group The stack color group index.
 local function add_value(graph, value, group)
     if not graph then return end
 
@@ -344,9 +315,8 @@ local function add_value(graph, value, group)
 end
 
 
---- Set the graph height.
--- @param graph The graph.
--- @param height The height to set.
+---Set the graph height.
+--@param height The height to set.
 function linegraph:set_height( height)
     if height >= 5 then
         data[self].height = height
@@ -355,9 +325,8 @@ function linegraph:set_height( height)
     return self
 end
 
---- Set the graph width.
--- @param graph The graph.
--- @param width The width to set.
+---Set the graph width.
+--@param width The width to set.
 function linegraph:set_width( width)
     if width >= 5 then
         data[self].width = width
@@ -377,10 +346,10 @@ for _, prop in ipairs(properties) do
     end
 end
 
---- Create a graph widget.
--- @param args Standard widget() arguments. You should add width and height
--- key to set graph geometry.
--- @return A graph widget.
+---Create a graph widget.
+--@param args Standard widget() arguments. You should add width and height
+--key to set graph geometry.
+--@return A graph widget.
 function linegraph.new(args)
     
     local args = args or {}
@@ -417,4 +386,3 @@ function linegraph.mt:__call(...)
 end
 
 return setmetatable(linegraph, linegraph.mt)
-
