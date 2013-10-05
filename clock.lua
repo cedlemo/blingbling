@@ -18,7 +18,7 @@ local days_of_month_in_kanas={"ついたち","ふつか","みっか","よっか"
 
 local function get_day_of_month_in_kanji(n)
 	if n<=10 then
-		return kanji_numbers[n]
+		return kanji_numbers[n] .. "日"
 	elseif n<20 then
 		return kanji_numbers[10]..(kanji_numbers[n-10] or "") .. "日"
 	elseif n<30 then
