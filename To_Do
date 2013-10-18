@@ -1,3 +1,5 @@
+clean superproperties
+check all for tagslist values
 Check all values in superproperties and in all files some of them doesn't match so user cannot modify some parameters:
 -->example with value_text_box and background_text_color (done)
 remove border for backgrounds (done)
