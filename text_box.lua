@@ -236,19 +236,23 @@ end
 function text_box.new(args)
     local args = args or {}
 
-    args.width = args.width or 5 
-    args.height = args.height or 5
+    local width = args.width or 5 
+    local height = args.height or 5
 
-    if args.width < 5 or args.height < 5 then return end
+    if width < 5 or height < 5 then return end
 
     local t_box = base.make_widget()
     data[t_box] = {}
     
 		data[t_box].text = args.text or ""
-    for _, v in ipairs(properties) do
+
+		for _, v in ipairs(properties) do
       data[t_box][v] = args[v] 
     end
-    local ctx = pangocairo.font_map_get_default():create_context()
+    data[t_box].height = height
+		data[t_box].width = width    
+		
+		local ctx = pangocairo.font_map_get_default():create_context()
     t_box._layout = pango.Layout.new(ctx)
 
     -- Set methods
