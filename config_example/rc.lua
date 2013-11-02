@@ -124,6 +124,7 @@ local blingbling = require("blingbling")
 --mytextclock = awful.widget.textclock(" %a %b %d, <span color=\"#999999\">%H<span color=\""..blingbling.helpers.rgb(20,31,82).."\">時</span>%M<span color=\""..blingbling.helpers.rgb(20,31,82).."\">分</span> </span>")
 mytextclock = blingbling.clock.japanese(" %m、%d、%w、<span color=\"#999999\">%H<span color=\""..blingbling.helpers.rgb(20,31,82).."\">時</span>%M<span color=\""..blingbling.helpers.rgb(20,31,82).."\">分</span> </span>")
 calendar = blingbling.calendar()
+calendar:set_link_to_external_calendar(true)
 -- Create a wibox for each screen and add it
 mywibox = {}
 mypromptbox = {}
@@ -279,7 +280,7 @@ mytasklist.buttons = awful.util.table.join(
 	logout=blingbling.system.logoutmenu()
 	mytag={}
 	--test = blingbling.text_box()
-for s = 1, screen.count() - 1 do
+for s = 1, screen.count() do
 	mytag[s]=blingbling.tagslist(s,  awful.widget.taglist.filter.all, mytaglist.buttons--, {--height = 16, width = 30,
 																																												--[[background_border="#00000033",--]] --background_color = "#00000055", 
 																																												--rounded_size = {0, 0.4,0,0.4},--[[rounded_size=0.4,--]] 
@@ -296,7 +297,7 @@ for s = 1, screen.count() - 1 do
                            awful.button({ }, 4, function () awful.layout.inc(layouts, 1) end),
                            awful.button({ }, 5, function () awful.layout.inc(layouts, -1) end)))
     -- Create a taglist widget
-    --mytaglist[s] = awful.widget.taglist(s, awful.widget.taglist.filter.all, mytaglist.buttons)
+    --mytag[s] = awful.widget.taglist(s, awful.widget.taglist.filter.all, mytaglist.buttons)
     -- Create a tasklist widget
     mytasklist[s] = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, mytasklist.buttons)
 
@@ -580,6 +581,6 @@ function run_once(cmd)
 	end
 	awful.util.spawn_with_shell("pgrep -u $USER -x " .. findme .. " > /dev/null || (" .. cmd .. ")")
 end
-run_once("qjackctl")
+--run_once("qjackctl")
 run_once("volti")
 -- }}}
