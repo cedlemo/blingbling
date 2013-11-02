@@ -23,6 +23,7 @@ The current version is the v2.0 and works with Awesome WM 3.5. There are a lot o
 *  clock
 *  tagslist
 *  text_box
+*  calendar
 
 This part is an adaptation of some of the wlourf awesome stuff : http://wlourf.deviantart.com/art/widgets-for-awesome-wm-v1-3-269061228.
 *  wlourf circle
@@ -182,6 +183,13 @@ then add mytaglist[s] in the wibox :
     left_layout:add(wibox.layout.margin(mytag[s],0,0,1,1))
 
 
+#####calendar
+This widget is a clock widget with a calendar. You can show the calendar for the current month with a mouse click on this widget. In the calendar, there is 3 buttons allowing to show previous, current and next month. You can get events from remind and taskwarrior or add handlers for other task/calendar software.
+
+    calendar = blingbling.calendar()
+		calendar:set_link_to_external_calendar(true)
+
+
 #####wlourf circle graph
 This is the circle graph of wlourf that you can feed with vicious.
 
@@ -234,12 +242,32 @@ Theme value for taskwarrior:
 
 *  menu_width
 
-Theme value for system (icons):
+Theme values for system (icons):
 
 *  shutdown
 *  reboot
 *  lock
 *  logout
+
+Theme values for tagslist:
+
+*  tagslist.normal
+*  tagslist.focus
+*  tagslist.urgent
+*  tagslist.occupied
+
+Theme values for calendar:
+
+*  calendar.prev_next_widget_style
+*  calendar.current_date_widget_style
+*  calendar.days_of_week_widget_style
+*  calendar.days_of_month_widget_style
+*  calendar.weeks_number_widget_style
+*  calendar.corner_widget_style
+*  calendar.current_day_widget_style
+*  calendar.focus_widget_style
+*  calendar.info_cell_style
+
 
 ###Version: v1.0
 
