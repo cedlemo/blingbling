@@ -17,6 +17,7 @@ return
   system = require("blingbling.system");
 	text_box = require("blingbling.text_box");
 	clock = require("blingbling.clock");
-	tagslist = require("blingbling.tagslist")
+	tagslist = require("blingbling.tagslist");
+	calendar = require("blingbling.calendar")
 }
 

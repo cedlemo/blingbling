@@ -9,7 +9,16 @@ local tagslist_theme_normal = tagslist_theme.normal or {}
 local tagslist_theme_focus = tagslist_theme.focus or {}
 local tagslist_theme_urgent = tagslist_theme.urgent or {}
 local tagslist_theme_occupied = tagslist_theme.occupied or {}
-
+local calendar_theme = blingbling_theme.calendar or {}
+local calendar_theme_prev_next_widget_style = calendar_theme.prev_next_widget_style or {}
+local calendar_theme_current_date_widget_style = calendar_theme.current_date_widget_style or {}
+local calendar_theme_days_of_week_widget_style = calendar_theme.days_of_week_widget_style or {}
+local calendar_theme_days_of_month_widget_style = calendar_theme.days_of_month_widget_style or {}
+local calendar_theme_weeks_number_widget_style = calendar_theme.weeks_number_widget_style or {}
+local calendar_theme_corner_widget_style = calendar_theme.corner_widget_style or {}
+local calendar_theme_current_day_widget_style = calendar_theme.current_day_widget_style or {}
+local calendar_theme_focus_widget_style = calendar_theme.focus_widget_style or {}
+local calendar_theme_info_cell_style = calendar_theme.info_cell_style or {}
 return {
   h_margin = blingbling_theme.h_margin or 2 ;
   v_margin = blingbling_theme.v_margin or 2 ;
@@ -80,5 +89,98 @@ return {
 											font_size= tagslist_theme_occupied.font_size or 9,
 											font = tagslist_theme_occupied.font or "sans"
 											}
+						};
+	--theme values for calendar
+	calendar = {
+							days_of_month_widget_style = {
+								background_color = calendar_theme_days_of_month_widget_style.background_color or beautiful.bg_normal,
+								text_background_color = calendar_theme_days_of_month_widget_style.text_background_color or beautiful.bg_normal,
+								text_color = calendar_theme_days_of_month_widget_style.text_color or beautiful.fg_normal,
+								h_margin = calendar_theme_days_of_month_widget_style.h_margin or blingbling_theme.h_margin or 2, 
+								v_margin = calendar_theme_days_of_month_widget_style.v_margin or blingbling_theme.v_margin or 2,
+								rounded_size = calendar_theme_days_of_month_widget_style.rounded_size or blingbling_theme.rounded_size or 0,
+								font_size= calendar_theme_days_of_month_widget_style.font_size or 9,
+								font = calendar_theme_days_of_month_widget_style.font or "sans"
+							},
+							prev_next_widget_style = {
+								background_color = calendar_theme_prev_next_widget_style.background_color or beautiful.bg_normal,
+								text_background_color = calendar_theme_prev_next_widget_style.text_background_color or beautiful.bg_normal,
+								text_color = calendar_theme_prev_next_widget_style.text_color or beautiful.fg_normal,
+								h_margin = calendar_theme_prev_next_widget_style.h_margin or blingbling_theme.h_margin or 2, 
+								v_margin = calendar_theme_prev_next_widget_style.v_margin or blingbling_theme.v_margin or 2,
+								rounded_size = calendar_theme_prev_next_widget_style.rounded_size or blingbling_theme.rounded_size or 0,
+								font_size= calendar_theme_prev_next_widget_style.font_size or 9,
+								font = calendar_theme_prev_next_widget_style.font or "sans"
+							},
+							current_date_widget_style = {
+								background_color = calendar_theme_current_date_widget_style.background_color or beautiful.bg_normal,
+								text_background_color = calendar_theme_current_date_widget_style.text_background_color or beautiful.bg_normal,
+								text_color = calendar_theme_current_date_widget_style.text_color or beautiful.fg_normal,
+								h_margin = calendar_theme_current_date_widget_style.h_margin or blingbling_theme.h_margin or 2, 
+								v_margin = calendar_theme_current_date_widget_style.v_margin or blingbling_theme.v_margin or 2,
+								rounded_size = calendar_theme_current_date_widget_style.rounded_size or blingbling_theme.rounded_size or 0,
+								font_size= calendar_theme_current_date_widget_style.font_size or 9,
+								font = calendar_theme_current_date_widget_style.font or "sans"
+							},
+							days_of_week_widget_style = {
+								background_color = calendar_theme_days_of_week_widget_style.background_color or beautiful.bg_normal,
+								text_background_color = calendar_theme_days_of_week_widget_style.text_background_color or beautiful.bg_normal,
+								text_color = calendar_theme_days_of_week_widget_style.text_color or beautiful.fg_normal,
+								h_margin = calendar_theme_days_of_week_widget_style.h_margin or blingbling_theme.h_margin or 2, 
+								v_margin = calendar_theme_days_of_week_widget_style.v_margin or blingbling_theme.v_margin or 2,
+								rounded_size = calendar_theme_days_of_week_widget_style.rounded_size or blingbling_theme.rounded_size or 0,
+								font_size= calendar_theme_days_of_week_widget_style.font_size or 9,
+								font = calendar_theme_days_of_week_widget_style.font or "sans"
+							},
+							weeks_number_widget_style = {
+								background_color = calendar_theme_weeks_number_widget_style.background_color or beautiful.bg_normal,
+								text_background_color = calendar_theme_weeks_number_widget_style.text_background_color or beautiful.bg_normal,
+								text_color = calendar_theme_weeks_number_widget_style.text_color or beautiful.fg_normal,
+								h_margin = calendar_theme_weeks_number_widget_style.h_margin or blingbling_theme.h_margin or 2, 
+								v_margin = calendar_theme_weeks_number_widget_style.v_margin or blingbling_theme.v_margin or 2,
+								rounded_size = calendar_theme_weeks_number_widget_style.rounded_size or blingbling_theme.rounded_size or 0,
+								font_size= calendar_theme_weeks_number_widget_style.font_size or 9,
+								font = calendar_theme_weeks_number_widget_style.font or "sans"
+							},
+							corner_widget_style = {
+								background_color = calendar_theme_corner_widget_style.background_color or beautiful.bg_normal,
+								text_background_color = calendar_theme_corner_widget_style.text_background_color or beautiful.bg_normal,
+								text_color = calendar_theme_corner_widget_style.text_color or beautiful.fg_normal,
+								h_margin = calendar_theme_corner_widget_style.h_margin or blingbling_theme.h_margin or 2, 
+								v_margin = calendar_theme_corner_widget_style.v_margin or blingbling_theme.v_margin or 2,
+								rounded_size = calendar_theme_corner_widget_style.rounded_size or blingbling_theme.rounded_size or 0,
+								font_size= calendar_theme_corner_widget_style.font_size or 9,
+								font = calendar_theme_corner_widget_style.font or "sans"
+							},
+							current_day_widget_style = {
+								background_color = calendar_theme_current_day_widget_style.background_color or beautiful.bg_normal,
+								text_background_color = calendar_theme_current_day_widget_style.text_background_color or beautiful.bg_normal,
+								text_color = calendar_theme_current_day_widget_style.text_color or beautiful.fg_normal,
+								h_margin = calendar_theme_current_day_widget_style.h_margin or blingbling_theme.h_margin or 2, 
+								v_margin = calendar_theme_current_day_widget_style.v_margin or blingbling_theme.v_margin or 2,
+								rounded_size = calendar_theme_current_day_widget_style.rounded_size or blingbling_theme.rounded_size or 0,
+								font_size= calendar_theme_current_day_widget_style.font_size or 9,
+								font = calendar_theme_current_day_widget_style.font or "sans"
+							},
+							focus_widget_style = {
+								background_color = calendar_theme_focus_widget_style.background_color or beautiful.bg_normal,
+								text_background_color = calendar_theme_focus_widget_style.text_background_color or beautiful.bg_normal,
+								text_color = calendar_theme_focus_widget_style.text_color or beautiful.fg_normal,
+								h_margin = calendar_theme_focus_widget_style.h_margin or blingbling_theme.h_margin or 2, 
+								v_margin = calendar_theme_focus_widget_style.v_margin or blingbling_theme.v_margin or 2,
+								rounded_size = calendar_theme_focus_widget_style.rounded_size or blingbling_theme.rounded_size or 0,
+								font_size= calendar_theme_focus_widget_style.font_size or 9,
+								font = calendar_theme_focus_widget_style.font or "sans"
+							},
+							info_cell_style = {
+								background_color = calendar_theme_info_cell_style.background_color or beautiful.bg_normal,
+								text_background_color = calendar_theme_info_cell_style.text_background_color or beautiful.bg_normal,
+								text_color = calendar_theme_info_cell_style.text_color or beautiful.fg_normal,
+								h_margin = calendar_theme_info_cell_style.h_margin or blingbling_theme.h_margin or 2, 
+								v_margin = calendar_theme_info_cell_style.v_margin or blingbling_theme.v_margin or 2,
+								rounded_size = calendar_theme_info_cell_style.rounded_size or blingbling_theme.rounded_size or 0,
+								font_size= calendar_theme_info_cell_style.font_size or 9,
+								font = calendar_theme_info_cell_style.font or "sans"
+							},
 						}
 }
