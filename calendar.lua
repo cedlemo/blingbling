@@ -21,62 +21,62 @@ local data = setmetatable({}, { __mode = "k" })
 ---Set the style of the previous and next month button.
 --@usage mycalendar:set_prev_next_widget_style(style)
 --@name set_prev_next_widget_style
---class function
---param style a table of parameters (see text_box widget in order to find which ones are available)
+--@class function
+--@param style a table of parameters (see text_box widget in order to find which ones are available)
 
 ---Set the style of the current date text_box widget.
 --@usage mycalendar:set_current_date_widget_style(style)
 --@name set_current_date_widget_style
---class function
---param style a table of parameters (see text_box widget in order to find which ones are available)
+--@class function
+--@param style a table of parameters (see text_box widget in order to find which ones are available)
 
 ---Define the style of the cells that contains the week days names.
 --@usage mycalendar:set_days_of_week_widget_style(style)
 --@name set_days_of_week_widget_style
---class function
---param style a table of parameters (see text_box widget in order to find which ones are available)
+--@class function
+--@param style a table of parameters (see text_box widget in order to find which ones are available)
 
 ---Set the style of the days of the month widget.
 --@usage mycalendar:set_days_of_month_widget_style(style)
 --@name set_days_of_month_widget_style
---class function
---param style a table of parameters (see text_box widget in order to find which ones are available)
+--@class function
+--@param style a table of parameters (see text_box widget in order to find which ones are available)
 
 ---Define the style of the cells that displays the week number (left column).
 --@usage mycalendar:set_weeks_number_widget_style(style)
 --@name set_weeks_number_widget_style
---class function
---param style a table of parameters (see text_box widget in order to find which ones are available)
+--@class function
+--@param style a table of parameters (see text_box widget in order to find which ones are available)
 
 ---Set the style of the cell used as a corner between the week days line and the week number column.
 --@usage mycalendar:set_corner_widget_style(style)
 --@name set_corner_widget_style
---class function
---param style a table of parameters (see text_box widget in order to find which ones are available)
+--@class function
+--@param style a table of parameters (see text_box widget in order to find which ones are available)
 
 ---Define the style used in order to show the current day.
 --@usage mycalendar:set_current_day_widget_style(style)
 --@name set_current_day_widget_style
---class function
---param style a table of parameters (see text_box widget in order to find which ones are available)
+--@class function
+--@param style a table of parameters (see text_box widget in order to find which ones are available)
 
 ---Define the style used when the mouse pass on a cell (only active is set_link_to_external_calendar(true)).
 --@usage mycalendar:set_focus_widget_style(style)
 --@name set_focus_widget_style
---class function
---param style a table of parameters (see text_box widget in order to find which ones are available)
+--@class function
+--@param style a table of parameters (see text_box widget in order to find which ones are available)
 
 ---Define the style of the big widget on the right that displays information (current day or external calendar events).
 --@usage mycalendar:set_info_cell_style
 --@name set_info_cell_style
---class function
---param style a table of parameters (see text_box widget in order to find which ones are available)
+--@class function
+--@param style a table of parameters (see text_box widget in order to find which ones are available)
 
 ---Allow to get information from external calendar.
 --@usage mycalendar:set_link_to_external_calendar(boolean)
 --@name set_link_to_external_calendar
---class function
---param boolean true or false
+--@class function
+--@param boolean true or false
 
 ---Use a specific locale for the week days.
 --@usage mycalendar:set_locale
