@@ -146,8 +146,6 @@ function linegraph.draw(graph, wibox, cr, width, height)
     local line_width = 1
     cr:set_line_width(line_width)
     cr:set_antialias("subpixel") 
-    -- Draw the widget background if user have given a color 
-    if data[graph].background_color then
       helpers.draw_rounded_corners_rectangle(	cr,
                                               0, --x
                                               0, --y
@@ -156,7 +154,6 @@ function linegraph.draw(graph, wibox, cr, width, height)
                                               background_color,
                                               rounded_size
                                             )
-     end
 
     -- Draw the graph background 
     --if background_border is set, graph background  must not be drawn on it 
@@ -174,7 +171,6 @@ function linegraph.draw(graph, wibox, cr, width, height)
       v_padding = v_margin + 1
     end
 
-    if data[graph].graph_background_color then
       helpers.draw_rounded_corners_rectangle(cr,
                                                 h_padding, --x
                                                 v_padding, --y
@@ -183,7 +179,6 @@ function linegraph.draw(graph, wibox, cr, width, height)
                                                 graph_background_color,
                                                 rounded_size,
                                                 graph_background_border)
-     end
     helpers.clip_rounded_corners_rectangle(cr,
                                    h_padding, --x
                                    v_padding, --y
