@@ -493,7 +493,7 @@ end
 function calendar.new(args)
 	local args = args or {}
  
-  local calendarbutton = awful.widget.textclock(" %a %b %d, %H:%M") 
+  local calendarbutton = args.widget or awful.widget.textclock(" %a %b %d, %H:%M") 
   data[calendarbutton] = {} 
 	--get days and month labels
 	if args.locale then
