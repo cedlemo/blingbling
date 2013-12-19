@@ -18,7 +18,11 @@ local superproperties = require('blingbling.superproperties')
 local volume = { mt = {} }
 
 local data = setmetatable({}, { __mode = "k" })
-local properties = {"width", "height", "v_margin", "h_margin", "background_color", "graph_background_color", "graph_color","show_text", "text_color", "text_background_color" ,"label", "font_size","font", "bar"}
+local properties = {  "width", "height", "v_margin", "h_margin",
+                      "background_color", "graph_background_color",
+                      "graph_color","show_text", "text_color", 
+                      "text_background_color" ,"label", "font_size","font", 
+                      "bar", "graph_line_color"}
 
 function volume.draw(volume_graph, wibox, cr, width, height)
 
@@ -153,7 +157,7 @@ function volume.draw(volume_graph, wibox, cr, width, height)
       cr:set_antialias("subpixel") 
       cr:set_line_width(1)
  
-      r,g,b,a=helpers.hexadecimal_to_rgba_percent(data[volume_graph].graph_line_color)
+      r,g,b,a=helpers.hexadecimal_to_rgba_percent(graph_line_color)
       cr:set_source_rgb(r, g, b)
       
       cr:stroke()
