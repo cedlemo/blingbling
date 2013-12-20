@@ -1,8 +1,15 @@
+--hight priority
+(almost done) add method in calendar in order to customize the defaut text in info cell
+update the file in the git source and repo from testing
+(almost done) add method to japanese clock in order to get kana names of day of weeks/month and months names
+change h_margin v_margin names to h_padding v_padding
+
+--average priority
+create a border value for tagslist (user set it with a color and a border of 1 px is displayed)
+rewrite value textbox with pango
 clean superproperties
 check all for tagslist values
 Check all values in superproperties and in all files some of them doesn't match so user cannot modify some parameters:
--->example with value_text_box and background_text_color (done)
-remove border for backgrounds (done)
 remove border for text background
 add superproperties values for task_warrior
 Check in all files the usage of local values that have been set using user_value or superproperties value or nil

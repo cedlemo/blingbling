@@ -23,27 +23,67 @@ end
 --colors
 local bordeaux= rgb(47,28,28)
 local light_bordeaux = rgba(191,64,64,0.6)
+local dark_grey = "#121212"
 local grey = "#444444ff"
 local light_grey = "#555555"
 local white = "#ffffff"
 local light_white = "#999999"
-local black = "#000000"
 local light_black = "#232323"
+local red = "#b9214f"
+local bright_red = "#ff5c8d"
+local yellow = "#ff9800"
+local bright_yellow = "#ffff00"
+local black = "#000000"
+local bright_black = "#5D5D5D"
+local green = "#A6E22E"
+local bright_green = "#CDEE69"
+local blue = "#3399ff"
+local bright_blue = "#9CD9F0"
+local magenta = "#8e33ff"
+local bright_magenta = "#FBB1F9"
+local cyan = "#06a2dc"
+local bright_cyan = "#77DFD8"
+local widget_background = "#303030"
+--local white = "#B0B0B0"
+local bright_white = "#F7F7F7"
+local transparent = "#00000000"
+--background=#121212
+--foreground=#aeafad
+
 
 theme = {}
-
+theme.grey = grey
+theme.light_grey = light_grey
+theme.white = white
+theme.black = black
+theme.light_black = light_black
+theme.red = red
+theme.bright_red = bright_red
+theme.yellow = yellow
+theme.bright_yellow = bright_yellow
+theme.bright_black = bright_black
+theme.green = green
+theme.bright_green =bright_green
+theme.blue = blue
+theme.bright_blue = bright_blue
+theme.magenta = magenta
+theme.bright_magenta = bright_magenta
+theme.cyan = cyan
+theme.bright_cyan = bright_cyan
+theme.widget_background = widget_background
+theme.transparent = transparent
 theme.font          = "Droid Sans 8"
 
-theme.bg_normal     = "#232323"
-theme.bg_focus      = bordeaux
-theme.bg_urgent     = light_bordeaux
-theme.bg_minimize   = light_grey
+theme.bg_normal     = light_black 
+theme.bg_focus      = red 
+theme.bg_urgent     = bright_red
+theme.bg_minimize   = light_black
 theme.bg_systray    = theme.bg_normal 
 
 theme.fg_normal     = light_white
-theme.fg_focus      = white
+theme.fg_focus      = white 
 theme.fg_urgent     = white
-theme.fg_minimize   = light_white
+theme.fg_minimize   = black
 
 theme.border_width  = 0 
 theme.border_normal = "#232323"
@@ -59,9 +99,10 @@ theme.border_marked = theme.bg_normal
 -- mouse_finder_[color|timeout|animate_timeout|radius|factor]
 -- Example:
 theme.tasklist_bg_focus = light_black 
-theme.tasklist_fg_focus = "#999999"
-theme.titlebar_bg_normal = "#222222"
-theme.titlebar_bg_focus = "#222222"
+theme.tasklist_fg_focus = yellow 
+theme.titlebar_bg_normal = light_black
+theme.titlebar_bg_focus  = light_black 
+
 --theme.taglist_bg_normal= "#333333"
 --theme.titlebar_bg_normal =
 --theme.titlebar_bg_focus =
@@ -128,9 +169,11 @@ theme.awesome_icon = theme_dir .. "/awesome.png"
 -- from /usr/share/icons and /usr/share/icons/hicolor will be used.
 theme.icon_theme = "/home/cedlemo/.icons/AwOkenDark" 
 theme.blingbling = {
-    graph_background_color = "#00000000",
-    graph_color = light_white,
-    graph_line_color = light_white,
+    background_color = "#00000000",
+    graph_background_color = widget_background,
+    graph_color = bright_magenta,
+    graph_line_color = magenta,
+    rounded_size = 0.3,        
     text_color = light_white,
     reboot = theme_dir .. "/reboot.png",
     shutdown = theme_dir .. "/shutdown.png",
@@ -138,39 +181,78 @@ theme.blingbling = {
     accept = theme_dir .. "/ok.png",
     cancel = theme_dir .. "/cancel.png",
     lock = theme_dir .. "/lock.png",
-    tagslist = {    normal ={   background_color = "#303030",--rgb(26,26,26),
-                                text_background_color = "#00000000", --no color
-                                rounded_size = { 0, 0.4,0,0.4 },
-                                text_color = theme.fg_normal,
-                                font = "Droid Sans",
-                                font_size = 7 
-                            },
-                    focus ={    h_margin = 1,
-                                v_margin = 1,
-                                background_color = rgb(59,162,117),--"#999999",
-                                text_background_color = "#303030",--theme.bg_normal,
-                                text_color = theme.fg_normal,
-                                rounded_size = { 0, 0.4,0,0.4 },
-                                font = "Droid Sans",
-                                font_size = 8
-                            }
-    }
+    font = "Droid Sans Mono",
+    font_size = 9 
 }
+theme.blingbling.tagslist = {}
+theme.blingbling.tagslist.normal ={ background_color = widget_background,--rgb(26,26,26),
+                                    text_background_color = "#00000000", --no color
+                                    rounded_size = { 0, 0.4,0,0.4 },
+                                    text_color = theme.fg_normal,
+                                    font = "Droid Sans",
+                                    font_size = 7 
+                                  }
+theme.blingbling.tagslist.focus = { h_margin = 1,
+                                    v_margin = 1,
+                                    background_color = red, 
+                                    text_background_color = widget_background,
+                                    text_color = theme.fg_normal,
+                                    rounded_size = { 0, 0.4,0,0.4 },
+                                    font = "Droid Sans italic",
+                                    font_size = 8
+                                  }
+
 theme.blingbling.tagslist.urgent = theme.blingbling.tagslist.focus
 theme.blingbling.tagslist.occupied = theme.blingbling.tagslist.normal
-    
-theme.blingbling.calendar = {
+
+local cal_common_style = {  h_margin = 0, 
+                            v_margin = 0, 
+                            rounded_size = 0.3, 
+                            background_color = widget_background, 
+                            text_background_color = "#00000000",
+                            text_color = white, 
+                            font ="Droid Sans"
+                          }
+theme.blingbling.calendar = {}
+local util = require('awful.util')
+theme.blingbling.calendar.prev_next_widget_style =
+util.table.clone(cal_common_style)    
+theme.blingbling.calendar.current_date_widget_style =
+util.table.clone(cal_common_style)
+theme.blingbling.calendar.days_of_week_widget_style =
+util.table.clone(cal_common_style)
+theme.blingbling.calendar.days_of_month_widget_style =
+util.table.clone(cal_common_style)
+theme.blingbling.calendar.weeks_number_widget_style =
+util.table.clone(cal_common_style)
+theme.blingbling.calendar.corner_widget_style =
+util.table.clone(cal_common_style)
+theme.blingbling.calendar.current_day_widget_style =
+util.table.clone(cal_common_style)
+theme.blingbling.calendar.focus_widget_style =
+util.table.clone(cal_common_style)
+theme.blingbling.calendar.info_cell_style = util.table.clone(cal_common_style)
+theme.blingbling.calendar.info_cell_style.background_color = transparent
+theme.blingbling.calendar.current_day_widget_style.background_color = green
+theme.blingbling.calendar.current_day_widget_style.text_color = dark_grey
+theme.blingbling.calendar.current_day_widget_style.rounded_size = {0.5,0,0.5,0}
+theme.blingbling.calendar.focus_widget_style.background_color = yellow
+theme.blingbling.calendar.focus_widget_style.rounded_size = {0,0.5,0,0.5}
+theme.blingbling.calendar.days_of_week_widget_style.text_color = light_grey
+theme.blingbling.calendar.corner_widget_style.text_color = light_grey
+theme.blingbling.calendar.weeks_number_widget_style.text_color = light_grey 
+--[[theme.blingbling.calendar = {
         prev_next_widget_style = {  h_margin = 0, 
                                     v_margin = 0, 
                                     rounded_size = 0.4, 
-                                    background_color = "#330033", 
+                                    background_color = red, --"#330033", 
                                     text_background_color = "#00000000",
                                     text_color = "#ffffff", 
                                     font ="Droid Sans"},
 	current_date_widget_style = { h_margin = 0, 
                                     v_margin = 0,
                                     rounded_size = 0.4,  
-                                    background_color = "#330033", 
+                                    background_color = red, --"#330033", 
                                     text_background_color = "#00000000",
                                     text_color = "#ffffff", 
                                     font ="Droid Sans"},
@@ -184,7 +266,7 @@ theme.blingbling.calendar = {
 	days_of_month_widget_style = { h_margin = 0, 
                                     v_margin = 0, 
                                     rounded_size = 0.4, 
-                                    background_color = "#330033", 
+                                    background_color = red,--"#330033", 
                                     text_background_color = "#00000000",
                                     text_color = "#ffffff", 
                                     font ="Droid Sans"},
@@ -224,7 +306,7 @@ theme.blingbling.calendar = {
                                     text_color = "#888888", 
                                     font ="Droid Sans"},
         }
-
+--]]
 
 return theme
 -- vim: filetype=lua:expandtab:shiftwidth=4:tabstop=8:softtabstop=4:textwidth=80

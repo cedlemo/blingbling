@@ -59,7 +59,7 @@ modkey = "Mod4"
 -- Table of layouts to cover with awful.layout.inc, order matters.
 local layouts =
 {
-    awful.layout.suit.floating,
+--    awful.layout.suit.floating,
     awful.layout.suit.tile,
     awful.layout.suit.tile.left,
     awful.layout.suit.tile.bottom,
@@ -117,14 +117,31 @@ menubar.utils.terminal = terminal -- Set the terminal for applications that requ
 -- {{{ Wibox
 -- Create a textclock widget
 
---local function japanese_date()
---	local hour = os.date("<span color=\"#999999\">%H<span color=\"#000000\">時</span>%M<span color=\"#000000\">分</span> </span>")
---	week_day = {"}
 local blingbling = require("blingbling")
---mytextclock = awful.widget.textclock(" %a %b %d, <span color=\"#999999\">%H<span color=\""..blingbling.helpers.rgb(20,31,82).."\">時</span>%M<span color=\""..blingbling.helpers.rgb(20,31,82).."\">分</span> </span>")
-mytextclock = blingbling.clock.japanese(" %m、%d、%w、<span color=\"#999999\">%H<span color=\""..blingbling.helpers.rgb(20,31,82).."\">時</span>%M<span color=\""..blingbling.helpers.rgb(20,31,82).."\">分</span> </span>")
-calendar = blingbling.calendar()
+local cur_day_month =" <span color=\""..beautiful.bright_magenta ..
+                                        "\">%d、</span>"
+local cur_month = " <span color=\""..beautiful.bright_yellow ..
+                                        "\">%m、</span>"
+local cur_day_week =" <span color=\""..beautiful.bright_green ..
+                                        "\">%w、</span>"
+local cur_hour = "<span font_weight=\"bold\">%H<span color=\""..
+                 beautiful.red.."\" font_weight=\"normal\">時</span>%M"..
+                 "<span color=\""..
+                 beautiful.red.."\" font_weight=\"normal\">分</span></span>" 
+mytextclock = blingbling.clock.japanese(  cur_month .. cur_day_month .. 
+                                          cur_day_week ..
+                                          cur_hour,
+                                          { h_margin = 2,
+                                            v_margin = 2,
+                                          text_background_color = beautiful.widget_background,
+                                          rounded_size = 0.3})
+--mytextclock = blingbling.clock.japanese()
+calendar = blingbling.calendar({ widget = mytextclock})
 calendar:set_link_to_external_calendar(true)
+--calendar:set_default_info(function() 
+--  blingbling.clock.get_current_time_in_japanese() .. 'test'
+--  blingbling.clock.get_current_day_of_week_in_kanas()
+--end)
 -- Create a wibox for each screen and add it
 mywibox = {}
 mypromptbox = {}
@@ -175,117 +192,89 @@ mytasklist.buttons = awful.util.table.join(
   local vicious = require("vicious")
   -- Top widgets:
 				  
-  --cpu_label_text='<span size="small" color="'..beautiful.textbox_widget_as_label_font_color..'" >CPU:</span>'
-  --cpu_label= wibox.widget.textbox(cpu_label_text, false)
-
   cpu_graph = blingbling.line_graph({ height = 18,
                                       width = 160,
                                       show_text = true,
                                       label = "Cpu: $percent %",
-                                      rounded_size = 0.3,
-																			background_color = blingbling.helpers.rgba(47,28,28,0.0),
-                                      graph_background_color = blingbling.helpers.rgba(47,28,28,0.0),
-                                      font = "Droid Sans Mono"
                                      })
-  --cpu_graph:set_graph_background_color("#00000033")
-  --cpu_graph:set_font("Droid Sans Mono")
-  --cpu_graph:set_font({family = "Droid Sans Mono", slang = "italic", weight = "bold"})
   vicious.register(cpu_graph, vicious.widgets.cpu,'$1',2)
 
   mem_graph = blingbling.line_graph({ height = 18,
                                       width = 160,
                                       show_text = true,
                                       label = "Mem: $percent %",
-                                      rounded_size = 0.3,
-                                      graph_background_color = "#30303000",--blingbling.helpers.rgba(9,15,43,0.0),
-                                      text_background_color = "#000000",
-																			font = "Droid Sans Mono"
                                      })
 
 	vicious.register(mem_graph, vicious.widgets.mem, '$1', 2)
 	
-	volume_bar = blingbling.volume({height = 18, width = 30, bar =true, show_text = false, label ="Vol", graph_background_color = "#77777700" ,graph_color=blingbling.helpers.rgba(47,28,28,0.7)})
+	local colors_stops =  { {beautiful.green , 0},
+                          {beautiful.yellow, 0.5},
+                          {beautiful.cyan, 0.70},
+                          {beautiful.magenta, 0.79},
+                          {beautiful.red, 0.90}
+                        }
+  volume_bar = blingbling.volume({height = 18, width = 40, bar =true, show_text = true, label ="Vol"})
 	volume_bar:update_master()
-	--volume_bar:set_master_control()
+	volume_bar:set_master_control()
 
-	home_fs_usage=blingbling.value_text_box({height = 14, width = 40, v_margin = 4})
-	--home_fs_usage:set_height(16)
-	--home_fs_usage:set_width(40)
-	--home_fs_usage:set_v_margin(2)
-	home_fs_usage:set_text_background_color("#222222")
-	home_fs_usage:set_values_text_color({{blingbling.helpers.rgb(59,162,117),0}, --all value > 0 will be displaying using this color
-	                          {blingbling.helpers.rgb(96,149,197), 0.5},
-														{blingbling.helpers.rgb(181,136,88),0.77}})
-	home_fs_usage:set_text_color("#999999")
-	--There is no maximum number of color that users can set, just put the lower values at first. 
-	home_fs_usage:set_text_color(beautiful.textbox_widget_as_label_font_color)
-	home_fs_usage:set_rounded_size(0.4)
+	home_fs_usage=blingbling.value_text_box({height = 14, width = 40, v_margin = 3})
+	home_fs_usage:set_text_background_color(beautiful.widget_background)
+	home_fs_usage:set_values_text_color(colors_stops)
 	home_fs_usage:set_font_size(8)
 	home_fs_usage:set_background_color("#00000000")
 	home_fs_usage:set_label("home: $percent %")
 
 	vicious.register(home_fs_usage, vicious.widgets.fs, "${/home used_p}", 120 )
 	
-	root_fs_usage=blingbling.value_text_box({height = 14, width = 40, v_margin = 4})
-	--root_fs_usage:set_height(16)
-	--root_fs_usage:set_width(40)
-	--root_fs_usage:set_v_margin(2)
-	root_fs_usage:set_text_background_color("#222222")
-	root_fs_usage:set_values_text_color({{blingbling.helpers.rgb(59,162,117),0}, --all value > 0 will be displaying using this color
-	                          {blingbling.helpers.rgb(96,149,197), 0.5},
-														{blingbling.helpers.rgb(181,136,88),0.77}})
-	--There is no maximum number of color that users can set, just put the lower values at first. 
-	root_fs_usage:set_text_color(beautiful.textbox_widget_as_label_font_color)
-	root_fs_usage:set_rounded_size(0.4)
+	root_fs_usage=blingbling.value_text_box({height = 14, width = 40, v_margin = 3})
+	root_fs_usage:set_text_background_color(beautiful.widget_background)
+	root_fs_usage:set_values_text_color(colors_stops)
+	--root_fs_usage:set_rounded_size(0.4)
 	root_fs_usage:set_font_size(8)
 	root_fs_usage:set_background_color("#00000000")
 	root_fs_usage:set_label("root: $percent %")
 
 	vicious.register(root_fs_usage, vicious.widgets.fs, "${/ used_p}", 120 )
 	
-	data0_fs_usage=blingbling.value_text_box({height = 14, width = 40, v_margin = 4})
-	--data0_fs_usage:set_height(16)
-	--data0_fs_usage:set_width(40)
-	--data0_fs_usage:set_v_margin(2)
-	data0_fs_usage:set_text_background_color("#222222")
-	data0_fs_usage:set_values_text_color({{blingbling.helpers.rgb(59,162,117),0}, --all value > 0 will be displaying using this color
-	                          {blingbling.helpers.rgb(96,149,197), 0.5},
-														{blingbling.helpers.rgb(181,136,88),0.77}})	--There is no maximum number of color that users can set, just put the lower values at first. 
-	data0_fs_usage:set_text_color(beautiful.textbox_widget_as_label_font_color)
-	data0_fs_usage:set_rounded_size(0.4)
+	data0_fs_usage=blingbling.value_text_box({height = 14, width = 40, v_margin = 3})
+	data0_fs_usage:set_text_background_color(beautiful.widget_background)
+	data0_fs_usage:set_values_text_color(colors_stops)
+	--data0_fs_usage:set_rounded_size(0.4)
 	data0_fs_usage:set_font_size(8)
 	data0_fs_usage:set_background_color("#00000000")
 	data0_fs_usage:set_label("data0: $percent %")
 
 	vicious.register(data0_fs_usage, vicious.widgets.fs, "${/mnt/data_0 used_p}", 120 )
 	
-	data1_fs_usage=blingbling.value_text_box({height = 14, width = 40, v_margin = 4})
-	--data1_fs_usage:set_height(16)
-	--data1_fs_usage:set_width(40)
-	--data1_fs_usage:set_v_margin(2)
-	data1_fs_usage:set_text_background_color("#222222")
-	data1_fs_usage:set_values_text_color({{blingbling.helpers.rgb(59,162,117),0}, --all value > 0 will be displaying using this color
-	                          {blingbling.helpers.rgb(96,149,197), 0.5},
-														{blingbling.helpers.rgb(181,136,88),0.77}})	--	--There is no maximum number of color that users can set, just put the lower values at first. 
-	data1_fs_usage:set_text_color(beautiful.textbox_widget_as_label_font_color)
-	data1_fs_usage:set_rounded_size(0.4)
+	data1_fs_usage=blingbling.value_text_box({height = 14, width = 40, v_margin = 3})
+	data1_fs_usage:set_text_background_color(beautiful.widget_background)
+	data1_fs_usage:set_values_text_color(colors_stops)
+	--data1_fs_usage:set_text_color(beautiful.textbox_widget_as_label_font_color)
+	--data1_fs_usage:set_rounded_size(0.4)
 	data1_fs_usage:set_font_size(8)
 	data1_fs_usage:set_background_color("#00000000")
 	data1_fs_usage:set_label("data1: $percent %")
 
 	vicious.register(data1_fs_usage, vicious.widgets.fs, "${/mnt/data_1 used_p}", 120 )
-	shutdown=blingbling.system.shutdownmenu() --icons have been set in theme
+	
+  games_fs_usage=blingbling.value_text_box({height = 14, width = 40, v_margin = 3})
+	games_fs_usage:set_text_background_color(beautiful.widget_background)
+	games_fs_usage:set_values_text_color(colors_stops)
+	games_fs_usage:set_font_size(8)
+	games_fs_usage:set_background_color("#00000000")
+	games_fs_usage:set_label("games: $percent %")
+
+	vicious.register(games_fs_usage, vicious.widgets.fs, "${/home/cedlemo/bin/games used_p}", 120 )
+	
+  
+  shutdown=blingbling.system.shutdownmenu() --icons have been set in theme
 	reboot=blingbling.system.rebootmenu() --icons have been set in theme
 	lock=blingbling.system.lockmenu() --icons have been set in theme
 	logout=blingbling.system.logoutmenu()
 	mytag={}
 	--test = blingbling.text_box()
-for s = 1, screen.count() do
-	mytag[s]=blingbling.tagslist(s,  awful.widget.taglist.filter.all, mytaglist.buttons--, {--height = 16, width = 30,
-																																												--[[background_border="#00000033",--]] --background_color = "#00000055", 
-																																												--rounded_size = {0, 0.4,0,0.4},--[[rounded_size=0.4,--]] 
-																																												--h_margin =1, v_margin = 1}
-																																												)
+for s = 1, ( screen.count() - 1) do
+	mytag[s]=blingbling.tagslist(s,  awful.widget.taglist.filter.all, mytaglist.buttons)
     -- Create a promptbox for each screen
     mypromptbox[s] = awful.widget.prompt()
     -- Create an imagebox widget which will contains an icon indicating which layout we're using.
@@ -316,12 +305,13 @@ for s = 1, screen.count() do
     left_layout:add(root_fs_usage)
     left_layout:add(data0_fs_usage)
     left_layout:add(data1_fs_usage)
+    left_layout:add(games_fs_usage)
 		--left_layout:add(mytags)
 		-- Widgets that are aligned to the right
     local right_layout = wibox.layout.fixed.horizontal()
     if s == 1 then right_layout:add(wibox.widget.systray()) end
 		right_layout:add(volume_bar)
-		right_layout:add(mytextclock)
+		--right_layout:add(mytextclock)
 		right_layout:add(calendar)
     right_layout:add(mylayoutbox[s])
 		right_layout:add(reboot)
@@ -554,7 +544,7 @@ client.connect_signal("manage", function (c, startup)
         -- The title goes in the middle
         local middle_layout = wibox.layout.flex.horizontal()
         local title = awful.titlebar.widget.titlewidget(c)
-        title:set_align("center")
+        title:set_align("left")
         middle_layout:add(title)
         middle_layout:buttons(buttons)
 
