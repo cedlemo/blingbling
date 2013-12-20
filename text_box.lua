@@ -54,10 +54,11 @@ local data = setmetatable({}, { __mode = "k" })
 
 ---Set rounded corners for background and text background.
 --@usage myt_box:set_rounded_size(a) -> a in [0,1]
+--@usage myt_box:set_rounded_size(b) -> b = { 0.2,0.3,0.4,0.7}
 --@name set_rounded_size
 --@class function
 --@param t_box the value text box
---@param rounded_size float in [0,1]
+--@param rounded_size float in [0,1] or a table of 4 float for each corners.
 
 ---Define the color of the text.
 --@usage myt_box:set_text_color(string) 
@@ -107,18 +108,9 @@ local function draw( t_box, wibox, cr, width, height)
 	layout.text = text
   layout:set_markup("<span color='"..text_color.."'>"..text.."</span>" )
   local ink, logical = layout:get_pixel_extents()
-	local height =0
-	local width = 0
-	if util.escape("<<") == text then
-		helpers.dbg({"text_box:draw",data[t_box].width,data[t_box].height})
-	end
-	width = logical.width
-  data[t_box].width = logical.width
-	height = logical.height
-  data[t_box].height = logical.height
-	if util.escape("<<") == text then
-		helpers.dbg({"text_box:draw up size",data[t_box].width,data[t_box].height, font})
-	end
+  
+	local width = data[t_box].width > logical.width and data[t_box].width or logical.width
+  local height = data[t_box].height > logical.height and data[t_box].height or logical.height
 
 	local v_margin =  superproperties.v_margin  
   if data[t_box].v_margin and data[t_box].v_margin <= height/3 then 
@@ -135,8 +127,8 @@ local function draw( t_box, wibox, cr, width, height)
     helpers.draw_rounded_corners_rectangle( cr,
                                             0,
                                             0,
-                                            data[t_box].width, 
-                                            data[t_box].height,
+                                            width, 
+                                            height,
                                             background_color, 
                                             rounded_size)
   end
@@ -150,36 +142,47 @@ local function draw( t_box, wibox, cr, width, height)
     helpers.draw_rounded_corners_rectangle( cr,
                                             x,
                                             y,
-                                            data[t_box].width - h_margin, 
-                                            data[t_box].height - v_margin, 
+                                            width - h_margin, 
+                                            height - v_margin, 
                                             text_background_color, 
                                             rounded_size,
                                             background_text_border
                                             )
   end  
-
-  cr:move_to(0,0)
-	cr:show_layout(layout)
-	if util.escape("<<") == text then
-		helpers.dbg({"textbox:draw end",data[t_box].width,data[t_box].height, font})
+	local x_offset, y_offset = 0
+	if logical.width < data[t_box].width then
+		x_offset = (data[t_box].width - logical.width)/2
 	end
+ 	if logical.height < data[t_box].height then
+		y_offset = (data[t_box].height - logical.height)/2
+	end
+	cr:move_to(x_offset,y_offset)
+	cr:show_layout(layout)
 end
 
 function text_box:fit( width, height)
+	setup_layout(self, width, height)
   local font =data[self].font or superproperties.font
   local font_size =data[self].font_size or superproperties.font_size
 	local font_desc = pango.FontDescription.from_string(font .. " " .. font_size)
-	self._layout:set_font_description(font_desc)
-	setup_layout(self, width, height)
-	local ink, logical = self._layout:get_pixel_extents()
-	if data[self].text and util.escape("<<") == data[self].text then
-		helpers.dbg({"textbox:fit", logical.width, logical.height, font})	 
-	end
+	local text_color = data[self].text_color
+  local text = data[self].text or ""
+  self._layout:set_font_description(font_desc)
+  if text_color then
+    self._layout:set_markup("<span color='"..text_color.."'>"..text.."</span>" )
+	else
+    self._layout:set_markup(text)
+  end
+  local ink, logical = self._layout:get_pixel_extents()
+	local width, height
+	width = logical.width > data[self].width and logical.width or data[self].width
+	height = logical.height > data[self].height and logical.height or data[self].height
+	
 	if logical.width == 0 or logical.height == 0 then
-	   return 0, 0
+		width = 0
+		height = 0
 	end
-	 
-	return logical.width, logical.height
+	return width, height
 end
 
 --- Add a text to the t_box.
