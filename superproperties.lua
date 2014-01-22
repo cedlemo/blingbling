@@ -29,7 +29,7 @@ return {
   rounded_size= blingbling_theme.rounded_size or 0 ;
   graph_color= blingbling_theme.graph_color or "#7fb21966" ;
   graph_line_color= blingbling_theme.graph_line_color or "#7fb219" ;
-  text_color= blingbling_theme.text_color or "ffffff" ;
+  text_color= blingbling_theme.text_color or "#ffffff" ;
   font_size= blingbling_theme.font_size or 9 ;
   font = blingbling_theme.font or "sans";
   text_background_color = blingbling_theme.text_background_color or "#00000066" ;
