@@ -478,7 +478,7 @@ function net.new(args)
 
     n_graph.draw = net.draw
     n_graph.fit = net.fit
-    n_graph.set_ippopup = set_ippopup
+    n_graph.set_ippopup = net.set_ippopup
 
     for _, prop in ipairs(properties) do
         n_graph["set_" .. prop] = net["set_" .. prop]
