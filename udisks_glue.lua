@@ -23,6 +23,7 @@ local data = setmetatable( {}, { __mode = "k"})
 local function udisks_send(ud_menu,command,a_device)
   local s=""
   data[ud_menu].menu_visible = "false"
+  data[ud_menu].menu:hide()  
   s=s .. "udisks --"..command.." "..a_device 
   return s
 end
