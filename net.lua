@@ -359,7 +359,7 @@ local function show_ippopup_infos(n_graph)
   local interface = data[n_graph].interface
   if data[n_graph][interface.."_state"] == "up" then
     if data[n_graph][interface.."_carrier"] == "1" then --get local ip configuration
-      ip_addr=string.match(string.match(all_infos,"%ssrc%s[%d]+%.[d%]+%.[%d]+%.[%d]+"), "[%d]+%.[d%]+%.[%d]+%.[%d]+")
+      ip_addr=string.match(string.match(all_infos, "%sdev%s".. interface .. "%s+proto%skernel.*" .."%ssrc%s[%d]+%.[d%]+%.[%d]+%.[%d]+"), "[%d]+%.[d%]+%.[%d]+%.[%d]+")
       --get gateway
       gateway= string.match(string.match(all_infos,"default%svia%s[%d]+%.[d%]+%.[%d]+%.[%d]+"), "[%d]+%.[d%]+%.[%d]+%.[%d]+")
       --get external ip configuration
@@ -478,7 +478,7 @@ function net.new(args)
 
     n_graph.draw = net.draw
     n_graph.fit = net.fit
-    n_graph.set_ippopup = set_ippopup
+    n_graph.set_ippopup = net.set_ippopup
 
     for _, prop in ipairs(properties) do
         n_graph["set_" .. prop] = net["set_" .. prop]
