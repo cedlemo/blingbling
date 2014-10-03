@@ -375,7 +375,7 @@ local function show_ippopup_infos(n_graph)
       local tor_ext_ip
       --we check that the tor address have not been checked or that the elapsed time from the last request is not < 300 sec. whereas whatsmyip block the request
       if (data[n_graph].tor_ext_ip_timer == nil or data[n_graph].tor_ext_ip_timer + 300 < os.time()) and data[n_graph].ext_ip ~= "n/a" then
-        if awful.util.pread("pgrep tor") ~= "" then
+        if awful.util.pread("pgrep -x tor") ~= "" then
           tor_ext_ip = awful.util.pread("curl --silent -S -x socks4a://localhost:9050 http://ipecho.net/plain 2>&1") 
         else
           tor_ext_ip = "No tor"
