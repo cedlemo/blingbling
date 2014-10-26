@@ -137,6 +137,7 @@ Create a menu which displays mounted media with actions like mount/unmount/detac
     udisks_glue=blingbling.udisks_glue.new({ menu_icon = themes_dir .. "/test/titlebar/maximized_focus_active.png"})
 
 note: udisks-glue have not been updated since one or 2 years. Furthermore it doesn't work with logind which is used in a lot of distributions. So I think that I have to find another way to manage external media.
+note: Added minor update to allow udisks_glue to insert a device without mounting it. See .udisks_glue.conf
 
 #####system
 Provide buttons with menu in order to reboot or shutdown the system. User can set icon for menu, accept and cancel actions.

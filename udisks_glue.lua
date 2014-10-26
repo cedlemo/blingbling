@@ -23,8 +23,8 @@ local data = setmetatable( {}, { __mode = "k"})
 local function udisks_send(ud_menu,command,a_device)
   local s=""
   data[ud_menu].menu_visible = "false"
-  data[ud_menu].menu:hide()  
-  s=s .. "udisks --"..command.." "..a_device 
+  data[ud_menu].menu:hide()
+  s=s .. "udisks --"..command.." "..a_device
   return s
 end
 
@@ -110,11 +110,11 @@ local function display_menu(ud_menu)
 ))
 end
 
-function udisks_glue.mount_device(ud_menu,device, mount_point, device_type) 
+function udisks_glue.insert_device(ud_menu,device, mount_point, device_type)
 --  generate the device_name
   if device_type == "Usb" then
     device_name = string.gsub(device,"%d*","")
-  else 
+  else
     device_name=device
   end
 --  add all_devices entry:
@@ -122,7 +122,36 @@ function udisks_glue.mount_device(ud_menu,device, mount_point, device_type)
   if data[ud_menu].all_devices[device_name] == nil then
       data[ud_menu].all_devices[device_name]={device}
       data[ud_menu].devices_type[device_name] = device_type
-  else    
+  else
+      partition_already_registred = 0
+      for i, v in ipairs(data[ud_menu].all_devices[device_name]) do
+        if v == device then
+          partition_already_registred = 1
+        end
+      end
+      if partition_already_registred == 0 then
+        table.insert(data[ud_menu].all_devices[device_name],device)
+      end
+  end
+  data[ud_menu].partition_state[device]="unmounted"
+  data[ud_menu].menu:hide()
+  data[ud_menu].menu_visible = "false"
+  naughty.notify({title = device_type..":", text = device .." inserted", timeout = 10})
+end
+
+function udisks_glue.mount_device(ud_menu,device, mount_point, device_type)
+--  generate the device_name
+  if device_type == "Usb" then
+    device_name = string.gsub(device,"%d*","")
+  else
+    device_name=device
+  end
+--  add all_devices entry:
+--  check if device is already registred
+  if data[ud_menu].all_devices[device_name] == nil then
+      data[ud_menu].all_devices[device_name]={device}
+      data[ud_menu].devices_type[device_name] = device_type
+  else
       partition_already_registred = 0
       for i, v in ipairs(data[ud_menu].all_devices[device_name]) do
         if v == device then
@@ -134,10 +163,10 @@ function udisks_glue.mount_device(ud_menu,device, mount_point, device_type)
       end
   end
   data[ud_menu].partition_state[device]="mounted"
-  data[ud_menu].menu:hide()  
+  data[ud_menu].menu:hide()
   data[ud_menu].menu_visible = "false"
   naughty.notify({title = device_type..":", text =device .. " mounted on" .. mount_point, timeout = 10})
-  return ud_menu 
+  return ud_menu
 end
 
 function unmount_device(ud_menu, device, mount_point, device_type)
@@ -226,12 +255,12 @@ function udisks_glue.new(args)
   local ud_menu
   ud_menu = wibox.widget.imagebox()
   ud_menu:set_image(args.menu_icon)
-   
-  data[ud_menu]={ image = menu_icon, 
+
+  data[ud_menu]={ image = menu_icon,
                   all_devices= {},
                   devices_type={},
-                  partition_state={}, 
-                  menu_visible = "false", 
+                  partition_state={},
+                  menu_visible = "false",
                   menu={},
                   Cdrom_icon=args.Cdrom_icon,
                   Usb_icon=args.Usb_icon,
@@ -239,8 +268,9 @@ function udisks_glue.new(args)
                   umount_icon=args.umount_icon,
                   detach_icon=args.detach_icon,
                   eject_icon=args.eject_icon,
-                  } 
-	ud_menu.mount_device = udisks_glue.mount_device
+                  }
+  ud_menu.insert_device = udisks_glue.insert_device
+  ud_menu.mount_device = udisks_glue.mount_device
   ud_menu.unmount_device = unmount_device
   ud_menu.remove_device = remove_device
   ud_menu.set_mount_icon = set_mount_icon
@@ -251,7 +281,7 @@ function udisks_glue.new(args)
   ud_menu.set_Cdrom_icon = set_Cdrom_icon
   generate_menu(ud_menu)
   display_menu(ud_menu)
-  return ud_menu 
+  return ud_menu
 end
 
 function udisks_glue.mt:__call(...)
