@@ -3,16 +3,80 @@
 local naughty = require("naughty")
 local os = require("os")
 local awful = require("awful")
-local helpers =require("blingbling.helpers")
+local helpers = require("blingbling.helpers")
 local string = require("string")
 local superproperties = require('blingbling.superproperties')
----Differents popups for Awesome widgets
+---Different popups for Awesome widgets
 --@module blingbling.popups
 local function colorize(string, pattern, color)
-  
  local mystring=""
  mystring=string.gsub(string,pattern,'<span color="'..color..'">%1</span>')
  return mystring
+end
+
+-- Pads a string with a number of whitespaces, which depends on the length of the string.
+--@param cell String to pad
+--@author LiamMayfair
+local function pad_cell(cell)
+    -- The number of extra spaces to append does matter. The shorter the string is,
+    -- the higher the amount of padding has to be for it to align adequately.
+    -- If a misalignment occurs due to a shorter string, just increment the padding.
+    local padded_cell = cell
+    local padding_ratio = 12
+    local max = math.ceil(padding_ratio/#cell)
+    for i=1,max do
+	padded_cell = padded_cell .. " "
+    end
+    return padded_cell
+end
+
+-- Align the columns of a table.
+--@param table_string String containing the table to align.
+--@author LiamMayfair
+local function align_table(table_string)
+    -- Provide sufficient spacing between row fields.
+    --local rows = split(table_string, "\n") -- Use helpers.split() instead.
+    local rows = helpers.split(table_string, "\n")
+    local aligned_table_rows = {}
+    -- Align table header.
+    local header_fields = split(rows[1])
+    local aligned_header_fields = header_fields[1]
+    for hi=2,#header_fields do
+	aligned_header_fields = aligned_header_fields .. "\t" .. header_fields[hi] .. "   "
+    end
+    -- Align table body.
+    local table_body_rows = rows
+    table.remove(table_body_rows, 1)
+    local aligned_body_rows = {}
+    for i,v in ipairs(table_body_rows) do
+	local row_fields = split(v)
+	local aligned_row = ""
+	for fi, fv in ipairs(row_fields) do
+	   -- Certain fields are so short they cause misalignments in the table.
+	   -- This can be fixed by adding a few spaces at the end of them.
+	   if #fv < 2 then
+	       fv = pad_cell(fv)
+	   end
+	   if fi == 1 then
+	       if i > 1 and #fv < 5 then
+		   fv = pad_cell(fv)
+	       end
+	       aligned_row = aligned_row .. fv
+	   elseif fi <= 5 then
+	       aligned_row = aligned_row .. "\t\t" .. fv
+	   elseif fi > 5 then
+	       aligned_row = aligned_row .. "\t" .. fv
+	   end
+	end
+	
+	table.insert(aligned_body_rows, aligned_row)
+     end
+     -- Merge the header row and the body rows into a single formatted table again.
+     aligned_table_rows = { aligned_header_fields }
+     for k,v in ipairs(aligned_body_rows) do 
+	 table.insert(aligned_table_rows, v)
+     end
+     return table.concat(aligned_table_rows, "\n")
 end
 
 local processpopup = nil
@@ -26,11 +90,13 @@ local function hide_process_info()
     proc_offset = 25
   end
 end
+
 local function show_process_info(inc_proc_offset, title_color,user_color, root_color)
   local save_proc_offset = proc_offset
 	hide_process_info()
 	proc_offset = save_proc_offset + inc_proc_offset
-  processstats = awful.util.pread('/bin/ps --sort -c,-s -eo fname,user,%cpu,%mem,pid,gid,ppid,tname,label | /usr/bin/head -n '..proc_offset)
+	processstats = awful.util.pread('/bin/ps --sort -c,-s -eo fname,user,%cpu,%mem,pid,gid,ppid,tname,label | /usr/bin/head -n '..proc_offset)
+  	processstats = align_table(processstats)
 	processstats = colorize(processstats, "COMMAND", title_color)
 	processstats = colorize(processstats, "USER", title_color)
 	processstats = colorize(processstats, "%%CPU", title_color)
