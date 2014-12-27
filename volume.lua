@@ -285,7 +285,6 @@ end
 ---Link the widget to the master channel of your system (uses amixer).
 --a left clic toggle mute/unmute, wheel up to increase the volume and wheel down to decrease the volume
 --@usage myvolume:set_master_control()
---@class function
 --@param volume_graph the volume graph
 function set_master_control(volume_graph)
     volume_graph:buttons(awful.util.table.join(

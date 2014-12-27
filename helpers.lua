@@ -4,6 +4,8 @@ local lgi = require("lgi")
 local cairo = lgi.cairo
 local string = require("string")
 local os = require('os')
+local awful = require('awful')
+local wibox = require('wibox')
 local math = math
 local table = table
 local print = print
@@ -856,5 +858,130 @@ function helpers.get_ISO8601_weeks_number_of_month(month,year)
   local weeks ={ current_week, current_week +1, current_week +2, current_week + 3, current_week + 4, current_week +5}
   return weeks
 end
+---Get the number of cpu cores
+--@return a number
+function helpers.get_nb_cores()
+  local f=io.open("/proc/stat")
+  local nb=0
+  for line in f:lines() do
+    if string.find(line,"cpu%d+%s") then nb = nb + 1 end
+  end
+  return nb
+end
+---Get the cpu name
+--@return a string describing the cpu
+function helpers.get_cpu_name()
+  local file = io.open("/proc/cpuinfo")
+  for line in file:lines() do
+    local cpu = string.match(line,"model%sname%s:%s*(.*)")
+    if cpu then return cpu end
+  end
+end
+---Get all the currently mounted devices
+--@return an indexed table from 1 to n, where each element is a table with the "mnt", and "dev" key.
+function helpers.get_mounted_devices()
+  local buf = awful.util.pread("mount")
+  buf = helpers.split(buf, "\n")
+  local devices = {}
+  local n = 0 --devices will be an array of table {dev, mnt} (allowing to keep an alphabetical order on /dev/sxxx
+  for i=1,#buf do
+    local dev, mnt = string.match(buf[i],"(/dev/[^%s]*)%s+on%s+([^%s]+).*")
+    if dev and mnt then
+      n=n+1
+      devices[n]={mnt=mnt, dev=dev}
+    end
+  end
+  table.sort(devices, function(a,b) return a.dev < b.dev end)
+  return devices
+end
+---Get the total amount of RAM in kb
+--@return a number
+function helpers.get_total_mem_in_kb()
+  local file = io.open("/proc/meminfo")
+  for line in file:lines() do
+    local mem = string.match(line,"MemTotal:%s*(%d*)")
+    if mem then return mem end
+  end
+end
+---Get the input device names
+--@return an table with "keyboard" and "mouse" keys
+function helpers.get_input_devices()
+  local file = io.open("/proc/bus/input/devices")
+  local devices={}
+  local i= 0
+  for line in file:lines() do
+    local name, ev, handlers = nil
+    if string.match(line,"I:%s") then
+      devices[#devices+1]={}
+    end
+    name=string.match(line,"N:%sName=\"(.*)\"")
+    if (name) then
+      devices[#devices].name=name
+    end
+    ev=string.match(line,"B:%sEV=(.*)")
+    if (ev) then
+      devices[#devices].ev=ev
+    end
+    handlers=string.match(line,"H:%sHandlers=(.*)")
+    if (handlers) then
+      devices[#devices].handlers=handlers
+    end
+  end
+  local inputs={}
+  for _,device in ipairs(devices) do
+    if string.match(device.ev, "120013") then
+      inputs.keyboard= device.name
+    end
+    if device.handlers and string.match(device.handlers, "mouse") then
+      inputs.mouse=device.name
+    end
+  end
+  file:close()
+  return inputs
+end
+---Get the current graphic card
+--@return a string
+function helpers.get_graphic_card()
+  local buf = awful.util.pread("lspci | grep VGA")
+  local graph_card = string.match(buf,"[^%s]*%s+VGA%s+compatible%s+controller:%s+(.*)")
+  return graph_card
+end
+--- Get OS related informations from /etc/os-release
+--@return a key/value table
+function helpers.get_os_release_informations()
+  local file = io.open("/etc/os-release")
+  local infos = {}
+  for line in file:lines() do
+    local key,value = string.match(line,"([^%s]+)=%s*\"?([^\"]*)\"?")
+    if key and value then
+      infos[#infos +1]={key=key,value = value}
+    end
+  end
+  return infos
+end
+--- Function used in order to have a tasklist with icons only
+--The classical usage of it is:
+--awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, mytasklist.buttons,nil,icons_only_tasklist)
+function helpers.icons_only_tasklist(w, buttons, label, data, objects)
+    w:reset()
+    local l = wibox.layout.fixed.horizontal()
+    for i, o in ipairs(objects) do
+        local cache = data[o]
+        if cache then
+            ib = cache.ib
+        else
+            local common = require("awful.widget.common")
+            ib = wibox.widget.imagebox()
+            ib:buttons(common.create_buttons(buttons, o))
 
+            data[o] = {
+                ib = ib
+            }
+        end
+        local text, bg, bg_image, icon = label(o)
+        ib:set_image(icon)
+    l:add(ib)
+   end
+   w:add(l)
+end
 return helpers

@@ -86,6 +86,7 @@ local data = setmetatable({}, { __mode = "k" })
 
 ---Add new function in order to get events from external application.
 --This method let the taskwarrior and remind links intact and add your founction.
+--@name append_function_get_events_from
 --@usage mycalendar:append_function_get_events_from(function(day, month, year)
 --s="third function ".. " " .. day .. " " .. month .." " ..year
 --return s
@@ -95,6 +96,7 @@ local data = setmetatable({}, { __mode = "k" })
 --@param my_function a function that you write
 
 ---Add new function in order to get events from external application and remove the existing function.
+--@name clear_and_add_function_get_events_from
 --@usage mycalendar:clear_and_add_function_get_events_from(my_function)
 --@class function
 --@param my_function a function that you write

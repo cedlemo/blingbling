@@ -157,10 +157,4 @@ function system.logoutmenu(button_image, accept_image, cancel_image)
                                            menu = logoutmenu })
   return logoutbutton
 end
-return system--{
-  --shutdownmenu = shutdownmenu;
-  --rebootmenu = rebootmenu;
-	--lockmenu = lockmenu;
-  --mainmenu = mainmenu;
-	--logoutmenu = logoutmenu
---}
+return system
