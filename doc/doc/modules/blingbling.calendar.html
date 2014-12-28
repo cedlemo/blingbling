@@ -1,0 +1,460 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Reference</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>ldoc</h1>
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Functions">Functions</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="$(kind=='Topics' and '' or 'nowrap'">
+  <li><a href="../modules/blingbling.clock.html">blingbling.clock</a></li>
+  <li><a href="../modules/blingbling.wlourf_circle_graph.html">blingbling.wlourf_circle_graph</a></li>
+  <li><a href="../modules/blingbling.progress_graph.html">blingbling.progress_graph</a></li>
+  <li><a href="../modules/blingbling.tagslist.html">blingbling.tagslist</a></li>
+  <li><a href="../modules/blingbling.value_text_box.html">blingbling.value_text_box</a></li>
+  <li><a href="../modules/blingbling.helpers.html">blingbling.helpers</a></li>
+  <li><a href="../modules/blingbling.popups.html">blingbling.popups</a></li>
+  <li><a href="../modules/blingbling.triangular_progress_graph.html">blingbling.triangular_progress_graph</a></li>
+  <li><a href="../modules/blingbling.volume.html">blingbling.volume</a></li>
+  <li><a href="../modules/blingbling.udisks_glue.html">blingbling.udisks_glue</a></li>
+  <li><a href="../modules/blingbling.text_box.html">blingbling.text_box</a></li>
+  <li><a href="../modules/blingbling.system.html">blingbling.system</a></li>
+  <li><a href="../modules/blingbling.task_warrior.html">blingbling.task_warrior</a></li>
+  <li><a href="../modules/blingbling.linegraph.html">blingbling.linegraph</a></li>
+  <li><strong>blingbling.calendar</strong></li>
+  <li><a href="../modules/blingbling.widget.html">blingbling.widget</a></li>
+  <li><a href="../modules/config_example.japanese2.theme.html">config_example.japanese2.theme</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>blingbling.calendar</code></h1>
+<p>Calendar widget.</p>
+<p>
+Show current month user can navigate through previous or next month with two button. The top centered button with current mont string allow user to reload the current month.
+User can get events from remind and taskwarrior and can add their own events handler.</p>
+
+
+<h2><a href="#Functions">Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#set_prev_next_widget_style">set_prev_next_widget_style (style)</a></td>
+	<td class="summary">Set the style of the previous and next month button.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#set_current_date_widget_style">set_current_date_widget_style (style)</a></td>
+	<td class="summary">Set the style of the current date text_box widget.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#set_days_of_week_widget_style">set_days_of_week_widget_style (style)</a></td>
+	<td class="summary">Define the style of the cells that contains the week days names.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#set_days_of_month_widget_style">set_days_of_month_widget_style (style)</a></td>
+	<td class="summary">Set the style of the days of the month widget.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#set_weeks_number_widget_style">set_weeks_number_widget_style (style)</a></td>
+	<td class="summary">Define the style of the cells that displays the week number (left column).</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#set_corner_widget_style">set_corner_widget_style (style)</a></td>
+	<td class="summary">Set the style of the cell used as a corner between the week days line and the week number column.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#set_current_day_widget_style">set_current_day_widget_style (style)</a></td>
+	<td class="summary">Define the style used in order to show the current day.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#set_focus_widget_style">set_focus_widget_style (style)</a></td>
+	<td class="summary">Define the style used when the mouse pass on a cell (only active is set_link_to_external_calendar(true)).</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#set_info_cell_style">set_info_cell_style (style)</a></td>
+	<td class="summary">Define the style of the big widget on the right that displays information (current day or external calendar events).</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#set_link_to_external_calendar">set_link_to_external_calendar (boolean)</a></td>
+	<td class="summary">Allow to get information from external calendar.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#set_locale">set_locale (locale)</a></td>
+	<td class="summary">Use a specific locale for the week days.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#append_function_get_events_from">append_function_get_events_from (my_function)</a></td>
+	<td class="summary">Add new function in order to get events from external application.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#clear_and_add_function_get_events_from">clear_and_add_function_get_events_from (my_function)</a></td>
+	<td class="summary">Add new function in order to get events from external application and remove the existing function.</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2><a name="Functions"></a>Functions</h2>
+    <dl class="function">
+    <dt>
+    <a name = "set_prev_next_widget_style"></a>
+    <strong>set_prev_next_widget_style (style)</strong>
+    </dt>
+    <dd>
+    Set the style of the previous and next month button.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">style</span>
+         a table of parameters (see text_box widget in order to find which ones are available)
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">mycalendar:set_prev_next_widget_style(style)</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "set_current_date_widget_style"></a>
+    <strong>set_current_date_widget_style (style)</strong>
+    </dt>
+    <dd>
+    Set the style of the current date text_box widget.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">style</span>
+         a table of parameters (see text_box widget in order to find which ones are available)
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">mycalendar:set_current_date_widget_style(style)</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "set_days_of_week_widget_style"></a>
+    <strong>set_days_of_week_widget_style (style)</strong>
+    </dt>
+    <dd>
+    Define the style of the cells that contains the week days names.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">style</span>
+         a table of parameters (see text_box widget in order to find which ones are available)
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">mycalendar:set_days_of_week_widget_style(style)</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "set_days_of_month_widget_style"></a>
+    <strong>set_days_of_month_widget_style (style)</strong>
+    </dt>
+    <dd>
+    Set the style of the days of the month widget.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">style</span>
+         a table of parameters (see text_box widget in order to find which ones are available)
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">mycalendar:set_days_of_month_widget_style(style)</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "set_weeks_number_widget_style"></a>
+    <strong>set_weeks_number_widget_style (style)</strong>
+    </dt>
+    <dd>
+    Define the style of the cells that displays the week number (left column).
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">style</span>
+         a table of parameters (see text_box widget in order to find which ones are available)
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">mycalendar:set_weeks_number_widget_style(style)</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "set_corner_widget_style"></a>
+    <strong>set_corner_widget_style (style)</strong>
+    </dt>
+    <dd>
+    Set the style of the cell used as a corner between the week days line and the week number column.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">style</span>
+         a table of parameters (see text_box widget in order to find which ones are available)
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">mycalendar:set_corner_widget_style(style)</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "set_current_day_widget_style"></a>
+    <strong>set_current_day_widget_style (style)</strong>
+    </dt>
+    <dd>
+    Define the style used in order to show the current day.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">style</span>
+         a table of parameters (see text_box widget in order to find which ones are available)
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">mycalendar:set_current_day_widget_style(style)</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "set_focus_widget_style"></a>
+    <strong>set_focus_widget_style (style)</strong>
+    </dt>
+    <dd>
+    Define the style used when the mouse pass on a cell (only active is set_link_to_external_calendar(true)).
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">style</span>
+         a table of parameters (see text_box widget in order to find which ones are available)
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">mycalendar:set_focus_widget_style(style)</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "set_info_cell_style"></a>
+    <strong>set_info_cell_style (style)</strong>
+    </dt>
+    <dd>
+    Define the style of the big widget on the right that displays information (current day or external calendar events).
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">style</span>
+         a table of parameters (see text_box widget in order to find which ones are available)
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">mycalendar:set_info_cell_style</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "set_link_to_external_calendar"></a>
+    <strong>set_link_to_external_calendar (boolean)</strong>
+    </dt>
+    <dd>
+    Allow to get information from external calendar.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">boolean</span>
+         true or false
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">mycalendar:set_link_to_external_calendar(boolean)</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "set_locale"></a>
+    <strong>set_locale (locale)</strong>
+    </dt>
+    <dd>
+    Use a specific locale for the week days.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">locale</span>
+         a string
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">mycalendar:set_locale</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "append_function_get_events_from"></a>
+    <strong>append_function_get_events_from (my_function)</strong>
+    </dt>
+    <dd>
+    Add new function in order to get events from external application.
+This method let the taskwarrior and remind links intact and add your founction.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">my_function</span>
+         a function that you write
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"> mycalendar:append_function_get_events_from(<span class="keyword">function</span>(day, month, year)
+s=<span class="string">"third function "</span>.. <span class="string">" "</span> .. day .. <span class="string">" "</span> .. month ..<span class="string">" "</span> ..year
+<span class="keyword">return</span> s
+<span class="keyword">end</span>)
+This  <span class="keyword">function</span> display <span class="keyword">in</span> the menu the <span class="global">string</span> <span class="string">"third function 26 11 2011"</span> <span class="keyword">for</span> example.</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "clear_and_add_function_get_events_from"></a>
+    <strong>clear_and_add_function_get_events_from (my_function)</strong>
+    </dt>
+    <dd>
+    Add new function in order to get events from external application and remove the existing function.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">my_function</span>
+         a function that you write
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">mycalendar:clear_and_add_function_get_events_from(my_function)</pre>
+    </ul>
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.2</a></i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

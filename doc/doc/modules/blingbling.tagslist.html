@@ -1,0 +1,222 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Reference</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>ldoc</h1>
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Functions">Functions</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="$(kind=='Topics' and '' or 'nowrap'">
+  <li><a href="../modules/blingbling.clock.html">blingbling.clock</a></li>
+  <li><a href="../modules/blingbling.wlourf_circle_graph.html">blingbling.wlourf_circle_graph</a></li>
+  <li><a href="../modules/blingbling.progress_graph.html">blingbling.progress_graph</a></li>
+  <li><strong>blingbling.tagslist</strong></li>
+  <li><a href="../modules/blingbling.value_text_box.html">blingbling.value_text_box</a></li>
+  <li><a href="../modules/blingbling.helpers.html">blingbling.helpers</a></li>
+  <li><a href="../modules/blingbling.popups.html">blingbling.popups</a></li>
+  <li><a href="../modules/blingbling.triangular_progress_graph.html">blingbling.triangular_progress_graph</a></li>
+  <li><a href="../modules/blingbling.volume.html">blingbling.volume</a></li>
+  <li><a href="../modules/blingbling.udisks_glue.html">blingbling.udisks_glue</a></li>
+  <li><a href="../modules/blingbling.text_box.html">blingbling.text_box</a></li>
+  <li><a href="../modules/blingbling.system.html">blingbling.system</a></li>
+  <li><a href="../modules/blingbling.task_warrior.html">blingbling.task_warrior</a></li>
+  <li><a href="../modules/blingbling.linegraph.html">blingbling.linegraph</a></li>
+  <li><a href="../modules/blingbling.calendar.html">blingbling.calendar</a></li>
+  <li><a href="../modules/blingbling.widget.html">blingbling.widget</a></li>
+  <li><a href="../modules/config_example.japanese2.theme.html">config_example.japanese2.theme</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>blingbling.tagslist</code></h1>
+<p>Tagslist widget.</p>
+<p> Based on the original taglist widget from awesome</p>
+
+
+<h2><a href="#Functions">Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#taglist.gettag">taglist.gettag (widget)</a></td>
+	<td class="summary">Get the tag object the given widget appears on.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#taglist.new">taglist.new (screen, filter, buttons, style, base_widget)</a></td>
+	<td class="summary">Create a new tagslist widget</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#taglist.filter.noempty">taglist.filter.noempty (t, args)</a></td>
+	<td class="summary">Filtering function to include all nonempty tags on the screen.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#taglist.filter.all">taglist.filter.all (t, args)</a></td>
+	<td class="summary">Filtering function to include all tags on the screen.</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2><a name="Functions"></a>Functions</h2>
+    <dl class="function">
+    <dt>
+    <a name = "taglist.gettag"></a>
+    <strong>taglist.gettag (widget)</strong>
+    </dt>
+    <dd>
+    Get the tag object the given widget appears on.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">widget</span>
+         The widget the look for.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        The tag object.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "taglist.new"></a>
+    <strong>taglist.new (screen, filter, buttons, style, base_widget)</strong>
+    </dt>
+    <dd>
+    Create a new tagslist widget
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">screen</span>
+         an integer for the screen of the tagslist
+        </li>
+        <li><span class="parameter">filter</span>
+         a filtering function the default check if the current tag is not empty and return true if so.
+        </li>
+        <li><span class="parameter">buttons</span>
+         a table of awful.button (mytaglist.buttons from the default rc.lua of awesome for example)
+        </li>
+        <li><span class="parameter">style</span>
+         an optional table with contains 4 tables of text_box parameters in order to change the apparence of the tag based on its state (normal, focus, urgent, occupied)
+        </li>
+        <li><span class="parameter">base_widget</span>
+         an awful.layout (horizontal or vertical)
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">mytags = blingbling.tagslist(screen, filter, buttons,{normal={blingbling.text_box parameters}, focus = {blingbling.text_box parameters},urgent = {blingbling.text_box parameters}, occupied = {blingbling.text_box parameters}}, an awful.layout)</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "taglist.filter.noempty"></a>
+    <strong>taglist.filter.noempty (t, args)</strong>
+    </dt>
+    <dd>
+    Filtering function to include all nonempty tags on the screen.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">t</span>
+         The tag.
+        </li>
+        <li><span class="parameter">args</span>
+         unused list of extra arguments.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        true if t is not empty, else false
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "taglist.filter.all"></a>
+    <strong>taglist.filter.all (t, args)</strong>
+    </dt>
+    <dd>
+    Filtering function to include all tags on the screen.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">t</span>
+         The tag.
+        </li>
+        <li><span class="parameter">args</span>
+         unused list of extra arguments.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        true
+    </ol>
+
+
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.2</a></i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

@@ -1,0 +1,275 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Reference</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>ldoc</h1>
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Functions">Functions</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="$(kind=='Topics' and '' or 'nowrap'">
+  <li><a href="../modules/blingbling.clock.html">blingbling.clock</a></li>
+  <li><a href="../modules/blingbling.wlourf_circle_graph.html">blingbling.wlourf_circle_graph</a></li>
+  <li><a href="../modules/blingbling.progress_graph.html">blingbling.progress_graph</a></li>
+  <li><a href="../modules/blingbling.tagslist.html">blingbling.tagslist</a></li>
+  <li><a href="../modules/blingbling.value_text_box.html">blingbling.value_text_box</a></li>
+  <li><a href="../modules/blingbling.helpers.html">blingbling.helpers</a></li>
+  <li><a href="../modules/blingbling.popups.html">blingbling.popups</a></li>
+  <li><a href="../modules/blingbling.triangular_progress_graph.html">blingbling.triangular_progress_graph</a></li>
+  <li><a href="../modules/blingbling.volume.html">blingbling.volume</a></li>
+  <li><a href="../modules/blingbling.udisks_glue.html">blingbling.udisks_glue</a></li>
+  <li><a href="../modules/blingbling.text_box.html">blingbling.text_box</a></li>
+  <li><strong>blingbling.system</strong></li>
+  <li><a href="../modules/blingbling.task_warrior.html">blingbling.task_warrior</a></li>
+  <li><a href="../modules/blingbling.linegraph.html">blingbling.linegraph</a></li>
+  <li><a href="../modules/blingbling.calendar.html">blingbling.calendar</a></li>
+  <li><a href="../modules/blingbling.widget.html">blingbling.widget</a></li>
+  <li><a href="../modules/config_example.japanese2.theme.html">config_example.japanese2.theme</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>blingbling.system</code></h1>
+<p>launchers for reboot, shutdown, shutdown, logout or lock menus for your system.</p>
+<p></p>
+
+
+<h2><a href="#Functions">Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#mainmenu">mainmenu (main_image, shutdown_image, reboot_image, logout_image, lock_image)</a></td>
+	<td class="summary">Main menu launcher.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#shutdownmenu">shutdownmenu (button_image, accept_image, cancel_image)</a></td>
+	<td class="summary">Shutdown menu launcher.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#lockmenu">lockmenu (button_image, accept_image, cancel_image)</a></td>
+	<td class="summary">Lock menu launcher.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#rebootmenu">rebootmenu (button_image, accept_image, cancel_image)</a></td>
+	<td class="summary">Reboot menu launcher.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#logoutmenu">logoutmenu (button_image, accept_image, cancel_image)</a></td>
+	<td class="summary">Logout menu launcher.</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2><a name="Functions"></a>Functions</h2>
+    <dl class="function">
+    <dt>
+    <a name = "mainmenu"></a>
+    <strong>mainmenu (main_image, shutdown_image, reboot_image, logout_image, lock_image)</strong>
+    </dt>
+    <dd>
+    Main menu launcher.
+Create a button which will spawn a menu allowing the user to shutdown, reboot, logout and lock screen
+Only the first parameter is mandatory. The other values can be nil and specified in the theme.lua via the theme.blingbling table. See the superproperties module documentation.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">main_image</span>
+         the image that will be displayed with the shutdown option
+        </li>
+        <li><span class="parameter">shutdown_image</span>
+         the image that will be displayed with the shutdown option
+        </li>
+        <li><span class="parameter">reboot_image</span>
+         the image that will be displayed with the reboot option
+        </li>
+        <li><span class="parameter">logout_image</span>
+         the image that will be displayed with the logout option
+        </li>
+        <li><span class="parameter">lock_image</span>
+         the image that will be displayed with the lock option
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">mymainmenu = system.mainmenu(main_image, shutdown_image, reboot_image, logout_image, lock_image)</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "shutdownmenu"></a>
+    <strong>shutdownmenu (button_image, accept_image, cancel_image)</strong>
+    </dt>
+    <dd>
+    Shutdown menu launcher.
+Create a button with an accept/cancel menu for shutdown the system
+No mandatory parameter. All values can be nil and specified in the theme.lua via the theme.blingbling table. See the superproperties module documentation.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">button_image</span>
+         an image file that will be displayed in the wibox
+        </li>
+        <li><span class="parameter">accept_image</span>
+         an image file for the accept menu entry
+        </li>
+        <li><span class="parameter">cancel_image</span>
+         an image file for the cancel menu entry
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">shutdown=blingbling.system.shutdownmenu(launcher_image, menu_dialog_image_ok, menu_.dialog_image_cancel)</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "lockmenu"></a>
+    <strong>lockmenu (button_image, accept_image, cancel_image)</strong>
+    </dt>
+    <dd>
+    Lock menu launcher.
+Create a button with an accept/cancel menu for locking the system:
+No mandatory parameter. All values can be nil and specified in the theme.lua via the theme.blingbling table. See the superproperties module documentation.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">button_image</span>
+         an image file that will be displayed in the wibox
+        </li>
+        <li><span class="parameter">accept_image</span>
+         an image file for the accept menu entry
+        </li>
+        <li><span class="parameter">cancel_image</span>
+         an image file for the cancel menu entry
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">shutdown=blingbling.system.lockmenu(launcher_image, menu_dialog_image_ok, menu_.dialog_image_cancel)</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "rebootmenu"></a>
+    <strong>rebootmenu (button_image, accept_image, cancel_image)</strong>
+    </dt>
+    <dd>
+    Reboot menu launcher.
+Create a button with an accept/cancel menu for reboot the system:
+No mandatory parameter. All values can be nil and specified in the theme.lua via the theme.blingbling table. See the superproperties module documentation.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">button_image</span>
+         an image file that will be displayed in the wibox
+        </li>
+        <li><span class="parameter">accept_image</span>
+         an image file for the accept menu entry
+        </li>
+        <li><span class="parameter">cancel_image</span>
+         an image file for the cancel menu entry
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">reboot=blingbling.system.rebootmenu(launcher_image, menu_dialog_image_ok, menu_.dialog_image_cancel)</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "logoutmenu"></a>
+    <strong>logoutmenu (button_image, accept_image, cancel_image)</strong>
+    </dt>
+    <dd>
+    Logout menu launcher.
+Create a button with an accept/cancel menu for reboot the system:
+No mandatory parameter. All values can be nil and specified in the theme.lua via the theme.blingbling table. See the superproperties module documentation.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">button_image</span>
+         an image file that will be displayed in the wibox
+        </li>
+        <li><span class="parameter">accept_image</span>
+         an image file for the accept menu entry
+        </li>
+        <li><span class="parameter">cancel_image</span>
+         an image file for the cancel menu entry
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">logout=blingbling.system.logouttmenu(launcher_image, menu_dialog_image_ok, menu_.dialog_image_cancel)</pre>
+    </ul>
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.2</a></i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

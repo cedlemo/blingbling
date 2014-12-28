@@ -1,0 +1,156 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Reference</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>ldoc</h1>
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Functions">Functions</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="$(kind=='Topics' and '' or 'nowrap'">
+  <li><a href="../modules/blingbling.clock.html">blingbling.clock</a></li>
+  <li><a href="../modules/blingbling.wlourf_circle_graph.html">blingbling.wlourf_circle_graph</a></li>
+  <li><a href="../modules/blingbling.progress_graph.html">blingbling.progress_graph</a></li>
+  <li><a href="../modules/blingbling.tagslist.html">blingbling.tagslist</a></li>
+  <li><a href="../modules/blingbling.value_text_box.html">blingbling.value_text_box</a></li>
+  <li><a href="../modules/blingbling.helpers.html">blingbling.helpers</a></li>
+  <li><strong>blingbling.popups</strong></li>
+  <li><a href="../modules/blingbling.triangular_progress_graph.html">blingbling.triangular_progress_graph</a></li>
+  <li><a href="../modules/blingbling.volume.html">blingbling.volume</a></li>
+  <li><a href="../modules/blingbling.udisks_glue.html">blingbling.udisks_glue</a></li>
+  <li><a href="../modules/blingbling.text_box.html">blingbling.text_box</a></li>
+  <li><a href="../modules/blingbling.system.html">blingbling.system</a></li>
+  <li><a href="../modules/blingbling.task_warrior.html">blingbling.task_warrior</a></li>
+  <li><a href="../modules/blingbling.linegraph.html">blingbling.linegraph</a></li>
+  <li><a href="../modules/blingbling.calendar.html">blingbling.calendar</a></li>
+  <li><a href="../modules/blingbling.widget.html">blingbling.widget</a></li>
+  <li><a href="../modules/config_example.japanese2.theme.html">config_example.japanese2.theme</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>blingbling.popups</code></h1>
+<p>Differents popups for Awesome widgets</p>
+<p></p>
+
+
+<h2><a href="#Functions">Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#htop">htop (mywidget, args)</a></td>
+	<td class="summary">Top popup.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#netstat">netstat (mywidget, args)</a></td>
+	<td class="summary">Netstat popup.</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2><a name="Functions"></a>Functions</h2>
+    <dl class="function">
+    <dt>
+    <a name = "htop"></a>
+    <strong>htop (mywidget, args)</strong>
+    </dt>
+    <dd>
+    Top popup.
+It binds a colorized output of the top command to a widget, and the possibility to launch htop with a click on the widget.
+</br>Example blingbling.popups.htop(mycairograph,{ title_color = "#rrggbbaa", user_color    = "#rrggbbaa", root_color="#rrggbbaa", terminal = "urxvt"})
+</br>The terminal parameter is not mandatory, htop will be launch in xterm. Mandatory arguments:
+ <ul> <li>title_color define the color of the title's columns.</li>
+  <li>user_color display the name of the current user with this color in the top output.</li>
+  <li>root_color display the root name with this color in the top output. </li></ul>
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">mywidget</span>
+         the widget
+        </li>
+        <li><span class="parameter">args</span>
+         a table of arguments { title_color = "#rrggbbaa", user_color = "#rrggbbaa", root_color="#rrggbbaa", terminal = a terminal name})
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "netstat"></a>
+    <strong>netstat (mywidget, args)</strong>
+    </dt>
+    <dd>
+    Netstat popup.
+It binds a colorized output of the netstat command to a widget.
+</br>Example: blingbling.popups.netstat(net,{ title_color = "#rrggbbaa", established_color= "#rrggbbaa", listen_color="#rrggbbaa"})
+</br>Mandatory arguments:
+<ul><li>widget (if blinbling widget add .widget ex: cpu.widget, if textbox or image box just put the widget name)</li>
+<li>title_color define the color of the title's columns.</li>
+<li>established_color display the state "ESTABLISHED" of a connexion  with this color in the netstat output.</li>
+<li>listen_color display the state "LISTEN" with this color in the netstat output.</li></ul>
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">mywidget</span>
+         the widget
+        </li>
+        <li><span class="parameter">args</span>
+         a table { title_color = "#rrggbbaa", established_color= "#rrggbbaa", listen_color="#rrggbbaa"}
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.2</a></i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

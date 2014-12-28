@@ -4,7 +4,7 @@ Blingbling is a graphical widget library for Awesome Windows Manager. The goal o
 
 Originally, I have written Blingbling for myself but I share it under the GNU GPL-v2 (http://www.gnu.org/licenses/old-licenses/gpl-2.0.html). Testers and feedbacks are welcome!
 
-The current version is the v2.0 and works with Awesome WM 3.5. There are a lot of changes between the v1.0 and the v2.0 and I don't have finished to adapt all the widgets of the last version yet.
+The current version is the v2.0 and works with Awesome WM 3.5. There are a lot of changes between the v1.0 and the v2.0. Open the doc/index.html file if you want to read an exhaustive documentation.
 
 <img src="https://raw.github.com/cedlemo/blingbling/master/config_example/japanese2_screen.png" width="576" height="324" alt="Screenshot">
 
@@ -136,7 +136,6 @@ Create a menu which displays mounted media with actions like mount/unmount/detac
 
     udisks_glue=blingbling.udisks_glue.new({ menu_icon = themes_dir .. "/test/titlebar/maximized_focus_active.png"})
 
-note: udisks-glue have not been updated since one or 2 years. Furthermore it doesn't work with logind which is used in a lot of distributions. So I think that I have to find another way to manage external media.
 note: Added minor update to allow udisks_glue to insert a device without mounting it. See .udisks_glue.conf
 
 #####system

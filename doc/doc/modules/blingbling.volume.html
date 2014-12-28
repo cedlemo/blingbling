@@ -1,0 +1,258 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Reference</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>ldoc</h1>
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Functions">Functions</a></li>
+<li><a href="#Local_Functions">Local Functions</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="$(kind=='Topics' and '' or 'nowrap'">
+  <li><a href="../modules/blingbling.clock.html">blingbling.clock</a></li>
+  <li><a href="../modules/blingbling.wlourf_circle_graph.html">blingbling.wlourf_circle_graph</a></li>
+  <li><a href="../modules/blingbling.progress_graph.html">blingbling.progress_graph</a></li>
+  <li><a href="../modules/blingbling.tagslist.html">blingbling.tagslist</a></li>
+  <li><a href="../modules/blingbling.value_text_box.html">blingbling.value_text_box</a></li>
+  <li><a href="../modules/blingbling.helpers.html">blingbling.helpers</a></li>
+  <li><a href="../modules/blingbling.popups.html">blingbling.popups</a></li>
+  <li><a href="../modules/blingbling.triangular_progress_graph.html">blingbling.triangular_progress_graph</a></li>
+  <li><strong>blingbling.volume</strong></li>
+  <li><a href="../modules/blingbling.udisks_glue.html">blingbling.udisks_glue</a></li>
+  <li><a href="../modules/blingbling.text_box.html">blingbling.text_box</a></li>
+  <li><a href="../modules/blingbling.system.html">blingbling.system</a></li>
+  <li><a href="../modules/blingbling.task_warrior.html">blingbling.task_warrior</a></li>
+  <li><a href="../modules/blingbling.linegraph.html">blingbling.linegraph</a></li>
+  <li><a href="../modules/blingbling.calendar.html">blingbling.calendar</a></li>
+  <li><a href="../modules/blingbling.widget.html">blingbling.widget</a></li>
+  <li><a href="../modules/config_example.japanese2.theme.html">config_example.japanese2.theme</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>blingbling.volume</code></h1>
+<p>Volume widget</p>
+<p></p>
+
+
+<h2><a href="#Functions">Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#set_master_control">set_master_control (volume_graph)</a></td>
+	<td class="summary">Link the widget to the master channel of your system (uses amixer).</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#set_height">set_height (height)</a></td>
+	<td class="summary">Set the volume_graph height.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#set_width">set_width (width)</a></td>
+	<td class="summary">Set the graph width.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#new">new (args)</a></td>
+	<td class="summary">Create a volume_graph widget.</td>
+	</tr>
+</table>
+<h2><a href="#Local_Functions">Local Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#set_value">set_value (volume_graph, value)</a></td>
+	<td class="summary">Set the graphtype value.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#update_mpd">update_mpd (volume_graph)</a></td>
+	<td class="summary">Link the widget to mpd's volume level.</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2><a name="Functions"></a>Functions</h2>
+    <dl class="function">
+    <dt>
+    <a name = "set_master_control"></a>
+    <strong>set_master_control (volume_graph)</strong>
+    </dt>
+    <dd>
+    Link the widget to the master channel of your system (uses amixer).
+a left clic toggle mute/unmute, wheel up to increase the volume and wheel down to decrease the volume
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">volume_graph</span>
+         the volume graph
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">myvolume:set_master_control()</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "set_height"></a>
+    <strong>set_height (height)</strong>
+    </dt>
+    <dd>
+    Set the volume_graph height.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">height</span>
+         The height to set.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "set_width"></a>
+    <strong>set_width (width)</strong>
+    </dt>
+    <dd>
+    Set the graph width.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">width</span>
+         The width to set.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "new"></a>
+    <strong>new (args)</strong>
+    </dt>
+    <dd>
+    Create a volume_graph widget.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">args</span>
+         Standard widget() arguments. You should add width and height
+ key to set graph geometry.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        A graph widget.
+    </ol>
+
+
+
+
+</dd>
+</dl>
+    <h2><a name="Local_Functions"></a>Local Functions</h2>
+    <dl class="function">
+    <dt>
+    <a name = "set_value"></a>
+    <strong>set_value (volume_graph, value)</strong>
+    </dt>
+    <dd>
+    Set the graphtype value.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">volume_graph</span>
+         The progress bar.
+        </li>
+        <li><span class="parameter">value</span>
+         The progress bar value between 0 and 1.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "update_mpd"></a>
+    <strong>update_mpd (volume_graph)</strong>
+    </dt>
+    <dd>
+    Link the widget to mpd's volume level.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">volume_graph</span>
+         the volume graph
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">myvolume:update_mpd()</pre>
+    </ul>
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.2</a></i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

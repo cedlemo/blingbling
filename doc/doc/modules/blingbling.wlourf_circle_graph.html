@@ -1,0 +1,455 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Reference</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>ldoc</h1>
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Functions">Functions</a></li>
+<li><a href="#Local_Functions">Local Functions</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="$(kind=='Topics' and '' or 'nowrap'">
+  <li><a href="../modules/blingbling.clock.html">blingbling.clock</a></li>
+  <li><strong>blingbling.wlourf_circle_graph</strong></li>
+  <li><a href="../modules/blingbling.progress_graph.html">blingbling.progress_graph</a></li>
+  <li><a href="../modules/blingbling.tagslist.html">blingbling.tagslist</a></li>
+  <li><a href="../modules/blingbling.value_text_box.html">blingbling.value_text_box</a></li>
+  <li><a href="../modules/blingbling.helpers.html">blingbling.helpers</a></li>
+  <li><a href="../modules/blingbling.popups.html">blingbling.popups</a></li>
+  <li><a href="../modules/blingbling.triangular_progress_graph.html">blingbling.triangular_progress_graph</a></li>
+  <li><a href="../modules/blingbling.volume.html">blingbling.volume</a></li>
+  <li><a href="../modules/blingbling.udisks_glue.html">blingbling.udisks_glue</a></li>
+  <li><a href="../modules/blingbling.text_box.html">blingbling.text_box</a></li>
+  <li><a href="../modules/blingbling.system.html">blingbling.system</a></li>
+  <li><a href="../modules/blingbling.task_warrior.html">blingbling.task_warrior</a></li>
+  <li><a href="../modules/blingbling.linegraph.html">blingbling.linegraph</a></li>
+  <li><a href="../modules/blingbling.calendar.html">blingbling.calendar</a></li>
+  <li><a href="../modules/blingbling.widget.html">blingbling.widget</a></li>
+  <li><a href="../modules/config_example.japanese2.theme.html">config_example.japanese2.theme</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>blingbling.wlourf_circle_graph</code></h1>
+<p>Circle graph from wlourf.</p>
+<p></p>
+
+
+<h2><a href="#Functions">Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#set_v_margin">set_v_margin (margin)</a></td>
+	<td class="summary">Define the top and bottom margin for the graph area.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#set_h_margin">set_h_margin (margin)</a></td>
+	<td class="summary">Define the left and right margin for the graph area.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#set_radius">set_radius (radius)</a></td>
+	<td class="summary">Set the radius of the circle.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#set_graph_color">set_graph_color (color)</a></td>
+	<td class="summary">Set the default color for the graph.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#set_graph_colors">set_graph_colors (colors)</a></td>
+	<td class="summary">Set the colors and theirs ranges for the graph.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#set_show_text">set_show_text (boolean)</a></td>
+	<td class="summary">Display text on the graph or not.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#set_font">set_font (font)</a></td>
+	<td class="summary">Define the text's font .</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#set_font_size">set_font_size (size)</a></td>
+	<td class="summary">Define the text font size.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#set_label">set_label (text)</a></td>
+	<td class="summary">Define the text to display.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#circle_graph:set_height">circle_graph:set_height (height)</a></td>
+	<td class="summary">Set the c_graph height.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#circle_graph:set_width">circle_graph:set_width (width)</a></td>
+	<td class="summary">Set the graph width.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#circle_graph.new">circle_graph.new (args)</a></td>
+	<td class="summary">Create a c_graph widget.</td>
+	</tr>
+</table>
+<h2><a href="#Local_Functions">Local Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#set_value">set_value (c_graph, value)</a></td>
+	<td class="summary">Set the c_graph value.</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2><a name="Functions"></a>Functions</h2>
+    <dl class="function">
+    <dt>
+    <a name = "set_v_margin"></a>
+    <strong>set_v_margin (margin)</strong>
+    </dt>
+    <dd>
+    Define the top and bottom margin for the graph area.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">margin</span>
+         an integer for top and bottom margin
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">circle:set_v_margin(integer)</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "set_h_margin"></a>
+    <strong>set_h_margin (margin)</strong>
+    </dt>
+    <dd>
+    Define the left and right margin for the graph area.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">margin</span>
+         an integer for left and right margin
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">circle:set_h_margin()</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "set_radius"></a>
+    <strong>set_radius (radius)</strong>
+    </dt>
+    <dd>
+    Set the radius of the circle.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">radius</span>
+         an integer value for the radius of the circle
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">circle:set_radius(integer)</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "set_graph_color"></a>
+    <strong>set_graph_color (color)</strong>
+    </dt>
+    <dd>
+    Set the default color for the graph.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">color</span>
+         a string "#rrggbbaa" or "#rrggbb"
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">circle:set_graph_color(<span class="global">string</span>) --&gt;<span class="string">"#rrggbbaa"</span></pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "set_graph_colors"></a>
+    <strong>set_graph_colors (colors)</strong>
+    </dt>
+    <dd>
+    Set the colors and theirs ranges for the graph.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">colors</span>
+         a table of tables {color , float } with color a string "#rrggbbaa" or "#rrggbb" and float which is 0<=float<=1
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"> circle:set_graph_colors({{<span class="string">"#88aa00ff"</span>,<span class="number">0</span>}, <span class="comment">--all value &gt; 0 will be displayed using this color
+</span>{<span class="string">"#d4aa00ff"</span>, <span class="number">0.5</span>},
+{<span class="string">"#d45500ff"</span>,<span class="number">0.77</span>}})</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "set_show_text"></a>
+    <strong>set_show_text (boolean)</strong>
+    </dt>
+    <dd>
+    Display text on the graph or not.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">boolean</span>
+         true or false (default is false)
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">circle:set_show_text(boolean) --&gt; <span class="keyword">true</span> <span class="keyword">or</span> <span class="keyword">false</span></pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "set_font"></a>
+    <strong>set_font (font)</strong>
+    </dt>
+    <dd>
+    Define the text's font .
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">font</span>
+         a string that contains the font name family and weight
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">circle:set_font(<span class="global">string</span>)</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "set_font_size"></a>
+    <strong>set_font_size (size)</strong>
+    </dt>
+    <dd>
+    Define the text font size.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">size</span>
+         the font size
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">circle:set_font_size(integer)</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "set_label"></a>
+    <strong>set_label (text)</strong>
+    </dt>
+    <dd>
+    Define the text to display.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">text</span>
+         the text to display
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">circle:set_label(<span class="global">string</span>)</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "circle_graph:set_height"></a>
+    <strong>circle_graph:set_height (height)</strong>
+    </dt>
+    <dd>
+    Set the c_graph height.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">height</span>
+         The height to set.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "circle_graph:set_width"></a>
+    <strong>circle_graph:set_width (width)</strong>
+    </dt>
+    <dd>
+    Set the graph width.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">width</span>
+         The width to set.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "circle_graph.new"></a>
+    <strong>circle_graph.new (args)</strong>
+    </dt>
+    <dd>
+    Create a c_graph widget.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">args</span>
+         Standard widget() arguments. You should add width and height
+ key to set graph geometry.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        A graph widget.
+    </ol>
+
+
+
+
+</dd>
+</dl>
+    <h2><a name="Local_Functions"></a>Local Functions</h2>
+    <dl class="function">
+    <dt>
+    <a name = "set_value"></a>
+    <strong>set_value (c_graph, value)</strong>
+    </dt>
+    <dd>
+    Set the c_graph value.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">c_graph</span>
+         The progress bar.
+        </li>
+        <li><span class="parameter">value</span>
+         The progress bar value between 0 and 1.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.2</a></i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

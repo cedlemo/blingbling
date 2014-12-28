@@ -1,0 +1,528 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Reference</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>ldoc</h1>
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Functions">Functions</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="$(kind=='Topics' and '' or 'nowrap'">
+  <li><a href="../modules/blingbling.clock.html">blingbling.clock</a></li>
+  <li><a href="../modules/blingbling.wlourf_circle_graph.html">blingbling.wlourf_circle_graph</a></li>
+  <li><a href="../modules/blingbling.progress_graph.html">blingbling.progress_graph</a></li>
+  <li><a href="../modules/blingbling.tagslist.html">blingbling.tagslist</a></li>
+  <li><a href="../modules/blingbling.value_text_box.html">blingbling.value_text_box</a></li>
+  <li><a href="../modules/blingbling.helpers.html">blingbling.helpers</a></li>
+  <li><a href="../modules/blingbling.popups.html">blingbling.popups</a></li>
+  <li><a href="../modules/blingbling.triangular_progress_graph.html">blingbling.triangular_progress_graph</a></li>
+  <li><a href="../modules/blingbling.volume.html">blingbling.volume</a></li>
+  <li><a href="../modules/blingbling.udisks_glue.html">blingbling.udisks_glue</a></li>
+  <li><a href="../modules/blingbling.text_box.html">blingbling.text_box</a></li>
+  <li><a href="../modules/blingbling.system.html">blingbling.system</a></li>
+  <li><a href="../modules/blingbling.task_warrior.html">blingbling.task_warrior</a></li>
+  <li><a href="../modules/blingbling.linegraph.html">blingbling.linegraph</a></li>
+  <li><a href="../modules/blingbling.calendar.html">blingbling.calendar</a></li>
+  <li><strong>blingbling.widget</strong></li>
+  <li><a href="../modules/config_example.japanese2.theme.html">config_example.japanese2.theme</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>blingbling.widget</code></h1>
+<p>Net widget displays two arrows as graph for download/upload activities</p>
+<p></p>
+
+
+<h2><a href="#Functions">Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#set_interface">set_interface (interface)</a></td>
+	<td class="summary">Set the net interface used to get information, default is eth0.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#set_v_margin">set_v_margin (margin)</a></td>
+	<td class="summary">Define the top and bottom margin for the graph area.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#set_h_margin">set_h_margin (margin)</a></td>
+	<td class="summary">Define the left and right margin for the graph area.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#set_background_color">set_background_color (color)</a></td>
+	<td class="summary">Fill all the widget (width * height) with this color (default is none ).</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#set_background_graph_color">set_background_graph_color (color)</a></td>
+	<td class="summary">Fill the graph area background with this color (default is none).</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#set_graph_color">set_graph_color (color)</a></td>
+	<td class="summary">Define the graph/arrows color.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#set_graph_line_color">set_graph_line_color (color)</a></td>
+	<td class="summary">Set an outline on the arrows with this color.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#set_show_text">set_show_text (boolean)</a></td>
+	<td class="summary">Display or not upload/download informations.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#set_text_color">set_text_color (color)</a></td>
+	<td class="summary">Define the text color.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#set_text_background_color">set_text_background_color (color)</a></td>
+	<td class="summary">Set a color behind the text.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#set_font_size">set_font_size (size)</a></td>
+	<td class="summary">Set the size of the font to use.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#set_font">set_font (font)</a></td>
+	<td class="summary">Set the font to use.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#net:set_ippopup">net:set_ippopup ()</a></td>
+	<td class="summary">Add a popup on the widget that displays informations on the current network connection.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#net:set_height">net:set_height (height)</a></td>
+	<td class="summary">Set the n_graph height.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#net:set_width">net:set_width (width)</a></td>
+	<td class="summary">Set the graph width.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#net.new">net.new (args)</a></td>
+	<td class="summary">Create a n_graph widget.</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2><a name="Functions"></a>Functions</h2>
+    <dl class="function">
+    <dt>
+    <a name = "set_interface"></a>
+    <strong>set_interface (interface)</strong>
+    </dt>
+    <dd>
+    Set the net interface used to get information, default is eth0.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">interface</span>
+         a string
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">mynet:set_interface(<span class="global">string</span>)</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "set_v_margin"></a>
+    <strong>set_v_margin (margin)</strong>
+    </dt>
+    <dd>
+    Define the top and bottom margin for the graph area.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">margin</span>
+         an integer for top and bottom margin
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">mynet:set_v_margin(integer)</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "set_h_margin"></a>
+    <strong>set_h_margin (margin)</strong>
+    </dt>
+    <dd>
+    Define the left and right margin for the graph area.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">margin</span>
+         an integer for left and right margin
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">mynet:set_h_margin()</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "set_background_color"></a>
+    <strong>set_background_color (color)</strong>
+    </dt>
+    <dd>
+    Fill all the widget (width * height) with this color (default is none ).
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">color</span>
+         a string "#rrggbbaa" or "#rrggbb"
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">mynet:set_background_color(<span class="global">string</span>) --&gt;<span class="string">"#rrggbbaa"</span></pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "set_background_graph_color"></a>
+    <strong>set_background_graph_color (color)</strong>
+    </dt>
+    <dd>
+    Fill the graph area background with this color (default is none).
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">color</span>
+         a string "#rrggbbaa" or "#rrggbb"
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">mynet:set_background_graph_color(<span class="global">string</span>) --&gt;<span class="string">"#rrggbbaa"</span></pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "set_graph_color"></a>
+    <strong>set_graph_color (color)</strong>
+    </dt>
+    <dd>
+    Define the graph/arrows color.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">color</span>
+         a string "#rrggbbaa" or "#rrggbb"
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">mynet:set_graph_color(<span class="global">string</span>) --&gt;<span class="string">"#rrggbbaa"</span></pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "set_graph_line_color"></a>
+    <strong>set_graph_line_color (color)</strong>
+    </dt>
+    <dd>
+    Set an outline on the arrows with this color.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">color</span>
+         a string "#rrggbbaa" or "#rrggbb"
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">mynet:set_graph_line_color(<span class="global">string</span>) --&gt;<span class="string">"#rrggbbaa"</span></pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "set_show_text"></a>
+    <strong>set_show_text (boolean)</strong>
+    </dt>
+    <dd>
+    Display or not upload/download informations.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">boolean</span>
+         true or false default is false
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">mynet:set_show_text(boolean) --&gt; <span class="keyword">true</span> <span class="keyword">or</span> <span class="keyword">false</span></pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "set_text_color"></a>
+    <strong>set_text_color (color)</strong>
+    </dt>
+    <dd>
+    Define the text color.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">color</span>
+         a string "#rrggbbaa" or "#rrggbb"
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">mynet:set_text_color(<span class="global">string</span>) --&gt;<span class="string">"#rrggbbaa"</span></pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "set_text_background_color"></a>
+    <strong>set_text_background_color (color)</strong>
+    </dt>
+    <dd>
+    Set a color behind the text.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">color</span>
+         a string "#rrggbbaa" or "#rrggbb"
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">mynet:set_text_background_color(<span class="global">string</span>) --&gt;<span class="string">"#rrggbbaa"</span></pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "set_font_size"></a>
+    <strong>set_font_size (size)</strong>
+    </dt>
+    <dd>
+    Set the size of the font to use.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">size</span>
+         the font size
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">mynet:set_font_size(integer)</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "set_font"></a>
+    <strong>set_font (font)</strong>
+    </dt>
+    <dd>
+    Set the font to use.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">font</span>
+         a string that contains the font name family and weight
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">mynet:set_font(<span class="global">string</span>)</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "net:set_ippopup"></a>
+    <strong>net:set_ippopup ()</strong>
+    </dt>
+    <dd>
+    Add a popup on the widget that displays informations on the current network connection.
+
+
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">mynet:set_ippopup()</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "net:set_height"></a>
+    <strong>net:set_height (height)</strong>
+    </dt>
+    <dd>
+    Set the n_graph height.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">height</span>
+         The height to set.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "net:set_width"></a>
+    <strong>net:set_width (width)</strong>
+    </dt>
+    <dd>
+    Set the graph width.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">width</span>
+         The width to set.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "net.new"></a>
+    <strong>net.new (args)</strong>
+    </dt>
+    <dd>
+    Create a n_graph widget.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">args</span>
+         Standard widget() arguments. You should add width and height and interface
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        A graph widget.
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">mynet = blingbling.net({width = <span class="number">100</span>, height = <span class="number">20</span>, interface = <span class="string">"eth0"</span>})</pre>
+    </ul>
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.2</a></i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

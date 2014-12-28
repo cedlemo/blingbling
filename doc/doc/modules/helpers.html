@@ -1,0 +1,679 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Reference</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>ldoc</h1>
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Functions">Functions</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul>
+  <li><a href="../modules/blingbling.clock.html">blingbling.clock</a></li>
+  <li><a href="../modules/blingbling.linegraph.html">blingbling.linegraph</a></li>
+  <li><a href="../modules/blingbling.popups.html">blingbling.popups</a></li>
+  <li><a href="../modules/blingbling.progress_graph.html">blingbling.progress_graph</a></li>
+  <li><a href="../modules/blingbling.system.html">blingbling.system</a></li>
+  <li><a href="../modules/blingbling.tagslist.html">blingbling.tagslist</a></li>
+  <li><a href="../modules/blingbling.task_warrior.html">blingbling.task_warrior</a></li>
+  <li><a href="../modules/blingbling.text_box.html">blingbling.text_box</a></li>
+  <li><a href="../modules/blingbling.triangular_progress_graph.html">blingbling.triangular_progress_graph</a></li>
+  <li><a href="../modules/blingbling.udisks_glue.html">blingbling.udisks_glue</a></li>
+  <li><a href="../modules/blingbling.volume.html">blingbling.volume</a></li>
+  <li><a href="../modules/blingbling.widget.html">blingbling.widget</a></li>
+  <li><a href="../modules/blingbling.wlourf_circle_graph.html">blingbling.wlourf_circle_graph</a></li>
+  <li><a href="../modules/config_example.japanese2.theme.html">config_example.japanese2.theme</a></li>
+  <li><strong>helpers</strong></li>
+  <li><a href="../modules/superproperties.html">superproperties</a></li>
+  <li><a href="../modules/value_text_box.html">value_text_box</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>helpers</code></h1>
+
+<p>Functions used in blingbling.</p>
+<p>
+blingbling.helpers</p>
+
+
+<h2><a href="#Functions">Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#dbg">dbg&nbsp;(vars)</a></td>
+	<td class="summary">Display values of variables in an awesome popup.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#hexadecimal_to_rgba_percent">hexadecimal_to_rgba_percent&nbsp;(my_color)</a></td>
+	<td class="summary">Convert an hexadecimal color to rgba color.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#rgb">rgb&nbsp;(red, green, blue)</a></td>
+	<td class="summary">Get red green blue value in parameters and return hexadecimal string</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#rgba">rgba&nbsp;(red, green, blue, alpha)</a></td>
+	<td class="summary">Get red green blue and alpha value in parameters and return hexadecimal string.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#is_transparent">is_transparent&nbsp;(my_color)</a></td>
+	<td class="summary">Check if an hexadecimal color is fully transparent.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#split">split&nbsp;(str, pat)</a></td>
+	<td class="summary">Split string in different parts which are returned in a table.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#draw_background_tiles">draw_background_tiles&nbsp;(cr, height, v_margin, width, h_margin)</a></td>
+	<td class="summary">Draw tiles in a cairo context.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#draw_text_and_background">draw_text_and_background&nbsp;(cr, text, x, y, text_background_color, text_color, show_text_centered_on_x, show_text_centered_on_y, show_text_on_left_of_x, show_text_on_bottom_of_y)</a></td>
+	<td class="summary">Draw text on a rectangle which width and height depend on the text width and height.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#draw_up_down_arrows">draw_up_down_arrows&nbsp;(cr, x, y_bottom, y_top, value, background_arrow_color, arrow_color, arrow_line_color, up)</a></td>
+	<td class="summary">Drawn one foreground arrow with a background arrow that depend on a value.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#draw_vertical_bar">draw_vertical_bar&nbsp;(cr, h_margin, v_margin, width, height, represent)</a></td>
+	<td class="summary">Draw a vertical bar with gradient color, so it looks like a cylinder, and it's height depends on a value.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#draw_horizontal_bar">draw_horizontal_bar&nbsp;(cr, h_margin, v_margin, width, height, represent)</a></td>
+	<td class="summary">Draw an horizontal bar with gradient color, so it looks like a cylinder, and it's height depends on a value.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#draw_rounded_corners_rectangle">draw_rounded_corners_rectangle&nbsp;(cr, x, y, width, height, color, rounded_size)</a></td>
+	<td class="summary">Draw a rectangle width rounded corners.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#clip_rounded_corners_rectangle">clip_rounded_corners_rectangle&nbsp;(cr, x, y, width, height, rounded_size)</a></td>
+	<td class="summary">Set a rectangle width rounded corners that define the area to draw.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#draw_rounded_corners_horizontal_graph">draw_rounded_corners_horizontal_graph&nbsp;(cr, x, y, width, height, background_color, graph_color, rounded_size, value_to_represent, graph_line_color)</a></td>
+	<td class="summary">Draw a foreground rounded corners rectangle which width depends on a value, and a background rounded corners rectangle.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#draw_rounded_corners_vertical_graph">draw_rounded_corners_vertical_graph&nbsp;(cr, x, y, width, height, background_color, graph_color, rounded_size, value_to_represent, graph_line_color)</a></td>
+	<td class="summary">Draw a foreground rounded corners rectangle which height depends on a value, and a background rounded corners rectangle.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#generate_rounded_rectangle_with_text">generate_rounded_rectangle_with_text&nbsp;(cr, width, height, text, padding, background_color, text_color, font_size, rounded_size, border)</a></td>
+	<td class="summary">Generate a text in front of a centered rectangle with rounded corners (or not) in  a cairo context.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#hash_remove">hash_remove&nbsp;(hash, key)</a></td>
+	<td class="summary">Remove an element from  a table using key.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#get_days_in_month">get_days_in_month&nbsp;(month, year)</a></td>
+	<td class="summary">Get the number of days in a given month of a year.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#get_ISO8601_weeks_number_of_month">get_ISO8601_weeks_number_of_month&nbsp;(month, year)</a></td>
+	<td class="summary">Find the weeks numbers of a given month.</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2><a name="Functions"></a>Functions</h2>
+    <dl class="function">
+    <dt>
+    <a name = "dbg"></a>
+    <strong>dbg&nbsp;(vars)</strong>
+    </dt>
+    <dd>
+    Display values of variables in an awesome popup.
+Each variables in vars is separated by a "|"
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">vars</span>
+         a table of variable</li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "hexadecimal_to_rgba_percent"></a>
+    <strong>hexadecimal_to_rgba_percent&nbsp;(my_color)</strong>
+    </dt>
+    <dd>
+    Convert an hexadecimal color to rgba color.
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">my_color</span>
+         a string "#rrggbb" or "#rrggbbaa"</li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "rgb"></a>
+    <strong>rgb&nbsp;(red, green, blue)</strong>
+    </dt>
+    <dd>
+    Get red green blue value in parameters and return hexadecimal string
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">red</span>
+        </li>
+        <li><span class="parameter">green</span>
+        </li>
+        <li><span class="parameter">blue</span>
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "rgba"></a>
+    <strong>rgba&nbsp;(red, green, blue, alpha)</strong>
+    </dt>
+    <dd>
+    Get red green blue and alpha value in parameters and return hexadecimal string.
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">red</span>
+        </li>
+        <li><span class="parameter">green</span>
+        </li>
+        <li><span class="parameter">blue</span>
+        </li>
+        <li><span class="parameter">alpha</span>
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "is_transparent"></a>
+    <strong>is_transparent&nbsp;(my_color)</strong>
+    </dt>
+    <dd>
+    Check if an hexadecimal color is fully transparent.
+Returns true or false
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">my_color</span>
+         a string "#rrggbb" or "#rrggbbaa"</li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "split"></a>
+    <strong>split&nbsp;(str, pat)</strong>
+    </dt>
+    <dd>
+    Split string in different parts which are returned in a table.  The delimiter of each part is a pattern given in argument.
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">str</span>
+         the string to split</li>
+        <li><span class="parameter">pat</span>
+         the pattern delimiter</li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "draw_background_tiles"></a>
+    <strong>draw_background_tiles&nbsp;(cr, height, v_margin, width, h_margin)</strong>
+    </dt>
+    <dd>
+    Draw tiles in a cairo context.
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">cr</span>
+         a cairo context.</li>
+        <li><span class="parameter">height</span>
+         the height of the surface on which we want tiles</li>
+        <li><span class="parameter">v_margin</span>
+         value used to define top margin and/or bottom margin (tiles are not drawn on the margins)</li>
+        <li><span class="parameter">width</span>
+         the width of the surface on which we want tiles</li>
+        <li><span class="parameter">h_margin</span>
+         value used to define left margin and/or right margin.</li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "draw_text_and_background"></a>
+    <strong>draw_text_and_background&nbsp;(cr, text, x, y, text_background_color, text_color, show_text_centered_on_x, show_text_centered_on_y, show_text_on_left_of_x, show_text_on_bottom_of_y)</strong>
+    </dt>
+    <dd>
+    Draw text on a rectangle which width and height depend on the text width and height.
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">cr</span>
+         a cairo context already initialised with oocairo.context_create( )</li>
+        <li><span class="parameter">text</span>
+         the text to display</li>
+        <li><span class="parameter">x</span>
+         the x coordinate of the left of the text</li>
+        <li><span class="parameter">y</span>
+         the y coordinate of the bottom of the text</li>
+        <li><span class="parameter">text_background_color</span>
+         a string "#rrggbb" or "#rrggbbaa" for the rectangle color</li>
+        <li><span class="parameter">text_color</span>
+         a string "#rrggbb" or "#rrggbbaa" for the text color</li>
+        <li><span class="parameter">show_text_centered_on_x</span>
+         a boolean value not mandatory (false by default) if true, x parameter is the coordinate of the middle of the text</li>
+        <li><span class="parameter">show_text_centered_on_y</span>
+         a boolean value not mandatory (false by default) if true, y parameter is the coordinate of the middle of the text</li>
+        <li><span class="parameter">show_text_on_left_of_x</span>
+         a boolean value not mandatory (false by default) if true, x parameter is the right of the text</li>
+        <li><span class="parameter">show_text_on_bottom_of_y</span>
+         a boolean value not mandatory (false by default) if true, y parameter is the top of the text</li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "draw_up_down_arrows"></a>
+    <strong>draw_up_down_arrows&nbsp;(cr, x, y_bottom, y_top, value, background_arrow_color, arrow_color, arrow_line_color, up)</strong>
+    </dt>
+    <dd>
+    Drawn one foreground arrow with a background arrow that depend on a value.
+If the value is egal to 0 then the foreground arrow is not drawn.
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">cr</span>
+         a cairo context already initialised with oocairo.context_create( )</li>
+        <li><span class="parameter">x</span>
+         the x coordinate in the cairo context where the arrow start</li>
+        <li><span class="parameter">y_bottom</span>
+         the bottom corrdinate of the arrows</li>
+        <li><span class="parameter">y_top</span>
+         the top coordinate of the arrows</li>
+        <li><span class="parameter">value</span>
+         a number</li>
+        <li><span class="parameter">background_arrow_color</span>
+         the color of the background arrow, a string "#rrggbb" or "#rrggbbaa"</li>
+        <li><span class="parameter">arrow_color</span>
+         the color of the foreground arrow, a string "#rrggbb" or "#rrggbbaa"</li>
+        <li><span class="parameter">arrow_line_color</span>
+         the color of the outline of the foreground arrow , a string "#rrggbb" or "#rrggbbaa"</li>
+        <li><span class="parameter">up</span>
+         boolean value if false draw a down arrow, if true draw a up arrow</li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "draw_vertical_bar"></a>
+    <strong>draw_vertical_bar&nbsp;(cr, h_margin, v_margin, width, height, represent)</strong>
+    </dt>
+    <dd>
+    Draw a vertical bar with gradient color, so it looks like a cylinder, and it's height depends on a value.
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">cr</span>
+         a cairo context already initialised with oocairo.context_create( )</li>
+        <li><span class="parameter">h_margin</span>
+         the left and right margin of the bar in the cr</li>
+        <li><span class="parameter">v_margin</span>
+         the top and bottom margin of the bar in the cr</li>
+        <li><span class="parameter">width</span>
+         the width used to display the left margin, the bar and the right margin</li>
+        <li><span class="parameter">height</span>
+         the height used to display the top margin, the bar and the bottom margin</li>
+        <li><span class="parameter">represent</span>
+         a table {background_bar_color = "#rrggbb" or "#rrggbbaa", color = "#rrggbb" or "#rrggbbaa", value =the value used to calculate the height of the bar}</li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "draw_horizontal_bar"></a>
+    <strong>draw_horizontal_bar&nbsp;(cr, h_margin, v_margin, width, height, represent)</strong>
+    </dt>
+    <dd>
+    Draw an horizontal bar with gradient color, so it looks like a cylinder, and it's height depends on a value.
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">cr</span>
+         a cairo context already initialised with oocairo.context_create( )</li>
+        <li><span class="parameter">h_margin</span>
+         the left and right margin of the bar in the cr</li>
+        <li><span class="parameter">v_margin</span>
+         the top and bottom margin of the bar in the cr</li>
+        <li><span class="parameter">width</span>
+         the width used to display the left margin, the bar and the right margin</li>
+        <li><span class="parameter">height</span>
+         the height used to display the top margin, the bar and the bottom margin</li>
+        <li><span class="parameter">represent</span>
+         a table {background_bar_color = "#rrggbb" or "#rrggbbaa", color = "#rrggbb" or "#rrggbbaa", value =the value used to calculate the width of the bar}</li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "draw_rounded_corners_rectangle"></a>
+    <strong>draw_rounded_corners_rectangle&nbsp;(cr, x, y, width, height, color, rounded_size)</strong>
+    </dt>
+    <dd>
+    Draw a rectangle width rounded corners.
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">cr</span>
+         a cairo context already initialised with oocairo.context_create( )</li>
+        <li><span class="parameter">x</span>
+         the x coordinate of the left top corner</li>
+        <li><span class="parameter">y</span>
+         the y corrdinate of the left top corner</li>
+        <li><span class="parameter">width</span>
+         the width of the rectangle</li>
+        <li><span class="parameter">height</span>
+         the height of the rectangle</li>
+        <li><span class="parameter">color</span>
+         a string "#rrggbb" or "#rrggbbaa" for the color of the rectangle</li>
+        <li><span class="parameter">rounded_size</span>
+         a float value from 0 to 1 (0 is no rounded corner) or a table of float value</li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "clip_rounded_corners_rectangle"></a>
+    <strong>clip_rounded_corners_rectangle&nbsp;(cr, x, y, width, height, rounded_size)</strong>
+    </dt>
+    <dd>
+    Set a rectangle width rounded corners that define the area to draw.
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">cr</span>
+         a cairo context already initialised with oocairo.context_create( )</li>
+        <li><span class="parameter">x</span>
+         the x coordinate of the left top corner</li>
+        <li><span class="parameter">y</span>
+         the y corrdinate of the left top corner</li>
+        <li><span class="parameter">width</span>
+         the width of the rectangle</li>
+        <li><span class="parameter">height</span>
+         the height of the rectangle</li>
+        <li><span class="parameter">rounded_size</span>
+         a float value from 0 to 1 (0 is no rounded corner)</li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "draw_rounded_corners_horizontal_graph"></a>
+    <strong>draw_rounded_corners_horizontal_graph&nbsp;(cr, x, y, width, height, background_color, graph_color, rounded_size, value_to_represent, graph_line_color)</strong>
+    </dt>
+    <dd>
+    Draw a foreground rounded corners rectangle which width depends on a value, and a background rounded corners rectangle.
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">cr</span>
+         a cairo context already initialised with oocairo.context_create( )</li>
+        <li><span class="parameter">x</span>
+         the x coordinate of the left top corner</li>
+        <li><span class="parameter">y</span>
+         the y corrdinate of the left top corner</li>
+        <li><span class="parameter">width</span>
+         the width of the background rectangle and the maximal width of th foreground rectangle</li>
+        <li><span class="parameter">height</span>
+         the height of the background and the foreground rectangles</li>
+        <li><span class="parameter">background_color</span>
+         a string "#rrggbb" or "#rrggbbaa" for the color of the background rectangle</li>
+        <li><span class="parameter">graph_color</span>
+         a string "#rrggbb" or "#rrggbbaa" for the color of the foreground rectangle</li>
+        <li><span class="parameter">rounded_size</span>
+         a float value from 0 to 1 (0 is no rounded corner)</li>
+        <li><span class="parameter">value_to_represent</span>
+         the percent of the max width used to calculate the width of the foreground rectangle</li>
+        <li><span class="parameter">graph_line_color</span>
+         a string "#rrggbb" or "#rrggbbaa" for the outiline color of the background rectangle</li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "draw_rounded_corners_vertical_graph"></a>
+    <strong>draw_rounded_corners_vertical_graph&nbsp;(cr, x, y, width, height, background_color, graph_color, rounded_size, value_to_represent, graph_line_color)</strong>
+    </dt>
+    <dd>
+    Draw a foreground rounded corners rectangle which height depends on a value, and a background rounded corners rectangle.
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">cr</span>
+         a cairo context already initialised with oocairo.context_create( )</li>
+        <li><span class="parameter">x</span>
+         the x coordinate of the left top corner</li>
+        <li><span class="parameter">y</span>
+         the y corrdinate of the left top corner</li>
+        <li><span class="parameter">width</span>
+         the width of the background and the foreground rectangles</li>
+        <li><span class="parameter">height</span>
+         the height of the background rectangle and the maximal height of the foreground rectangle</li>
+        <li><span class="parameter">background_color</span>
+         a string "#rrggbb" or "#rrggbbaa" for the color of the background rectangle</li>
+        <li><span class="parameter">graph_color</span>
+         a string "#rrggbb" or "#rrggbbaa" for the color of the foreground rectangle</li>
+        <li><span class="parameter">rounded_size</span>
+         a float value from 0 to 1 (0 is no rounded corner)</li>
+        <li><span class="parameter">value_to_represent</span>
+         the percent of the max height used to calculate the height of the foreground rectangle</li>
+        <li><span class="parameter">graph_line_color</span>
+         a string "#rrggbb" or "#rrggbbaa" for the outiline color of the background rectangle</li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "generate_rounded_rectangle_with_text"></a>
+    <strong>generate_rounded_rectangle_with_text&nbsp;(cr, width, height, text, padding, background_color, text_color, font_size, rounded_size, border)</strong>
+    </dt>
+    <dd>
+    Generate a text in front of a centered rectangle with rounded corners (or not) in  a cairo context.
+It returns a table ={ width = the width of the image, height = the height of the image}
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">cr</span>
+         a cairo context already initialised with oocairo.context_create( )</li>
+        <li><span class="parameter">width</span>
+         the width of the widget</li>
+        <li><span class="parameter">height</span>
+         the height of the widget</li>
+        <li><span class="parameter">text</span>
+         the text to display</li>
+        <li><span class="parameter">padding</span>
+         the left/right/top/bottom padding used to center the text in the background rectangle</li>
+        <li><span class="parameter">background_color</span>
+         a string "#rrggbb" or "#rrggbbaa" for the color of the background rectangle</li>
+        <li><span class="parameter">text_color</span>
+         a string "#rrggbb" or "#rrggbbaa" for the color of the text</li>
+        <li><span class="parameter">font_size</span>
+         define the size of the font</li>
+        <li><span class="parameter">rounded_size</span>
+         a float value from 0 to 1 (0 is no rounded corner)</li>
+        <li><span class="parameter">border</span>
+         a color as a string "#rrggbb" or "#rrggbbaa"</li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "hash_remove"></a>
+    <strong>hash_remove&nbsp;(hash, key)</strong>
+    </dt>
+    <dd>
+    Remove an element from  a table using key.
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">hash</span>
+         the table</li>
+        <li><span class="parameter">key</span>
+         the key to remove</li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "get_days_in_month"></a>
+    <strong>get_days_in_month&nbsp;(month, year)</strong>
+    </dt>
+    <dd>
+    Get the number of days in a given month of a year.
+iT returns a number
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">month</span>
+         the month we focus on ( 1 to 12 )</li>
+        <li><span class="parameter">year</span>
+         a number YYYY used to check if it's a leap year.</li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "get_ISO8601_weeks_number_of_month"></a>
+    <strong>get_ISO8601_weeks_number_of_month&nbsp;(month, year)</strong>
+    </dt>
+    <dd>
+    Find the weeks numbers of a given month.
+Week begin on monday
+http://fr.wikipedia.org/wiki/ISO_8601
+ find the week number of a date:
+1 find the day number (in the year) of the thursday of the same week of our date
+2 find the week day of the 04 january of the year of our date
+3 find the number of days between the 04-01 and the first monday before this date
+4 find the number of days between the 04-01 and the date we focus on
+5 add the two last value, add 3 and divide by 7
+First it checks the number of the first week of a month and then it calculate the next six weeks numbers. The value returned is a table of six number.
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">month</span>
+         the month</li>
+        <li><span class="parameter">year</span>
+         the year</li>
+    </ul>
+
+
+
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.3.12</a></i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>
