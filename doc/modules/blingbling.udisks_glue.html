@@ -37,25 +37,26 @@
 
 
 <h2>Modules</h2>
-<ul>
-  <li><a href="../modules/blingbling.calendar.html">blingbling.calendar</a></li>
+<ul class="$(kind=='Topics' and '' or 'nowrap'">
   <li><a href="../modules/blingbling.clock.html">blingbling.clock</a></li>
-  <li><a href="../modules/blingbling.helpers.html">blingbling.helpers</a></li>
-  <li><a href="../modules/blingbling.linegraph.html">blingbling.linegraph</a></li>
-  <li><a href="../modules/blingbling.popups.html">blingbling.popups</a></li>
-  <li><a href="../modules/blingbling.progress_graph.html">blingbling.progress_graph</a></li>
-  <li><a href="../modules/blingbling.system.html">blingbling.system</a></li>
-  <li><a href="../modules/blingbling.tagslist.html">blingbling.tagslist</a></li>
-  <li><a href="../modules/blingbling.task_warrior.html">blingbling.task_warrior</a></li>
-  <li><a href="../modules/blingbling.text_box.html">blingbling.text_box</a></li>
-  <li><a href="../modules/blingbling.triangular_progress_graph.html">blingbling.triangular_progress_graph</a></li>
-  <li><strong>blingbling.udisks_glue</strong></li>
-  <li><a href="../modules/blingbling.value_text_box.html">blingbling.value_text_box</a></li>
-  <li><a href="../modules/blingbling.volume.html">blingbling.volume</a></li>
-  <li><a href="../modules/blingbling.widget.html">blingbling.widget</a></li>
   <li><a href="../modules/blingbling.wlourf_circle_graph.html">blingbling.wlourf_circle_graph</a></li>
+  <li><a href="../modules/blingbling.progress_graph.html">blingbling.progress_graph</a></li>
+  <li><a href="../modules/transient.html">transient</a></li>
+  <li><a href="../modules/blingbling.tagslist.html">blingbling.tagslist</a></li>
+  <li><a href="../modules/blingbling.value_text_box.html">blingbling.value_text_box</a></li>
+  <li><a href="../modules/blingbling.helpers.html">blingbling.helpers</a></li>
+  <li><a href="../modules/blingbling.popups.html">blingbling.popups</a></li>
+  <li><a href="../modules/blingbling.triangular_progress_graph.html">blingbling.triangular_progress_graph</a></li>
+  <li><a href="../modules/blingbling.volume.html">blingbling.volume</a></li>
+  <li><strong>blingbling.udisks_glue</strong></li>
+  <li><a href="../modules/blingbling.text_box.html">blingbling.text_box</a></li>
+  <li><a href="../modules/blingbling.system.html">blingbling.system</a></li>
+  <li><a href="../modules/blingbling.task_warrior.html">blingbling.task_warrior</a></li>
+  <li><a href="../modules/blingbling.linegraph.html">blingbling.linegraph</a></li>
+  <li><a href="../modules/blingbling.calendar.html">blingbling.calendar</a></li>
+  <li><a href="../modules/blingbling.widget.html">blingbling.widget</a></li>
+  <li><a href="../modules/config_example.grey_blue.theme.html">config_example.grey_blue.theme</a></li>
   <li><a href="../modules/config_example.japanese2.theme.html">config_example.japanese2.theme</a></li>
-  <li><a href="../modules/config_example.theme.html">config_example.theme</a></li>
 </ul>
 
 </div>
@@ -63,7 +64,6 @@
 <div id="content">
 
 <h1>Module <code>blingbling.udisks_glue</code></h1>
-
 <p>A menu for udisks-glue informations and actions</p>
 <p></p>
 
@@ -71,27 +71,27 @@
 <h2><a href="#Functions">Functions</a></h2>
 <table class="function_list">
 	<tr>
-	<td class="name" nowrap><a href="#set_mount_icon">set_mount_icon&nbsp;(ud_menu, an_image)</a></td>
+	<td class="name" nowrap><a href="#set_mount_icon">set_mount_icon (ud_menu, an_image)</a></td>
 	<td class="summary">Define the icon for the mount action in the menu.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#set_umount_icon">set_umount_icon&nbsp;(ud_menu, an_image)</a></td>
+	<td class="name" nowrap><a href="#set_umount_icon">set_umount_icon (ud_menu, an_image)</a></td>
 	<td class="summary">Define the icon for the umount action in the menu.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#set_detach_icon">set_detach_icon&nbsp;(ud_menu, an_image)</a></td>
+	<td class="name" nowrap><a href="#set_detach_icon">set_detach_icon (ud_menu, an_image)</a></td>
 	<td class="summary">Define the icon for the detach action in the menu.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#set_eject_icon">set_eject_icon&nbsp;(ud_menu, an_image)</a></td>
+	<td class="name" nowrap><a href="#set_eject_icon">set_eject_icon (ud_menu, an_image)</a></td>
 	<td class="summary">Define the icon for eject action in the menu.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#set_Usb_icon">set_Usb_icon&nbsp;(ud_menu, an_image)</a></td>
+	<td class="name" nowrap><a href="#set_Usb_icon">set_Usb_icon (ud_menu, an_image)</a></td>
 	<td class="summary">Define the icon for usb devices in the menu.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#set_Cdrom_icon">set_Cdrom_icon&nbsp;(ud_menu, an_image)</a></td>
+	<td class="name" nowrap><a href="#set_Cdrom_icon">set_Cdrom_icon (ud_menu, an_image)</a></td>
 	<td class="summary">Define the icon for Cdrom devices in the menu.</td>
 	</tr>
 </table>
@@ -104,17 +104,20 @@
     <dl class="function">
     <dt>
     <a name = "set_mount_icon"></a>
-    <strong>set_mount_icon&nbsp;(ud_menu, an_image)</strong>
+    <strong>set_mount_icon (ud_menu, an_image)</strong>
     </dt>
     <dd>
     Define the icon for the mount action in the menu.
 
+
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">ud_menu</span>
-         the udisk-glue menu widget or nothing if you use widget:set_mount_icon</li>
+         the udisk-glue menu widget or nothing if you use widget:set_mount_icon
+        </li>
         <li><span class="parameter">an_image</span>
-         an image file name</li>
+         an image file name
+        </li>
     </ul>
 
 
@@ -128,17 +131,20 @@
 </dd>
     <dt>
     <a name = "set_umount_icon"></a>
-    <strong>set_umount_icon&nbsp;(ud_menu, an_image)</strong>
+    <strong>set_umount_icon (ud_menu, an_image)</strong>
     </dt>
     <dd>
     Define the icon for the umount action in the menu.
 
+
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">ud_menu</span>
-         the udisk-glue menu widget or nothing if you use widget:set_umount_icon</li>
+         the udisk-glue menu widget or nothing if you use widget:set_umount_icon
+        </li>
         <li><span class="parameter">an_image</span>
-         an image file name</li>
+         an image file name
+        </li>
     </ul>
 
 
@@ -152,17 +158,20 @@
 </dd>
     <dt>
     <a name = "set_detach_icon"></a>
-    <strong>set_detach_icon&nbsp;(ud_menu, an_image)</strong>
+    <strong>set_detach_icon (ud_menu, an_image)</strong>
     </dt>
     <dd>
     Define the icon for the detach action in the menu.
 
+
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">ud_menu</span>
-         the udisk-glue menu widget or nothing if you use widget:set_detach_icon</li>
+         the udisk-glue menu widget or nothing if you use widget:set_detach_icon
+        </li>
         <li><span class="parameter">an_image</span>
-         an image file name</li>
+         an image file name
+        </li>
     </ul>
 
 
@@ -176,17 +185,20 @@
 </dd>
     <dt>
     <a name = "set_eject_icon"></a>
-    <strong>set_eject_icon&nbsp;(ud_menu, an_image)</strong>
+    <strong>set_eject_icon (ud_menu, an_image)</strong>
     </dt>
     <dd>
     Define the icon for eject action in the menu.
 
+
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">ud_menu</span>
-         the udisk-glue menu widget or nothing if you use widget:set_eject_icon</li>
+         the udisk-glue menu widget or nothing if you use widget:set_eject_icon
+        </li>
         <li><span class="parameter">an_image</span>
-         an image file name</li>
+         an image file name
+        </li>
     </ul>
 
 
@@ -200,17 +212,20 @@
 </dd>
     <dt>
     <a name = "set_Usb_icon"></a>
-    <strong>set_Usb_icon&nbsp;(ud_menu, an_image)</strong>
+    <strong>set_Usb_icon (ud_menu, an_image)</strong>
     </dt>
     <dd>
     Define the icon for usb devices in the menu.
 
+
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">ud_menu</span>
-         the udisk-glue menu widget or nothing if you use widget:set_Usb_icon</li>
+         the udisk-glue menu widget or nothing if you use widget:set_Usb_icon
+        </li>
         <li><span class="parameter">an_image</span>
-         an image file name</li>
+         an image file name
+        </li>
     </ul>
 
 
@@ -224,17 +239,20 @@
 </dd>
     <dt>
     <a name = "set_Cdrom_icon"></a>
-    <strong>set_Cdrom_icon&nbsp;(ud_menu, an_image)</strong>
+    <strong>set_Cdrom_icon (ud_menu, an_image)</strong>
     </dt>
     <dd>
     Define the icon for Cdrom devices in the menu.
 
+
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">ud_menu</span>
-         the udisk-glue menu widget or nothing if you use widget:set_Cdrom_icon</li>
+         the udisk-glue menu widget or nothing if you use widget:set_Cdrom_icon
+        </li>
         <li><span class="parameter">an_image</span>
-         an image file name</li>
+         an image file name
+        </li>
     </ul>
 
 
@@ -252,7 +270,7 @@
 </div> <!-- id="content" -->
 </div> <!-- id="main" -->
 <div id="about">
-<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.3.12</a></i>
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.2</a></i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>

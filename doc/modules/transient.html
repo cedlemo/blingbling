@@ -33,7 +33,7 @@
 <h2>Contents</h2>
 <ul>
 <li><a href="#Functions">Functions</a></li>
-<li><a href="#Local_Functions">Local Functions</a></li>
+<li><a href="#Tables">Tables</a></li>
 </ul>
 
 
@@ -42,13 +42,13 @@
   <li><a href="../modules/blingbling.clock.html">blingbling.clock</a></li>
   <li><a href="../modules/blingbling.wlourf_circle_graph.html">blingbling.wlourf_circle_graph</a></li>
   <li><a href="../modules/blingbling.progress_graph.html">blingbling.progress_graph</a></li>
-  <li><a href="../modules/transient.html">transient</a></li>
+  <li><strong>transient</strong></li>
   <li><a href="../modules/blingbling.tagslist.html">blingbling.tagslist</a></li>
   <li><a href="../modules/blingbling.value_text_box.html">blingbling.value_text_box</a></li>
   <li><a href="../modules/blingbling.helpers.html">blingbling.helpers</a></li>
   <li><a href="../modules/blingbling.popups.html">blingbling.popups</a></li>
   <li><a href="../modules/blingbling.triangular_progress_graph.html">blingbling.triangular_progress_graph</a></li>
-  <li><strong>blingbling.volume</strong></li>
+  <li><a href="../modules/blingbling.volume.html">blingbling.volume</a></li>
   <li><a href="../modules/blingbling.udisks_glue.html">blingbling.udisks_glue</a></li>
   <li><a href="../modules/blingbling.text_box.html">blingbling.text_box</a></li>
   <li><a href="../modules/blingbling.system.html">blingbling.system</a></li>
@@ -64,39 +64,50 @@
 
 <div id="content">
 
-<h1>Module <code>blingbling.volume</code></h1>
-<p>Volume widget</p>
+<h1>Module <code>transient</code></h1>
 <p></p>
+<p></p>
+    <h3>Info:</h3>
+    <ul>
+        <li><strong>Copyright</strong>: 2010 Uli Schlachter</li>
+        <li><strong>Release</strong>: v3.5.5</li>
+        <li><strong>Author</strong>: Uli Schlachter</li>
+    </ul>
 
 
 <h2><a href="#Functions">Functions</a></h2>
 <table class="function_list">
 	<tr>
-	<td class="name" nowrap><a href="#set_master_control">set_master_control (volume_graph)</a></td>
-	<td class="summary">Link the widget to the master channel of your system (uses amixer).</td>
+	<td class="name" nowrap><a href="#set_widget">set_widget (widget)</a></td>
+	<td class="summary">Set the widget that the transient displays</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#set_height">set_height (height)</a></td>
-	<td class="summary">Set the volume_graph height.</td>
+	<td class="name" nowrap><a href="#set_bg">set_bg (c)</a></td>
+	<td class="summary">Set the background of the transient</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#set_width">set_width (width)</a></td>
-	<td class="summary">Set the graph width.</td>
+	<td class="name" nowrap><a href="#set_fg">set_fg (c)</a></td>
+	<td class="summary">Set the foreground of the transient</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#new">new (args)</a></td>
-	<td class="summary">Create a volume_graph widget.</td>
+	<td class="name" nowrap><a href="#show">show ()</a></td>
+	<td class="summary">Show the transient window according to the timeout set when creating the
+ transient window</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#draw">draw (transient)</a></td>
+	<td class="summary">Redraw a transient.</td>
 	</tr>
 </table>
-<h2><a href="#Local_Functions">Local Functions</a></h2>
+<h2><a href="#Tables">Tables</a></h2>
 <table class="function_list">
 	<tr>
-	<td class="name" nowrap><a href="#set_value">set_value (volume_graph, value)</a></td>
-	<td class="summary">Set the graphtype value.</td>
+	<td class="name" nowrap><a href="#transient">transient</a></td>
+	<td class="summary">This provides widget box windows.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#update_mpd">update_mpd (volume_graph)</a></td>
-	<td class="summary">Link the widget to mpd's volume level.</td>
+	<td class="name" nowrap><a href="#drawin">drawin</a></td>
+	<td class="summary">Widget box object.</td>
 	</tr>
 </table>
 
@@ -107,42 +118,17 @@
     <h2><a name="Functions"></a>Functions</h2>
     <dl class="function">
     <dt>
-    <a name = "set_master_control"></a>
-    <strong>set_master_control (volume_graph)</strong>
+    <a name = "set_widget"></a>
+    <strong>set_widget (widget)</strong>
     </dt>
     <dd>
-    Link the widget to the master channel of your system (uses amixer).
-a left clic toggle mute/unmute, wheel up to increase the volume and wheel down to decrease the volume
+    Set the widget that the transient displays
 
 
     <h3>Parameters:</h3>
     <ul>
-        <li><span class="parameter">volume_graph</span>
-         the volume graph
-        </li>
-    </ul>
+        <li><span class="parameter">widget</span>
 
-
-
-
-    <h3>Usage:</h3>
-    <ul>
-        <pre class="example">myvolume:set_master_control()</pre>
-    </ul>
-
-</dd>
-    <dt>
-    <a name = "set_height"></a>
-    <strong>set_height (height)</strong>
-    </dt>
-    <dd>
-    Set the volume_graph height.
-
-
-    <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">height</span>
-         The height to set.
         </li>
     </ul>
 
@@ -152,17 +138,18 @@ a left clic toggle mute/unmute, wheel up to increase the volume and wheel down t
 
 </dd>
     <dt>
-    <a name = "set_width"></a>
-    <strong>set_width (width)</strong>
+    <a name = "set_bg"></a>
+    <strong>set_bg (c)</strong>
     </dt>
     <dd>
-    Set the graph width.
+    Set the background of the transient
 
 
     <h3>Parameters:</h3>
     <ul>
-        <li><span class="parameter">width</span>
-         The width to set.
+        <li><span class="parameter">c</span>
+         The background to use. This must either be a cairo pattern object,
+          nil or a string that gears.color() understands.
         </li>
     </ul>
 
@@ -172,49 +159,79 @@ a left clic toggle mute/unmute, wheel up to increase the volume and wheel down t
 
 </dd>
     <dt>
-    <a name = "new"></a>
-    <strong>new (args)</strong>
+    <a name = "set_fg"></a>
+    <strong>set_fg (c)</strong>
     </dt>
     <dd>
-    Create a volume_graph widget.
+    Set the foreground of the transient
 
 
     <h3>Parameters:</h3>
     <ul>
-        <li><span class="parameter">args</span>
-         Standard widget() arguments. You should add width and height
- key to set graph geometry.
+        <li><span class="parameter">c</span>
+         The foreground to use. This must either be a cairo pattern object,
+          nil or a string that gears.color() understands.
         </li>
     </ul>
 
-    <h3>Returns:</h3>
-    <ol>
 
-        A graph widget.
-    </ol>
+
+
+
+</dd>
+    <dt>
+    <a name = "show"></a>
+    <strong>show ()</strong>
+    </dt>
+    <dd>
+    Show the transient window according to the timeout set when creating the
+ transient window
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "draw"></a>
+    <strong>draw (transient)</strong>
+    </dt>
+    <dd>
+    Redraw a transient.  You should never have to call this explicitely because it is
+ automatically called when needed.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">transient</span>
+
+        </li>
+    </ul>
+
 
 
 
 
 </dd>
 </dl>
-    <h2><a name="Local_Functions"></a>Local Functions</h2>
+    <h2><a name="Tables"></a>Tables</h2>
     <dl class="function">
     <dt>
-    <a name = "set_value"></a>
-    <strong>set_value (volume_graph, value)</strong>
+    <a name = "transient"></a>
+    <strong>transient</strong>
     </dt>
     <dd>
-    Set the graphtype value.
+    This provides widget box windows.  Every transient can also be used as if it were
+ a drawin. All drawin functions and properties are also available on transientes!
+ transient
 
 
-    <h3>Parameters:</h3>
+    <h3>Fields:</h3>
     <ul>
-        <li><span class="parameter">volume_graph</span>
-         The progress bar.
-        </li>
-        <li><span class="parameter">value</span>
-         The progress bar value between 0 and 1.
+        <li><span class="parameter">mt</span>
+
         </li>
     </ul>
 
@@ -224,27 +241,21 @@ a left clic toggle mute/unmute, wheel up to increase the volume and wheel down t
 
 </dd>
     <dt>
-    <a name = "update_mpd"></a>
-    <strong>update_mpd (volume_graph)</strong>
+    <a name = "drawin"></a>
+    <strong>drawin</strong>
     </dt>
     <dd>
-    Link the widget to mpd's volume level.
-
-
-    <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">volume_graph</span>
-         the volume graph
-        </li>
-    </ul>
+    Widget box object.
+ Every transient "inherits" from a drawin and you can use all of drawin's
+ functions directly on this as well. When creating a transient, you can specify a
+ "fg" and a "bg" color as keys in the table that is passed to the constructor.
+ All other arguments will be passed to drawin's constructor.
 
 
 
 
-    <h3>Usage:</h3>
-    <ul>
-        <pre class="example">myvolume:update_mpd()</pre>
-    </ul>
+
+
 
 </dd>
 </dl>

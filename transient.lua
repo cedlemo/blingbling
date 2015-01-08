@@ -87,6 +87,8 @@ local function setup_signals(_transient)
     end
     clone_signal("property::surface")
 end
+--- Show the transient window according to the timeout set when creating the
+-- transient window
 function transient:show()
     local current_screen = mouse.screen
     local geometry

@@ -33,29 +33,31 @@
 <h2>Contents</h2>
 <ul>
 <li><a href="#Functions">Functions</a></li>
+<li><a href="#Local_Functions">Local Functions</a></li>
 </ul>
 
 
 <h2>Modules</h2>
-<ul>
-  <li><a href="../modules/blingbling.calendar.html">blingbling.calendar</a></li>
+<ul class="$(kind=='Topics' and '' or 'nowrap'">
   <li><a href="../modules/blingbling.clock.html">blingbling.clock</a></li>
-  <li><a href="../modules/blingbling.helpers.html">blingbling.helpers</a></li>
-  <li><a href="../modules/blingbling.linegraph.html">blingbling.linegraph</a></li>
-  <li><a href="../modules/blingbling.popups.html">blingbling.popups</a></li>
-  <li><a href="../modules/blingbling.progress_graph.html">blingbling.progress_graph</a></li>
-  <li><a href="../modules/blingbling.system.html">blingbling.system</a></li>
-  <li><a href="../modules/blingbling.tagslist.html">blingbling.tagslist</a></li>
-  <li><a href="../modules/blingbling.task_warrior.html">blingbling.task_warrior</a></li>
-  <li><a href="../modules/blingbling.text_box.html">blingbling.text_box</a></li>
-  <li><strong>blingbling.triangular_progress_graph</strong></li>
-  <li><a href="../modules/blingbling.udisks_glue.html">blingbling.udisks_glue</a></li>
-  <li><a href="../modules/blingbling.value_text_box.html">blingbling.value_text_box</a></li>
-  <li><a href="../modules/blingbling.volume.html">blingbling.volume</a></li>
-  <li><a href="../modules/blingbling.widget.html">blingbling.widget</a></li>
   <li><a href="../modules/blingbling.wlourf_circle_graph.html">blingbling.wlourf_circle_graph</a></li>
+  <li><a href="../modules/blingbling.progress_graph.html">blingbling.progress_graph</a></li>
+  <li><a href="../modules/transient.html">transient</a></li>
+  <li><a href="../modules/blingbling.tagslist.html">blingbling.tagslist</a></li>
+  <li><a href="../modules/blingbling.value_text_box.html">blingbling.value_text_box</a></li>
+  <li><a href="../modules/blingbling.helpers.html">blingbling.helpers</a></li>
+  <li><a href="../modules/blingbling.popups.html">blingbling.popups</a></li>
+  <li><strong>blingbling.triangular_progress_graph</strong></li>
+  <li><a href="../modules/blingbling.volume.html">blingbling.volume</a></li>
+  <li><a href="../modules/blingbling.udisks_glue.html">blingbling.udisks_glue</a></li>
+  <li><a href="../modules/blingbling.text_box.html">blingbling.text_box</a></li>
+  <li><a href="../modules/blingbling.system.html">blingbling.system</a></li>
+  <li><a href="../modules/blingbling.task_warrior.html">blingbling.task_warrior</a></li>
+  <li><a href="../modules/blingbling.linegraph.html">blingbling.linegraph</a></li>
+  <li><a href="../modules/blingbling.calendar.html">blingbling.calendar</a></li>
+  <li><a href="../modules/blingbling.widget.html">blingbling.widget</a></li>
+  <li><a href="../modules/config_example.grey_blue.theme.html">config_example.grey_blue.theme</a></li>
   <li><a href="../modules/config_example.japanese2.theme.html">config_example.japanese2.theme</a></li>
-  <li><a href="../modules/config_example.theme.html">config_example.theme</a></li>
 </ul>
 
 </div>
@@ -63,7 +65,6 @@
 <div id="content">
 
 <h1>Module <code>blingbling.triangular_progress_graph</code></h1>
-
 <p>Triangular progress graph widget.</p>
 <p></p>
 
@@ -71,60 +72,67 @@
 <h2><a href="#Functions">Functions</a></h2>
 <table class="function_list">
 	<tr>
-	<td class="name" nowrap><a href="#set_background_color">set_background_color&nbsp;(color)</a></td>
+	<td class="name" nowrap><a href="#set_background_color">set_background_color (color)</a></td>
 	<td class="summary">Fill all the widget (width * height) with this color (default is transparent ).</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#set_bar">set_bar&nbsp;(boolean)</a></td>
+	<td class="name" nowrap><a href="#set_bar">set_bar (boolean)</a></td>
 	<td class="summary">Define the form of the graph: use five growing bars instead of a triangle.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#set_v_margin">set_v_margin&nbsp;(margin)</a></td>
+	<td class="name" nowrap><a href="#set_v_margin">set_v_margin (margin)</a></td>
 	<td class="summary">Define the top and bottom margin for the graph.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#set_h_margin">set_h_margin&nbsp;(margin)</a></td>
+	<td class="name" nowrap><a href="#set_h_margin">set_h_margin (margin)</a></td>
 	<td class="summary">Define the left and right margin for the graph.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#set_filled_color">set_filled_color&nbsp;(color)</a></td>
+	<td class="name" nowrap><a href="#set_filled_color">set_filled_color (color)</a></td>
 	<td class="summary">Set the color of the graph background.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#set_graph_color">set_graph_color&nbsp;(color)</a></td>
+	<td class="name" nowrap><a href="#set_graph_color">set_graph_color (color)</a></td>
 	<td class="summary">Define the graph color.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#set_show_text">set_show_text&nbsp;(boolean)</a></td>
+	<td class="name" nowrap><a href="#set_show_text">set_show_text (boolean)</a></td>
 	<td class="summary">Display text on the graph or not.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#set_text_color">set_text_color&nbsp;(color)</a></td>
+	<td class="name" nowrap><a href="#set_text_color">set_text_color (color)</a></td>
 	<td class="summary">Define the color of the text.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#set_text_background_color">set_text_background_color&nbsp;(color)</a></td>
+	<td class="name" nowrap><a href="#set_text_background_color">set_text_background_color (color)</a></td>
 	<td class="summary">Define the background color of the text.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#set_font_size">set_font_size&nbsp;(graph, size)</a></td>
+	<td class="name" nowrap><a href="#set_font_size">set_font_size (graph, size)</a></td>
 	<td class="summary">Define the text font size.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#set_label">set_label&nbsp;(graph, text)</a></td>
+	<td class="name" nowrap><a href="#set_label">set_label (graph, text)</a></td>
 	<td class="summary">Define the template of the text to display.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#triangular_progressgraph:set_height">triangular_progressgraph:set_height&nbsp;(height)</a></td>
+	<td class="name" nowrap><a href="#triangular_progressgraph:set_height">triangular_progressgraph:set_height (height)</a></td>
 	<td class="summary">Set the tp_graph height.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#triangular_progressgraph:set_width">triangular_progressgraph:set_width&nbsp;(width)</a></td>
+	<td class="name" nowrap><a href="#triangular_progressgraph:set_width">triangular_progressgraph:set_width (width)</a></td>
 	<td class="summary">Set the tp_graph width.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#triangular_progressgraph.new">triangular_progressgraph.new&nbsp;(args)</a></td>
+	<td class="name" nowrap><a href="#triangular_progressgraph.new">triangular_progressgraph.new (args)</a></td>
 	<td class="summary">Create a tp_graph widget.</td>
+	</tr>
+</table>
+<h2><a href="#Local_Functions">Local Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#set_value">set_value (tp_graph, value)</a></td>
+	<td class="summary">Set the tp_graph value.</td>
 	</tr>
 </table>
 
@@ -136,15 +144,17 @@
     <dl class="function">
     <dt>
     <a name = "set_background_color"></a>
-    <strong>set_background_color&nbsp;(color)</strong>
+    <strong>set_background_color (color)</strong>
     </dt>
     <dd>
     Fill all the widget (width * height) with this color (default is transparent ).
 
+
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">color</span>
-         a string "#rrggbbaa" or "#rrggbb"</li>
+         a string "#rrggbbaa" or "#rrggbb"
+        </li>
     </ul>
 
 
@@ -158,15 +168,17 @@
 </dd>
     <dt>
     <a name = "set_bar"></a>
-    <strong>set_bar&nbsp;(boolean)</strong>
+    <strong>set_bar (boolean)</strong>
     </dt>
     <dd>
     Define the form of the graph: use five growing bars instead of a triangle.
 
+
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">boolean</span>
-         true or false (default is false)</li>
+         true or false (default is false)
+        </li>
     </ul>
 
 
@@ -180,15 +192,17 @@
 </dd>
     <dt>
     <a name = "set_v_margin"></a>
-    <strong>set_v_margin&nbsp;(margin)</strong>
+    <strong>set_v_margin (margin)</strong>
     </dt>
     <dd>
     Define the top and bottom margin for the graph.
 
+
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">margin</span>
-         an integer for top and bottom margin</li>
+         an integer for top and bottom margin
+        </li>
     </ul>
 
 
@@ -202,15 +216,17 @@
 </dd>
     <dt>
     <a name = "set_h_margin"></a>
-    <strong>set_h_margin&nbsp;(margin)</strong>
+    <strong>set_h_margin (margin)</strong>
     </dt>
     <dd>
     Define the left and right margin for the graph.
 
+
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">margin</span>
-         an integer for left and right margin</li>
+         an integer for left and right margin
+        </li>
     </ul>
 
 
@@ -224,15 +240,17 @@
 </dd>
     <dt>
     <a name = "set_filled_color"></a>
-    <strong>set_filled_color&nbsp;(color)</strong>
+    <strong>set_filled_color (color)</strong>
     </dt>
     <dd>
     Set the color of the graph background.
 
+
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">color</span>
-         a string "#rrggbbaa" or "#rrggbb"</li>
+         a string "#rrggbbaa" or "#rrggbb"
+        </li>
     </ul>
 
 
@@ -246,15 +264,17 @@
 </dd>
     <dt>
     <a name = "set_graph_color"></a>
-    <strong>set_graph_color&nbsp;(color)</strong>
+    <strong>set_graph_color (color)</strong>
     </dt>
     <dd>
     Define the graph color.
 
+
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">color</span>
-         a string "#rrggbbaa" or "#rrggbb"</li>
+         a string "#rrggbbaa" or "#rrggbb"
+        </li>
     </ul>
 
 
@@ -268,15 +288,17 @@
 </dd>
     <dt>
     <a name = "set_show_text"></a>
-    <strong>set_show_text&nbsp;(boolean)</strong>
+    <strong>set_show_text (boolean)</strong>
     </dt>
     <dd>
     Display text on the graph or not.
 
+
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">boolean</span>
-         true or false (default is false)</li>
+         true or false (default is false)
+        </li>
     </ul>
 
 
@@ -290,15 +312,17 @@
 </dd>
     <dt>
     <a name = "set_text_color"></a>
-    <strong>set_text_color&nbsp;(color)</strong>
+    <strong>set_text_color (color)</strong>
     </dt>
     <dd>
     Define the color of the text.
 
+
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">color</span>
-         a string "#rrggbbaa" or "#rrggbb" defaul is white</li>
+         a string "#rrggbbaa" or "#rrggbb" defaul is white
+        </li>
     </ul>
 
 
@@ -312,15 +336,17 @@
 </dd>
     <dt>
     <a name = "set_text_background_color"></a>
-    <strong>set_text_background_color&nbsp;(color)</strong>
+    <strong>set_text_background_color (color)</strong>
     </dt>
     <dd>
     Define the background color of the text.
 
+
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">color</span>
-         a string "#rrggbbaa" or "#rrggbb"</li>
+         a string "#rrggbbaa" or "#rrggbb"
+        </li>
     </ul>
 
 
@@ -334,18 +360,21 @@
 </dd>
     <dt>
     <a name = "set_font_size"></a>
-    <strong>set_font_size&nbsp;(graph, size)</strong>
+    <strong>set_font_size (graph, size)</strong>
     </dt>
     <dd>
     Define the text font size.
 myvolume:set_font_size(integer)
 
+
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">graph</span>
-         the graph</li>
+         the graph
+        </li>
         <li><span class="parameter">size</span>
-         the font size</li>
+         the font size
+        </li>
     </ul>
 
 
@@ -355,17 +384,20 @@ myvolume:set_font_size(integer)
 </dd>
     <dt>
     <a name = "set_label"></a>
-    <strong>set_label&nbsp;(graph, text)</strong>
+    <strong>set_label (graph, text)</strong>
     </dt>
     <dd>
     Define the template of the text to display.
 
+
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">graph</span>
-         the graph</li>
+         the graph
+        </li>
         <li><span class="parameter">text</span>
-         the text to display</li>
+         the text to display
+        </li>
     </ul>
 
 
@@ -382,15 +414,17 @@ dynamic <span class="global">string</span>: use $percent <span class="keyword">i
 </dd>
     <dt>
     <a name = "triangular_progressgraph:set_height"></a>
-    <strong>triangular_progressgraph:set_height&nbsp;(height)</strong>
+    <strong>triangular_progressgraph:set_height (height)</strong>
     </dt>
     <dd>
     Set the tp_graph height.
 
+
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">height</span>
-         The height to set.</li>
+         The height to set.
+        </li>
     </ul>
 
 
@@ -400,15 +434,17 @@ dynamic <span class="global">string</span>: use $percent <span class="keyword">i
 </dd>
     <dt>
     <a name = "triangular_progressgraph:set_width"></a>
-    <strong>triangular_progressgraph:set_width&nbsp;(width)</strong>
+    <strong>triangular_progressgraph:set_width (width)</strong>
     </dt>
     <dd>
     Set the tp_graph width.
 
+
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">width</span>
-         The width to set.</li>
+         The width to set.
+        </li>
     </ul>
 
 
@@ -418,16 +454,18 @@ dynamic <span class="global">string</span>: use $percent <span class="keyword">i
 </dd>
     <dt>
     <a name = "triangular_progressgraph.new"></a>
-    <strong>triangular_progressgraph.new&nbsp;(args)</strong>
+    <strong>triangular_progressgraph.new (args)</strong>
     </dt>
     <dd>
     Create a tp_graph widget.
+
 
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">args</span>
          Standard widget() arguments. You should add width and height
- key to set graph geometry.</li>
+ key to set graph geometry.
+        </li>
     </ul>
 
     <h3>Returns:</h3>
@@ -441,12 +479,38 @@ dynamic <span class="global">string</span>: use $percent <span class="keyword">i
 
 </dd>
 </dl>
+    <h2><a name="Local_Functions"></a>Local Functions</h2>
+    <dl class="function">
+    <dt>
+    <a name = "set_value"></a>
+    <strong>set_value (tp_graph, value)</strong>
+    </dt>
+    <dd>
+    Set the tp_graph value.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">tp_graph</span>
+         The progress bar.
+        </li>
+        <li><span class="parameter">value</span>
+         The progress bar value between 0 and 1.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</dl>
 
 
 </div> <!-- id="content" -->
 </div> <!-- id="main" -->
 <div id="about">
-<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.3.12</a></i>
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.2</a></i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>
