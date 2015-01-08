@@ -257,37 +257,16 @@ local function taglist_wibox()
                     )
   for s = 1, screen.count() do
     mytaglist[s]=blingbling.tagslist(s,  awful.widget.taglist.filter.all, mytaglist.buttons --[[, { normal = {}, focus ={}, urgent={}, occupied={} }--]])
---    local w,h = mytaglist[s]:fit(screen_geometry.width,screen_geometry.height)
---    box[s] = wibox({height=h , width=w, ontop=true})
     local margin = wibox.layout.margin(mytaglist[s], 4, 4, 4, 4)
     local w,h = margin:fit(screen_geometry.width,screen_geometry.height)
-    box[s] = wibox({height=h , width=w, ontop=true})
-    local x,y=0
-    x = ((screen_geometry.width /2) + screen_geometry.x) - w/2
-    y = ((screen_geometry.height /2) + screen_geometry.y) - h/2
-    box[s]:geometry({x=x, y=y})
+    --box[s] = blingbling.transient({height=h , width=w, ontop=true, timeout=10})
+    box[s] = blingbling.transient({height=h , width=w, ontop=true})
     box[s]:set_widget(margin)
-    box[s].visible = false
   end
   return box
 end
 local box = taglist_wibox()
 
-function taglist_wibox_show_hide(box)
---  mytimer = timer({ timeout = 0 })
---  mytimer:connect_signal("timeout", function () print("show");box.visible=true;mytimer:stop() end)
---  mytimer:start()
-  box.visible = true
-  mytimer1 = timer({ timeout = 2 })
-  mytimer1:connect_signal("timeout", function () 
-                                      if box.visible == true then
-                                      print("hide")
-                                      box.visible=false
-                                      mytimer1:stop()
-                                      end 
-                                    end)
-  mytimer1:start()
-end
 -- Create a wibox for each screen and add it
 local tag_indicator= blingbling.text_box({ text = awful.tag.selected(mouse.screen).name, 
                                       width=40, rounded_size=0.3,
@@ -339,7 +318,7 @@ for s = 1, screen.count() do
     screen[s]:connect_signal("tag::history::update", function()
       tag_indicator:set_text( awful.tag.selected(s).name )
     --awful.key({ modkey, "Control" },"y",function() taglist_wibox_show_hide(box[mouse.screen]) end),
-      taglist_wibox_show_hide(box[s])
+      box[s]:show()
     end)
     -- Create a promptbox for each screen
     mypromptbox[s] = awful.widget.prompt()
