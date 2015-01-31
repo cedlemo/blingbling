@@ -105,15 +105,17 @@ function transient:show()
     x = ((geometry.width /2) + geometry.x) - w/2
     y = ((geometry.height /2) + geometry.y) - h/2
     self:geometry({x=x, y=y}) 
-    self.visible = true
-    local mytimer = timer({ timeout = self.timeout })
-    mytimer:connect_signal("timeout", function () 
-                                      if self.visible == true then
-                                      self.visible=false
-                                      mytimer:stop()
-                                      end 
-                                      end)
-    mytimer:start()
+    if not self.visible then
+        self.visible = true
+        local mytimer = timer({ timeout = self.timeout })
+        mytimer:connect_signal("timeout", function () 
+                                          if self.visible == true then
+                                          self.visible=false
+                                          mytimer:stop()
+                                          end 
+                                          end)
+        mytimer:start()
+    end
 end
 local function new(args)
     local ret = object()
