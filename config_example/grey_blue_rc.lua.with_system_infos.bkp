@@ -41,7 +41,7 @@ end
 beautiful.init("/home/cedlemo/Projets/Lua/blingbling/config_example/grey_blue/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
-terminal = "tortosa"
+terminal = "xterm"
 editor = os.getenv("EDITOR") or "nano"
 editor_cmd = terminal .. " -e " .. editor
 
@@ -119,8 +119,130 @@ mytextclock:set_font("Cantarell Bold 10")
 mytextclock:set_align("center")
 local calendar = blingbling.calendar(mytextclock)
 --calendar:set_link_to_external_calendar(true)
+--local system_functions, err = loadfile('./system_functions.lua')
+--if system_functions then
+--  system_functions()
+--end
+local function gen_left_panel()
+  --build left panel:
+  local left_const = wibox.layout.constraint()
+  left_const:set_strategy("exact")
+  left_const:set_width(400)
+  local left_panel = wibox.layout.fixed.vertical()
+  left_const:set_widget(left_panel)
+  local os_infos = blingbling.helpers.get_os_release_informations()
+  
+  for _,v in ipairs(os_infos) do
+    local tbox = wibox.widget.textbox()    
+    tbox:set_markup("<span color=\"white\">"..v.key..": </span><span color=\""..beautiful.bg_focus.."\">"..v.value.."</span>" )
+    left_panel:add(tbox)
+  end
+  local cpu_info = wibox.widget.textbox()
+  cpu_info:set_markup("<span color=\"white\">Cpu: </span><span color=\""..beautiful.bg_focus.."\">"..blingbling.helpers.get_cpu_name().."</span>" )  
+  left_panel:add(cpu_info)
+  local mem_info = wibox.widget.textbox()
+  mem_info:set_markup("<span color=\"white\">Ram: </span><span color=\""..beautiful.bg_focus.."\">"..math.ceil(blingbling.helpers.get_total_mem_in_kb()/(1024*1024)).." G</span>" )  
+  left_panel:add(mem_info)
+  local input_devices = blingbling.helpers.get_input_devices()
+  for k,v in pairs(input_devices) do
+    local tbox = wibox.widget.textbox()    
+    tbox:set_markup("<span color=\"white\">".. k ..": </span><span color=\""..beautiful.bg_focus.."\">"..v.."</span>" )
+    left_panel:add(tbox)
+  end
+  return left_const
+end
 
-local function tagslist_wibox()
+local function gen_right_panel()
+  nb_cores = blingbling.helpers.get_nb_cores()
+  local right_panel = wibox.layout.fixed.vertical()
+  local cpu_label = wibox.widget.textbox()
+  cpu_label:set_text("Cpu Cores Usage :")
+  cpu_label:set_align("center")
+  right_panel:add(cpu_label)
+  local graphs_layout = wibox.layout.fixed.horizontal()
+  local cpu_graphs = {}
+ 
+   for i =1, nb_cores do
+    cpu_graphs[i]= blingbling.line_graph({ height = 40,
+                                    width = math.ceil(600/nb_cores),
+                                    show_text = true,
+                                    label = "Load: $percent %",
+                                    rounded_size = 0.3,
+                                    graph_background_color = "#00000033"
+                                    })
+    graphs_layout:add(cpu_graphs[i])
+    vicious.register(cpu_graphs[i], vicious.widgets.cpu,'$' .. i+1,2)
+  end
+  right_panel:add(graphs_layout)
+  local memory_label = wibox.widget.textbox()
+  memory_label:set_text("Memory Usage :")
+  memory_label:set_align("center")
+  right_panel:add(memory_label)
+  local memory_graph = blingbling.line_graph({ height = 40,
+                                    width = 600,
+                                    show_text = true,
+                                    label = "Load: $percent %",
+                                    rounded_size = 0.3,
+                                    graph_background_color = "#00000033"
+                                    })
+  vicious.register(memory_graph, vicious.widgets.mem,'$1',2)
+  right_panel:add(memory_graph)
+
+--Files systems:
+  local fs_label = wibox.widget.textbox()
+  fs_label:set_text("Mounted File Systems Usage: ")
+  fs_label:set_align("center")
+  right_panel:add(fs_label)
+  local devices = blingbling.helpers.get_mounted_devices()
+  local devices_graphs = {}
+  local n=0
+  for i,v in ipairs(devices) do
+    devices_graphs[i] = blingbling.progress_graph({ height = 20,
+                                          width = 600,
+                                          show_text = true,
+                                          label = devices[i].dev .." -> " .. devices[i].mnt .." Usage: $percent %",
+                                          horizontal = true,
+                                          rounded_size = 0.3,
+                                          graph_background_color = "#00000033"
+                                          })
+    
+    vicious.register(devices_graphs[i], vicious.widgets.fs, "${" .. devices[i].mnt .." used_p}",120)
+    right_panel:add(devices_graphs[i])
+  end
+  return right_panel
+end
+local function gen_sys_monitor()
+  
+  local width = 1000
+  local height = 500
+
+  --build right panel
+  local monitor = {}
+  monitor.wibox =  wibox({position="top", width=1000, height=350})
+  monitor.wibox:geometry({ x=50, y=50})
+  local layout = wibox.layout.fixed.vertical()
+  local sublayout = wibox.layout.fixed.horizontal()
+  local title =  wibox.widget.textbox()
+  title:set_text("System Informations: ")
+  title:set_align("center")
+  title:set_font("Cantarell 12")
+  local left_panel = gen_left_panel()
+  local right_panel = gen_right_panel()
+  sublayout:add(left_panel)
+  sublayout:add(right_panel)
+  layout:add(title)
+  layout:add(sublayout)
+  monitor.wibox:set_widget(layout)
+  monitor.wibox.visible = true
+  monitor.wibox.visible = false
+  return monitor
+end
+local function toggle_visibility(wibox)
+  wibox.visible = not wibox.visible 
+end
+toto = gen_sys_monitor()
+
+local function taglist_wibox()
   local current_screen = mouse.screen
   local screen_geometry = screen[current_screen].workarea
   local mytaglist = {}
@@ -134,15 +256,16 @@ local function tagslist_wibox()
                     awful.button({ }, 5, function(t) awful.tag.viewprev(awful.tag.getscreen(t)) end)
                     )
   for s = 1, screen.count() do
-    mytaglist[s]=blingbling.tagslist(s,  awful.widget.taglist.filter.all, mytaglist.buttons )
+    mytaglist[s]=blingbling.tagslist(s,  awful.widget.taglist.filter.all, mytaglist.buttons --[[, { normal = {}, focus ={}, urgent={}, occupied={} }--]])
     local margin = wibox.layout.margin(mytaglist[s], 4, 4, 4, 4)
     local w,h = margin:fit(screen_geometry.width,screen_geometry.height)
+    --box[s] = blingbling.transient({height=h , width=w, ontop=true, timeout=10})
     box[s] = blingbling.transient({height=h , width=w, ontop=true})
     box[s]:set_widget(margin)
   end
   return box
 end
-tagslist = tagslist_wibox()
+local box = taglist_wibox()
 
 -- Create a wibox for each screen and add it
 local tag_indicator= blingbling.text_box({ text = awful.tag.selected(mouse.screen).name, 
@@ -161,10 +284,14 @@ mytasklist.buttons = awful.util.table.join(
                                               if c == client.focus then
                                                   c.minimized = true
                                               else
+                                                  -- Without this, the following
+                                                  -- :isvisible() makes no sense
                                                   c.minimized = false
                                                   if not c:isvisible() then
                                                       awful.tag.viewonly(c:tags()[1])
                                                   end
+                                                  -- This will also un-minimize
+                                                  -- the client, if needed
                                                   client.focus = c
                                                   c:raise()
                                               end
@@ -190,7 +317,8 @@ mytasklist.buttons = awful.util.table.join(
 for s = 1, screen.count() do
     screen[s]:connect_signal("tag::history::update", function()
       tag_indicator:set_text( awful.tag.selected(s).name )
-      tagslist[s]:show()
+    --awful.key({ modkey, "Control" },"y",function() taglist_wibox_show_hide(box[mouse.screen]) end),
+      box[s]:show()
     end)
     -- Create a promptbox for each screen
     mypromptbox[s] = awful.widget.prompt()
@@ -213,11 +341,23 @@ for s = 1, screen.count() do
     -- Widgets that are aligned to the left
     local left_layout = wibox.layout.fixed.horizontal()
       left_layout:add(tag_indicator)
+    --left_layout:add(mylauncher)
+--    left_layout:add(mytaglist[s])
     left_layout:add(mytasklist[s])
     left_layout:add(mypromptbox[s])
+--    left_layout:add(x)
+    --left_layout:add(y)
+--    local middle_layout = wibox.layout.fex.horizontal()
+    -- Widgets that are aligned to the right
     local right_layout = wibox.layout.fixed.horizontal()
     if s == 1 then right_layout:add(wibox.widget.systray()) end
     right_layout:add(mylayoutbox[s])
+    --right_layout:add(mytasklist[s])
+    -- Now bring it all together (with the tasklist in the middle)
+--    local layout = wibox.layout.align.horizontal()
+--    layout:set_left(left_layout)
+--    layout:set_middle(middle_layout)
+--    layout:set_right(right_layout)
     local layout = wibox.layout.align.horizontal()
     layout:set_left(left_layout)
     layout:set_middle(calendar)
@@ -281,23 +421,13 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey, "Control" }, "l",     function () awful.tag.incncol(-1)         end),
     awful.key({ modkey,           }, "space", function () awful.layout.inc(layouts,  1) end),
     awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(layouts, -1) end),
-    awful.key({ modkey,           }, "d",     function ()
-    local current_screen = mouse.screen
-    local geometry = screen[current_screen].workarea
-    local w = tagslist[mouse.screen].width
-    local h = tagslist[mouse.screen].height
-    local x,y = 0
-    x = ((geometry.width /2) + geometry.x) - w/2
-    y = ((geometry.height /2) + geometry.y) - h/2
-    tagslist[mouse.screen]:geometry({x=x, y=y}) 
-
-    tagslist[mouse.screen].visible = not tagslist[mouse.screen].visible  end),
 
     awful.key({ modkey, "Control" }, "n", awful.client.restore),
 
     -- Prompt
     awful.key({ modkey },            "r",     function () mypromptbox[mouse.screen]:run() end),
 
+    awful.key({ modkey, "Control" },"s",function() toggle_visibility(toto.wibox) end),
     awful.key({ modkey }, "x",
               function ()
                   awful.prompt.run({ prompt = "Run Lua code: " },
