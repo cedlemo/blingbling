@@ -131,7 +131,7 @@ local tag_indicator= blingbling.text_box({ text = awful.tag.selected(mouse.scree
                                       font="Cantarell", font_size=11 })
 mywibox = {}
 mypromptbox = {}
-mylayoutbox = {}
+--mylayoutbox = {}
 mytasklist = {}
 mytasklist.buttons = awful.util.table.join(
                      awful.button({ }, 1, function (c)
@@ -173,12 +173,12 @@ for s = 1, screen.count() do
     mypromptbox[s] = awful.widget.prompt()
     -- Create an imagebox widget which will contains an icon indicating which layout we're using.
     -- We need one layoutbox per screen.
-    mylayoutbox[s] = awful.widget.layoutbox(s)
-    mylayoutbox[s]:buttons(awful.util.table.join(
-                           awful.button({ }, 1, function () awful.layout.inc(layouts, 1) end),
-                           awful.button({ }, 3, function () awful.layout.inc(layouts, -1) end),
-                           awful.button({ }, 4, function () awful.layout.inc(layouts, 1) end),
-                           awful.button({ }, 5, function () awful.layout.inc(layouts, -1) end)))
+--    mylayoutbox[s] = awful.widget.layoutbox(s)
+--    mylayoutbox[s]:buttons(awful.util.table.join(
+--                           awful.button({ }, 1, function () awful.layout.inc(layouts, 1) end),
+--                           awful.button({ }, 3, function () awful.layout.inc(layouts, -1) end),
+--                           awful.button({ }, 4, function () awful.layout.inc(layouts, 1) end),
+--                           awful.button({ }, 5, function () awful.layout.inc(layouts, -1) end)))
     -- Create a taglist widget
 
     -- Create a tasklist widget
@@ -194,7 +194,7 @@ for s = 1, screen.count() do
     left_layout:add(mypromptbox[s])
     local right_layout = wibox.layout.fixed.horizontal()
     if s == 1 then right_layout:add(wibox.widget.systray()) end
-    right_layout:add(mylayoutbox[s])
+--    right_layout:add(mylayoutbox[s])
     local layout = wibox.layout.align.horizontal()
     layout:set_left(left_layout)
     layout:set_middle(calendar)
@@ -204,6 +204,33 @@ for s = 1, screen.count() do
 
 end
 -- }}}
+local function layout_wibox()
+  local current_screen = mouse.screen
+  local screen_geometry = screen[current_screen].workarea
+  local layoutbox = {}
+  local box ={}
+  for s = 1, screen.count() do
+    layoutbox[s] = awful.widget.layoutbox(s)
+    layoutbox[s]:buttons(awful.util.table.join(
+                           awful.button({ }, 1, function () awful.layout.inc(layouts, 1) end),
+                           awful.button({ }, 3, function () awful.layout.inc(layouts, -1) end),
+                           awful.button({ }, 4, function () awful.layout.inc(layouts, 1) end),
+                           awful.button({ }, 5, function () awful.layout.inc(layouts, -1) end)))
+    local margin = wibox.layout.margin(layoutbox[s], 4, 4, 4, 4)
+    local w,h = margin:fit(screen_geometry.width,screen_geometry.height)
+    box[s] = blingbling.transient({height=50 , width=50, ontop=true })
+    box[s]:center_left()
+    local tags = awful.tag.gettags(s)
+    for _,t in ipairs(tags) do
+      t:connect_signal("property::layout", function()
+         box[s]:show()
+      end)
+    end
+    box[s]:set_widget(margin)
+  end
+  return box
+end
+
 local function tagslist_wibox()
   local current_screen = mouse.screen
   local screen_geometry = screen[current_screen].workarea
@@ -236,7 +263,7 @@ local function tagslist_wibox()
   return box
 end
 tagslist = tagslist_wibox()
-
+layoutlist = layout_wibox()
 -- {{{ Mouse bindings
 root.buttons(awful.util.table.join(
     awful.button({ }, 3, function () mymainmenu:toggle() end),
@@ -300,7 +327,10 @@ globalkeys = awful.util.table.join(
 --    y = ((geometry.height /2) + geometry.y) - h/2
 --    tagslist[mouse.screen]:geometry({x=x, y=y}) 
 --    tagslist[mouse.screen]:top_left()
-    tagslist[mouse.screen].visible = not tagslist[mouse.screen].visible  end),
+    tagslist[mouse.screen].visible = not tagslist[mouse.screen].visible  
+    layoutlist[mouse.screen].visible = not layoutlist[mouse.screen].visible  
+
+    end),
 
     awful.key({ modkey, "Control" }, "n", awful.client.restore),
 
