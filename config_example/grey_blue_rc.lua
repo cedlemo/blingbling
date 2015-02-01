@@ -120,29 +120,6 @@ mytextclock:set_align("center")
 local calendar = blingbling.calendar(mytextclock)
 --calendar:set_link_to_external_calendar(true)
 
-local function tagslist_wibox()
-  local current_screen = mouse.screen
-  local screen_geometry = screen[current_screen].workarea
-  local mytaglist = {}
-  local box={}
-  mytaglist.buttons = awful.util.table.join(
-                    awful.button({ }, 1, awful.tag.viewonly),
-                    awful.button({ modkey }, 1, awful.client.movetotag),
-                    awful.button({ }, 3, awful.tag.viewtoggle),
-                    awful.button({ modkey }, 3, awful.client.toggletag),
-                    awful.button({ }, 4, function(t) awful.tag.viewnext(awful.tag.getscreen(t)) end),
-                    awful.button({ }, 5, function(t) awful.tag.viewprev(awful.tag.getscreen(t)) end)
-                    )
-  for s = 1, screen.count() do
-    mytaglist[s]=blingbling.tagslist(s,  awful.widget.taglist.filter.all, mytaglist.buttons )
-    local margin = wibox.layout.margin(mytaglist[s], 4, 4, 4, 4)
-    local w,h = margin:fit(screen_geometry.width,screen_geometry.height)
-    box[s] = blingbling.transient({height=h , width=w, ontop=true})
-    box[s]:set_widget(margin)
-  end
-  return box
-end
-tagslist = tagslist_wibox()
 
 -- Create a wibox for each screen and add it
 local tag_indicator= blingbling.text_box({ text = awful.tag.selected(mouse.screen).name, 
@@ -227,6 +204,38 @@ for s = 1, screen.count() do
 
 end
 -- }}}
+local function tagslist_wibox()
+  local current_screen = mouse.screen
+  local screen_geometry = screen[current_screen].workarea
+  local mytaglist = {}
+  local box={}
+  mytaglist.buttons = awful.util.table.join(
+                    awful.button({ }, 1, awful.tag.viewonly),
+                    awful.button({ modkey }, 1, awful.client.movetotag),
+                    awful.button({ }, 3, awful.tag.viewtoggle),
+                    awful.button({ modkey }, 3, awful.client.toggletag),
+                    awful.button({ }, 4, function(t) awful.tag.viewnext(awful.tag.getscreen(t)) end),
+                    awful.button({ }, 5, function(t) awful.tag.viewprev(awful.tag.getscreen(t)) end)
+                    )
+  for s = 1, screen.count() do
+    mytaglist[s]=blingbling.tagslist(s,  awful.widget.taglist.filter.all, mytaglist.buttons )
+    local margin = wibox.layout.margin(mytaglist[s], 4, 4, 4, 4)
+    local w,h = margin:fit(screen_geometry.width,screen_geometry.height)
+    box[s] = blingbling.transient({height=h , width=w, ontop=true })
+    box[s]:center()
+--    box[s]:top_left()
+--    box[s]:top_center()
+--    box[s]:top_right()
+--    box[s]:bottom_left()
+--    box[s]:bottom_center()
+--    box[s]:bottom_right()
+--    box[s]:center_right()
+--    box[s]:center_left()
+    box[s]:set_widget(margin)
+  end
+  return box
+end
+tagslist = tagslist_wibox()
 
 -- {{{ Mouse bindings
 root.buttons(awful.util.table.join(
@@ -282,15 +291,15 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey,           }, "space", function () awful.layout.inc(layouts,  1) end),
     awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(layouts, -1) end),
     awful.key({ modkey,           }, "d",     function ()
-    local current_screen = mouse.screen
-    local geometry = screen[current_screen].workarea
-    local w = tagslist[mouse.screen].width
-    local h = tagslist[mouse.screen].height
-    local x,y = 0
-    x = ((geometry.width /2) + geometry.x) - w/2
-    y = ((geometry.height /2) + geometry.y) - h/2
-    tagslist[mouse.screen]:geometry({x=x, y=y}) 
-
+--    local current_screen = mouse.screen
+--    local geometry = screen[current_screen].workarea
+--    local w = tagslist[mouse.screen].width
+--    local h = tagslist[mouse.screen].height
+--    local x,y = 0
+--    x = ((geometry.width /2) + geometry.x) - w/2
+--    y = ((geometry.height /2) + geometry.y) - h/2
+--    tagslist[mouse.screen]:geometry({x=x, y=y}) 
+--    tagslist[mouse.screen]:top_left()
     tagslist[mouse.screen].visible = not tagslist[mouse.screen].visible  end),
 
     awful.key({ modkey, "Control" }, "n", awful.client.restore),

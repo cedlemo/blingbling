@@ -90,9 +90,58 @@ end
 --- Show the transient window according to the timeout set when creating the
 -- transient window
 function transient:show()
+--    self:top_left()
+    if not self.visible then
+        self.visible = true
+        local mytimer = timer({ timeout = self.timeout })
+        mytimer:connect_signal("timeout", function () 
+                                          if self.visible == true then
+                                          self.visible=false
+                                          mytimer:stop()
+                                          end 
+                                          end)
+        mytimer:start()
+    end
+end
+function transient:top_left()
     local current_screen = mouse.screen
     local geometry
-
+    if self.parent then
+       geometry = self.parent:geometry()
+    else
+       geometry = screen[current_screen].workarea
+    end
+    self:geometry({x=geometry.x, y=geometry.y}) 
+end
+function transient:top_center()
+    local current_screen = mouse.screen
+    local geometry
+    if self.parent then
+       geometry = self.parent:geometry()
+    else
+       geometry = screen[current_screen].workarea
+    end
+    local w = self.width
+    local h = self.height
+    local x = geometry.x + geometry.width/2 - w/2
+    self:geometry({x=x, y=geometry.y}) 
+end
+function transient:top_right()
+    local current_screen = mouse.screen
+    local geometry
+    if self.parent then
+       geometry = self.parent:geometry()
+    else
+       geometry = screen[current_screen].workarea
+    end
+    local w = self.width
+    local h = self.height
+    local x = geometry.x + geometry.width - w
+    self:geometry({x=x, y=geometry.y}) 
+end
+function transient:center()
+    local current_screen = mouse.screen
+    local geometry
     if self.parent then
        geometry = self.parent:geometry()
     else
@@ -105,17 +154,76 @@ function transient:show()
     x = ((geometry.width /2) + geometry.x) - w/2
     y = ((geometry.height /2) + geometry.y) - h/2
     self:geometry({x=x, y=y}) 
-    if not self.visible then
-        self.visible = true
-        local mytimer = timer({ timeout = self.timeout })
-        mytimer:connect_signal("timeout", function () 
-                                          if self.visible == true then
-                                          self.visible=false
-                                          mytimer:stop()
-                                          end 
-                                          end)
-        mytimer:start()
+end
+function transient:bottom_left()
+    local current_screen = mouse.screen
+    local geometry
+    if self.parent then
+       geometry = self.parent:geometry()
+    else
+       geometry = screen[current_screen].workarea
     end
+    local w = self.width
+    local h = self.height
+    local x = geometry.x
+    local y = geometry.y + geometry.height - h
+    self:geometry({x=x, y=y}) 
+end
+function transient:bottom_center()
+    local current_screen = mouse.screen
+    local geometry
+    if self.parent then
+       geometry = self.parent:geometry()
+    else
+       geometry = screen[current_screen].workarea
+    end
+    local w = self.width
+    local h = self.height
+    local x = geometry.x + geometry.width/2 - w/2
+    local y = geometry.y + geometry.height - h
+    self:geometry({x=x, y=y}) 
+end
+function transient:bottom_right()
+    local current_screen = mouse.screen
+    local geometry
+    if self.parent then
+       geometry = self.parent:geometry()
+    else
+       geometry = screen[current_screen].workarea
+    end
+    local w = self.width
+    local h = self.height
+    local x = geometry.x + geometry.width - w
+    local y = geometry.y + geometry.height - h
+    self:geometry({x=x, y=y}) 
+end
+function transient:center_right()
+    local current_screen = mouse.screen
+    local geometry
+    if self.parent then
+       geometry = self.parent:geometry()
+    else
+       geometry = screen[current_screen].workarea
+    end
+    local w = self.width
+    local h = self.height
+    local x = geometry.x + geometry.width - w
+    local y = geometry.y + geometry.height/2 - h/2
+    self:geometry({x=x, y=y}) 
+end
+function transient:center_left()
+    local current_screen = mouse.screen
+    local geometry
+    if self.parent then
+       geometry = self.parent:geometry()
+    else
+       geometry = screen[current_screen].workarea
+    end
+    local w = self.width
+    local h = self.height
+    local x = geometry.x
+    local y = geometry.y + geometry.height/2 - h/2
+    self:geometry({x=x, y=y}) 
 end
 local function new(args)
     local ret = object()
@@ -136,7 +244,6 @@ local function new(args)
             ret[k] = v
         end
     end
-
     setup_signals(ret)
     ret.draw = ret._drawable.draw
     ret.widget_at = function(_, widget, x, y, width, height)
@@ -156,6 +263,23 @@ local function new(args)
         __newindex = w
     })
     ret.visible=false
+--    if args.position then
+--        if position == "center" then
+--            self:center()
+--        elseif position == "top-left" then
+--            self:top_left()
+--        elseif position == "top-center" then
+--            self:top_center()
+--        elseif position == "top-right" then
+--            self:top_right()
+--        elseif position == "bottom-left" then
+--            self:bottom_left()
+--        elseif position == "bottom-center" then
+--            self:bottom_center()
+--        elseif position == "bottom-right" then
+--            self:bottom_right()
+--        end
+--    end
     return ret
 end
 
