@@ -130,7 +130,7 @@ local tag_indicator= blingbling.text_box({ text = awful.tag.selected(mouse.scree
                                       h_margin=4,-- v_margin=2,
                                       font="Cantarell", font_size=11 })
 mywibox = {}
-mypromptbox = {}
+--mypromptbox = {}
 --mylayoutbox = {}
 mytasklist = {}
 mytasklist.buttons = awful.util.table.join(
@@ -170,7 +170,7 @@ for s = 1, screen.count() do
       tagslist[s]:show()
     end)
     -- Create a promptbox for each screen
-    mypromptbox[s] = awful.widget.prompt()
+    --mypromptbox[s] = awful.widget.prompt()
     -- Create an imagebox widget which will contains an icon indicating which layout we're using.
     -- We need one layoutbox per screen.
 --    mylayoutbox[s] = awful.widget.layoutbox(s)
@@ -191,7 +191,7 @@ for s = 1, screen.count() do
     local left_layout = wibox.layout.fixed.horizontal()
       left_layout:add(tag_indicator)
     left_layout:add(mytasklist[s])
-    left_layout:add(mypromptbox[s])
+--    left_layout:add(mypromptbox[s])
     local right_layout = wibox.layout.fixed.horizontal()
     if s == 1 then right_layout:add(wibox.widget.systray()) end
 --    right_layout:add(mylayoutbox[s])
@@ -205,8 +205,8 @@ for s = 1, screen.count() do
 end
 -- }}}
 local function layout_wibox()
-  local current_screen = mouse.screen
-  local screen_geometry = screen[current_screen].workarea
+  --local current_screen = mouse.screen
+  --local screen_geometry = screen[current_screen].workarea
   local layoutbox = {}
   local box ={}
   for s = 1, screen.count() do
@@ -217,9 +217,9 @@ local function layout_wibox()
                            awful.button({ }, 4, function () awful.layout.inc(layouts, 1) end),
                            awful.button({ }, 5, function () awful.layout.inc(layouts, -1) end)))
     local margin = wibox.layout.margin(layoutbox[s], 4, 4, 4, 4)
-    local w,h = margin:fit(screen_geometry.width,screen_geometry.height)
+    --local w,h = margin:fit(screen_geometry.width,screen_geometry.height)
     box[s] = blingbling.transient({height=50 , width=50, ontop=true })
-    box[s]:center_left()
+    box[s]:center_right()
     local tags = awful.tag.gettags(s)
     for _,t in ipairs(tags) do
       t:connect_signal("property::layout", function()
@@ -230,7 +230,20 @@ local function layout_wibox()
   end
   return box
 end
-
+local function prompt_wibox() 
+  local prompt={}
+  local prompt_wibox={}
+  local current_screen = mouse.screen
+  local screen_geometry = screen[current_screen].workarea
+  for s = 1, screen.count() do
+    prompt[s] = awful.widget.prompt()
+    local margin = wibox.layout.margin(prompt[s], 4, 4, 4, 4)
+    prompt_wibox[s]=blingbling.transient({height=50 , width=200, ontop=true })   
+    prompt_wibox[s]:set_widget(margin)
+  end
+  prompt_wibox.prompt=prompt
+  return prompt_wibox
+end
 local function tagslist_wibox()
   local current_screen = mouse.screen
   local screen_geometry = screen[current_screen].workarea
@@ -264,6 +277,7 @@ local function tagslist_wibox()
 end
 tagslist = tagslist_wibox()
 layoutlist = layout_wibox()
+promptlist = prompt_wibox() 
 -- {{{ Mouse bindings
 root.buttons(awful.util.table.join(
     awful.button({ }, 3, function () mymainmenu:toggle() end),
@@ -335,15 +349,21 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey, "Control" }, "n", awful.client.restore),
 
     -- Prompt
-    awful.key({ modkey },            "r",     function () mypromptbox[mouse.screen]:run() end),
-
-    awful.key({ modkey }, "x",
-              function ()
-                  awful.prompt.run({ prompt = "Run Lua code: " },
-                  mypromptbox[mouse.screen].widget,
-                  awful.util.eval, nil,
-                  awful.util.getdir("cache") .. "/history_eval")
-              end),
+    awful.key({ modkey },            "r",     function () 
+    if promptlist[mouse.screen].visible == false then
+      promptlist[mouse.screen].visible=true
+      promptlist.prompt[mouse.screen]:run()
+    else
+      promptlist[mouse.screen].visible=false
+    end
+    end),
+--    awful.key({ modkey }, "x",
+--              function ()
+--                  awful.prompt.run({ prompt = "Run Lua code: " },
+--                  mypromptbox[mouse.screen].widget,
+--                  awful.util.eval, nil,
+--                  awful.util.getdir("cache") .. "/history_eval")
+--              end),
     -- Menubar
     awful.key({ modkey }, "p", function() menubar.show() end)
 )
