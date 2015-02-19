@@ -240,6 +240,7 @@ local function prompt_wibox()
     local margin = wibox.layout.margin(prompt[s], 4, 4, 4, 4)
     prompt_wibox[s]=blingbling.transient({height=50 , width=200, ontop=true })   
     prompt_wibox[s]:set_widget(margin)
+    prompt_wibox[s]:center_left()
   end
   prompt_wibox.prompt=prompt
   return prompt_wibox
@@ -332,18 +333,31 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey,           }, "space", function () awful.layout.inc(layouts,  1) end),
     awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(layouts, -1) end),
     awful.key({ modkey,           }, "d",     function ()
---    local current_screen = mouse.screen
---    local geometry = screen[current_screen].workarea
---    local w = tagslist[mouse.screen].width
---    local h = tagslist[mouse.screen].height
---    local x,y = 0
---    x = ((geometry.width /2) + geometry.x) - w/2
---    y = ((geometry.height /2) + geometry.y) - h/2
---    tagslist[mouse.screen]:geometry({x=x, y=y}) 
---    tagslist[mouse.screen]:top_left()
+
     tagslist[mouse.screen].visible = not tagslist[mouse.screen].visible  
     layoutlist[mouse.screen].visible = not layoutlist[mouse.screen].visible  
-
+--    if promptlist[mouse.screen].visible == false then
+--      promptlist[mouse.screen].visible=true
+--      awful.prompt.run({prompt = promptlist.prompt[mouse.screen].prompt },
+--                      promptlist.prompt[mouse.screen].widget,
+--                      function (...)
+--                          local result = awful.util.spawn(...)
+--                          if type(result) == "string" then
+--                            blingbling.helpers.dbg({result})  
+--                          end
+--                      end,
+--                      awful.completion.shell,
+--                      awful.util.getdir("cache") .. "/history",
+--                      50,
+--                      function()
+--                        promptlist.prompt[mouse.screen]:run()
+--                      end
+--      )
+--    else
+--      promptlist[mouse.screen].visible=false
+--      --promptlist[mouse.screen]
+--    end
+--
     end),
 
     awful.key({ modkey, "Control" }, "n", awful.client.restore),
@@ -352,18 +366,25 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey },            "r",     function () 
     if promptlist[mouse.screen].visible == false then
       promptlist[mouse.screen].visible=true
-      promptlist.prompt[mouse.screen]:run()
+      awful.prompt.run({prompt = promptlist.prompt[mouse.screen].prompt },
+                      promptlist.prompt[mouse.screen].widget,
+                      function (...)
+                          local result = awful.util.spawn(...)
+                          if type(result) == "string" then
+                            blingbling.helpers.dbg({result})  
+                          end
+                      end,
+                      awful.completion.shell,
+                      awful.util.getdir("cache") .. "/history",
+                      50,
+                      function()
+                        promptlist[mouse.screen].visible = false
+                      end
+      )
     else
       promptlist[mouse.screen].visible=false
     end
     end),
---    awful.key({ modkey }, "x",
---              function ()
---                  awful.prompt.run({ prompt = "Run Lua code: " },
---                  mypromptbox[mouse.screen].widget,
---                  awful.util.eval, nil,
---                  awful.util.getdir("cache") .. "/history_eval")
---              end),
     -- Menubar
     awful.key({ modkey }, "p", function() menubar.show() end)
 )
