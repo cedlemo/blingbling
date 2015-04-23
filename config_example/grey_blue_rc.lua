@@ -189,12 +189,10 @@ for s = 1, screen.count() do
 
     -- Widgets that are aligned to the left
     local left_layout = wibox.layout.fixed.horizontal()
-      left_layout:add(tag_indicator)
+    left_layout:add(tag_indicator)
     left_layout:add(mytasklist[s])
---    left_layout:add(mypromptbox[s])
     local right_layout = wibox.layout.fixed.horizontal()
     if s == 1 then right_layout:add(wibox.widget.systray()) end
---    right_layout:add(mylayoutbox[s])
     local layout = wibox.layout.align.horizontal()
     layout:set_left(left_layout)
     layout:set_middle(calendar)
@@ -264,14 +262,6 @@ local function tagslist_wibox()
     local w,h = margin:fit(screen_geometry.width,screen_geometry.height)
     box[s] = blingbling.transient({height=h , width=w, ontop=true })
     box[s]:center()
---    box[s]:top_left()
---    box[s]:top_center()
---    box[s]:top_right()
---    box[s]:bottom_left()
---    box[s]:bottom_center()
---    box[s]:bottom_right()
---    box[s]:center_right()
---    box[s]:center_left()
     box[s]:set_widget(margin)
   end
   return box
@@ -336,28 +326,6 @@ globalkeys = awful.util.table.join(
 
     tagslist[mouse.screen].visible = not tagslist[mouse.screen].visible  
     layoutlist[mouse.screen].visible = not layoutlist[mouse.screen].visible  
---    if promptlist[mouse.screen].visible == false then
---      promptlist[mouse.screen].visible=true
---      awful.prompt.run({prompt = promptlist.prompt[mouse.screen].prompt },
---                      promptlist.prompt[mouse.screen].widget,
---                      function (...)
---                          local result = awful.util.spawn(...)
---                          if type(result) == "string" then
---                            blingbling.helpers.dbg({result})  
---                          end
---                      end,
---                      awful.completion.shell,
---                      awful.util.getdir("cache") .. "/history",
---                      50,
---                      function()
---                        promptlist.prompt[mouse.screen]:run()
---                      end
---      )
---    else
---      promptlist[mouse.screen].visible=false
---      --promptlist[mouse.screen]
---    end
---
     end),
 
     awful.key({ modkey, "Control" }, "n", awful.client.restore),

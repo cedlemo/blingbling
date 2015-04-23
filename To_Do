@@ -1,8 +1,8 @@
 --hight priority
-(almost done) add method in calendar in order to customize the defaut text in info cell
-update the file in the git source and repo from testing
 (almost done) add method to japanese clock in order to get kana names of day of weeks/month and months names
 change h_margin v_margin names to h_padding v_padding
+finish transient
+try to clean calendar
 
 --average priority
 create a border value for tagslist (user set it with a color and a border of 1 px is displayed)
