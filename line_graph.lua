@@ -262,7 +262,7 @@ function linegraph.draw(graph, wibox, cr, width, height)
         cr:select_font_face(font.family or "Sans", font.slang or "normal", font.weight or "normal")
       end
     
-      local value = data[graph].values[1] * 100
+      local value = string.format("%2.f", data[graph].values[1] * 100)
       if data[graph].label then
         text=string.gsub(data[graph].label,"$percent", value)
       else

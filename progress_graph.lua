@@ -187,7 +187,7 @@ function progressgraph.draw(p_graph, wibox, cr, width, height)
           cr:select_font_face(font.family or "Sans", font.slang or "normal", font.weight or "normal")
         end
         
-        local value = data[p_graph].value * 100
+        local value = string.format("%2.f", data[p_graph].value * 100)
         if data[p_graph].label then
             text=string.gsub(data[p_graph].label,"$percent", value)
         else
