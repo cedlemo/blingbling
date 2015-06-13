@@ -1,5 +1,7 @@
 ##Blingbling:
 
+[![Join the chat at https://gitter.im/cedlemo/blingbling](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/cedlemo/blingbling?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 Blingbling is a graphical widget library for Awesome Windows Manager. The goal of the Blingbling library is to provide more fancy, customizable and easy to setup graphical widgets, popups or signals for Awesome WM.
 
 Originally, I have written Blingbling for myself but I share it under the GNU GPL-v2 (http://www.gnu.org/licenses/old-licenses/gpl-2.0.html). Testers and feedbacks are welcome!
