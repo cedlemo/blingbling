@@ -6,11 +6,11 @@ Blingbling is a graphical widget library for Awesome Windows Manager. The goal o
 
 Originally, I have written Blingbling for myself but I share it under the GNU GPL-v2 (http://www.gnu.org/licenses/old-licenses/gpl-2.0.html). Testers and feedbacks are welcome!
 
-The current version is the v2.0 and works with Awesome WM 3.5. There are a lot of changes between the v1.0 and the v2.0. Open the doc/index.html file if you want to read an exhaustive documentation.
+The current version is the v2.1 and works with Awesome WM <= 3.5.6 and Lua <= 5.3. There are a lot of changes between the v1.0 and the v2.0. Open the doc/index.html file if you want to read an exhaustive documentation.
 
 <img src="https://raw.github.com/cedlemo/blingbling/master/config_example/japanese2_screen.png" width="576" height="324" alt="Screenshot">
 
-###Version: v2.0
+###Version: v2.1
 
 *  line_graph
 *  progress_graph
@@ -26,6 +26,7 @@ The current version is the v2.0 and works with Awesome WM 3.5. There are a lot o
 *  tagslist
 *  text_box
 *  calendar
+*  transient
 
 This part is an adaptation of some of the wlourf awesome stuff : http://wlourf.deviantart.com/art/widgets-for-awesome-wm-v1-3-269061228.
 *  wlourf circle
@@ -191,6 +192,8 @@ This widget is a clock widget with a calendar. You can show the calendar for the
     calendar = blingbling.calendar()
 		calendar:set_link_to_external_calendar(true)
 
+#####transient
+It is a wibox that can be displayed for a short amount of time. ( TODO : usage example)
 
 #####wlourf circle graph
 This is the circle graph of wlourf that you can feed with vicious.
@@ -203,6 +206,7 @@ This is the circle graph of wlourf that you can feed with vicious.
     --circle:add_value(0.5)
     --or use vicious
     vicious.register(circle, vicious.widgets.cpu,'$1',2)
+
 
 
 #####Global theming for blingbling.
