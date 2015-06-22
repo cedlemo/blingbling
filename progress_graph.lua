@@ -68,6 +68,13 @@ local progressgraph = { mt = {} }
 --@param graph the graph
 --@param boolean true or false (default is false)
 
+---Define displayed text value format string
+--@usage mygraph:set_value_format(string) --> "%2.f"
+--@name set_value_format
+--@class function
+--@param graph the graph
+--@param printf format string for display text
+
 ---Define the color of the text.
 --@usage mygraph:set_text_color(string) -->"#rrggbbaa"
 --@name set_text_color
@@ -113,13 +120,15 @@ local properties = {    "width", "height", "v_margin", "h_margin",
                         "background_color",
                         "graph_background_color","rounded_size",
                         "graph_color", "graph_line_color","show_text", "text_color", 
-                        "text_background_color" ,"label", "font_size","font","horizontal"}
+                        "text_background_color" ,"label", "font_size","font","horizontal",
+                        "value_format"}
 
 function progressgraph.draw(p_graph, wibox, cr, width, height)
     -- We want one pixel wide lines
     cr:set_line_width(1)
     -- Set the values we need
     local value = data[p_graph].value
+    local value_format = data[value_format] or superproperties.value_format
     
     local v_margin =  superproperties.v_margin 
     if data[p_graph].v_margin and data[p_graph].v_margin <= data[p_graph].height/4 then 
@@ -187,7 +196,7 @@ function progressgraph.draw(p_graph, wibox, cr, width, height)
           cr:select_font_face(font.family or "Sans", font.slang or "normal", font.weight or "normal")
         end
         
-        local value = string.format("%2.f", data[p_graph].value * 100)
+        local value = string.format(value_format, data[p_graph].value * 100)
         if data[p_graph].label then
             text=string.gsub(data[p_graph].label,"$percent", value)
         else

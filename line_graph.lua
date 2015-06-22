@@ -66,6 +66,13 @@ local data = setmetatable({}, { __mode = "k" })
 --@class function
 --@param boolean true or false (default is false)
 
+---Define displayed text value format string
+--@usage mygraph:set_value_format(string) --> "%2.f"
+--@name set_value_format
+--@class function
+--@param graph the graph
+--@param printf format string for display text
+
 ---Define the color of the text.
 --@usage mygraph:set_text_color(string) -->"#rrggbbaa"
 --@name set_text_color
@@ -106,7 +113,7 @@ local properties = {    "width", "height", "h_margin", "v_margin",
                         "graph_background_border", "graph_background_color",
                         "rounded_size", "graph_color", "graph_line_color",
                         "show_text", "text_color", "font_size", "font",
-                        "text_background_color", "label"
+                        "text_background_color", "label", "value_format"
                    }
 
 function linegraph.draw(graph, wibox, cr, width, height)
@@ -116,6 +123,7 @@ function linegraph.draw(graph, wibox, cr, width, height)
 
     -- Set the values we need
     local value = data[graph].value
+
     
     local graph_border_width = 0
     if data[graph].graph_background_border then
@@ -142,6 +150,7 @@ function linegraph.draw(graph, wibox, cr, width, height)
     local text_background_color = data[graph].text_background_color or superproperties.text_background_color
     local font_size =data[graph].font_size or superproperties.font_size
     local font = data[graph].font or superproperties.font
+    local value_format = data[graph].value_format or superproperties.value_format
     
     local line_width = 1
     cr:set_line_width(line_width)
@@ -262,7 +271,7 @@ function linegraph.draw(graph, wibox, cr, width, height)
         cr:select_font_face(font.family or "Sans", font.slang or "normal", font.weight or "normal")
       end
     
-      local value = string.format("%2.f", data[graph].values[1] * 100)
+      local value = string.format(value_format, data[graph].values[1] * 100)
       if data[graph].label then
         text=string.gsub(data[graph].label,"$percent", value)
       else
