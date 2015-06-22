@@ -32,6 +32,7 @@ return {
   text_color= blingbling_theme.text_color or "#ffffff" ;
   font_size= blingbling_theme.font_size or 9 ;
   font = blingbling_theme.font or "sans";
+  value_format = blingbling_theme.value_format or "%2.f";
   text_background_color = blingbling_theme.text_background_color or "#00000066" ;
   background_text_border = blingbling_theme.background_text_border or "#ffffff";
 --theme values for popups module:
