@@ -56,6 +56,13 @@ local superproperties = require('blingbling.superproperties')
 --@class function
 --@param boolean true or false (default is false)
 
+---Define displayed text value format string
+--@usage myvolume:set_value_format(string) --> "%2.f"
+--@name set_value_format
+--@class function
+--@param graph the graph
+--@param printf format string for display text
+
 ---Define the color of the text.
 --@usage myvolume:set_text_color(string) -->"#rrggbbaa"
 --@name set_text_color
@@ -88,7 +95,7 @@ local superproperties = require('blingbling.superproperties')
 local triangular_progressgraph = { mt = {} }
 
 local data = setmetatable({}, { __mode = "k" })
-local properties = {"width", "height", "v_margin", "h_margin", "background_color", "graph_background_color", "graph_color","graph_line_color","show_text", "text_color", "text_background_color" ,"label", "font_size","font", "bar"}
+local properties = {"width", "height", "v_margin", "h_margin", "background_color", "graph_background_color", "graph_color","graph_line_color","show_text", "text_color", "text_background_color" ,"label", "font_size","font", "bar", "value_format"}
 
 function triangular_progressgraph.draw(tp_graph, wibox, cr, width, height)
 
@@ -111,7 +118,7 @@ function triangular_progressgraph.draw(tp_graph, wibox, cr, width, height)
   local text_background_color = data[tp_graph].text_background_color or superproperties.text_background_color
   local font_size =data[tp_graph].font_size or superproperties.font_size
   local font = data[tp_graph].font or superproperties.font
-
+  local value_format = data[tp_graph].value_format or superproperties.value_format
 --Generate Background (background color and Tiles)
     r,g,b,a = helpers.hexadecimal_to_rgba_percent(background_color)
     cr:set_source_rgba(r,g,b,a)
@@ -240,7 +247,7 @@ function triangular_progressgraph.draw(tp_graph, wibox, cr, width, height)
       cr:select_font_face(font.family or "Sans", font.slang or "normal", font.weight or "normal")
     end
 
-    local value = data[tp_graph].value * 100
+    local value = string.format(value_format, data[tp_graph].value * 100)
     
     if data[tp_graph].label then
       text=string.gsub(data[tp_graph].label,"$percent", value)
