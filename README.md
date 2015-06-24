@@ -220,7 +220,7 @@ You can provide default theme for blingbling instead of configuring colors for e
 
 Values that can be modified are:
 
-Theme values for graph or value_text_box objects: 
+Theme values for graphs or value_text_box objects: 
 
 *  h_margin
 *  v_margin
@@ -232,6 +232,7 @@ Theme values for graph or value_text_box objects:
 *  graph_color
 *  graph_line_color
 *  text_color
+*  value_format
 *  font_size
 *  background_text_color
 

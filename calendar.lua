@@ -1,4 +1,4 @@
--- @author cedlemo  
+-- @author cedlemo
 local awful = require('awful')
 local capi = { screen = screen, mouse = mouse }
 local helpers = require('blingbling.helpers')
@@ -79,8 +79,8 @@ local data = setmetatable({}, { __mode = "k" })
 --@param boolean true or false
 
 ---Use a specific locale for the week days.
---@usage mycalendar:set_locale
---@name set_locale(locale)
+--@usage mycalendar:set_locale(locale)
+--@name set_locale
 --@class function
 --@param locale a string
 
@@ -123,22 +123,22 @@ function show_events(calendarbutton,day_label, month, year, function_index)
   else
     data[calendarbutton].get_events_function_index = data[calendarbutton].get_events_function_index + function_index
   end
- 
+
   local day_events=data[calendarbutton].get_events_from[data[calendarbutton].get_events_function_index](day,month,year)
   data[calendarbutton].info:set_text(day_events)
 end
 
 local function add_focus(calendarbutton)
-	data[calendarbutton].next_month.widget:connect_signal("mouse::enter", function() apply_style(data[calendarbutton].next_month.widget,data[calendarbutton].focus_widget_style) end)	
-	data[calendarbutton].next_month.widget:connect_signal("mouse::leave", function() apply_style(data[calendarbutton].next_month.widget,data[calendarbutton].prev_next_widget_style) end)	
-	data[calendarbutton].prev_month.widget:connect_signal("mouse::enter", function() apply_style(data[calendarbutton].prev_month.widget,data[calendarbutton].focus_widget_style) end)	
-	data[calendarbutton].prev_month.widget:connect_signal("mouse::leave", function() apply_style(data[calendarbutton].prev_month.widget,data[calendarbutton].prev_next_widget_style) end)	
-	data[calendarbutton].date.widget:connect_signal("mouse::enter", function() apply_style(data[calendarbutton].date.widget,data[calendarbutton].focus_widget_style) end)	
-	data[calendarbutton].date.widget:connect_signal("mouse::leave", function() apply_style(data[calendarbutton].date.widget,data[calendarbutton].current_date_widget_style) end)	
+	data[calendarbutton].next_month.widget:connect_signal("mouse::enter", function() apply_style(data[calendarbutton].next_month.widget,data[calendarbutton].focus_widget_style) end)
+	data[calendarbutton].next_month.widget:connect_signal("mouse::leave", function() apply_style(data[calendarbutton].next_month.widget,data[calendarbutton].prev_next_widget_style) end)
+	data[calendarbutton].prev_month.widget:connect_signal("mouse::enter", function() apply_style(data[calendarbutton].prev_month.widget,data[calendarbutton].focus_widget_style) end)
+	data[calendarbutton].prev_month.widget:connect_signal("mouse::leave", function() apply_style(data[calendarbutton].prev_month.widget,data[calendarbutton].prev_next_widget_style) end)
+	data[calendarbutton].date.widget:connect_signal("mouse::enter", function() apply_style(data[calendarbutton].date.widget,data[calendarbutton].focus_widget_style) end)
+	data[calendarbutton].date.widget:connect_signal("mouse::leave", function() apply_style(data[calendarbutton].date.widget,data[calendarbutton].current_date_widget_style) end)
 
 	if data[calendarbutton].link_to_external_calendar == true then
 		--remove all previous handlers :
-		for i=1,42 do 
+		for i=1,42 do
 			if data[calendarbutton].month_days_cells[i].focus_handler ~= nil then
 				data[calendarbutton].month_days_cells[i].widget:disconnect_signal("mouse::enter", data[calendarbutton].month_days_cells[i].focus_handler )
 				data[calendarbutton].month_days_cells[i].widget:buttons({})
@@ -148,11 +148,11 @@ local function add_focus(calendarbutton)
 		local	current_day_cell = tonumber(os.date("%d")) + data[calendarbutton].first_day_widget -1
 
 		for i=data[calendarbutton].first_day_widget,data[calendarbutton].last_day_widget -1 do
-			data[calendarbutton].month_days_cells[i].focus_handler =function() 
-				apply_style(data[calendarbutton].month_days_cells[i].widget, data[calendarbutton].focus_widget_style) 
+			data[calendarbutton].month_days_cells[i].focus_handler =function()
+				apply_style(data[calendarbutton].month_days_cells[i].widget, data[calendarbutton].focus_widget_style)
 				show_events(calendarbutton,i -data[calendarbutton].first_day_widget +1  , data[calendarbutton].month, data[calendarbutton].year)
 			end
-			data[calendarbutton].month_days_cells[i].widget:connect_signal("mouse::enter", 
+			data[calendarbutton].month_days_cells[i].widget:connect_signal("mouse::enter",
 				data[calendarbutton].month_days_cells[i].focus_handler
 			)
 			data[calendarbutton].month_days_cells[i].widget:buttons(util.table.join(
@@ -164,11 +164,11 @@ local function add_focus(calendarbutton)
 				end)
 			))
 			if current_day_cell ~= nil and i == current_day_cell then
-				data[calendarbutton].month_days_cells[i].widget:connect_signal("mouse::leave", 
-					function() 
-						if tonumber(os.date("%m")) == data[calendarbutton].month and data[calendarbutton].year == tonumber(os.date("%Y")) then 
-							apply_style(data[calendarbutton].month_days_cells[i].widget, data[calendarbutton].current_day_widget_style) 
-						else		
+				data[calendarbutton].month_days_cells[i].widget:connect_signal("mouse::leave",
+					function()
+						if tonumber(os.date("%m")) == data[calendarbutton].month and data[calendarbutton].year == tonumber(os.date("%Y")) then
+							apply_style(data[calendarbutton].month_days_cells[i].widget, data[calendarbutton].current_day_widget_style)
+						else
 							apply_style(data[calendarbutton].month_days_cells[i].widget, data[calendarbutton].days_of_month_widget_style)
 						end
             local text_info = nil
@@ -185,9 +185,9 @@ local function add_focus(calendarbutton)
 					end
 				)
 			else
-				data[calendarbutton].month_days_cells[i].widget:connect_signal("mouse::leave", 
-					function() 
-						apply_style(data[calendarbutton].month_days_cells[i].widget, data[calendarbutton].days_of_month_widget_style) 
+				data[calendarbutton].month_days_cells[i].widget:connect_signal("mouse::leave",
+					function()
+						apply_style(data[calendarbutton].month_days_cells[i].widget, data[calendarbutton].days_of_month_widget_style)
 						local text_info = nil
             if data[calendarbutton].default_info == nil then
 						  text_info = os.date("%A %B %d %Y")
@@ -210,12 +210,12 @@ end
 local function fill_calendar(calendarbutton)
 	local month_label = os.date("%B", os.time{year=data[calendarbutton].year, month=data[calendarbutton].month, day=01})
 	data[calendarbutton].date.widget:set_text(month_label .. " " .. data[calendarbutton].year)
-	
+
 	local weeks_numbers = helpers.get_ISO8601_weeks_number_of_month(data[calendarbutton].month,data[calendarbutton].year)
 	for i=1,6 do
 		data[calendarbutton].weeks_number[i].widget:set_text(weeks_numbers[i])
 	end
-	
+
 	local first_day_of_current_month = 0
   --find the first week day of the month it is the number used as start for displaying day in the table data[calendar].days_of_month
   local d=os.date('*t',os.time{year=data[calendarbutton].year,month=data[calendarbutton].month,day=01})
@@ -280,8 +280,8 @@ end
 
 local function see_prev_month(calendarbutton)
   if data[calendarbutton].month == 1 then
-    data[calendarbutton].month = 12 
-    data[calendarbutton].year = data[calendarbutton].year -1 
+    data[calendarbutton].month = 12
+    data[calendarbutton].year = data[calendarbutton].year -1
   else
     data[calendarbutton].month = data[calendarbutton].month - 1
   end
@@ -291,8 +291,8 @@ end
 
 local function see_next_month(calendarbutton)
   if data[calendarbutton].month == 12 then
-    data[calendarbutton].month = 1 
-    data[calendarbutton].year = data[calendarbutton].year +1 
+    data[calendarbutton].month = 1
+    data[calendarbutton].year = data[calendarbutton].year +1
   else
     data[calendarbutton].month = data[calendarbutton].month + 1
   end
@@ -314,8 +314,8 @@ local function generate_calendar_box(calendarbutton)
 	local all_lines_height = 0
 	local w,h =0
 	local title_line_length = 0
-	--margins left, right, top, bottom 
-	local ml = 2 
+	--margins left, right, top, bottom
+	local ml = 2
 	local mr = 2
 	local mt = 2
 	local mb = 2
@@ -323,9 +323,9 @@ local function generate_calendar_box(calendarbutton)
 	data[calendarbutton].date = {}
 	data[calendarbutton].next_month = {}
 	data[calendarbutton].prev_month = {}
-	
+
 	data[calendarbutton].prev_month.widget = text_box(data[calendarbutton].prev_next_widget_style)
-	data[calendarbutton].prev_month.widget:set_text(util.escape("<<")) 
+	data[calendarbutton].prev_month.widget:set_text(util.escape("<<"))
 	data[calendarbutton].prev_month.widget:buttons(util.table.join(
 	        awful.button({ }, 1, function()
 						see_prev_month(calendarbutton)
@@ -333,9 +333,9 @@ local function generate_calendar_box(calendarbutton)
 	))
 
 	data[calendarbutton].prev_month.margin = layout.margin(data[calendarbutton].prev_month.widget, ml,mr,mt,mb)
-	
+
 	data[calendarbutton].date.widget = text_box(data[calendarbutton].current_date_widget_style)
-	data[calendarbutton].date.widget:set_text(os.date('%a %b %d, %H:%M')) 
+	data[calendarbutton].date.widget:set_text(os.date('%a %b %d, %H:%M'))
 	data[calendarbutton].date.widget:buttons(util.table.join(
 	        awful.button({ }, 1, function()
 						see_current_month(calendarbutton)
@@ -343,21 +343,21 @@ local function generate_calendar_box(calendarbutton)
 	))
 
 	data[calendarbutton].date.margin = layout.margin(data[calendarbutton].date.widget, ml,mr,mt,mb)
-	
+
 	data[calendarbutton].next_month.widget = text_box(data[calendarbutton].prev_next_widget_style)
-	data[calendarbutton].next_month.widget:set_text(util.escape(">>")) 
+	data[calendarbutton].next_month.widget:set_text(util.escape(">>"))
 	data[calendarbutton].next_month.widget:buttons(util.table.join(
 	        awful.button({ }, 1, function()
 						see_next_month(calendarbutton)
 					end)
 	))
 	data[calendarbutton].next_month.margin = layout.margin(data[calendarbutton].next_month.widget, ml,mr,mt,mb)
-	
+
 	--add those 3 widgets and margins in the title line
 	data[calendarbutton].title:add(data[calendarbutton].prev_month.margin)
 	data[calendarbutton].title:add(data[calendarbutton].date.margin)
 	data[calendarbutton].title:add(data[calendarbutton].next_month.margin)
-	
+
 	--create the days of week line
 	line_width = 0
 	line_height = 0
@@ -378,7 +378,7 @@ local function generate_calendar_box(calendarbutton)
 		max_height = max_height > h and max_height or h
 		data[calendarbutton].week_days_line:add(data[calendarbutton].week_days_cells[i].margin)
 	end
-	
+
 	--Now that we have the longer width, we apply it to all the days of week widgets:
 	data[calendarbutton].corner.widget:set_width(max_width)
 	data[calendarbutton].corner.widget:set_height(max_height)
@@ -387,7 +387,7 @@ local function generate_calendar_box(calendarbutton)
 		data[calendarbutton].week_days_cells[i].widget:set_height(max_height)
 	end
 	-- And we can calculate and set the width for the next, prev and current date widget:
-	data[calendarbutton].date.widget:set_width(max_width *4) 
+	data[calendarbutton].date.widget:set_width(max_width *4)
 	data[calendarbutton].date.widget:set_height(max_height)
 	w,h = data[calendarbutton].date.margin:fit(0,0)
 	local remains = math.floor((math.ceil((max_width + ml + mr )* 8 ) - (w + (ml+mr)*2))/2)
@@ -406,7 +406,7 @@ local function generate_calendar_box(calendarbutton)
 		data[calendarbutton].month_days_cells[i].widget:set_height(max_height)
 		data[calendarbutton].month_days_cells[i].margin = layout.margin(data[calendarbutton].month_days_cells[i].widget, ml,mr,mt,mb)
 	end
-	--Week numbers 
+	--Week numbers
 	data[calendarbutton].weeks_number={}
 	for i=1,6 do
 		data[calendarbutton].weeks_number[i]={}
@@ -455,7 +455,7 @@ local function generate_calendar_box(calendarbutton)
 	data[calendarbutton].info:fit(math.ceil((max_width + ml + mr )* 8 ), (max_height + mt +mr) * 8 )
 	data[calendarbutton].calendarbox = wibox(	{ontop = true, width = math.ceil((max_width + ml + mr )* 8 ) *2,
 																													height = (max_height + mt +mr) * 8})
-	data[calendarbutton].calendarbox.visible =false	
+	data[calendarbutton].calendarbox.visible =false
 	data[calendarbutton].calendarbox:set_widget(data[calendarbutton].fullview)
 	see_current_month(calendarbutton)
 end
@@ -469,9 +469,9 @@ local function show_wibox(wibox)
 	local x,y =0
 	y = mouse_coords.y < screen_geometry.y and screen_geometry.y or mouse_coords.y
 	x = mouse_coords.x < screen_geometry.x and screen_geometry.x or mouse_coords.x
-  y = y + wibox.height > ( screen_h - 10)and  screen_h - (wibox.height + 10) or y + 10 
+  y = y + wibox.height > ( screen_h - 10)and  screen_h - (wibox.height + 10) or y + 10
   x = x + wibox.width > ( screen_w - 10) and screen_w - ( wibox.width + 10) or x + 10
-	wibox:geometry({	--width = wibox.width, 
+	wibox:geometry({	--width = wibox.width,
 										--height = wibox.height,
 										x = x ,
 										y = y })
@@ -498,7 +498,7 @@ show_wibox(data[calendarbutton].calendarbox)
 show_wibox(data[calendarbutton].calendarbox)
 			end
 		end)
-		)	
+		)
 	)
 end
 local properties = { "prev_next_widget_style", "current_date_widget_style", "days_of_week_widget_style", "days_of_month_widget_style", "weeks_number_widget_style", "corner_widget_style", "current_day_widget_style", "focus_widget_style", "info_cell_style", "link_to_external_calendar" }
@@ -543,9 +543,9 @@ end
 
 function calendar.new(args)
 	local args = args or {}
- 
-  local calendarbutton = args.widget or awful.widget.textclock(" %a %b %d, %H:%M") 
-  data[calendarbutton] = {} 
+
+  local calendarbutton = args.widget or awful.widget.textclock(" %a %b %d, %H:%M")
+  data[calendarbutton] = {}
 	--get days and month labels
 	if args.locale then
 		os.setlocale(locale)
@@ -584,7 +584,7 @@ function calendar.new(args)
 	--task_warrior
 	function(day,month,year)
 		local day_events=util.pread('task overdue due:' .. os.date("%m",os.time{year=year,month=month,day=day}) .."/"..day.."/" .. year)
-		local day_events = "Task warrior:\n" .. day_events 
+		local day_events = "Task warrior:\n" .. day_events
 	  return day_events
 	 end,
 	}
@@ -593,7 +593,7 @@ function calendar.new(args)
 	end
 	calendarbutton.clear_and_add_function_get_events_from = clear_and_add_function_get_events_from
 	calendarbutton.append_function_get_events_from =append_function_get_events_from
-	calendarbutton.set_locale = set_locale	
+	calendarbutton.set_locale = set_locale
 	calendarbutton.set_default_info = set_default_info
 	return calendarbutton
 end

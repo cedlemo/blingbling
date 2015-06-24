@@ -1,8 +1,6 @@
----------------------------------------------------------------------------
--- @author Uli Schlachter
+-- @author cedlemo
+-- Modifications based on original work from Uli Schlachter
 -- @copyright 2010 Uli Schlachter
--- @release v3.5.5
----------------------------------------------------------------------------
 
 local capi = {
     drawin = drawin,
@@ -22,6 +20,9 @@ local sort = require("gears.sort")
 local beautiful = require("beautiful")
 local surface = require("gears.surface")
 local cairo = require("lgi").cairo
+
+---Wibox with timeout
+--@module blingbling.transient
 
 --- This provides widget box windows. Every transient can also be used as if it were
 -- a drawin. All drawin functions and properties are also available on transientes!
