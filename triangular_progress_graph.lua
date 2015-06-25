@@ -15,79 +15,79 @@ local superproperties = require('blingbling.superproperties')
 --@module blingbling.triangular_progress_graph
 
 ---Fill all the widget (width * height) with this color (default is transparent ). 
---@usage myvolume:set_background_color(string) -->"#rrggbbaa"
+--@usage mypgraph:set_background_color(string) -->"#rrggbbaa"
 --@name set_background_color
 --@class function
 --@param color a string "#rrggbbaa" or "#rrggbb"
 
 ---Define the form of the graph: use five growing bars instead of a triangle.
---@usage myvolume:set_bar(boolean) --> true or false
+--@usage mypgraph:set_bar(boolean) --> true or false
 --@name set_bar
 --@class function
 --@param boolean true or false (default is false)
 
 ---Define the top and bottom margin for the graph.
---@usage myvolume:set_v_margin(integer)
+--@usage mypgraph:set_v_margin(integer)
 --@name set_v_margin
 --@class function
 --@param margin an integer for top and bottom margin
 
 ---Define the left and right margin for the graph.
---@usage myvolume:set_h_margin(integer)
+--@usage mypgraph:set_h_margin(integer)
 --@name set_h_margin
 --@class function
 --@param margin an integer for left and right margin
 
 ---Set the color of the graph background.
---@usage myvolume:set_graph_background_color(string) -->"#rrggbbaa"
+--@usage mypgraph:set_graph_background_color(string) -->"#rrggbbaa"
 --@name set_graph_background_color
 --@class function
 --@param color a string "#rrggbbaa" or "#rrggbb"
 
 ----Define the graph color.
---@usage myvolume:set_graph_color(string) -->"#rrggbbaa"
+--@usage mypgraph:set_graph_color(string) -->"#rrggbbaa"
 --@name set_graph_color
 --@class function
 --@param color a string "#rrggbbaa" or "#rrggbb"
 
 ----Define the color of the outline of the graph.
---@usage myvolume:set_graph_line_color(string) -->"#rrggbbaa"
+--@usage mypgraph:set_graph_line_color(string) -->"#rrggbbaa"
 --@name set_graph_line_color
 --@class function
 --@param color a string "#rrggbbaa" or "#rrggbb"
 
 ---Display text on the graph or not.
---@usage myvolume:set_show_text(boolean) --> true or false
+--@usage mypgraph:set_show_text(boolean) --> true or false
 --@name set_show_text
 --@class function
 --@param boolean true or false (default is false)
 
 ---Define displayed text value format string
---@usage myvolume:set_value_format(string) --> "%2.f"
+--@usage mypgraph:set_value_format(string) --> "%2.f"
 --@name set_value_format
 --@class function
 --@param printf format string for display text
 
 ---Define the color of the text.
---@usage myvolume:set_text_color(string) -->"#rrggbbaa"
+--@usage mypgraph:set_text_color(string) -->"#rrggbbaa"
 --@name set_text_color
 --@class function
 --@param color a string "#rrggbbaa" or "#rrggbb" defaul is white
 
 ---Define the background color of the text.
---@usage myvolume:set_text_background_color(string) -->"#rrggbbaa"
+--@usage mypgraph:set_text_background_color(string) -->"#rrggbbaa"
 --@name set_text_background_color
 --@class function
 --@param color a string "#rrggbbaa" or "#rrggbb"
 
 ---Define the text font size.
---@usage myvolume:set_font_size(integer)
+--@usage mypgraph:set_font_size(integer)
 --@name set_font_size
 --@class function
 --@param size the font size
 
 ---Define the text font.
---@usage myvolume:set_font(string|table)
+--@usage mypgraph:set_font(string|table)
 --The argument can be a string for the font name or a table
 --that  contains the cairo font informations
 --@name set_font
@@ -95,7 +95,7 @@ local superproperties = require('blingbling.superproperties')
 --@param the font to use
 
 ---Define the template of the text to display.
---@usage myvolume:set_label(string)
+--@usage mypgraph:set_label(string)
 --By default the text is : (value_send_to_the_widget *100) .. "%"
 --static string: example set_label("Volume:") will display "Volume:" on the graph
 --dynamic string: use $percent in the string example set_label("Volume $percent %") will display "Volume 10%" 
