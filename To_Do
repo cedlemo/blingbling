@@ -1,4 +1,6 @@
 --hight priority
+--> create a function that draw a triangle (triangular_progress_graph)
+--> create a function that generate a local table of the properties given by user or by superproperties
 simplify value_text_box
 remove border for text background
 use pango layout instead of cairo text functionnalities
