@@ -39,14 +39,20 @@ local superproperties = require('blingbling.superproperties')
 --@param margin an integer for left and right margin
 
 ---Set the color of the graph background.
---@usage myvolume:set_filled_color(string) -->"#rrggbbaa"
---@name set_filled_color
+--@usage myvolume:set_graph_background_color(string) -->"#rrggbbaa"
+--@name set_graph_background_color
 --@class function
 --@param color a string "#rrggbbaa" or "#rrggbb"
 
 ----Define the graph color.
 --@usage myvolume:set_graph_color(string) -->"#rrggbbaa"
 --@name set_graph_color
+--@class function
+--@param color a string "#rrggbbaa" or "#rrggbb"
+
+----Define the color of the outline of the graph.
+--@usage myvolume:set_graph_line_color(string) -->"#rrggbbaa"
+--@name set_graph_line_color
 --@class function
 --@param color a string "#rrggbbaa" or "#rrggbb"
 
@@ -60,7 +66,6 @@ local superproperties = require('blingbling.superproperties')
 --@usage myvolume:set_value_format(string) --> "%2.f"
 --@name set_value_format
 --@class function
---@param graph the graph
 --@param printf format string for display text
 
 ---Define the color of the text.
@@ -76,11 +81,18 @@ local superproperties = require('blingbling.superproperties')
 --@param color a string "#rrggbbaa" or "#rrggbb"
 
 ---Define the text font size.
---myvolume:set_font_size(integer)
+--@usage myvolume:set_font_size(integer)
 --@name set_font_size
 --@class function
---@param graph the graph
 --@param size the font size
+
+---Define the text font.
+--@usage myvolume:set_font(string|table)
+--The argument can be a string for the font name or a table
+--that  contains the cairo font informations
+--@name set_font
+--@class function
+--@param the font to use
 
 ---Define the template of the text to display.
 --@usage myvolume:set_label(string)
@@ -89,13 +101,17 @@ local superproperties = require('blingbling.superproperties')
 --dynamic string: use $percent in the string example set_label("Volume $percent %") will display "Volume 10%" 
 --@name set_label
 --@class function
---@param graph the graph
 --@param text the text to display
 
 local triangular_progressgraph = { mt = {} }
 
 local data = setmetatable({}, { __mode = "k" })
-local properties = {"width", "height", "v_margin", "h_margin", "background_color", "graph_background_color", "graph_color","graph_line_color","show_text", "text_color", "text_background_color" ,"label", "font_size","font", "bar", "value_format"}
+local properties = {"width", "height", "v_margin", "h_margin",
+                    "background_color", "graph_background_color",
+                    "graph_color","graph_line_color","show_text",
+                    "text_color", "text_background_color",
+                    "label", "font_size","font", "bar", "value_format"
+                    }
 
 function triangular_progressgraph.draw(tp_graph, wibox, cr, width, height)
 
