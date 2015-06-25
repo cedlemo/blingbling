@@ -205,8 +205,8 @@ function triangular_progressgraph.draw(tp_graph, wibox, cr, width, height)
       cr:move_to(x,y)
       cr:line_to(x,y)
       y_range=data[tp_graph].height - (2 * v_margin)
-      cr:line_to(data[tp_graph].width + h_margin,data[tp_graph].height -( v_margin + y_range ))
-      cr:line_to(data[tp_graph].width  + h_margin, data[tp_graph].height - (v_margin ))
+      cr:line_to(data[tp_graph].width - h_margin,data[tp_graph].height -( v_margin + y_range ))
+      cr:line_to(data[tp_graph].width  - h_margin, data[tp_graph].height - (v_margin ))
       cr:line_to(h_margin,data[tp_graph].height-(v_margin))
   
       cr:close_path()
@@ -223,9 +223,9 @@ function triangular_progressgraph.draw(tp_graph, wibox, cr, width, height)
       cr:move_to(x,y)
       cr:line_to(x,y)
       y_range=data[tp_graph].height - (2 * v_margin)
-      cr:line_to(data[tp_graph].width * data[tp_graph].value + h_margin,data[tp_graph].height -( v_margin + (y_range * data[tp_graph].value)))
-      cr:line_to(data[tp_graph].width * data[tp_graph].value + h_margin, data[tp_graph].height - (v_margin ))
-      cr:line_to(0+h_margin,data[tp_graph].height-(v_margin))
+      cr:line_to(data[tp_graph].width * data[tp_graph].value - h_margin,data[tp_graph].height -( v_margin + (y_range * data[tp_graph].value)))
+      cr:line_to(data[tp_graph].width * data[tp_graph].value - h_margin, data[tp_graph].height - (v_margin ))
+      cr:line_to(h_margin,data[tp_graph].height-(v_margin))
   
       cr:close_path()
       r,g,b,a=helpers.hexadecimal_to_rgba_percent(graph_color)
@@ -233,15 +233,16 @@ function triangular_progressgraph.draw(tp_graph, wibox, cr, width, height)
 
       cr:fill()
 
-      x=0+h_margin 
+      x=h_margin 
       y=data[tp_graph].height-(v_margin) 
 
       cr:new_path()
       cr:move_to(x,y)
       cr:line_to(x,y)
       y_range=data[tp_graph].height - (2 * v_margin)
-      cr:line_to((data[tp_graph].width * data[tp_graph].value) + h_margin  ,data[tp_graph].height -( v_margin +  (y_range * data[tp_graph].value)))
+      cr:line_to((data[tp_graph].width * data[tp_graph].value) - h_margin  ,data[tp_graph].height -( v_margin +  (y_range * data[tp_graph].value)))
       cr:line_to((data[tp_graph].width * data[tp_graph].value) - h_margin, data[tp_graph].height - (v_margin ))
+      cr:line_to(h_margin,data[tp_graph].height-(v_margin))
       cr:set_antialias("subpixel") 
       cr:set_line_width(1)
 
