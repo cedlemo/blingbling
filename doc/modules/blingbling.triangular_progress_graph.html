@@ -88,7 +88,7 @@
 	<td class="summary">Define the left and right margin for the graph.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#set_filled_color">set_filled_color (color)</a></td>
+	<td class="name" nowrap><a href="#set_graph_background_color">set_graph_background_color (color)</a></td>
 	<td class="summary">Set the color of the graph background.</td>
 	</tr>
 	<tr>
@@ -96,11 +96,15 @@
 	<td class="summary">Define the graph color.</td>
 	</tr>
 	<tr>
+	<td class="name" nowrap><a href="#set_graph_line_color">set_graph_line_color (color)</a></td>
+	<td class="summary">Define the color of the outline of the graph.</td>
+	</tr>
+	<tr>
 	<td class="name" nowrap><a href="#set_show_text">set_show_text (boolean)</a></td>
 	<td class="summary">Display text on the graph or not.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#set_value_format">set_value_format (graph, printf)</a></td>
+	<td class="name" nowrap><a href="#set_value_format">set_value_format (printf)</a></td>
 	<td class="summary">Define displayed text value format string</td>
 	</tr>
 	<tr>
@@ -112,11 +116,15 @@
 	<td class="summary">Define the background color of the text.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#set_font_size">set_font_size (graph, size)</a></td>
+	<td class="name" nowrap><a href="#set_font_size">set_font_size (size)</a></td>
 	<td class="summary">Define the text font size.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#set_label">set_label (graph, text)</a></td>
+	<td class="name" nowrap><a href="#set_font">set_font (the)</a></td>
+	<td class="summary">Define the text font.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#set_label">set_label (text)</a></td>
 	<td class="summary">Define the template of the text to display.</td>
 	</tr>
 	<tr>
@@ -167,7 +175,7 @@
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example">myvolume:set_background_color(<span class="global">string</span>) --&gt;<span class="string">"#rrggbbaa"</span></pre>
+        <pre class="example">mypgraph:set_background_color(<span class="global">string</span>) --&gt;<span class="string">"#rrggbbaa"</span></pre>
     </ul>
 
 </dd>
@@ -191,7 +199,7 @@
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example">myvolume:set_bar(boolean) --&gt; <span class="keyword">true</span> <span class="keyword">or</span> <span class="keyword">false</span></pre>
+        <pre class="example">mypgraph:set_bar(boolean) --&gt; <span class="keyword">true</span> <span class="keyword">or</span> <span class="keyword">false</span></pre>
     </ul>
 
 </dd>
@@ -215,7 +223,7 @@
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example">myvolume:set_v_margin(integer)</pre>
+        <pre class="example">mypgraph:set_v_margin(integer)</pre>
     </ul>
 
 </dd>
@@ -239,13 +247,13 @@
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example">myvolume:set_h_margin(integer)</pre>
+        <pre class="example">mypgraph:set_h_margin(integer)</pre>
     </ul>
 
 </dd>
     <dt>
-    <a name = "set_filled_color"></a>
-    <strong>set_filled_color (color)</strong>
+    <a name = "set_graph_background_color"></a>
+    <strong>set_graph_background_color (color)</strong>
     </dt>
     <dd>
     Set the color of the graph background.
@@ -263,7 +271,7 @@
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example">myvolume:set_filled_color(<span class="global">string</span>) --&gt;<span class="string">"#rrggbbaa"</span></pre>
+        <pre class="example">mypgraph:set_graph_background_color(<span class="global">string</span>) --&gt;<span class="string">"#rrggbbaa"</span></pre>
     </ul>
 
 </dd>
@@ -287,7 +295,31 @@
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example">myvolume:set_graph_color(<span class="global">string</span>) --&gt;<span class="string">"#rrggbbaa"</span></pre>
+        <pre class="example">mypgraph:set_graph_color(<span class="global">string</span>) --&gt;<span class="string">"#rrggbbaa"</span></pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "set_graph_line_color"></a>
+    <strong>set_graph_line_color (color)</strong>
+    </dt>
+    <dd>
+    Define the color of the outline of the graph.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">color</span>
+         a string "#rrggbbaa" or "#rrggbb"
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">mypgraph:set_graph_line_color(<span class="global">string</span>) --&gt;<span class="string">"#rrggbbaa"</span></pre>
     </ul>
 
 </dd>
@@ -311,13 +343,13 @@
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example">myvolume:set_show_text(boolean) --&gt; <span class="keyword">true</span> <span class="keyword">or</span> <span class="keyword">false</span></pre>
+        <pre class="example">mypgraph:set_show_text(boolean) --&gt; <span class="keyword">true</span> <span class="keyword">or</span> <span class="keyword">false</span></pre>
     </ul>
 
 </dd>
     <dt>
     <a name = "set_value_format"></a>
-    <strong>set_value_format (graph, printf)</strong>
+    <strong>set_value_format (printf)</strong>
     </dt>
     <dd>
     Define displayed text value format string
@@ -325,9 +357,6 @@
 
     <h3>Parameters:</h3>
     <ul>
-        <li><span class="parameter">graph</span>
-         the graph
-        </li>
         <li><span class="parameter">printf</span>
          format string for display text
         </li>
@@ -338,7 +367,7 @@
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example">myvolume:set_value_format(<span class="global">string</span>) --&gt; <span class="string">"%2.f"</span></pre>
+        <pre class="example">mypgraph:set_value_format(<span class="global">string</span>) --&gt; <span class="string">"%2.f"</span></pre>
     </ul>
 
 </dd>
@@ -362,7 +391,7 @@
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example">myvolume:set_text_color(<span class="global">string</span>) --&gt;<span class="string">"#rrggbbaa"</span></pre>
+        <pre class="example">mypgraph:set_text_color(<span class="global">string</span>) --&gt;<span class="string">"#rrggbbaa"</span></pre>
     </ul>
 
 </dd>
@@ -386,24 +415,20 @@
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example">myvolume:set_text_background_color(<span class="global">string</span>) --&gt;<span class="string">"#rrggbbaa"</span></pre>
+        <pre class="example">mypgraph:set_text_background_color(<span class="global">string</span>) --&gt;<span class="string">"#rrggbbaa"</span></pre>
     </ul>
 
 </dd>
     <dt>
     <a name = "set_font_size"></a>
-    <strong>set_font_size (graph, size)</strong>
+    <strong>set_font_size (size)</strong>
     </dt>
     <dd>
     Define the text font size.
-myvolume:set_font_size(integer)
 
 
     <h3>Parameters:</h3>
     <ul>
-        <li><span class="parameter">graph</span>
-         the graph
-        </li>
         <li><span class="parameter">size</span>
          the font size
         </li>
@@ -412,11 +437,41 @@ myvolume:set_font_size(integer)
 
 
 
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">mypgraph:set_font_size(integer)</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "set_font"></a>
+    <strong>set_font (the)</strong>
+    </dt>
+    <dd>
+    Define the text font.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">the</span>
+         font to use
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"> mypgraph:set_font(<span class="global">string</span>|<span class="global">table</span>)
+The argument can be a <span class="global">string</span> <span class="keyword">for</span> the font name <span class="keyword">or</span> a <span class="global">table</span>
+that  contains the cairo font informations</pre>
+    </ul>
 
 </dd>
     <dt>
     <a name = "set_label"></a>
-    <strong>set_label (graph, text)</strong>
+    <strong>set_label (text)</strong>
     </dt>
     <dd>
     Define the template of the text to display.
@@ -424,9 +479,6 @@ myvolume:set_font_size(integer)
 
     <h3>Parameters:</h3>
     <ul>
-        <li><span class="parameter">graph</span>
-         the graph
-        </li>
         <li><span class="parameter">text</span>
          the text to display
         </li>
@@ -437,7 +489,7 @@ myvolume:set_font_size(integer)
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example"> myvolume:set_label(<span class="global">string</span>)
+        <pre class="example"> mypgraph:set_label(<span class="global">string</span>)
 By default the text is : (value_send_to_the_widget *<span class="number">100</span>) .. <span class="string">"%"</span>
 static <span class="global">string</span>: example set_label(<span class="string">"Volume:"</span>) will display <span class="string">"Volume:"</span> on the graph
 dynamic <span class="global">string</span>: use $percent <span class="keyword">in</span> the <span class="global">string</span> example set_label(<span class="string">"Volume $percent %"</span>) will display <span class="string">"Volume 10%"</span> </pre>
@@ -544,7 +596,7 @@ dynamic <span class="global">string</span>: use $percent <span class="keyword">i
 </div> <!-- id="main" -->
 <div id="about">
 <i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.3</a></i>
-<i style="float:right;">Last updated 2015-06-24 10:06:53 </i>
+<i style="float:right;">Last updated 2015-06-25 19:22:36 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>
