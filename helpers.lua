@@ -739,6 +739,7 @@ function helpers.generate_rounded_rectangle_with_text(cr, width, height, text, p
 end
 
 ---Draw a rectangular triangle filled with given color
+--@param cr cairo context
 --@param first  point coordinates {x= 1.0, y = 2.0}
 --@param second point coordinates {x= 1.0, y = 2.0}
 --@param third  point coordinates {x= 1.0, y = 2.0}
@@ -754,7 +755,8 @@ function helpers.draw_triangle(cr, first, second, third, color)
   cr:fill()
 end
 
----Draw a rectangular triangular outline of the given color
+--- Draw a rectangular triangular outline of the given color
+--@param cr cairo context
 --@param first  point coordinates {x= 1.0, y = 2.0}
 --@param second point coordinates {x= 1.0, y = 2.0}
 --@param third  point coordinates {x= 1.0, y = 2.0}
@@ -771,7 +773,83 @@ function helpers.draw_triangle_outline(cr, first, second, third, color)
   cr:set_line_width(1)
   cr:stroke()
 end
+--- Compute the width of each bar in a graph
+--It returns the width of the bar and a value
+--that corresponds to the remaing space divided
+--by 2
+--@param nb_bars the number of bars
+--@param width the width of the graph
+--@param sep the size between two bars
+function compute_bar_width(nb_bars, width, sep)
+  local bar_width = 0
+  local h_rest = 0
+  local total_sep = (nb_bars - 1) * sep
+  bar_width=math.floor ((width - total_sep) / nb_bars)
+  h_rest = width - (total_sep + nb_bars * bar_width)
+  --center the graph according to h_rest (2, 3 or 4)
+  if h_rest ==2 or h_rest == 3 then 
+    h_rest = 1
+  end
+  if h_rest == 4 then
+    h_rest = 2
+  end
+  return bar_width, h_rest
+end
+function helpers.draw_triangle_using_bars(cr, width, height, h_margin, v_margin, color)
+  local nb_bars=5
+  local bar_separator = 2
+  local bar_width, h_rest = compute_bar_width(nb_bars, width - 2*h_margin, bar_separator)
+  x=h_margin+h_rest
+  y=height - v_margin
+  for i=1, nb_bars do
+    cr:rectangle(x,y-((0.2*i)*(height - 2*v_margin)),bar_width,((0.2*i)*(height - 2*v_margin)))
+    x=x+(bar_width + bar_separator)
+  end
 
+  local r,g,b,a=helpers.hexadecimal_to_rgba_percent(color)
+  cr:set_source_rgba(r, g, b, a)
+  cr:fill()
+end
+--- Display a value using bars or parts of bar in a triangular form
+--@param cr cairo context
+--@param width width of the graph
+--@param height height of the graph
+--@param h_margin horizontal space left at left and right of the graph
+--@param v_margin vertical space left at top and bottom of the graph
+--@param color the color of the graph
+--@value the value to represent
+function helpers.draw_triangle_graph_using_bars(cr, width, height, h_margin, v_margin, color, value)
+  local nb_bars=5
+  local bar_separator = 2
+  local bar_width, h_rest = compute_bar_width(nb_bars, width - 2*h_margin, bar_separator)
+  if value > 0 then
+    local ranges={0,0.2,0.4,0.6,0.8,1,1.2}
+    nb_bars=0
+    for i,  limite in ipairs(ranges) do
+      if value < limite then
+        nb_bar = i-1
+        break
+      end
+    end
+    x=h_margin + h_rest
+    y=height - v_margin
+    for i=1, nb_bar do
+      if i ~= nb_bar then
+        cr:rectangle(x,y-((0.2*i)*(height - 2*v_margin)),bar_width,(0.2*i)*(height - 2*v_margin))
+        x=x+(bar_width + bar_separator)
+      else
+        val_to_display =value - ((nb_bar-1) * 0.2)
+
+        cr:rectangle(x,y-((0.2*i)*(height - 2*v_margin)),bar_width * (val_to_display/0.2),(0.2*i)*(height - 2*v_margin))
+      end
+    end
+    
+    r,g,b,a=helpers.hexadecimal_to_rgba_percent(color)
+    cr:set_source_rgba(r, g, b, a)
+
+    cr:fill()
+  end
+end
 ---Remove an element from  a table using key.
 --@param hash the table
 --@param key the key to remove
