@@ -136,38 +136,33 @@ function triangular_progressgraph.draw(tp_graph, wibox, cr, width, height)
     r,g,b,a = helpers.hexadecimal_to_rgba_percent(props.background_color)
     cr:set_source_rgba(r,g,b,a)
     cr:paint()
---Drawn the tp_graph
-  
 
-  if data[tp_graph].value > 0 then
-    if data[tp_graph].bar == true then
-      --4 bar are use to represent data:
-      --bar width:
-      local nb_bar=5
-      local bar_separator = 2
-      local bar_width 
-      bar_width=math.floor((data[tp_graph].width -((2*h_margin) + ((nb_bar - 1) * bar_separator)))/nb_bar)
-      local h_rest =data[tp_graph].width -( 2*h_margin +((nb_bar -1)*bar_separator) + nb_bar * bar_width)
-      if h_rest ==2 or h_rest == 3 then 
-        h_rest = 1
-      end
-      if h_rest == 4 then
-        h_rest = 2
-      end
-      --Drawn background graph
-      x=props.h_margin+h_rest
-      y=data[tp_graph].height - v_margin
-      for i=1, nb_bar do
-        cr:rectangle(x,y-((0.2*i)*(data[tp_graph].height - 2*v_margin)),bar_width,((0.2*i)*(data[tp_graph].height - 2*v_margin)))
-        x=x+(bar_width + bar_separator)
-      end
+  --Draw the background of the graph:
+  if data[tp_graph].bar == true then
+    local nb_bar=5
+    local bar_separator = 2
+    local bar_width 
+    bar_width=math.floor((data[tp_graph].width -((2*h_margin) + ((nb_bar - 1) * bar_separator)))/nb_bar)
+    local h_rest =data[tp_graph].width -( 2*h_margin +((nb_bar -1)*bar_separator) + nb_bar * bar_width)
+    if h_rest ==2 or h_rest == 3 then 
+      h_rest = 1
+    end
+    if h_rest == 4 then
+      h_rest = 2
+    end
+    --Drawn background graph
+    x=props.h_margin+h_rest
+    y=data[tp_graph].height - v_margin
+    for i=1, nb_bar do
+      cr:rectangle(x,y-((0.2*i)*(data[tp_graph].height - 2*v_margin)),bar_width,((0.2*i)*(data[tp_graph].height - 2*v_margin)))
+      x=x+(bar_width + bar_separator)
+    end
 
-      r,g,b,a=helpers.hexadecimal_to_rgba_percent(props.graph_background_color)
-      cr:set_source_rgba(r, g, b, a)
+    r,g,b,a=helpers.hexadecimal_to_rgba_percent(props.graph_background_color)
+    cr:set_source_rgba(r, g, b, a)
 
-      cr:fill()
-      --Drawn the graph
-      --find nb column to drawn:
+    cr:fill()
+    if data[tp_graph].value > 0 then
       local ranges={0,0.2,0.4,0.6,0.8,1,1.2}
       nb_bar=0
       for i,  limite in ipairs(ranges) do
@@ -194,19 +189,20 @@ function triangular_progressgraph.draw(tp_graph, wibox, cr, width, height)
       cr:set_source_rgba(r, g, b, a)
 
       cr:fill()
+    end
+  else
+    --Draw graph background
+    local first   = { x = props.h_marging,
+                      y = data[tp_graph].height - props.v_margin }
+    local y_range = data[tp_graph].height - (2 * props.v_margin)
+    local second  = { x = data[tp_graph].width - props.h_margin,
+                      y = data[tp_graph].height - (props.v_margin + y_range) }
+    local third   = { x = data[tp_graph].width  - props.h_margin,
+                      y = data[tp_graph].height - props.v_margin }    
 
-    else  
-      --Draw graph background
-      local first   = { x = props.h_marging,
-                        y = data[tp_graph].height - props.v_margin }
-      local y_range = data[tp_graph].height - (2 * props.v_margin)
-      local second  = { x = data[tp_graph].width - props.h_margin,
-                        y = data[tp_graph].height - (props.v_margin + y_range) }
-      local third   = { x = data[tp_graph].width  - props.h_margin,
-                        y = data[tp_graph].height - props.v_margin }    
+    helpers.draw_triangle(cr, first, second, third, props.graph_background_color)
 
-      helpers.draw_triangle(cr, first, second, third, props.graph_background_color)
-
+    if data[tp_graph].value > 0 then
       --Draw graph
       second = { x = data[tp_graph].width * data[tp_graph].value - props.h_margin,
                  y = data[tp_graph].height -( props.v_margin + (y_range * data[tp_graph].value)) }
