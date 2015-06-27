@@ -112,26 +112,9 @@ local properties = {"width", "height", "v_margin", "h_margin",
                     "text_color", "text_background_color",
                     "label", "font_size","font", "bar", "value_format"
                     }
-function load_properties( properties, data, graph, superproperties)
-  local props = {}
-  for _i, prop in ipairs(properties) do
-    props[prop] = data[graph][prop] or superproperties[prop]
-    if prop == "v_margin" then
-      if data[graph].v_margin and data[graph].v_margin <= data[graph].height/4 then
-        props.v_margin = data[graph].v_margin
-      end
-    end
-    if prop == "h_margin" then
-      if data[graph].h_margin and data[graph].h_margin <= data[graph].height/3 then
-        props.h_margin = data[graph].h_margin
-      end
-    end
-  end
-  return props
-end
 function triangular_progressgraph.draw(tp_graph, wibox, cr, width, height)
 
-  local props = load_properties(properties, data, tp_graph, superproperties)
+  local props = helpers.load_properties(properties, data, tp_graph, superproperties)
 --Generate Background (background color and Tiles)
     r,g,b,a = helpers.hexadecimal_to_rgba_percent(props.background_color)
     cr:set_source_rgba(r,g,b,a)

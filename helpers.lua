@@ -944,4 +944,31 @@ function helpers.icons_only_tasklist(w, buttons, label, data, objects)
    end
    w:add(l)
 end
+
+---Function used in widgets in order to create a local table of 
+--all the widget properties which are a mix between the properties
+--provided by the user trought the widget interface, or the properties
+--defined by superproperties
+--@param properties a table with the names of all the properties
+--@param data the data table of the module that references all the same widgets
+--@param graph the widget itself
+--@param superproperties the table of the superporperties
+function helpers.load_properties( properties, data, graph, superproperties)
+  local props = {}
+  for _i, prop in ipairs(properties) do
+    props[prop] = data[graph][prop] or superproperties[prop]
+    if prop == "v_margin" then
+      if data[graph].v_margin and data[graph].v_margin <= data[graph].height/4 then
+        props.v_margin = data[graph].v_margin
+      end
+    end
+    if prop == "h_margin" then
+      if data[graph].h_margin and data[graph].h_margin <= data[graph].height/3 then
+        props.h_margin = data[graph].h_margin
+      end
+    end
+  end
+  return props
+end
+
 return helpers
