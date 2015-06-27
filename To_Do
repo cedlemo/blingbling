@@ -1,6 +1,5 @@
 --hight priority
---> fix pb when triangle background disapear with value = 0
---> create a function that generate a local table of the properties given by user or by superproperties
+-->use load_properties in all widgets
 simplify value_text_box
 remove border for text background
 use pango layout instead of cairo text functionnalities
