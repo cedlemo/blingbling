@@ -738,6 +738,39 @@ function helpers.generate_rounded_rectangle_with_text(cr, width, height, text, p
   return data
 end
 
+---Draw a rectangular triangle filled with given color
+--@param first  point coordinates {x= 1.0, y = 2.0}
+--@param second point coordinates {x= 1.0, y = 2.0}
+--@param third  point coordinates {x= 1.0, y = 2.0}
+--@param color  a color as a string "#rrggbb" or "#rrggbbaa"
+function helpers.draw_triangle(cr, first, second, third, color)
+  local r,g,b,a = helpers.hexadecimal_to_rgba_percent(color)
+  cr:new_path()
+  cr:set_source_rgba(r,g,b,a)
+  cr:move_to(first.x, first.y)
+  cr:line_to(second.x, second.y)
+  cr:line_to(third.x, third.y)
+  cr:close_path()
+  cr:fill()
+end
+
+---Draw a rectangular triangular outline of the given color
+--@param first  point coordinates {x= 1.0, y = 2.0}
+--@param second point coordinates {x= 1.0, y = 2.0}
+--@param third  point coordinates {x= 1.0, y = 2.0}
+--@param color  a color as a string "#rrggbb" or "#rrggbbaa"
+function helpers.draw_triangle_outline(cr, first, second, third, color)
+  local r,g,b,a = helpers.hexadecimal_to_rgba_percent(color)
+  cr:new_path()
+  cr:set_source_rgba(r,g,b,a)
+  cr:move_to(first.x, first.y)
+  cr:line_to(second.x, second.y)
+  cr:line_to(third.x, third.y)
+  cr:close_path()
+  cr:set_antialias("subpixel") 
+  cr:set_line_width(1)
+  cr:stroke()
+end
 
 ---Remove an element from  a table using key.
 --@param hash the table
