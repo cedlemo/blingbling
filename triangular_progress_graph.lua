@@ -112,35 +112,33 @@ local properties = {"width", "height", "v_margin", "h_margin",
                     "text_color", "text_background_color",
                     "label", "font_size","font", "bar", "value_format"
                     }
-
+function load_properties( properties, data, graph, superproperties)
+  local props = {}
+  for _i, prop in ipairs(properties) do
+    props[prop] = data[graph][prop] or superproperties[prop]
+    if prop == "v_margin" then
+      if data[graph].v_margin and data[graph].v_margin <= data[graph].height/4 then
+        props.v_margin = data[graph].v_margin
+      end
+    end
+    if prop == "h_margin" then
+      if data[graph].h_margin and data[graph].h_margin <= data[graph].height/3 then
+        props.h_margin = data[graph].h_margin
+      end
+    end
+  end
+  return props
+end
 function triangular_progressgraph.draw(tp_graph, wibox, cr, width, height)
 
-  local v_margin =  superproperties.v_margin 
-  if data[tp_graph].v_margin and data[tp_graph].v_margin <= data[tp_graph].height/4 then 
-    v_margin = data[tp_graph].v_margin 
-  end
-    
-  local h_margin = superproperties.h_margin
-  if data[tp_graph].h_margin and data[tp_graph].h_margin <= data[tp_graph].width / 3 then 
-    h_margin = data[tp_graph].h_margin 
-  end
-    
-  local background_color = data[tp_graph].background_color or superproperties.background_color
-  local rounded_size = data[tp_graph].rounded_size or superproperties.rounded_size
-  local graph_background_color = data[tp_graph].graph_background_color or superproperties.graph_background_color
-  local graph_color = data[tp_graph].graph_color or superproperties.graph_color
-  local graph_line_color = data[tp_graph].graph_line_color or superproperties.graph_line_color
-  local text_color = data[tp_graph].text_color or superproperties.text_color
-  local text_background_color = data[tp_graph].text_background_color or superproperties.text_background_color
-  local font_size =data[tp_graph].font_size or superproperties.font_size
-  local font = data[tp_graph].font or superproperties.font
-  local value_format = data[tp_graph].value_format or superproperties.value_format
+  local props = load_properties(properties, data, tp_graph, superproperties)
 --Generate Background (background color and Tiles)
-    r,g,b,a = helpers.hexadecimal_to_rgba_percent(background_color)
+    r,g,b,a = helpers.hexadecimal_to_rgba_percent(props.background_color)
     cr:set_source_rgba(r,g,b,a)
     cr:paint()
 --Drawn the tp_graph
   
+
   if data[tp_graph].value > 0 then
     if data[tp_graph].bar == true then
       --4 bar are use to represent data:
@@ -157,14 +155,14 @@ function triangular_progressgraph.draw(tp_graph, wibox, cr, width, height)
         h_rest = 2
       end
       --Drawn background graph
-      x=h_margin+h_rest
+      x=props.h_margin+h_rest
       y=data[tp_graph].height - v_margin
       for i=1, nb_bar do
         cr:rectangle(x,y-((0.2*i)*(data[tp_graph].height - 2*v_margin)),bar_width,((0.2*i)*(data[tp_graph].height - 2*v_margin)))
         x=x+(bar_width + bar_separator)
       end
 
-      r,g,b,a=helpers.hexadecimal_to_rgba_percent(graph_background_color)
+      r,g,b,a=helpers.hexadecimal_to_rgba_percent(props.graph_background_color)
       cr:set_source_rgba(r, g, b, a)
 
       cr:fill()
@@ -179,8 +177,8 @@ function triangular_progressgraph.draw(tp_graph, wibox, cr, width, height)
           break
         end
       end
-      x=h_margin+h_rest
-      y=data[tp_graph].height - v_margin
+      x=props.h_margin+h_rest
+      y=data[tp_graph].height - props.v_margin
       for i=1, nb_bar do
         if i ~= nb_bar then
           cr:rectangle(x,y-((0.2*i)*(data[tp_graph].height - 2*v_margin)),bar_width,(0.2*i)*(data[tp_graph].height - 2*v_margin))
@@ -192,45 +190,49 @@ function triangular_progressgraph.draw(tp_graph, wibox, cr, width, height)
         end
       end
       
-      r,g,b,a=helpers.hexadecimal_to_rgba_percent(graph_color)
+      r,g,b,a=helpers.hexadecimal_to_rgba_percent(props.graph_color)
       cr:set_source_rgba(r, g, b, a)
 
       cr:fill()
 
     else  
       --Draw graph background
-      local first   = { x = h_marging, y = data[tp_graph].height-(v_margin) }
-      local y_range = data[tp_graph].height - (2 * v_margin)
-      local second  = { x = data[tp_graph].width - h_margin,
-                        y = data[tp_graph].height - (v_margin + y_range) }
-      local third   = { x = data[tp_graph].width  - h_margin,
-                        y = data[tp_graph].height - v_margin }    
+      local first   = { x = props.h_marging,
+                        y = data[tp_graph].height - props.v_margin }
+      local y_range = data[tp_graph].height - (2 * props.v_margin)
+      local second  = { x = data[tp_graph].width - props.h_margin,
+                        y = data[tp_graph].height - (props.v_margin + y_range) }
+      local third   = { x = data[tp_graph].width  - props.h_margin,
+                        y = data[tp_graph].height - props.v_margin }    
 
-      helpers.draw_triangle(cr, first, second, third, graph_background_color)
+      helpers.draw_triangle(cr, first, second, third, props.graph_background_color)
 
       --Draw graph
-      second = { x = data[tp_graph].width * data[tp_graph].value - h_margin,
-                 y = data[tp_graph].height -( v_margin + (y_range * data[tp_graph].value)) }
-      third  = { x = data[tp_graph].width * data[tp_graph].value - h_margin,
-                 y = data[tp_graph].height - v_margin }
+      second = { x = data[tp_graph].width * data[tp_graph].value - props.h_margin,
+                 y = data[tp_graph].height -( props.v_margin + (y_range * data[tp_graph].value)) }
+      third  = { x = data[tp_graph].width * data[tp_graph].value - props.h_margin,
+                 y = data[tp_graph].height - props.v_margin }
 
-      helpers.draw_triangle(cr, first, second, third, graph_color)
+      helpers.draw_triangle(cr, first, second, third, props.graph_color)
 
-      helpers.draw_triangle_outline(cr, first, second, third, graph_line_color)
+      helpers.draw_triangle_outline(cr, first, second, third, props.graph_line_color)
     end
   end
 --Draw Text and it's background
-  if data[tp_graph].show_text == true  then 
+  if props.show_text == true  then 
 
-    cr:set_font_size(font_size)
+    cr:set_font_size(props.font_size)
   
-    if type(font) == "string" then
-      cr:select_font_face(font,nil,nil)
-    elseif type(font) == "table" then
-      cr:select_font_face(font.family or "Sans", font.slang or "normal", font.weight or "normal")
+    if type(props.font) == "string" then
+      cr:select_font_face(props.font,nil,nil)
+    elseif type(props.font) == "table" then
+      cr:select_font_face(props.font.family or "Sans",
+                          props.font.slang or "normal",
+                          props.font.weight or "normal")
     end
 
-    local value = string.format(value_format, data[tp_graph].value * 100)
+    local value = string.format(props.value_format,
+                                data[tp_graph].value * 100)
     
     if data[tp_graph].label then
       text=string.gsub(data[tp_graph].label,"$percent", value)
@@ -239,10 +241,10 @@ function triangular_progressgraph.draw(tp_graph, wibox, cr, width, height)
     end
     helpers.draw_text_and_background(cr, 
                                       text, 
-                                      h_margin, 
+                                      props.h_margin, 
                                       (data[tp_graph].height/2) , 
-                                      text_background_color, 
-                                      text_color,
+                                      props.text_background_color, 
+                                      props.text_color,
                                       false,
                                       true,
                                       false,
