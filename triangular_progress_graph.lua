@@ -198,59 +198,25 @@ function triangular_progressgraph.draw(tp_graph, wibox, cr, width, height)
       cr:fill()
 
     else  
-      x=h_margin 
-      y=data[tp_graph].height-(v_margin) 
-  
-      cr:new_path()
-      cr:move_to(x,y)
-      cr:line_to(x,y)
-      y_range=data[tp_graph].height - (2 * v_margin)
-      cr:line_to(data[tp_graph].width - h_margin,data[tp_graph].height -( v_margin + y_range ))
-      cr:line_to(data[tp_graph].width  - h_margin, data[tp_graph].height - (v_margin ))
-      cr:line_to(h_margin,data[tp_graph].height-(v_margin))
-  
-      cr:close_path()
-    
-      r,g,b,a = helpers.hexadecimal_to_rgba_percent(graph_background_color)
-      cr:set_source_rgba(r, g, b,a)
+      --Draw graph background
+      local first   = { x = h_marging, y = data[tp_graph].height-(v_margin) }
+      local y_range = data[tp_graph].height - (2 * v_margin)
+      local second  = { x = data[tp_graph].width - h_margin,
+                        y = data[tp_graph].height - (v_margin + y_range) }
+      local third   = { x = data[tp_graph].width  - h_margin,
+                        y = data[tp_graph].height - v_margin }    
 
-      cr:fill()
-      
-      x=h_margin 
-      y=data[tp_graph].height-(v_margin) 
-  
-      cr:new_path()
-      cr:move_to(x,y)
-      cr:line_to(x,y)
-      y_range=data[tp_graph].height - (2 * v_margin)
-      cr:line_to(data[tp_graph].width * data[tp_graph].value - h_margin,data[tp_graph].height -( v_margin + (y_range * data[tp_graph].value)))
-      cr:line_to(data[tp_graph].width * data[tp_graph].value - h_margin, data[tp_graph].height - (v_margin ))
-      cr:line_to(h_margin,data[tp_graph].height-(v_margin))
-  
-      cr:close_path()
-      r,g,b,a=helpers.hexadecimal_to_rgba_percent(graph_color)
-      cr:set_source_rgba(r, g, b, a)
+      helpers.draw_triangle(cr, first, second, third, graph_background_color)
 
-      cr:fill()
+      --Draw graph
+      second = { x = data[tp_graph].width * data[tp_graph].value - h_margin,
+                 y = data[tp_graph].height -( v_margin + (y_range * data[tp_graph].value)) }
+      third  = { x = data[tp_graph].width * data[tp_graph].value - h_margin,
+                 y = data[tp_graph].height - v_margin }
 
-      x=h_margin 
-      y=data[tp_graph].height-(v_margin) 
+      helpers.draw_triangle(cr, first, second, third, graph_color)
 
-      cr:new_path()
-      cr:move_to(x,y)
-      cr:line_to(x,y)
-      y_range=data[tp_graph].height - (2 * v_margin)
-      cr:line_to((data[tp_graph].width * data[tp_graph].value) - h_margin  ,data[tp_graph].height -( v_margin +  (y_range * data[tp_graph].value)))
-      cr:line_to((data[tp_graph].width * data[tp_graph].value) - h_margin, data[tp_graph].height - (v_margin ))
-      cr:line_to(h_margin,data[tp_graph].height-(v_margin))
-      cr:set_antialias("subpixel") 
-      cr:set_line_width(1)
-
-      r,g,b,a=helpers.hexadecimal_to_rgba_percent(graph_line_color)
-      cr:set_source_rgb(r, g, b)
-
-  
-      cr:stroke()
+      helpers.draw_triangle_outline(cr, first, second, third, graph_line_color)
     end
   end
 --Draw Text and it's background
