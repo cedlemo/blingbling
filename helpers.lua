@@ -407,25 +407,8 @@ function helpers.draw_rounded_corners_rectangle(cr,x,y,width, height, color, rou
   cr:arc(x + radius*rounded_sizes[4],height -  radius*rounded_sizes[4], radius*rounded_sizes[4],PI*0.5, PI * 1)
   cr:close_path()
   cr:fill()
-
---  if border ~= nil then
---    cr:set_line_width(1)
---
---    r,g,b,a=helpers.hexadecimal_to_rgba_percent(border)
---    cr:set_source_rgba(r,g,b,a)
---    --top left corner
---    cr:arc(x +1 + radius*rounded_sizes[1],y+1 + radius*rounded_sizes[1], radius*rounded_sizes[1],PI, PI * 1.5)
---    --top right corner
---    cr:arc(width -1 - radius*rounded_sizes[2],y +1+ radius*rounded_sizes[2], radius*rounded_sizes[2],PI*1.5, PI * 2)
---    --bottom right corner
---    cr:arc(width -1 - radius*rounded_sizes[3],height -1 -  radius*rounded_sizes[3], radius*rounded_sizes[3],PI*0, PI * 0.5)
---    --bottom left corner
---    cr:arc(x +1 + radius*rounded_sizes[4],height -1 -  radius*rounded_sizes[4], radius*rounded_sizes[4],PI*0.5, PI * 1)
---    cr:close_path()
---    cr:stroke()
---  end
-
 end
+
 ---Set a rectangle width rounded corners that define the area to draw.
 --@param cr a cairo context already initialised with oocairo.context_create( )
 --@param x the x coordinate of the left top corner
