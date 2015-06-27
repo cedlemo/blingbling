@@ -122,57 +122,20 @@ function triangular_progressgraph.draw(tp_graph, wibox, cr, width, height)
 
   --Draw the background of the graph:
   if data[tp_graph].bar == true then
-    local nb_bar=5
-    local bar_separator = 2
-    local bar_width 
-    bar_width=math.floor((data[tp_graph].width -((2*h_margin) + ((nb_bar - 1) * bar_separator)))/nb_bar)
-    local h_rest =data[tp_graph].width -( 2*h_margin +((nb_bar -1)*bar_separator) + nb_bar * bar_width)
-    if h_rest ==2 or h_rest == 3 then 
-      h_rest = 1
-    end
-    if h_rest == 4 then
-      h_rest = 2
-    end
-    --Drawn background graph
-    x=props.h_margin+h_rest
-    y=data[tp_graph].height - v_margin
-    for i=1, nb_bar do
-      cr:rectangle(x,y-((0.2*i)*(data[tp_graph].height - 2*v_margin)),bar_width,((0.2*i)*(data[tp_graph].height - 2*v_margin)))
-      x=x+(bar_width + bar_separator)
-    end
+      helpers.draw_triangle_using_bars( cr, data[tp_graph].width,
+                                        data[tp_graph].height,
+                                        props.h_margin,
+                                        props.v_margin,
+                                        props.graph_background_color)
 
-    r,g,b,a=helpers.hexadecimal_to_rgba_percent(props.graph_background_color)
-    cr:set_source_rgba(r, g, b, a)
+      helpers.draw_triangle_graph_using_bars(cr, data[tp_graph].width,
+                                              data[tp_graph].height,
+                                              props.h_margin,
+                                              props.v_margin,
+                                              props.graph_color,
+                                              data[tp_graph].value
+                                              )
 
-    cr:fill()
-    if data[tp_graph].value > 0 then
-      local ranges={0,0.2,0.4,0.6,0.8,1,1.2}
-      nb_bar=0
-      for i,  limite in ipairs(ranges) do
-        if data[tp_graph].value < limite then
-        --helpers.dbg({data[tp_graph].value, limite})
-          nb_bar = i-1
-          break
-        end
-      end
-      x=props.h_margin+h_rest
-      y=data[tp_graph].height - props.v_margin
-      for i=1, nb_bar do
-        if i ~= nb_bar then
-          cr:rectangle(x,y-((0.2*i)*(data[tp_graph].height - 2*v_margin)),bar_width,(0.2*i)*(data[tp_graph].height - 2*v_margin))
-          x=x+(bar_width + bar_separator)
-        else
-          val_to_display =data[tp_graph].value - ((nb_bar-1) * 0.2)
-
-          cr:rectangle(x,y-((0.2*i)*(data[tp_graph].height - 2*v_margin)),bar_width * (val_to_display/0.2),(0.2*i)*(data[tp_graph].height - 2*v_margin))
-        end
-      end
-      
-      r,g,b,a=helpers.hexadecimal_to_rgba_percent(props.graph_color)
-      cr:set_source_rgba(r, g, b, a)
-
-      cr:fill()
-    end
   else
     --Draw graph background
     local first   = { x = props.h_marging,
