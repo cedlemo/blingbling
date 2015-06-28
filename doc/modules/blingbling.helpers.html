@@ -33,7 +33,6 @@
 <h2>Contents</h2>
 <ul>
 <li><a href="#Functions">Functions</a></li>
-<li><a href="#Local_Functions">Local Functions</a></li>
 </ul>
 
 
@@ -41,8 +40,6 @@
 <ul class="$(kind=='Topics' and '' or 'nowrap'">
   <li><a href="../modules/blingbling.calendar.html">blingbling.calendar</a></li>
   <li><a href="../modules/blingbling.clock.html">blingbling.clock</a></li>
-  <li><a href="../modules/config_example.grey_blue.theme.html">config_example.grey_blue.theme</a></li>
-  <li><a href="../modules/config_example.japanese2.theme.html">config_example.japanese2.theme</a></li>
   <li><strong>blingbling.helpers</strong></li>
   <li><a href="../modules/blingbling.linegraph.html">blingbling.linegraph</a></li>
   <li><a href="../modules/blingbling.widget.html">blingbling.widget</a></li>
@@ -136,6 +133,25 @@
 	<td class="summary">Generate a text in front of a centered rectangle with rounded corners (or not) in  a cairo context.</td>
 	</tr>
 	<tr>
+	<td class="name" nowrap><a href="#draw_triangle">draw_triangle (cr, first, second, third, color)</a></td>
+	<td class="summary">Draw a rectangular triangle filled with given color</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#draw_triangle_outline">draw_triangle_outline (cr, first, second, third, color)</a></td>
+	<td class="summary">Draw a rectangular triangular outline of the given color</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#compute_bar_width">compute_bar_width (nb_bars, width, sep)</a></td>
+	<td class="summary">Compute the width of each bar in a graph
+It returns the width of the bar and a value
+that corresponds to the remaing space divided
+by 2</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#draw_triangle_graph_using_bars">draw_triangle_graph_using_bars (cr, width, height, h_margin, v_margin, color, value)</a></td>
+	<td class="summary">Display a value using bars or parts of bar in a triangular form</td>
+	</tr>
+	<tr>
 	<td class="name" nowrap><a href="#hash_remove">hash_remove (hash, key)</a></td>
 	<td class="summary">Remove an element from  a table using key.</td>
 	</tr>
@@ -181,12 +197,12 @@
 The classical usage of it is:
 awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, mytasklist.buttons,nil,icons_only_tasklist)</td>
 	</tr>
-</table>
-<h2><a href="#Local_Functions">Local Functions</a></h2>
-<table class="function_list">
 	<tr>
-	<td class="name" nowrap><a href="#is_leap_year">is_leap_year (year)</a></td>
-	<td class="summary">Functions for date and calendar</td>
+	<td class="name" nowrap><a href="#load_properties">load_properties (properties, data, graph, superproperties)</a></td>
+	<td class="summary">Function used in widgets in order to create a local table of
+all the widget properties which are a mix between the properties
+provided by the user trought the widget interface, or the properties
+defined by superproperties</td>
 	</tr>
 </table>
 
@@ -749,6 +765,137 @@ It returns a table ={ width = the width of the image, height = the height of the
 
 </dd>
     <dt>
+    <a name = "draw_triangle"></a>
+    <strong>draw_triangle (cr, first, second, third, color)</strong>
+    </dt>
+    <dd>
+    Draw a rectangular triangle filled with given color
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">cr</span>
+         cairo context
+        </li>
+        <li><span class="parameter">first</span>
+          point coordinates {x= 1.0, y = 2.0}
+        </li>
+        <li><span class="parameter">second</span>
+         point coordinates {x= 1.0, y = 2.0}
+        </li>
+        <li><span class="parameter">third</span>
+          point coordinates {x= 1.0, y = 2.0}
+        </li>
+        <li><span class="parameter">color</span>
+          a color as a string "#rrggbb" or "#rrggbbaa"
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "draw_triangle_outline"></a>
+    <strong>draw_triangle_outline (cr, first, second, third, color)</strong>
+    </dt>
+    <dd>
+    Draw a rectangular triangular outline of the given color
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">cr</span>
+         cairo context
+        </li>
+        <li><span class="parameter">first</span>
+          point coordinates {x= 1.0, y = 2.0}
+        </li>
+        <li><span class="parameter">second</span>
+         point coordinates {x= 1.0, y = 2.0}
+        </li>
+        <li><span class="parameter">third</span>
+          point coordinates {x= 1.0, y = 2.0}
+        </li>
+        <li><span class="parameter">color</span>
+          a color as a string "#rrggbb" or "#rrggbbaa"
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "compute_bar_width"></a>
+    <strong>compute_bar_width (nb_bars, width, sep)</strong>
+    </dt>
+    <dd>
+    Compute the width of each bar in a graph
+It returns the width of the bar and a value
+that corresponds to the remaing space divided
+by 2
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">nb_bars</span>
+         the number of bars
+        </li>
+        <li><span class="parameter">width</span>
+         the width of the graph
+        </li>
+        <li><span class="parameter">sep</span>
+         the size between two bars
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "draw_triangle_graph_using_bars"></a>
+    <strong>draw_triangle_graph_using_bars (cr, width, height, h_margin, v_margin, color, value)</strong>
+    </dt>
+    <dd>
+    Display a value using bars or parts of bar in a triangular form
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">cr</span>
+         cairo context
+        </li>
+        <li><span class="parameter">width</span>
+         width of the graph
+        </li>
+        <li><span class="parameter">height</span>
+         height of the graph
+        </li>
+        <li><span class="parameter">h_margin</span>
+         horizontal space left at left and right of the graph
+        </li>
+        <li><span class="parameter">v_margin</span>
+         vertical space left at top and bottom of the graph
+        </li>
+        <li><span class="parameter">color</span>
+         the color of the graph
+        </li>
+        <li><span class="parameter">value</span>
+         to represent
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
     <a name = "hash_remove"></a>
     <strong>hash_remove (hash, key)</strong>
     </dt>
@@ -987,22 +1134,30 @@ awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, mytasklist.bu
 
 
 </dd>
-</dl>
-    <h2><a name="Local_Functions"></a>Local Functions</h2>
-
-    <dl class="function">
     <dt>
-    <a name = "is_leap_year"></a>
-    <strong>is_leap_year (year)</strong>
+    <a name = "load_properties"></a>
+    <strong>load_properties (properties, data, graph, superproperties)</strong>
     </dt>
     <dd>
-    Functions for date and calendar
+    Function used in widgets in order to create a local table of
+all the widget properties which are a mix between the properties
+provided by the user trought the widget interface, or the properties
+defined by superproperties
 
 
     <h3>Parameters:</h3>
     <ul>
-        <li><span class="parameter">year</span>
-
+        <li><span class="parameter">properties</span>
+         a table with the names of all the properties
+        </li>
+        <li><span class="parameter">data</span>
+         the data table of the module that references all the same widgets
+        </li>
+        <li><span class="parameter">graph</span>
+         the widget itself
+        </li>
+        <li><span class="parameter">superproperties</span>
+         the table of the superporperties
         </li>
     </ul>
 
@@ -1018,7 +1173,7 @@ awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, mytasklist.bu
 </div> <!-- id="main" -->
 <div id="about">
 <i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.3</a></i>
-<i style="float:right;">Last updated 2015-06-25 19:22:36 </i>
+<i style="float:right;">Last updated 2015-06-28 18:34:02 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>

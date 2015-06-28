@@ -817,7 +817,7 @@ end
 --@param h_margin horizontal space left at left and right of the graph
 --@param v_margin vertical space left at top and bottom of the graph
 --@param color the color of the graph
---@value the value to represent
+--@param value to represent
 function helpers.draw_triangle_graph_using_bars(cr, width, height, h_margin, v_margin, color, value)
   local nb_bars=5
   local bar_separator = 2
