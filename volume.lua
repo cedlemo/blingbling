@@ -1,17 +1,12 @@
 -- @author cedlemo  
 
 local setmetatable = setmetatable
-local ipairs = ipairs
 local math = math
-local table = table
 local type = type
 local string = string
-local color = require("gears.color")
-local base = require("wibox.widget.base")
-local helpers = require("blingbling.helpers")
 local awful = require("awful")
-local superproperties = require('blingbling.superproperties')
 local triangular_progress_graph = require('blingbling.triangular_progress_graph')
+
 ---Volume widget
 --@module blingbling.volume
 
@@ -20,12 +15,12 @@ local volume = { mt = {} }
 local data = setmetatable({}, { __mode = "k" })
 
 local function get_master_infos()
+  local state, volume = nil, nil
   local f=io.popen("amixer get Master")
   for line in f:lines() do
     if string.match(line, "%s%[%d+%%%]%s") ~= nil then
       volume=string.match(line, "%s%[%d+%%%]%s")
       volume=string.gsub(volume, "[%[%]%%%s]","")
-      --helpers.dbg({volume})
     end
     if string.match(line, "%s%[[%l]+%]$") then
       state=string.match(line, "%s%[[%l]+%]$")
@@ -42,11 +37,16 @@ local function set_master(parameters)
     f:close()
 end
 local function update_master(volume_graph)
-    local state
-    local value
+    local state, value = nil, nil
     data[volume_graph].mastertimer = timer({timeout = 0.5})
     data[volume_graph].mastertimer:connect_signal("timeout", function() 
-      data[volume_graph].state, value = get_master_infos(); volume_graph:set_value(value/100) 
+      state, value = get_master_infos()
+      volume_graph:set_value(value/100)
+      if state == "off" then
+        volume_graph:set_label("off")
+      else
+        volume_graph:set_label(data[volume_graph].label) 
+      end
     end)
     data[volume_graph].mastertimer:start()
     return volume_graph
@@ -66,7 +66,6 @@ local function get_mpd_volume()
   local f = io.popen(mpd_c)
 
   for line in f:lines() do
-    --helpers.dbg({line})
     if string.find(line,'error:%sConnection%srefused') then
       mpd_vol="-1"
     end
@@ -116,7 +115,7 @@ function volume.new(args)
     local args = args or {}
     local volume_graph = triangular_progress_graph(args)    
     data[volume_graph] = {}
-
+    data[volume_graph].label = args.label or "$percent%"
     volume_graph.update_master = update_master
     volume_graph.update_mpd= update_mpd
     volume_graph.set_master_control = set_master_control
