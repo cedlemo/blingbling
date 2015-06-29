@@ -109,8 +109,7 @@ local data = setmetatable({}, { __mode = "k" })
 
 
 local properties = {    "width", "height", "h_margin", "v_margin",
-                        "background_color", 
-                        "graph_background_border", "graph_background_color",
+                        "background_color", "graph_background_color",
                         "rounded_size", "graph_color", "graph_line_color",
                         "show_text", "text_color", "font_size", "font",
                         "text_background_color", "label", "value_format"
@@ -118,177 +117,160 @@ local properties = {    "width", "height", "h_margin", "v_margin",
 
 function linegraph.draw(graph, wibox, cr, width, height)
 
-    local max_value = data[graph].max_value
-    local values = data[graph].values
+  local values = data[graph].values
 
-    -- Set the values we need
-    local value = data[graph].value
+  -- Set the values we need
+  local value = data[graph].value
 
+  
     
-    local graph_border_width = 0
-    if data[graph].graph_background_border then
-        graph_border_width = 1
-    end
-    
-    local v_margin =  superproperties.v_margin 
-    if data[graph].v_margin and data[graph].v_margin <= data[graph].height/4 then 
-        v_margin = data[graph].v_margin 
-    end
-    
-    local h_margin = superproperties.h_margin
-    if data[graph].h_margin and data[graph].h_margin <= data[graph].width / 3 then 
-        h_margin = data[graph].h_margin 
-    end
-    
-    local background_color = data[graph].background_color or superproperties.background_color
-    local rounded_size = data[graph].rounded_size or superproperties.rounded_size
-    local graph_background_color = data[graph].graph_background_color or superproperties.graph_background_color
-    local graph_background_border = data[graph].graph_background_border or superproperties.graph_background_border
-    local graph_color = data[graph].graph_color or superproperties.graph_color
-    local graph_line_color = data[graph].graph_line_color or superproperties.graph_line_color
-    local text_color = data[graph].text_color or superproperties.text_color
-    local text_background_color = data[graph].text_background_color or superproperties.text_background_color
-    local font_size =data[graph].font_size or superproperties.font_size
-    local font = data[graph].font or superproperties.font
-    local value_format = data[graph].value_format or superproperties.value_format
-    
-    local line_width = 1
-    cr:set_line_width(line_width)
-    cr:set_antialias("subpixel") 
-      helpers.draw_rounded_corners_rectangle(	cr,
-                                              0, --x
-                                              0, --y
-                                              data[graph].width, 
-                                              data[graph].height,
-                                              background_color,
-                                              rounded_size
-                                            )
+  local props = helpers.load_properties(properties, data, graph, superproperties)
+
+  local line_width = 1
+  cr:set_line_width(line_width)
+  cr:set_antialias("subpixel") 
+  helpers.draw_rounded_corners_rectangle(	cr,
+                                          0, --x
+                                          0, --y
+                                          data[graph].width, 
+                                          data[graph].height,
+                                          props.background_color,
+                                          props.rounded_size
+                                         )
 
     -- Draw the graph background 
-    --if background_border is set, graph background  must not be drawn on it 
-    local h_padding = 0
-    local v_padding = 0
 
-    if background_border ~= nil and h_margin < 1 then
-      h_padding = 1
-    else 
-      h_padding = h_margin + 1
-    end
-    if background_border ~= nil and v_margin < 1 then
-      v_padding = 1 
-    else
-      v_padding = v_margin + 1
-    end
+  helpers.draw_rounded_corners_rectangle(cr,
+                                         props.h_margin, --x
+                                         props.v_margin, --y
+                                         data[graph].width - props.h_margin, 
+                                         data[graph].height - props.v_margin ,
+                                         props.graph_background_color,
+                                         props.rounded_size,
+                                         props.graph_background_border)
 
-      helpers.draw_rounded_corners_rectangle(cr,
-                                                h_padding, --x
-                                                v_padding, --y
-                                                data[graph].width - h_padding, 
-                                                data[graph].height - v_padding ,
-                                                graph_background_color,
-                                                rounded_size,
-                                                graph_background_border)
-    helpers.clip_rounded_corners_rectangle(cr,
-                                   h_padding, --x
-                                   v_padding, --y
-                                   data[graph].width - h_padding, 
-                                   data[graph].height - v_padding,
-                                   rounded_size
-                                   )
-    --Drawn the graph
-    --if graph_background_border is set, graph must not be drawn on it 
+  helpers.clip_rounded_corners_rectangle(cr,
+                                         props.h_margin, --x
+                                         props.v_margin, --y
+                                         data[graph].width - props.h_margin, 
+                                         data[graph].height - props.v_margin,
+                                         props.rounded_size
+                                 )
+  --Drawn the graph
+  --if graph_background_border is set, graph must not be drawn on it 
 
-    --find nb values we can draw every column_length px
-    --if rounded, make sure that graph don't begin or end outside background
-    --check for the less value between hight and height to calculate the space for rounded size:
-    local column_length = 6
-    
-    if data[graph].height > data[graph].width then
-      less_value = data[graph].width/2
-    else
-      less_value = data[graph].height/2
-    end
-    max_column=math.ceil((data[graph].width - (2*h_padding +2*(rounded_size * less_value)))/column_length) 
-    --Check if the table graph values is empty / not initialized
-    --if next(data[graph].values) == nil then
-    if #data[graph].values == 0 or #data[graph].values ~= max_column then
-      -- initialize graph_values with empty values:
-      data[graph].values={}
-      for i=1,max_column do
-        --the following line feed the graph with random value if you uncomment it and comment the line after it
-        --data[graph].values[i]=math.random(0,100) / 100
-        data[graph].values[i]=0
-      end
-    end
-    --Fill the graph 
-    x=data[graph].width -(h_padding + rounded_size * less_value)
-    y=data[graph].height-(v_padding) 
+  --find nb values we can draw every column_length px
+  --if rounded, make sure that graph don't begin or end outside background
+  --check for the less value between hight and height to calculate the space for rounded size:
+  local column_length = 6
   
-    cr:new_path()
-    cr:move_to(x,y)
+  if data[graph].height > data[graph].width then
+    less_value = data[graph].width/2
+  else
+    less_value = data[graph].height/2
+  end
+  max_column=math.ceil((data[graph].width - (2*props.h_margin +2*(props.rounded_size * less_value)))/column_length) 
+  --Check if the table graph values is empty / not initialized
+  --if next(data[graph].values) == nil then
+  if #data[graph].values == 0 or #data[graph].values ~= max_column then
+    -- initialize graph_values with empty values:
+    data[graph].values={}
+    for i=1,max_column do
+      --the following line feed the graph with random value if you uncomment it and comment the line after it
+      --data[graph].values[i]=math.random(0,100) / 100
+      data[graph].values[i]=0
+    end
+  end
+  --Fill the graph 
+  x=data[graph].width -(props.h_margin + props.rounded_size * less_value)
+  y=data[graph].height-(props.v_margin) 
+
+  cr:new_path()
+  cr:move_to(x,y)
+  cr:line_to(x,y)
+  for i=1,max_column do
+    y_range=data[graph].height - (2 * props.v_margin)
+    y= data[graph].height - (props.v_margin + ((data[graph].values[i]) * y_range))
     cr:line_to(x,y)
-    for i=1,max_column do
-      y_range=data[graph].height - (2 * v_margin)
-      y= data[graph].height - (v_padding + ((data[graph].values[i]) * y_range))
-      cr:line_to(x,y)
-      x=x-column_length
-    end
-    y=data[graph].height - (v_padding )
-    cr:line_to(x + column_length ,y) 
-    cr:line_to(width - h_padding,data[graph].height - (v_padding ))
-    cr:close_path()
-  
-    r,g,b,a=helpers.hexadecimal_to_rgba_percent(graph_color)
-    cr:set_source_rgba(r, g, b, a)
-    cr:fill()
-  
-    --Draw the graph line
-    r,g,b,a=helpers.hexadecimal_to_rgba_percent(graph_line_color)
-    cr:set_source_rgba(r, g, b,a)
-    x=data[graph].width - (h_padding + rounded_size * less_value)
-    y=data[graph].height-(v_padding) 
-    cr:new_path()
-    cr:move_to(x,y )
-    cr:line_to(x,y )
-    for i=1,max_column do
-      y_range=data[graph].height - (2 * h_margin + 1)
-      y= data[graph].height - (v_margin + ((data[graph].values[i]) * y_range))
-      cr:line_to(x,y )
-      x=x-column_length
-    end
-    x=x + column_length
-    y=data[graph].height - (v_padding )
-    cr:line_to(x ,y ) 
-    cr:stroke()
-    
-    if data[graph].show_text == true then
-    --Draw Text and it's background
-      cr:set_font_size(font_size)
+    x=x-column_length
+  end
+  y=data[graph].height - (props.v_margin )
+  cr:line_to(x + column_length ,y) 
+  cr:line_to(width - props.h_margin,data[graph].height - (props.v_margin ))
+  cr:close_path()
 
-      if type(font) == "string" then
-        cr:select_font_face(font,nil,nil)
-      elseif type(font) == "table" then
-        cr:select_font_face(font.family or "Sans", font.slang or "normal", font.weight or "normal")
-      end
-    
-      local value = string.format(value_format, data[graph].values[1] * 100)
-      if data[graph].label then
-        text=string.gsub(data[graph].label,"$percent", value)
-      else
-        text=value .. "%"
-      end
+  r,g,b,a=helpers.hexadecimal_to_rgba_percent(props.graph_color)
+  cr:set_source_rgba(r, g, b, a)
+  cr:fill()
 
-      helpers.draw_text_and_background(cr, 
-                                        text, 
-                                        h_padding + rounded_size * less_value, 
-                                        data[graph].height/2 , 
-                                        text_background_color, 
-                                        text_color,
-                                        false,
-                                        true,
-                                        false,
-                                        false)
+  --Draw the graph line
+--  r,g,b,a=helpers.hexadecimal_to_rgba_percent(props.graph_line_color)
+--  cr:set_source_rgba(r, g, b,a)
+--  x=data[graph].width - (props.h_margin + props.rounded_size * less_value)
+--  y=data[graph].height-(props.v_margin) 
+--  cr:new_path()
+--  cr:move_to(x,y )
+--  cr:line_to(x,y )
+--  for i=1,max_column do
+--    y_range=data[graph].height - (2 * props.h_margin )
+--    y= data[graph].height - (props.v_margin + ((data[graph].values[i]) * y_range))
+--    cr:line_to(x,y )
+--    x=x-column_length
+--  end
+--  x=x + column_length
+--  y=data[graph].height - (props.v_margin )
+--  cr:line_to(x ,y ) 
+--  cr:stroke()
+  x=data[graph].width -(props.h_margin + props.rounded_size * less_value)
+  y=data[graph].height-(props.v_margin) 
+
+  cr:new_path()
+  cr:move_to(x,y)
+  cr:line_to(x,y)
+  for i=1,max_column do
+    y_range=data[graph].height - (2 * props.v_margin)
+    y= data[graph].height - (props.v_margin + ((data[graph].values[i]) * y_range))
+    cr:line_to(x,y)
+    x=x-column_length
+  end
+  y=data[graph].height - (props.v_margin )
+  cr:line_to(x + column_length ,y) 
+  cr:line_to(width - props.h_margin,data[graph].height - (props.v_margin ))
+  cr:close_path()
+
+  r,g,b,a=helpers.hexadecimal_to_rgba_percent(props.graph_line_color)
+  cr:set_source_rgba(r, g, b, a)
+  cr:stroke() 
+  if props.show_text == true then
+  --Draw Text and it's background
+    cr:set_font_size(props.font_size)
+
+    if type(props.font) == "string" then
+      cr:select_font_face(props.font,nil,nil)
+    elseif type(props.font) == "table" then
+      cr:select_font_face(props.font.family or "Sans",
+                          props.font.slang or "normal",
+                          props.font.weight or "normal")
     end
+  
+    local value = string.format(props.value_format, data[graph].values[1] * 100)
+    if props.label then
+      text=string.gsub(data[graph].label,"$percent", value)
+    else
+      text=value .. "%"
+    end
+
+    helpers.draw_text_and_background(cr, 
+                                     text, 
+                                     props.h_margin + props.rounded_size * less_value, 
+                                      data[graph].height/2 , 
+                                      props.text_background_color, 
+                                      props.text_color,
+                                      false,
+                                      true,
+                                      false,
+                                      false)
+  end
 end
 
 function linegraph.fit(graph, width, height)
