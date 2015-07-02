@@ -153,7 +153,7 @@ function linegraph.draw(graph, wibox, cr, width, height)
                                          props.h_margin, --x
                                          props.v_margin, --y
                                          data[graph].width - props.h_margin, 
-                                         data[graph].height - props.v_margin,
+                                         data[graph].height - (props.v_margin),
                                          props.rounded_size
                                  )
   --Drawn the graph
@@ -204,23 +204,7 @@ function linegraph.draw(graph, wibox, cr, width, height)
   cr:fill()
 
   --Draw the graph line
---  r,g,b,a=helpers.hexadecimal_to_rgba_percent(props.graph_line_color)
---  cr:set_source_rgba(r, g, b,a)
---  x=data[graph].width - (props.h_margin + props.rounded_size * less_value)
---  y=data[graph].height-(props.v_margin) 
---  cr:new_path()
---  cr:move_to(x,y )
---  cr:line_to(x,y )
---  for i=1,max_column do
---    y_range=data[graph].height - (2 * props.h_margin )
---    y= data[graph].height - (props.v_margin + ((data[graph].values[i]) * y_range))
---    cr:line_to(x,y )
---    x=x-column_length
---  end
---  x=x + column_length
---  y=data[graph].height - (props.v_margin )
---  cr:line_to(x ,y ) 
---  cr:stroke()
+
   x=data[graph].width -(props.h_margin + props.rounded_size * less_value)
   y=data[graph].height-(props.v_margin) 
 
@@ -230,13 +214,19 @@ function linegraph.draw(graph, wibox, cr, width, height)
   for i=1,max_column do
     y_range=data[graph].height - (2 * props.v_margin)
     y= data[graph].height - (props.v_margin + ((data[graph].values[i]) * y_range))
+    -- this is a trick:
+    -- when value a equal to zero, I remove add 1 pixel to the y point in order
+    -- to put the point outside the clip area done with helpers.clip_rounded_corners_rectangle
+    -- so when a value is == 0 the point is almost not visible whereas the line of the graph
+    -- is not broken.
+    if data[graph].values[i] == 0 then
+      y= y + 1
+    end
     cr:line_to(x,y)
     x=x-column_length
   end
-  y=data[graph].height - (props.v_margin )
+  y=data[graph].height - (props.v_margin - 1) -- the y point here is set outside the clip rectangle
   cr:line_to(x + column_length ,y) 
-  cr:line_to(width - props.h_margin,data[graph].height - (props.v_margin ))
-  cr:close_path()
 
   r,g,b,a=helpers.hexadecimal_to_rgba_percent(props.graph_line_color)
   cr:set_source_rgba(r, g, b, a)
