@@ -132,8 +132,8 @@ function linegraph.draw(graph, wibox, cr, width, height)
   helpers.draw_rounded_corners_rectangle(	cr,
                                           0, --x
                                           0, --y
-                                          data[graph].width, 
-                                          data[graph].height,
+                                          width, 
+                                          height,
                                           props.background_color,
                                           props.rounded_size
                                          )
@@ -143,8 +143,8 @@ function linegraph.draw(graph, wibox, cr, width, height)
   helpers.draw_rounded_corners_rectangle(cr,
                                          props.h_margin, --x
                                          props.v_margin, --y
-                                         data[graph].width - props.h_margin, 
-                                         data[graph].height - props.v_margin ,
+                                         width - props.h_margin, 
+                                         height - props.v_margin ,
                                          props.graph_background_color,
                                          props.rounded_size,
                                          props.graph_background_border)
@@ -152,8 +152,8 @@ function linegraph.draw(graph, wibox, cr, width, height)
   helpers.clip_rounded_corners_rectangle(cr,
                                          props.h_margin, --x
                                          props.v_margin, --y
-                                         data[graph].width - props.h_margin, 
-                                         data[graph].height - (props.v_margin),
+                                         width - props.h_margin, 
+                                         height - (props.v_margin),
                                          props.rounded_size
                                  )
   --Drawn the graph
@@ -164,12 +164,12 @@ function linegraph.draw(graph, wibox, cr, width, height)
   --check for the less value between hight and height to calculate the space for rounded size:
   local column_length = 6
   
-  if data[graph].height > data[graph].width then
-    less_value = data[graph].width/2
+  if height > width then
+    less_value = width/2
   else
-    less_value = data[graph].height/2
+    less_value = height/2
   end
-  max_column=math.ceil((data[graph].width - (2*props.h_margin +2*(props.rounded_size * less_value)))/column_length) 
+  max_column=math.ceil((width - (2*props.h_margin +2*(props.rounded_size * less_value)))/column_length) 
   --Check if the table graph values is empty / not initialized
   --if next(data[graph].values) == nil then
   if #data[graph].values == 0 or #data[graph].values ~= max_column then
@@ -182,21 +182,21 @@ function linegraph.draw(graph, wibox, cr, width, height)
     end
   end
   --Fill the graph 
-  x=data[graph].width -(props.h_margin + props.rounded_size * less_value)
-  y=data[graph].height-(props.v_margin) 
+  x=width -(props.h_margin + props.rounded_size * less_value)
+  y=height-(props.v_margin) 
 
   cr:new_path()
   cr:move_to(x,y)
   cr:line_to(x,y)
   for i=1,max_column do
-    y_range=data[graph].height - (2 * props.v_margin)
-    y= data[graph].height - (props.v_margin + ((data[graph].values[i]) * y_range))
+    y_range=height - (2 * props.v_margin)
+    y= height - (props.v_margin + ((data[graph].values[i]) * y_range))
     cr:line_to(x,y)
     x=x-column_length
   end
-  y=data[graph].height - (props.v_margin )
+  y=height - (props.v_margin )
   cr:line_to(x + column_length ,y) 
-  cr:line_to(width - props.h_margin,data[graph].height - (props.v_margin ))
+  cr:line_to(width - props.h_margin,height - (props.v_margin ))
   cr:close_path()
 
   r,g,b,a=helpers.hexadecimal_to_rgba_percent(props.graph_color)
@@ -205,15 +205,15 @@ function linegraph.draw(graph, wibox, cr, width, height)
 
   --Draw the graph line
 
-  x=data[graph].width -(props.h_margin + props.rounded_size * less_value)
-  y=data[graph].height-(props.v_margin) 
+  x=width -(props.h_margin + props.rounded_size * less_value)
+  y=height-(props.v_margin) 
 
   cr:new_path()
   cr:move_to(x,y)
   cr:line_to(x,y)
   for i=1,max_column do
-    y_range=data[graph].height - (2 * props.v_margin)
-    y= data[graph].height - (props.v_margin + ((data[graph].values[i]) * y_range))
+    y_range=height - (2 * props.v_margin)
+    y= height - (props.v_margin + ((data[graph].values[i]) * y_range))
     -- this is a trick:
     -- when value a equal to zero, I remove add 1 pixel to the y point in order
     -- to put the point outside the clip area done with helpers.clip_rounded_corners_rectangle
@@ -225,7 +225,7 @@ function linegraph.draw(graph, wibox, cr, width, height)
     cr:line_to(x,y)
     x=x-column_length
   end
-  y=data[graph].height - (props.v_margin - 1) -- the y point here is set outside the clip rectangle
+  y=height - (props.v_margin - 1) -- the y point here is set outside the clip rectangle
   cr:line_to(x + column_length ,y) 
 
   r,g,b,a=helpers.hexadecimal_to_rgba_percent(props.graph_line_color)
@@ -253,7 +253,7 @@ function linegraph.draw(graph, wibox, cr, width, height)
     helpers.draw_text_and_background(cr, 
                                      text, 
                                      props.h_margin + props.rounded_size * less_value, 
-                                      data[graph].height/2 , 
+                                      height/2 , 
                                       props.text_background_color, 
                                       props.text_color,
                                       false,
