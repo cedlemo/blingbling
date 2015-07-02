@@ -122,14 +122,14 @@ function triangular_progressgraph.draw(tp_graph, wibox, cr, width, height)
 
   --Draw the background of the graph:
   if data[tp_graph].bar == true then
-      helpers.draw_triangle_using_bars( cr, data[tp_graph].width,
-                                        data[tp_graph].height,
+      helpers.draw_triangle_using_bars( cr, width,
+                                        height,
                                         props.h_margin,
                                         props.v_margin,
                                         props.graph_background_color)
 
-      helpers.draw_triangle_graph_using_bars(cr, data[tp_graph].width,
-                                              data[tp_graph].height,
+      helpers.draw_triangle_graph_using_bars(cr, width,
+                                              height,
                                               props.h_margin,
                                               props.v_margin,
                                               props.graph_color,
@@ -139,21 +139,21 @@ function triangular_progressgraph.draw(tp_graph, wibox, cr, width, height)
   else
     --Draw graph background
     local first   = { x = props.h_marging,
-                      y = data[tp_graph].height - props.v_margin }
-    local y_range = data[tp_graph].height - (2 * props.v_margin)
-    local second  = { x = data[tp_graph].width - props.h_margin,
-                      y = data[tp_graph].height - (props.v_margin + y_range) }
-    local third   = { x = data[tp_graph].width  - props.h_margin,
-                      y = data[tp_graph].height - props.v_margin }    
+                      y = height - props.v_margin }
+    local y_range = height - (2 * props.v_margin)
+    local second  = { x = width - props.h_margin,
+                      y = height - (props.v_margin + y_range) }
+    local third   = { x = width  - props.h_margin,
+                      y = height - props.v_margin }    
 
     helpers.draw_triangle(cr, first, second, third, props.graph_background_color)
 
     if data[tp_graph].value > 0 then
       --Draw graph
-      second = { x = data[tp_graph].width * data[tp_graph].value - props.h_margin,
-                 y = data[tp_graph].height -( props.v_margin + (y_range * data[tp_graph].value)) }
-      third  = { x = data[tp_graph].width * data[tp_graph].value - props.h_margin,
-                 y = data[tp_graph].height - props.v_margin }
+      second = { x = width * data[tp_graph].value - props.h_margin,
+                 y = height -( props.v_margin + (y_range * data[tp_graph].value)) }
+      third  = { x = width * data[tp_graph].value - props.h_margin,
+                 y = height - props.v_margin }
 
       helpers.draw_triangle(cr, first, second, third, props.graph_color)
 
@@ -184,7 +184,7 @@ function triangular_progressgraph.draw(tp_graph, wibox, cr, width, height)
     helpers.draw_text_and_background(cr, 
                                       text, 
                                       props.h_margin, 
-                                      (data[tp_graph].height/2) , 
+                                      (height/2) , 
                                       props.text_background_color, 
                                       props.text_color,
                                       false,
