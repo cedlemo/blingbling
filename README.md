@@ -49,20 +49,22 @@ You can find a full documentation on each widgets in the doc directory, just ope
 #####line_graph
 Create a line graph and fill it with vicious for example (you can configure the widget with a table or with the related methods ):
 
-    cpu_graph = blingbling.line_graph({ height = 18,
-                                            width = 200,
-                                            show_text = true,
-                                            label = "Load: $percent %",
-                                            rounded_size = 0.3,
-                                            graph_background_color = "#00000033"
-                                          })
-    --cpu_graph:set_height(18)
-    --cpu_graph:set_width(200)
-    --cpu_graph:set_show_text(true)
-    --cpu_graph:set_label("Load: $percent %")
-    --cpu_graph:set_rounded_size(0.3)
-    --cpu_graph:set_graph_background_color("#00000033")
-    vicious.register(cpu_graph, vicious.widgets.cpu,'$1',2)
+```lua
+cpu_graph = blingbling.line_graph({ height = 18,
+                                        width = 200,
+                                        show_text = true,
+                                        label = "Load: $percent %",
+                                        rounded_size = 0.3,
+                                        graph_background_color = "#00000033"
+                                      })
+--cpu_graph:set_height(18)
+--cpu_graph:set_width(200)
+--cpu_graph:set_show_text(true)
+--cpu_graph:set_label("Load: $percent %")
+--cpu_graph:set_rounded_size(0.3)
+--cpu_graph:set_graph_background_color("#00000033")
+vicious.register(cpu_graph, vicious.widgets.cpu,'$1',2)
+```
 
 #####progress_graph
 Create some progress graphs :
