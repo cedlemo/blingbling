@@ -128,99 +128,79 @@ function progressgraph.draw(p_graph, wibox, cr, width, height)
     cr:set_line_width(1)
     -- Set the values we need
     local value = data[p_graph].value
-    local value_format = data[value_format] or superproperties.value_format
-    
-    local v_margin =  superproperties.v_margin 
-    if data[p_graph].v_margin and data[p_graph].v_margin <= data[p_graph].height/4 then 
-        v_margin = data[p_graph].v_margin 
-    end
-    
-    local h_margin = superproperties.h_margin
-    if data[p_graph].h_margin and data[p_graph].h_margin <= data[p_graph].width / 3 then 
-        h_margin = data[p_graph].h_margin 
-    end
-    
-    local background_color = data[p_graph].background_color or superproperties.background_color
-    local rounded_size = data[p_graph].rounded_size or superproperties.rounded_size
-    local graph_background_color = data[p_graph].graph_background_color or superproperties.graph_background_color
-    local graph_color = data[p_graph].graph_color or superproperties.graph_color
-    local graph_line_color = data[p_graph].graph_line_color or superproperties.graph_line_color
-    local text_color = data[p_graph].text_color or superproperties.text_color
-    local text_background_color = data[p_graph].text_background_color or superproperties.text_background_color
-    local font_size =data[p_graph].font_size or superproperties.font_size
-    local font = data[p_graph].font or superproperties.font
-    
+    local props = helpers.load_properties(properties, data, p_graph, superproperties)    
     --Generate Background (background widget)
     if data[p_graph].background_color then
       helpers.draw_rounded_corners_rectangle( cr,
                                               0,
                                               0,
-                                              data[p_graph].width, 
-                                              data[p_graph].height,
-                                              background_color, 
-                                              rounded_size)
+                                              width, 
+                                              height,
+                                              props.background_color, 
+                                              props.rounded_size)
     end
   
     --draw a graph with graph_background_color
-    if data[p_graph].horizontal == true then
+    if props.horizontal == true then
       helpers.draw_rounded_corners_horizontal_graph( cr,
-                                        h_margin,
-                                        v_margin,
-                                        data[p_graph].width - h_margin, 
-                                        data[p_graph].height - v_margin, 
-                                        graph_background_color, 
-                                        graph_color, 
-                                        rounded_size, 
+                                        props.h_margin,
+                                        props.v_margin,
+                                        width - props.h_margin, 
+                                        height - props.v_margin, 
+                                        props.graph_background_color, 
+                                        props.graph_color, 
+                                        props.rounded_size, 
                                         value,
-                                        graph_line_color)
+                                        props.graph_line_color)
 
     else
        helpers.draw_rounded_corners_vertical_graph( cr,
-                                        h_margin,
-                                        v_margin,
-                                        data[p_graph].width - h_margin, 
-                                        data[p_graph].height - v_margin, 
-                                        graph_background_color, 
-                                        graph_color, 
-                                        rounded_size, 
+                                        props.h_margin,
+                                        props.v_margin,
+                                        width - props.h_margin, 
+                                        height - props.v_margin, 
+                                        props.graph_background_color, 
+                                        props.graph_color, 
+                                        props.rounded_size, 
                                         value,
-                                        graph_line_color)
+                                        props.graph_line_color)
     end 
 
-    if data[p_graph].show_text == true then
-        cr:set_font_size(font_size)
+    if props.show_text == true then
+        cr:set_font_size(props.font_size)
 
-        if type(font) == "string" then
-          cr:select_font_face(font,nil,nil)
-        elseif type(font) == "table" then
-          cr:select_font_face(font.family or "Sans", font.slang or "normal", font.weight or "normal")
+        if type(props.font) == "string" then
+          cr:select_font_face(props.font,nil,nil)
+        elseif type(props.font) == "table" then
+          cr:select_font_face(props.font.family or "Sans", props.font.slang or
+"normal", props.font.weight or "normal")
         end
         
-        local value = string.format(value_format, data[p_graph].value * 100)
+        local value = string.format(props.value_format, data[p_graph].value * 100)
         if data[p_graph].label then
             text=string.gsub(data[p_graph].label,"$percent", value)
         else
             text=value .. "%"
         end
         --if vertical graph, text is at the middle of the width, if vertical bar text is at the middle of the height
-        if data[p_graph].horizontal == nil or data[p_graph].horizontal == false then
+        if props.horizontal == nil or props.horizontal == false then
         helpers.draw_text_and_background(cr, 
-                                        text, 
-                                        data[p_graph].width/2, 
-                                        data[p_graph].height/2 , 
-                                        text_background_color, 
-                                        text_color,
+                                        props.text, 
+                                        width/2, 
+                                        height/2 , 
+                                        props.text_background_color, 
+                                        props.text_color,
                                         true,
                                         true,
                                         false,
                                         false)
         else
         helpers.draw_text_and_background(cr, 
-                                        text, 
-                                        h_margin, 
-                                        data[p_graph].height/2 , 
-                                        text_background_color, 
-                                        text_color,
+                                        props.text, 
+                                        props.h_margin, 
+                                        height/2 , 
+                                        props.text_background_color, 
+                                        props.text_color,
                                         false,
                                         true,
                                         false,
