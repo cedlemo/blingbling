@@ -69,99 +69,119 @@ vicious.register(cpu_graph, vicious.widgets.cpu,'$1',2)
 #####progress_graph
 Create some progress graphs :
 
-    cores_graph_conf ={height = 18, width = 8, rounded_size = 0.3}
-    cores_graphs = {}
-    for i=1,4 do
-      cores_graphs[i] = blingbling.progress_graph( cores_graph_conf)
-      vicious.register(cores_graphs[i], vicious.widgets.cpu, "$"..(i+1).."",1)
-    end
+```lua
+cores_graph_conf ={height = 18, width = 8, rounded_size = 0.3}
+cores_graphs = {}
+for i=1,4 do
+  cores_graphs[i] = blingbling.progress_graph( cores_graph_conf)
+  vicious.register(cores_graphs[i], vicious.widgets.cpu, "$"..(i+1).."",1)
+end
+```
 
 Add those widgets to your wibox:
 
-    for i=1,4 do
-      left_layout:add(cores_graphs[i])
-    end
+```lua
+for i=1,4 do
+  left_layout:add(cores_graphs[i])
+end
+```
 
 #####value_text_box
 Create a value text box:
 
-    home_fs_usage=blingbling.value_text_box({height = 18, width = 40, v_margin = 4})
-    --home_fs_usage:set_height(16)
-    --home_fs_usage:set_width(40)
-    --home_fs_usage:set_v_margin(2)
-    home_fs_usage:set_background_text_color("#00000099")
-    home_fs_usage:set_values_text_color({{"#88aa00ff",0}, --all value > 0 will be displayed using this color
-                              {"#d4aa00ff", 0.75},
-                              {"#d45500ff",0.77}})
-    --There is no maximum number of color that users can set, just put the lower values at first. 
-    home_fs_usage:set_text_color(beautiful.textbox_widget_as_label_font_color)
-    home_fs_usage:set_rounded_size(0.4)
-    home_fs_usage:set_font_size(8)
-    home_fs_usage:set_background_color("#00000044")
-    home_fs_usage:set_label("usage: $percent %")
-    
-    vicious.register(home_fs_usage, vicious.widgets.fs, "${/home used_p}", 120 )
+```lua
+home_fs_usage=blingbling.value_text_box({height = 18, width = 40, v_margin = 4})
+--home_fs_usage:set_height(16)
+--home_fs_usage:set_width(40)
+--home_fs_usage:set_v_margin(2)
+home_fs_usage:set_background_text_color("#00000099")
+home_fs_usage:set_values_text_color({{"#88aa00ff",0}, --all value > 0 will be displayed using this color
+                          {"#d4aa00ff", 0.75},
+                          {"#d45500ff",0.77}})
+--There is no maximum number of color that users can set, just put the lower values at first. 
+home_fs_usage:set_text_color(beautiful.textbox_widget_as_label_font_color)
+home_fs_usage:set_rounded_size(0.4)
+home_fs_usage:set_font_size(8)
+home_fs_usage:set_background_color("#00000044")
+home_fs_usage:set_label("usage: $percent %")
+
+vicious.register(home_fs_usage, vicious.widgets.fs, "${/home used_p}", 120 )
+```
 
 #####triangular_progress_graph
 Create a triangular progress graph (can be feed with vicious too):
 
-    triangular = blingbling.triangular_progressgraph({height = 18, width = 40, bar = true, v_margin = 2, h_margin = 2})
-    triangular:set_value(0.7)
+```lua
+triangular = blingbling.triangular_progressgraph({height = 18, width = 40, bar = true, v_margin = 2, h_margin = 2})
+triangular:set_value(0.7)
+```
 
 #####volume
 Create a volume widget (triangular progress bar with specific methods):
 
-    volume_master = blingbling.volume({height = 18, width = 40, bar =true, show_text = true, label ="$percent%"})
-    volume_master:update_master()
-    volume_master:set_master_control()
+```lua
+volume_master = blingbling.volume({height = 18, width = 40, bar =true, show_text = true, label ="$percent%"})
+volume_master:update_master()
+volume_master:set_master_control()
+```
 
 #####popups
 Add popups to one or more widget with blinbling.popups module:
 
-    --Example with cpu_graph created previously with default color :
-    blingbling.popups.htop(cpu_graph, { terminal =  terminal })
+```lua
+--Example with cpu_graph created previously with default color :
+blingbling.popups.htop(cpu_graph, { terminal =  terminal })
 
-    --Example with custom colors:
-    blingbling.popups.htop(cpu_graph, { title_color = beautiful.notify_font_color_1 , user_color = beautiful.notify_font_color_2 , root_color = beautiful.notify_font_color_3 , terminal =  terminal })
+--Example with custom colors:
+blingbling.popups.htop(cpu_graph, { title_color = beautiful.notify_font_color_1 , user_color = beautiful.notify_font_color_2 , root_color = beautiful.notify_font_color_3 , terminal =  terminal })
+```
 
 #####net
 Create a net widget with a popup that display connection informations:
 
-    netwidget = blingbling.net({interface = "eth0", show_text = true})
-    netwidget:set_ippopup()
+```
+netwidget = blingbling.net({interface = "eth0", show_text = true})
+netwidget:set_ippopup()
+```
 
 #####task_warrior
 Create a new task_warrior menu:
 
-    task_w = blingbling.task_warrior({ menu_icon = file_path, project_icon = file_path, task_icon = file_path ,task_done_icon = file_path, width})
-    task_w:set_project_icon(themes_dir .. "/test/titlebar/maximized_focus_active.png")
+```lua
+task_w = blingbling.task_warrior({ menu_icon = file_path, project_icon = file_path, task_icon = file_path ,task_done_icon = file_path, width})
+task_w:set_project_icon(themes_dir .. "/test/titlebar/maximized_focus_active.png")
+```
 
 #####udisks_glue
 Create a menu which displays mounted media with actions like mount/unmount/detach/eject. Must be used with .udisks-glue.conf that I created. ( The name of the variable containing the widget must be the same in your rc.lua and in the .udisks-glue.conf).
 
-    udisks_glue=blingbling.udisks_glue.new({ menu_icon = themes_dir .. "/test/titlebar/maximized_focus_active.png"})
+```lua
+udisks_glue=blingbling.udisks_glue.new({ menu_icon = themes_dir .. "/test/titlebar/maximized_focus_active.png"})
+```
 
 note: Added minor update to allow udisks_glue to insert a device without mounting it. See .udisks_glue.conf
 
 #####system
 Provide buttons with menu in order to reboot or shutdown the system. User can set icon for menu, accept and cancel actions.
 
-    shutdown=blingbling.system.shutdownmenu(beautiful.shutdown,
-                                            beautiful.accept,
-                                            beautiful.cancel)
-
-    reboot=blingbling.system.rebootmenu(beautiful.reboot,
+```lua
+shutdown=blingbling.system.shutdownmenu(beautiful.shutdown,
                                         beautiful.accept,
                                         beautiful.cancel)
-    lock=blingbling.system.lockmenu() --icons have been set in theme via the theme.bligbling table
-		logout=blingbling.system.logoutmenu() --icons have been set in theme via the theme.blingbling table
 
+reboot=blingbling.system.rebootmenu(beautiful.reboot,
+                                    beautiful.accept,
+                                    beautiful.cancel)
+lock=blingbling.system.lockmenu() --icons have been set in theme via the theme.bligbling table
+logout=blingbling.system.logoutmenu() --icons have been set in theme via the theme.blingbling table
+```
 
 #####clock
 This part provides a clock which displays month, day of month and day of week in japanese (kanji form)
 
-    mytextclock = blingbling.clock.japanese(" %m、%d、%w、<span color=\"#999999\">%H<span color=\""..blingbling.helpers.rgb(20,31,82).."\">時</span>%M<span color=\""..blingbling.helpers.rgb(20,31,82).."\">分</span> </span>")
-
+```lua
+mytextclock = blingbling.clock.japanese(" %m、%d、%w、<span color=\"#999999\">%H<span color=\""..blingbling.helpers.rgb(20,31,82).."\">時</span>%M<span color=\""..blingbling.helpers.rgb(20,31,82).."\">分</span> </span>")
+```
 
 #####tex_box
 The blingbling.text_box are widget like Awesome textbox but with more parameters. 
@@ -177,22 +197,28 @@ This object is an adaptation of the taglist object from awesome. Tags are blingb
 
 Just replace the line 
 
-    mytaglist[s] = awful.widget.taglist(s, awful.widget.taglist.filter.all, mytaglist.buttons)
+```lua
+mytaglist[s] = awful.widget.taglist(s, awful.widget.taglist.filter.all, mytaglist.buttons)
+```
 
 with
 
-    mytag[s]=blingbling.tagslist(s,  awful.widget.taglist.filter.all, mytaglist.buttons --[[, { normal = {}, focus ={}, urgent={}, occupied={} }--]])
-
+```lua
+mytag[s]=blingbling.tagslist(s,  awful.widget.taglist.filter.all, mytaglist.buttons --[[, { normal = {}, focus ={}, urgent={}, occupied={} }--]])
+```
 then add mytaglist[s] in the wibox :
 
-    left_layout:add(wibox.layout.margin(mytag[s],0,0,1,1))
-
+```lua
+left_layout:add(wibox.layout.margin(mytag[s],0,0,1,1))
+```
 
 #####calendar
 This widget is a clock widget with a calendar. You can show the calendar for the current month with a mouse click on this widget. In the calendar, there is 3 buttons allowing to show previous, current and next month. You can get events from remind and taskwarrior or add handlers for other task/calendar software.
 
-    calendar = blingbling.calendar()
-		calendar:set_link_to_external_calendar(true)
+```lua
+calendar = blingbling.calendar()
+calendar:set_link_to_external_calendar(true)
+```
 
 #####transient
 It is a wibox that can be displayed for a short amount of time. ( TODO : usage example)
@@ -200,25 +226,27 @@ It is a wibox that can be displayed for a short amount of time. ( TODO : usage e
 #####wlourf circle graph
 This is the circle graph of wlourf that you can feed with vicious.
 
-    circle = blingbling.wlourf_circle_graph({radius= 5, height = 18, width = 36, show_text = true, label = "cpu", h_margin = 2, v_margin = 0 --[[, font = {family = "Times New Roman", slang = "italic", weight = "bold"}]]})
-    circle:set_graph_colors({{"#88aa00ff",0}, --all value > 0 will be displayed using this color
-                           {"#d4aa00ff", 0.5},
-                           {"#d45500ff",0.77}})
-    --set the value directly
-    --circle:add_value(0.5)
-    --or use vicious
-    vicious.register(circle, vicious.widgets.cpu,'$1',2)
-
-
+```lua
+circle = blingbling.wlourf_circle_graph({radius= 5, height = 18, width = 36, show_text = true, label = "cpu", h_margin = 2, v_margin = 0 --[[, font = {family = "Times New Roman", slang = "italic", weight = "bold"}]]})
+circle:set_graph_colors({{"#88aa00ff",0}, --all value > 0 will be displayed using this color
+                       {"#d4aa00ff", 0.5},
+                       {"#d45500ff",0.77}})
+--set the value directly
+--circle:add_value(0.5)
+--or use vicious
+vicious.register(circle, vicious.widgets.cpu,'$1',2)
+```
 
 #####Global theming for blingbling.
 
 You can provide default theme for blingbling instead of configuring colors for each widgets. You just need to create a blingbling table in your theme.lua file and override values that can be find in superproperties.lua:
 
-    theme.blingbling = {
-    htop_title_color = "#ff0000",
-    htop_user_color = "#00ff00"
-    }
+```lua
+theme.blingbling = {
+  htop_title_color = "#ff0000",
+  htop_user_color = "#00ff00"
+}
+```
 
 Values that can be modified are:
 
