@@ -1,4 +1,5 @@
 --hight priority
+--> finish to clean circle_graph
 -->use load_properties in all widgets
 simplify value_text_box
 remove border for text background
