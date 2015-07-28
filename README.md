@@ -10,6 +10,9 @@ The current version is the v2.1 and works with Awesome WM <= 3.5.6 and Lua <= 5.
 
 <img src="https://raw.github.com/cedlemo/blingbling/master/config_example/japanese2_screen.png" width="576" height="324" alt="Screenshot">
 
+
+<img src="https://raw.github.com/cedlemo/blingbling/master/config_example/graphs_test/screenshot.png" width="576" height="324" alt="Screenshot">
+
 ###Version: v2.1
 
 *  line_graph
