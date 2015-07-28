@@ -78,29 +78,33 @@ local properties = {"width", "height", "h_margin", "v_margin", "radius", "graph_
 
 function circle_graph.draw(c_graph, wibox, cr, width, height)
 
-    local v_margin =  superproperties.v_margin 
-    if data[c_graph].v_margin and data[c_graph].v_margin <= data[c_graph].height/4 then 
-        v_margin = data[c_graph].v_margin 
-    end
-    
-    local h_margin = superproperties.h_margin
-    if data[c_graph].h_margin and data[c_graph].h_margin <= data[c_graph].width / 3 then 
-        h_margin = data[c_graph].h_margin 
-    end
+  local props = helpers.load_properties(properties, data, c_graph, superproperties)
+--    local v_margin =  superproperties.v_margin 
+--    if data[c_graph].v_margin and data[c_graph].v_margin <= data[c_graph].height/4 then 
+--        v_margin = data[c_graph].v_margin 
+--    end
+--    
+--    local h_margin = superproperties.h_margin
+--    if data[c_graph].h_margin and data[c_graph].h_margin <= data[c_graph].width / 3 then 
+--        h_margin = data[c_graph].h_margin 
+--    end
+--
+--    local graph_color = data[c_graph].graph_color or superproperties.graph_color
+--    
+--    local font_size =data[c_graph].font_size or superproperties.font_size
+--    local font = data[c_graph].font or superproperties.font
 
-    local graph_color = data[c_graph].graph_color or superproperties.graph_color
-    
-    local font_size =data[c_graph].font_size or superproperties.font_size
-    local font = data[c_graph].font or superproperties.font
+
     local value = data[c_graph].value * 100
     local line_width = 1
-    local radius = data[c_graph].radius or height/2-line_width
-	  local yy = ( height - (v_margin*2))/2
-	  local xx = radius+line_width
+    local radius = props.radius or height/2-line_width
+	  local yy = ( height - (props.v_margin*2))/2
+	  local xx = radius + line_width
 	  local w=height*2
-
-    if data[c_graph].graph_colors  and type(data[c_graph].graph_colors) == "table" then
-      for i,table in ipairs(data[c_graph].graph_colors) do
+    local graph_color = props.graph_color
+    
+    if props.graph_colors  and type(props.graph_colors) == "table" then
+      for i,table in ipairs(props.graph_colors) do
         if i == 1 then 
           if value/100 >= table[2] then
             graph_color = table[1]
@@ -115,26 +119,32 @@ function circle_graph.draw(c_graph, wibox, cr, width, height)
 
     r,g,b,a=helpers.hexadecimal_to_rgba_percent(graph_color)
     cr:set_source_rgba(r,g,b,a)
-    if data[c_graph].show_text == true and data[c_graph].label ~= nil then
-      cr:set_font_size(font_size)
 
-      if type(font) == "string" then
-        cr:select_font_face(font,nil,nil)
-      elseif type(font) == "table" then
-        cr:select_font_face(font.family or "Sans", font.slang or "normal", font.weight or "normal")
+    local te
+    
+    if props.show_text == true and props.label ~= nil then
+      cr:set_font_size(props.font_size)
+
+      if type(props.font) == "string" then
+        cr:select_font_face(props.font,nil,nil)
+      elseif type(props.font) == "table" then
+        cr:select_font_face(props.font.family or "Sans",
+                            props.font.slang or "normal",
+                            props.font.weight or "normal")
       end
       
-      te=cr:text_extents(data[c_graph].label)
+      te=cr:text_extents(props.label)
       cr:save()
-      cr:translate(-te["y_bearing"]+h_margin,(height+te["x_advance"]+te["x_bearing"])/2)
+      cr:translate(-te["y_bearing"] + props.h_margin,
+                   (height + te["x_advance"] + te["x_bearing"])/2)
       cr:rotate(-math.pi/2)
-      cr:show_text(data[c_graph].label)
+      cr:show_text(props.label)
       cr:stroke()	
       cr:restore()
-      xx= te["height"]-te["y_bearing"]+radius +h_margin
+      xx= te["height"] - te["y_bearing"] + radius + props.h_margin
+      width = te["height"] - te["y_bearing"] + radius*2 + props.h_margin*2
     end
     
-    data[c_graph].width = te["height"]-te["y_bearing"]+radius*2 + h_margin*2
 
     cr:set_line_cap("butt")
 	  cr:set_line_width(line_width)
