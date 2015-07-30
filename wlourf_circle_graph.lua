@@ -16,18 +16,6 @@ local circle_graph = { mt = {} }
 ---Circle graph from wlourf.
 --@module blingbling.wlourf_circle_graph
 
----Define the top and bottom margin for the graph area.
---@usage circle:set_v_margin(integer)
---@name set_v_margin
---@class function
---@param margin an integer for top and bottom margin
-
----Define the left and right margin for the graph area.
---@usage circle:set_h_margin()
---@name set_h_margin
---@class function 
---@param margin an integer for left and right margin
-
 ---Set the radius of the circle.
 --@usage circle:set_radius(integer)
 --@name set_radius
@@ -74,85 +62,69 @@ local circle_graph = { mt = {} }
 
 
 local data = setmetatable({}, { __mode = "k" })
-local properties = {"width", "height", "h_margin", "v_margin", "radius", "graph_colors", "graph_color", "show_text", "font_size", "font", "label"}
+local properties = {"width", "height", "radius", "graph_colors", "graph_color", "show_text", "font_size", "font", "label"}
 
 function circle_graph.draw(c_graph, wibox, cr, width, height)
 
   local props = helpers.load_properties(properties, data, c_graph, superproperties)
---    local v_margin =  superproperties.v_margin 
---    if data[c_graph].v_margin and data[c_graph].v_margin <= data[c_graph].height/4 then 
---        v_margin = data[c_graph].v_margin 
---    end
---    
---    local h_margin = superproperties.h_margin
---    if data[c_graph].h_margin and data[c_graph].h_margin <= data[c_graph].width / 3 then 
---        h_margin = data[c_graph].h_margin 
---    end
---
---    local graph_color = data[c_graph].graph_color or superproperties.graph_color
---    
---    local font_size =data[c_graph].font_size or superproperties.font_size
---    local font = data[c_graph].font or superproperties.font
 
-
-    local value = data[c_graph].value * 100
-    local line_width = 1
-    local radius = props.radius or height/2-line_width
-	  local yy = ( height - (props.v_margin*2))/2
-	  local xx = radius + line_width
-	  local w=height*2
-    local graph_color = props.graph_color
-    
-    if props.graph_colors  and type(props.graph_colors) == "table" then
-      for i,table in ipairs(props.graph_colors) do
-        if i == 1 then 
-          if value/100 >= table[2] then
-            graph_color = table[1]
-          end
-        elseif i ~= 1 then
-          if value/100 >= table[2]  then
-            graph_color = table[1]
-          end
+  local value = data[c_graph].value
+  local line_width = 1
+  local radius = props.radius or height/2 - line_width
+  local yy = ( height )/2
+  local xx = radius + line_width
+  local graph_color = props.graph_color
+  
+  if props.graph_colors  and type(props.graph_colors) == "table" then
+    for i,table in ipairs(props.graph_colors) do
+      if i == 1 then 
+        if value >= table[2] then
+          graph_color = table[1]
+        end
+      elseif i ~= 1 then
+        if value >= table[2]  then
+          graph_color = table[1]
         end
       end
     end
+  end
 
-    r,g,b,a=helpers.hexadecimal_to_rgba_percent(graph_color)
-    cr:set_source_rgba(r,g,b,a)
+  r,g,b,a=helpers.hexadecimal_to_rgba_percent(graph_color)
+  cr:set_source_rgba(r,g,b,a)
 
-    local te
-    
-    if props.show_text == true and props.label ~= nil then
-      cr:set_font_size(props.font_size)
+  local te
+  
+  if props.show_text == true and props.label ~= nil then
+    cr:set_font_size(props.font_size)
 
-      if type(props.font) == "string" then
-        cr:select_font_face(props.font,nil,nil)
-      elseif type(props.font) == "table" then
-        cr:select_font_face(props.font.family or "Sans",
-                            props.font.slang or "normal",
-                            props.font.weight or "normal")
-      end
-      
-      te=cr:text_extents(props.label)
-      cr:save()
-      cr:translate(-te["y_bearing"] + props.h_margin,
-                   (height + te["x_advance"] + te["x_bearing"])/2)
-      cr:rotate(-math.pi/2)
-      cr:show_text(props.label)
-      cr:stroke()	
-      cr:restore()
-      xx= te["height"] - te["y_bearing"] + radius + props.h_margin
-      width = te["height"] - te["y_bearing"] + radius*2 + props.h_margin*2
+    if type(props.font) == "string" then
+      cr:select_font_face(props.font,nil,nil)
+    elseif type(props.font) == "table" then
+      cr:select_font_face(props.font.family or "Sans",
+                          props.font.slang or "normal",
+                          props.font.weight or "normal")
     end
     
+    te=cr:text_extents(props.label)
+    cr:save()
+    cr:translate(-te["y_bearing"] ,
+                 (height + te["x_advance"] + te["x_bearing"])/2)
+    cr:rotate(-math.pi/2)
+    cr:show_text(props.label)
+    cr:stroke()	
+    cr:restore()
+    xx= te["height"] - te["y_bearing"] + radius 
+    width = te["height"] - te["y_bearing"] + radius*2 
+  end
+  
 
-    cr:set_line_cap("butt")
-	  cr:set_line_width(line_width)
-	  cr:arc(xx,yy,radius,0,2*math.pi)
-	  cr:stroke()
-	  cr:move_to(xx,yy)
-	  cr:arc_negative(xx,yy,radius,0,-2*math.pi*value/100)
-	  cr:fill()
+  cr:set_line_cap("butt")
+  cr:set_line_width(line_width)
+  cr:arc(xx,yy,radius,0,2*math.pi)
+  cr:stroke()
+  cr:move_to(xx,yy)
+  cr:arc_negative(xx,yy,radius,0,-2*math.pi*value)
+  cr:fill()
 end
 
 function circle_graph.fit(c_graph, width, height)
