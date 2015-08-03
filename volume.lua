@@ -14,9 +14,9 @@ local volume = { mt = {} }
 
 local data = setmetatable({}, { __mode = "k" })
 
-local function get_master_infos()
+local function get_master_infos(mixer_cmd)
   local state, volume = nil, nil
-  local f=io.popen("amixer get Master")
+  local f=io.popen(mixer_cmd .. " get Master")
   for line in f:lines() do
     if string.match(line, "%s%[%d+%%%]%s") ~= nil then
       volume=string.match(line, "%s%[%d+%%%]%s")
@@ -31,8 +31,8 @@ local function get_master_infos()
   return state, volume
 end
 
-local function set_master(parameters)
-    local cmd = "amixer --quiet set Master " ..parameters
+local function set_master(mixer_cmd, parameters)
+    local cmd = mixer_cmd .. " --quiet set Master " ..parameters
     local f=io.popen(cmd)
     f:close()
 end
@@ -40,7 +40,7 @@ local function update_master(volume_graph)
     local state, value = nil, nil
     data[volume_graph].mastertimer = timer({timeout = 0.5})
     data[volume_graph].mastertimer:connect_signal("timeout", function() 
-      state, value = get_master_infos()
+      state, value = get_master_infos(data[volume_graph].cmd)
       volume_graph:set_value(value/100)
       if state == "off" then
         volume_graph:set_label("off")
@@ -97,13 +97,13 @@ end
 function set_master_control(volume_graph)
     volume_graph:buttons(awful.util.table.join(
     awful.button({ }, 1, function()
-      set_master("toggle")
+      set_master(data[volume_graph].cmd, "toggle")
     end),
     awful.button({ }, 5, function()
-      set_master("2%-")
+      set_master(data[volume_graph].cmd, "2%-")
     end),
     awful.button({ }, 4, function()
-      set_master("2%+")
+      set_master(data[volume_graph].cmd, "2%+")
     end)))
 end
 
@@ -116,6 +116,7 @@ function volume.new(args)
     local volume_graph = triangular_progress_graph(args)    
     data[volume_graph] = {}
     data[volume_graph].label = args.label or "$percent%"
+    data[volume_graph].cmd = args.cmd or "amixer"
     volume_graph.update_master = update_master
     volume_graph.update_mpd= update_mpd
     volume_graph.set_master_control = set_master_control
