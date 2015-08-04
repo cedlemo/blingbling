@@ -107,11 +107,14 @@ end
 --- Create a volume_graph widget.
 -- @param args Standard widget() arguments. This is a table that accepts
 -- different keys:
---   { label = "$percent%", cmd = "amixer -c 1" }
+--
+--    <code>{ cmd = "amixer -c 1", label = "$percent%", graph_color = "#005500" }</code>
+--
 --    The default cmd is "amixer" which should be good enough if you only have one audio output.
 --    You can provide another command based on your need. For example, the "amixer -c 1" command
 --    has been given by k3rni contributor and allow to select the audio card. (see 
 --    https://github.com/cedlemo/blingbling/pull/30 for more information.
+--
 --    The other keys are those related to the graph itself and are the same that those
 --    used with the triangular_progress_graph
 -- @return A graph widget.
