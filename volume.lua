@@ -53,7 +53,7 @@ local function update_master(volume_graph)
 end
 
 local function get_mpd_volume()
-  local mpd_volume=0
+  local mpd_volume = 0
 
   local pass = "\"\""
   local host = "127.0.0.1"
@@ -71,7 +71,6 @@ local function get_mpd_volume()
     end
     if string.find(line,"volume:.%d%d%%") then
       mpd_volume = string.match(line,"[%s%d]%d%d")
-      --mpd_volume = line
     end
   end
   f:close()
@@ -79,7 +78,6 @@ local function get_mpd_volume()
 end
 ---Link the widget to mpd's volume level. 
 --@usage myvolume:update_mpd()
---@param volume_graph the volume graph
 local function update_mpd(volume_graph)
     local state
     local value
@@ -93,7 +91,6 @@ end
 ---Link the widget to the master channel of your system (uses amixer).
 --a left clic toggle mute/unmute, wheel up to increase the volume and wheel down to decrease the volume
 --@usage myvolume:set_master_control()
---@param volume_graph the volume graph
 function set_master_control(volume_graph)
     volume_graph:buttons(awful.util.table.join(
     awful.button({ }, 1, function()
@@ -107,9 +104,16 @@ function set_master_control(volume_graph)
     end)))
 end
 
----Create a volume_graph widget.
--- @param args Standard widget() arguments. You should add width and height
--- key to set graph geometry.
+--- Create a volume_graph widget.
+-- @param args Standard widget() arguments. This is a table that accepts
+-- different keys:
+--   { label = "$percent%", cmd = "amixer -c 1" }
+--    The default cmd is "amixer" which should be good enough if you only have one audio output.
+--    You can provide another command based on your need. For example, the "amixer -c 1" command
+--    has been given by k3rni contributor and allow to select the audio card. (see 
+--    https://github.com/cedlemo/blingbling/pull/30 for more information.
+--    The other keys are those related to the graph itself and are the same that those
+--    used with the triangular_progress_graph
 -- @return A graph widget.
 function volume.new(args)
     local args = args or {}
