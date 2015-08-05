@@ -164,6 +164,7 @@ local circle_graph = blingbling.wlourf_circle_graph({radius = 12,
                                                      show_text = true,
                                                      label = "awesome"})
 local circle_val = 1.0
+circle_graph:set_value(circle_val)
 circle_graph:buttons(awful.util.table.join(
   awful.button({ }, 5, function()
     circle_val = circle_val - 0.02

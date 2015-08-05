@@ -1,5 +1,4 @@
 --hight priority
---> finish to clean circle_graph
 -->use load_properties in all widgets
 simplify value_text_box
 remove border for text background
@@ -10,6 +9,8 @@ clean helpers (some methods with too much parameters)
 try to be consistent with the use of h_margin/v_margin names or h_padding/v_padding
 
 --average priority
+add more options in volume.lua (choose card, mpd address, mpd password ...)
+
 Check all values in superproperties and in all files some of them doesn't match so user cannot modify some parameters:
 check all for tagslist values
 create a border value for tagslist (user set it with a color and a border of 1 px is displayed)
