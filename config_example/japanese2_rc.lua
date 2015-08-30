@@ -218,14 +218,14 @@ mytasklist.buttons = awful.util.table.join(
 	volume_bar:set_master_control()
 
 	home_fs_usage=blingbling.value_text_box({height = 14, width = 40, v_margin = 3})
-	home_fs_usage:set_text_background_color(beautiful.widget_background)
-	home_fs_usage:set_values_text_color(colors_stops)
-	home_fs_usage:set_font_size(8)
-	home_fs_usage:set_background_color("#00000000")
-	home_fs_usage:set_label("home: $percent %")
+  home_fs_usage:set_text_background_color(beautiful.widget_background)
+  home_fs_usage:set_values_text_color(colors_stops)
+  home_fs_usage:set_font_size(8)
+  home_fs_usage:set_background_color("#00000000")
+  home_fs_usage:set_label("home: $percent %")
 
-	vicious.register(home_fs_usage, vicious.widgets.fs, "${/home used_p}", 120 )
-	
+vicious.register(home_fs_usage, vicious.widgets.fs, "${/home used_p}", 120 )
+--	
 	root_fs_usage=blingbling.value_text_box({height = 14, width = 40, v_margin = 3})
 	root_fs_usage:set_text_background_color(beautiful.widget_background)
 	root_fs_usage:set_values_text_color(colors_stops)
@@ -233,9 +233,10 @@ mytasklist.buttons = awful.util.table.join(
 	root_fs_usage:set_font_size(8)
 	root_fs_usage:set_background_color("#00000000")
 	root_fs_usage:set_label("root: $percent %")
-
-	vicious.register(root_fs_usage, vicious.widgets.fs, "${/ used_p}", 120 )
-	
+--  root_fs_usage:set_value_format("%2.2f")
+  root_fs_usage:add_value(20.2355)
+  --	vicious.register(root_fs_usage, vicious.widgets.fs, "${/ used_p}", 120 )
+--	
 	data0_fs_usage=blingbling.value_text_box({height = 14, width = 40, v_margin = 3})
 	data0_fs_usage:set_text_background_color(beautiful.widget_background)
 	data0_fs_usage:set_values_text_color(colors_stops)
@@ -273,7 +274,7 @@ mytasklist.buttons = awful.util.table.join(
 	logout=blingbling.system.logoutmenu()
 	mytag={}
 	--test = blingbling.text_box()
-for s = 1, ( screen.count() - 1) do
+for s = 1, screen.count() do
 	mytag[s]=blingbling.tagslist(s,  awful.widget.taglist.filter.all, mytaglist.buttons)
     -- Create a promptbox for each screen
     mypromptbox[s] = awful.widget.prompt()
@@ -301,7 +302,7 @@ for s = 1, ( screen.count() - 1) do
     left_layout:add(mypromptbox[s])
 		left_layout:add(cpu_graph)
 		left_layout:add(mem_graph)
-    left_layout:add(home_fs_usage)
+--    left_layout:add(home_fs_usage)
     left_layout:add(root_fs_usage)
     left_layout:add(data0_fs_usage)
     left_layout:add(data1_fs_usage)

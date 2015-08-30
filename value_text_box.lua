@@ -77,6 +77,13 @@ local data = setmetatable({}, { __mode = "k" })
 --@class function
 --@param size the font size
 
+---Define displayed text value format string
+--@usage mypgraph:set_value_format(string) --> "%2.f"
+--@name set_value_format
+--@class function
+--@param printf format string for display text
+
+
 ---Define the template of the text to display.
 --@usage myvt_box:set_label(string)
 --By default the text is : (value_send_to_the_widget *100) 
@@ -90,46 +97,31 @@ local properties = {    "width", "height", "h_margin", "v_margin", "padding",
                         "background_color", 
                         "background_text_border", "text_background_color",
                         "rounded_size", "text_color", "values_text_color", 
-                        "font_size", "font", "label"
+                        "font_size", "font", "label", "value_format"
                    }
 
 function value_text_box.draw(vt_box, wibox, cr, width, height)
-  local v_margin =  superproperties.v_margin  
-  if data[vt_box].v_margin and data[vt_box].v_margin <= data[vt_box].height/3 then 
-    v_margin = data[vt_box].v_margin 
-  end
-  local h_margin = superproperties.h_margin 
-  if data[vt_box].h_margin and data[vt_box].h_margin <= data[vt_box].width / 3 then 
-    h_margin = data[vt_box].h_margin 
-  end
-  local padding = data[vt_box].padding or superproperties.padding
-  local background_color = data[vt_box].background_color or superproperties.background_color
-  local rounded_size = data[vt_box].rounded_size or superproperties.rounded_size
-  local graph_background_color = data[vt_box].graph_background_color or superproperties.graph_background_color
-  local graph_background_border = data[vt_box].graph_background_border or superproperties.graph_background_border
-  local graph_color = data[vt_box].graph_color or superproperties.graph_color
-  local graph_line_color = data[vt_box].graph_line_color or superproperties.graph_line_color
-  local text_color = data[vt_box].text_color or superproperties.text_color
-  local text_background_color = data[vt_box].text_background_color or superproperties.text_background_color
-  local font_size =data[vt_box].font_size or superproperties.font_size
-  local font = data[vt_box].font or superproperties.font
   --find the width of our image
-  local value = (data[vt_box].value or 0) * 100
-  local label = data[vt_box].label or "$percent"
-  local text = string.gsub(label,"$percent", value)
+  local props = helpers.load_properties(properties, data, vt_box, superproperties)
+  local value = string.format(props.value_format,
+                              data[vt_box].value * 100)
+--  local label = data[vt_box].label or "$percent"
+  local text = string.gsub(props.label,"$percent", value)
 
-  cr:set_font_size(font_size)
+  cr:set_font_size(props.font_size)
 
-  if type(font) == "string" then
-    cr:select_font_face(font,nil,nil)
-  elseif type(font) == "table" then
-    cr:select_font_face(font.family or "Sans", font.slang or "normal", font.weight or "normal")
+  if type(props.font) == "string" then
+    cr:select_font_face(props.font,nil,nil)
+  elseif type(props.font) == "table" then
+    cr:select_font_face(props.font.family or "Sans",
+                        props.font.slang or "normal",
+                        props.font.weight or "normal")
   end
       
   
   local ext = cr:text_extents(text)
-  local height = ( (font_size + 2* padding + 2* v_margin) > data[vt_box].height ) and font_size + 2* padding + 2* v_margin or data[vt_box].height
-  local width = ( math.ceil(ext.width +2*ext.x_bearing+ 2*padding + 2* h_margin) > data[vt_box].width ) and  math.ceil(ext.width +2*ext.x_bearing+ 2*padding + 2* h_margin) or data[vt_box].width
+  local height = ( (props.font_size + 2* props.padding + 2* props.v_margin) > data[vt_box].height ) and props.font_size + 2* props.padding + 2* props.v_margin or data[vt_box].height
+  local width = ( math.ceil(ext.width +2*ext.x_bearing+ 2*props.padding + 2* props.h_margin) > data[vt_box].width ) and  math.ceil(ext.width +2*ext.x_bearing+ 2*props.padding + 2* props.h_margin) or data[vt_box].width
 
   if data[vt_box].width == nil or data[vt_box].width < width then
     data[vt_box].width = width
@@ -145,39 +137,39 @@ function value_text_box.draw(vt_box, wibox, cr, width, height)
                                             0,
                                             data[vt_box].width, 
                                             data[vt_box].height,
-                                            background_color, 
-                                            rounded_size)
+                                            props.background_color, 
+                                            props.rounded_size)
   
   end
   
   --Draw nothing, or filled ( value background)
   if data[vt_box].text_background_color then
     --draw rounded corner rectangle
-    local x=h_margin
-    local y=v_margin
+    local x=props.h_margin
+    local y=props.v_margin
     
     helpers.draw_rounded_corners_rectangle( cr,
                                             x,
                                             y,
-                                            data[vt_box].width - h_margin, 
-                                            data[vt_box].height - v_margin, 
-                                            text_background_color, 
-                                            rounded_size,
-                                            background_text_border
+                                            data[vt_box].width - props.h_margin, 
+                                            data[vt_box].height - props.v_margin, 
+                                            props.text_background_color, 
+                                            props.rounded_size,
+                                            props.background_text_border
                                             )
   end  
     --draw the value
 
     --analyse the label :
     label_parts={}
-    label_length = string.len(label)
-    value_start, value_finish = string.find(label, "$percent")
+    label_length = string.len(props.label)
+    value_start, value_finish = string.find(props.label, "$percent")
     table.insert(label_parts,{1, value_start -1})
     table.insert(label_parts,{value_start, value_finish,is_value = true})
     local new_start = value_finish + 1
     if value_finish < label_length then
       while value_start ~= nil do
-        value_start, value_finish = string.find(label, "$percent", new_start)
+        value_start, value_finish = string.find(props.label, "$percent", new_start)
         if value_start ~=nil and value_start ~= new_start then
           table.insert(label_parts,{new_start, value_start -1})
           table.insert(label_parts,{value_start, value_finish, is_value = true})
@@ -196,17 +188,16 @@ function value_text_box.draw(vt_box, wibox, cr, width, height)
     --Position the  x start of the text. If rounded_corner, then we move the text on the right
     local move_because_of_rounded_corners=0
     if width> height then
-      move_because_of_rounded_corners=((height/2) * rounded_size)/2
+      move_because_of_rounded_corners=((height/2) * props.rounded_size)/2
     else
-      move_because_of_rounded_corners=((width/2) * rounded_size)/2
+      move_because_of_rounded_corners=((width/2) * props.rounded_size)/2
     end
-    x= h_margin + padding + move_because_of_rounded_corners
+    x= props.h_margin + props.padding + move_because_of_rounded_corners
     y= 0 
     --Draw the text:
-
-    local default_text_color = text_color 
+    -- TODO necessity for this variable (default_text_color ??)
+    local default_text_color =props.text_color 
 		local value_text_color = default_text_color 
-
     if data[vt_box].values_text_color  and type(data[vt_box].values_text_color) == "table" then
       for i,table in ipairs(data[vt_box].values_text_color) do
         if i == 1 then 
@@ -225,28 +216,28 @@ function value_text_box.draw(vt_box, wibox, cr, width, height)
         text = value
         --dirty trick : if there are spaces at the end of cairo text, they aren't represented so I put them at the begining of the value:
         for j=range[1],label_parts[i-1][1], -1 do
-          if string.sub(label, j,j) == " " then
+          if string.sub(props.label, j,j) == " " then
             text = " " .. text
           end
         end
         r,g,b,a = helpers.hexadecimal_to_rgba_percent(value_text_color)
         cr:set_source_rgba(r,g,b,a)
         ext = cr:text_extents(text)
-        y=math.floor(data[vt_box].height/2 + font_size/2 - padding/2) 
-        cr:set_font_size(font_size)
+        y=math.floor(data[vt_box].height/2 + props.font_size/2 - props.padding/2) 
+        cr:set_font_size(props.font_size)
         cr:move_to(x,y)
         cr:show_text(text)
         x=x+ext.width + ext.x_bearing
       else
-        text=string.sub(label, range[1],range[2])
+        text=string.sub(props.label, range[1],range[2])
         text=string.gsub(text, "(.*[^%s]*)(%s*)","%1")
-        r,g,b,a = helpers.hexadecimal_to_rgba_percent(default_text_color)
+        r,g,b,a = helpers.hexadecimal_to_rgba_percent(props.text_color)
         cr:set_source_rgba(r,g,b,a)
         ext = cr:text_extents(text)
        
-        y=math.floor(data[vt_box].height/2 + font_size/2 - padding/2) 
+        y=math.floor(data[vt_box].height/2 + props.font_size/2 - props.padding/2) 
  
-        cr:set_font_size(font_size)
+        cr:set_font_size(props.font_size)
         cr:move_to(x,y)
         cr:show_text(text)
         x=x+ext.width --+ext.x_bearing
