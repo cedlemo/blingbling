@@ -97,7 +97,7 @@ home_fs_usage=blingbling.value_text_box({height = 18, width = 40, v_margin = 4})
 --home_fs_usage:set_height(16)
 --home_fs_usage:set_width(40)
 --home_fs_usage:set_v_margin(2)
-home_fs_usage:set_background_text_color("#00000099")
+home_fs_usage:set_text_background_color("#00000099")
 home_fs_usage:set_values_text_color({{"#88aa00ff",0}, --all value > 0 will be displayed using this color
                           {"#d4aa00ff", 0.75},
                           {"#d45500ff",0.77}})
@@ -189,14 +189,14 @@ mytextclock = blingbling.clock.japanese(" %m、%d、%w、<span color=\"#999999\"
 #####tex_box
 The blingbling.text_box are widget like Awesome textbox but with more parameters. 
 * background_color the color used to fill the background
-* background_text_color a background color that will be set between the background and the text
+* text_background_color a background color that will be set between the background and the text
 * h_margin v_margin margin between the text background and the wibox
 * rounded_size the size for rounded corners : this can be a number that applies for all corners or a table of 4 values { upper left, upper right, lower right, lower left }
 * text_color, font, font_size
 
 
 #####tagslist
-This object is an adaptation of the taglist object from awesome. Tags are blingbling.text_box. Users can provide a style for the tags as the last argument. The style must be a table with the 4 keys corresponding to the states of a tag (normal, focus, urgent, occupied). Each value of this keys are tables with style paramaters of text_box widget. (width, height, h_margin, v_margin, background_color, background_text_color, rounded_size, text_color, font_size, font.
+This object is an adaptation of the taglist object from awesome. Tags are blingbling.text_box. Users can provide a style for the tags as the last argument. The style must be a table with the 4 keys corresponding to the states of a tag (normal, focus, urgent, occupied). Each value of this keys are tables with style paramaters of text_box widget. (width, height, h_margin, v_margin, background_color, text_background_color, rounded_size, text_color, font_size, font.
 
 Just replace the line 
 
@@ -267,7 +267,7 @@ Theme values for graphs or value_text_box objects:
 *  text_color
 *  value_format
 *  font_size
-*  background_text_color
+*  text_background_color
 
 Theme values for popups module:
 
