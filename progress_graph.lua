@@ -185,7 +185,7 @@ function progressgraph.draw(p_graph, wibox, cr, width, height)
         --if vertical graph, text is at the middle of the width, if vertical bar text is at the middle of the height
         if props.horizontal == nil or props.horizontal == false then
         helpers.draw_text_and_background(cr, 
-                                        props.text, 
+                                        text, 
                                         width/2, 
                                         height/2 , 
                                         props.text_background_color, 
@@ -196,7 +196,7 @@ function progressgraph.draw(p_graph, wibox, cr, width, height)
                                         false)
         else
         helpers.draw_text_and_background(cr, 
-                                        props.text, 
+                                        text, 
                                         props.h_margin, 
                                         height/2 , 
                                         props.text_background_color, 
