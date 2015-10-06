@@ -14,13 +14,31 @@ local volume = { mt = {} }
 
 local data = setmetatable({}, { __mode = "k" })
 
+-- Isolate and return the default sink info from the given string
+function default_sink_info(output)
+   local defaultSinkIdx, endMatch = string.find(output, "%s+*%sindex:%s%d+")
+
+   if (defaultSinkIdx == nil) then
+      return nil
+   end
+   local nextSinkIdx = string.find(output, "%s+^*%sindex:%s%d+", endMatch)
+   if (nextSinkIdx == nil) then
+      nextSinkIdx = output:len()
+   end
+   return string.sub(output, defaultSinkIdx, nextSinkIdx)
+end
+
 -- Get volume and mute state
 local function get_master_infos(volume_graph)
    local state, volume = nil, nil
 
    if (data[volume_graph].pulseaudio == true) then
-      local pastatus = awful.util.pread("pulseaudio-ctl full-status")
-      volume,state = string.match(pastatus, "(%d+)%s(%a+).*$")
+      local pastatus = awful.util.pread("pacmd list-sinks")
+      local defaultSinkInfo = default_sink_info(pastatus)
+      if (defaultSinkInfo) then
+	 volume = string.match(defaultSinkInfo, "volume:.-%/%s+(%d+)%%")
+	 state = string.match(defaultSinkInfo, "muted:%s(%a+)")
+      end
    else
       local f=io.popen(data[volume_graph].cmd .. " get Master")
       for line in f:lines() do
@@ -41,13 +59,6 @@ local function get_master_infos(volume_graph)
       state = false
    end
    return state, volume
-end
-
--- Alsa command
-local function set_alsa_master(mixer_cmd, parameters)
-   local cmd = mixer_cmd .. " --quiet set Master " .. parameters
-   local f=io.popen(cmd)
-   f:close()
 end
 
 local function update_master(volume_graph)
@@ -102,6 +113,13 @@ local function update_mpd(volume_graph)
         data[volume_graph].mastertimer:start()
 end
 
+-- Alsa command
+local function set_alsa_master(mixer_cmd, parameters)
+   local cmd = mixer_cmd .. " --quiet set Master " .. parameters
+   local f=io.popen(cmd)
+   f:close()
+end
+
 function set_alsa_control(volume_graph)
    volume_graph:buttons(awful.util.table.join(
 	   awful.button({ }, 1, function()
@@ -118,13 +136,13 @@ end
 function set_pa_control(volume_graph)
    volume_graph:buttons(awful.util.table.join(
         awful.button({ }, 1, function()
-	      awful.util.spawn_with_shell("pulseaudio-ctl mute")
+	      awful.util.spawn_with_shell("pactl set-sink-mute @DEFAULT_SINK@ toggle")
 	end),
 	awful.button({ }, 5, function()
-	      awful.util.spawn_with_shell("pulseaudio-ctl down " .. data[volume_graph].increment)
+	      awful.util.spawn_with_shell("pactl set-sink-volume @DEFAULT_SINK@ -" .. data[volume_graph].increment .. "%")
 	end),
 	awful.button({ }, 4, function()
-	      awful.util.spawn_with_shell("pulseaudio-ctl up " .. data[volume_graph].increment)
+	      awful.util.spawn_with_shell("pactl set-sink-volume @DEFAULT_SINK@ +" .. data[volume_graph].increment .. "%")
    end)))
 end
 
@@ -132,7 +150,6 @@ end
 --a left clic toggle mute/unmute, wheel up to increase the volume and wheel down to decrease the volume
 --@usage myvolume:set_master_control()
 function set_master_control(volume_graph)
-
    if (data[volume_graph].pulseaudio == true) then
       set_pa_control(volume_graph)
    else
