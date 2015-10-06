@@ -162,7 +162,6 @@ function volume.new(args)
     data[volume_graph].cmd = args.cmd or "amixer"
     data[volume_graph].increment = args.increment or 2
     data[volume_graph].pulseaudio = args.pulseaudio or false
-    data[volume_graph].mute_color = "#550000"
     volume_graph.update_master = update_master
     volume_graph.update_mpd= update_mpd
     volume_graph.set_master_control = set_master_control
