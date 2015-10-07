@@ -53,10 +53,13 @@ local function get_master_infos(volume_graph)
       end
       f:close()
    end
-   if (state == "yes" or state == "off") then
+   if (not state or state == "yes" or state == "off") then
       state = true  -- output is mute
    else
       state = false
+   end
+   if (not volume) then
+      volume = 0
    end
    return state, volume
 end
