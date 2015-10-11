@@ -15,7 +15,7 @@ local volume = { mt = {} }
 local data = setmetatable({}, { __mode = "k" })
 
 -- Isolate and return the default sink info from the given string
-function default_sink_info(output)
+local function default_sink_info(output)
    local defaultSinkIdx, endMatch = string.find(output, "%s+*%sindex:%s%d+")
 
    if (defaultSinkIdx == nil) then
@@ -123,7 +123,7 @@ local function set_alsa_master(mixer_cmd, parameters)
    f:close()
 end
 
-function set_alsa_control(volume_graph)
+local function set_alsa_control(volume_graph)
    volume_graph:buttons(awful.util.table.join(
 	   awful.button({ }, 1, function()
 		 set_alsa_master(data[volume_graph].cmd, "toggle")
@@ -136,7 +136,7 @@ function set_alsa_control(volume_graph)
    end)))
 end
 
-function set_pa_control(volume_graph)
+local function set_pa_control(volume_graph)
    volume_graph:buttons(awful.util.table.join(
         awful.button({ }, 1, function()
 	      awful.util.spawn_with_shell("pactl set-sink-mute @DEFAULT_SINK@ toggle")
@@ -152,7 +152,7 @@ end
 --- Link the widget to the master channel of your system.
 --a left clic toggle mute/unmute, wheel up to increase the volume and wheel down to decrease the volume
 --@usage myvolume:set_master_control()
-function set_master_control(volume_graph)
+local function set_master_control(volume_graph)
    if (data[volume_graph].pulseaudio == true) then
       set_pa_control(volume_graph)
    else
