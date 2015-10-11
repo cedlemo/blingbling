@@ -123,7 +123,7 @@ triangular:set_value(0.7)
 Create a volume widget (triangular progress bar with specific methods):
 
 ```lua
-volume_master = blingbling.volume({height = 18, width = 40, bar =true, show_text = true, label ="$percent%"})
+volume_master = blingbling.volume({height = 18, width = 40, bar =true, show_text = true, label ="$percent%", pulseaudio = true})
 volume_master:update_master()
 volume_master:set_master_control()
 ```
