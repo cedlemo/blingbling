@@ -42,6 +42,7 @@ local home_dir   = os.getenv("HOME")
 local themes_dir = home_dir .. "/.config/awesome/themes"
 local theme_dir = themes_dir .. "/japanese2"
 beautiful.init(theme_dir .. "/theme.lua")
+local blingbling = require("blingbling")
 
 -- This is used later as the default terminal and editor to run.
 --terminal = "tortosa -c \"" .. home_dir .. "/.config/tortosa/tortosa_awesome.rc\""
@@ -116,8 +117,8 @@ menubar.utils.terminal = terminal -- Set the terminal for applications that requ
 
 -- {{{ Wibox
 -- Create a textclock widget
+blingbling.superproperties.init(theme_dir .. "/theme.lua")
 
-local blingbling = require("blingbling")
 local cur_day_month =" <span color=\""..beautiful.bright_magenta ..
                                         "\">%d、</span>"
 local cur_month = " <span color=\""..beautiful.bright_yellow ..
@@ -138,6 +139,7 @@ mytextclock = blingbling.clock.japanese(  cur_month .. cur_day_month ..
 --mytextclock = blingbling.clock.japanese()
 calendar = blingbling.calendar({ widget = mytextclock})
 calendar:set_link_to_external_calendar(true)
+
 --calendar:set_default_info(function() 
 --  blingbling.clock.get_current_time_in_japanese() .. 'test'
 --  blingbling.clock.get_current_day_of_week_in_kanas()

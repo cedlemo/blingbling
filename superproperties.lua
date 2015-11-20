@@ -3,6 +3,9 @@
 --Users can create a theme.blingbling table in theirs theme.lua and defines some values for theirs widgets.
 --@module blingbling.superproperties
 local beautiful = require("beautiful")
+local function init(path)
+  beautiful.init(path)
+end
 local blingbling_theme= (type(beautiful.blingbling) == "table") and beautiful.blingbling  or {}
 local tagslist_theme = blingbling_theme.tagslist or {}
 local tagslist_theme_normal = tagslist_theme.normal or {}
@@ -183,5 +186,6 @@ return {
 								font_size= calendar_theme_info_cell_style.font_size or 9,
 								font = calendar_theme_info_cell_style.font or "sans"
 							},
-						}
+						};
+  init = init
 }
