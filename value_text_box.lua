@@ -198,16 +198,14 @@ function value_text_box.draw(vt_box, wibox, cr, width, height)
     -- TODO necessity for this variable (default_text_color ??)
     local default_text_color =props.text_color 
 		local value_text_color = default_text_color 
-    if data[vt_box].values_text_color  and type(data[vt_box].values_text_color) == "table" then
-      for i,table in ipairs(data[vt_box].values_text_color) do
-        if i == 1 then 
-          if value/100 >= table[2] then
-            value_text_color = table[1]
-          end
-        elseif i ~= 1 then
-          if value/100 >= table[2]  then
-            value_text_color = table[1]
-          end
+    for i,table in ipairs(props.values_text_color) do
+      if i == 1 then 
+        if value/100 >= table[2] then
+          value_text_color = table[1]
+        end
+      elseif i ~= 1 then
+        if value/100 >= table[2]  then
+          value_text_color = table[1]
         end
       end
     end

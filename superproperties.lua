@@ -55,7 +55,10 @@ return {
 	accept = blingbling_theme.accept or nil;
 	cancel = blingbling_theme.cancel or nil;
 	lock = blingbling_theme.lock or nil;
---theme values for tagslist	
+  values_text_color = { {"#00ff00", 0},
+                        {"#0000ff", 0.5},
+                        {"#ff0000", .75}};
+  --theme values for tagslist	
 	tagslist=	{
 						normal ={ background_color = tagslist_theme_normal.background_color or beautiful.bg_normal,
 											text_background_color = tagslist_theme_normal.text_background_color or "#000000",
