@@ -95,7 +95,7 @@ local superproperties = require('blingbling.superproperties')
 local net = { mt = {} }
 
 local data = setmetatable({}, { __mode = "k" })
-local properties = {"interface", "width", "height", "v_margin", "h_margin", "background_color", "background_graph_color","graph_color", "graph_line_color","show_text", "text_color", "text_background_color" , "font_size","font" }
+local properties = {"interface", "width", "height", "v_margin", "h_margin", "background_color", "background_graph_color","graph_color", "graph_line_color","show_text", "text_color", "text_background_color" , "font_size","font","ipurl" }
 
 function net.draw(n_graph, wibox, cr, width, height)
 
@@ -363,7 +363,14 @@ local function show_ippopup_infos(n_graph)
       --get gateway
       gateway= string.match(string.match(all_infos,"default%svia%s[%d]+%.[d%]+%.[%d]+%.[%d]+"), "[%d]+%.[d%]+%.[%d]+%.[%d]+")
       --get external ip configuration
-      local ext_ip = awful.util.pread("curl --silent --connect-timeout 3 -S http://ipecho.net/plain 2>&1")
+
+      local ipurl = ""
+      if data[n_graph].ipurl == nil then
+        data[n_graph].ipurl = "http://ipecho.net/plain"
+      end
+      ipurl = data[n_graph].ipurl
+
+      local ext_ip = awful.util.pread("curl --silent --connect-timeout 3 -S " .. ipurl .. " 2>&1")
       --if time out then no external ip
       if string.match(ext_ip,"timed%sout%!") then
         data[n_graph].ext_ip = "n/a" 
