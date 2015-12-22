@@ -91,11 +91,17 @@ local superproperties = require('blingbling.superproperties')
 --@class function
 --@param font a string that contains the font name family and weight
 
+---Set the URL used for getting the external IP, default is http://ipecho.net/plain
+--@usage mynet:set_url_for_ext_ip(string)
+--@name set_url_for_ext_ip 
+--@class function
+--@param URL outputting your external IP in plain text
+
 
 local net = { mt = {} }
 
 local data = setmetatable({}, { __mode = "k" })
-local properties = {"interface", "width", "height", "v_margin", "h_margin", "background_color", "background_graph_color","graph_color", "graph_line_color","show_text", "text_color", "text_background_color" , "font_size","font","ipurl" }
+local properties = {"interface", "width", "height", "v_margin", "h_margin", "background_color", "background_graph_color","graph_color", "graph_line_color","show_text", "text_color", "text_background_color" , "font_size","font","url_for_ext_ip" }
 
 function net.draw(n_graph, wibox, cr, width, height)
 
@@ -364,13 +370,13 @@ local function show_ippopup_infos(n_graph)
       gateway= string.match(string.match(all_infos,"default%svia%s[%d]+%.[d%]+%.[%d]+%.[%d]+"), "[%d]+%.[d%]+%.[%d]+%.[%d]+")
       --get external ip configuration
 
-      local ipurl = ""
-      if data[n_graph].ipurl == nil then
-        data[n_graph].ipurl = "http://ipecho.net/plain"
+      local url_for_ext_ip = ""
+      if data[n_graph].url_for_ext_ip == nil then
+        data[n_graph].url_for_ext_ip = "http://ipecho.net/plain"
       end
-      ipurl = data[n_graph].ipurl
+      url_for_ext_ip = data[n_graph].url_for_ext_ip
 
-      local ext_ip = awful.util.pread("curl --silent --connect-timeout 3 -S " .. ipurl .. " 2>&1")
+      local ext_ip = awful.util.pread("curl --silent --connect-timeout 3 -S " .. url_for_ext_ip .. " 2>&1")
       --if time out then no external ip
       if string.match(ext_ip,"timed%sout%!") then
         data[n_graph].ext_ip = "n/a" 
