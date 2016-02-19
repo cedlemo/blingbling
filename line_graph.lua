@@ -1,4 +1,4 @@
--- @author cedlemo  
+-- @author cedlemo
 
 local setmetatable = setmetatable
 local ipairs = ipairs
@@ -18,7 +18,7 @@ local linegraph = { mt = {} }
 
 local data = setmetatable({}, { __mode = "k" })
 
----Fill all the widget (width * height) with this color (default is none ). 
+---Fill all the widget (width * height) with this color (default is none ).
 --@usage mygraph:set_background_color(string) -->"#rrggbbaa"
 --@name set_background_color
 --@class function
@@ -101,18 +101,18 @@ local data = setmetatable({}, { __mode = "k" })
 --@usage mygraph:set_label(string)
 --By default the text is : (value_send_to_the_widget *100) .. "%"
 --static string: example set_label("CPU usage:") will display "CUP usage:" on the graph
---dynamic string: use $percent in the string example set_label("Load $percent %") will display "Load 10%" 
+--dynamic string: use $percent in the string example set_label("Load $percent %") will display "Load 10%"
 --@name set_label
 --@class function
 --@param text the text to display
 
 
 
-local properties = {    "width", "height", "h_margin", "v_margin",
-                        "background_color", "graph_background_color",
-                        "rounded_size", "graph_color", "graph_line_color",
-                        "show_text", "text_color", "font_size", "font",
-                        "text_background_color", "label", "value_format"
+local properties = { "width", "height", "h_margin", "v_margin",
+                     "background_color", "graph_background_color",
+                     "rounded_size", "graph_color", "graph_line_color",
+                     "show_text", "text_color", "font_size", "font",
+                     "text_background_color", "label", "value_format"
                    }
 
 function linegraph.draw(graph, wibox, cr, width, height)
@@ -122,54 +122,49 @@ function linegraph.draw(graph, wibox, cr, width, height)
   -- Set the values we need
   local value = data[graph].value
 
-  
-    
   local props = helpers.load_properties(properties, data, graph, superproperties)
 
   local line_width = 1
   cr:set_line_width(line_width)
-  cr:set_antialias("subpixel") 
+  cr:set_antialias("subpixel")
+
+  -- Draw the widget background
   helpers.draw_rounded_corners_rectangle(	cr,
-                                          0, --x
-                                          0, --y
-                                          width, 
+                                          0,
+                                          0,
+                                          width,
                                           height,
                                           props.background_color,
                                           props.rounded_size
                                          )
 
-    -- Draw the graph background 
-
+  -- Draw the graph background
   helpers.draw_rounded_corners_rectangle(cr,
-                                         props.h_margin, --x
-                                         props.v_margin, --y
-                                         width - props.h_margin, 
+                                         props.h_margin,
+                                         props.v_margin,
+                                         width - props.h_margin,
                                          height - props.v_margin ,
                                          props.graph_background_color,
                                          props.rounded_size,
                                          props.graph_background_border)
 
   helpers.clip_rounded_corners_rectangle(cr,
-                                         props.h_margin, --x
-                                         props.v_margin, --y
-                                         width - props.h_margin, 
+                                         props.h_margin,
+                                         props.v_margin,
+                                         width - props.h_margin,
                                          height - (props.v_margin),
                                          props.rounded_size
-                                 )
+                                        )
   --Drawn the graph
-  --if graph_background_border is set, graph must not be drawn on it 
+  --if graph_background_border is set, graph must not be drawn on it
 
   --find nb values we can draw every column_length px
   --if rounded, make sure that graph don't begin or end outside background
   --check for the less value between hight and height to calculate the space for rounded size:
   local column_length = 6
-  
-  if height > width then
-    less_value = width/2
-  else
-    less_value = height/2
-  end
-  max_column=math.ceil((width - (2*props.h_margin +2*(props.rounded_size * less_value)))/column_length) 
+
+  less_value = height > width and width / 2 or height / 2
+  max_column=math.ceil((width - (2*props.h_margin +2*(props.rounded_size * less_value)))/column_length)
   --Check if the table graph values is empty / not initialized
   --if next(data[graph].values) == nil then
   if #data[graph].values == 0 or #data[graph].values ~= max_column then
@@ -181,9 +176,9 @@ function linegraph.draw(graph, wibox, cr, width, height)
       data[graph].values[i]=0
     end
   end
-  --Fill the graph 
+  --Fill the graph
   x=width -(props.h_margin + props.rounded_size * less_value)
-  y=height-(props.v_margin) 
+  y=height-(props.v_margin)
 
   cr:new_path()
   cr:move_to(x,y)
@@ -195,7 +190,7 @@ function linegraph.draw(graph, wibox, cr, width, height)
     x=x-column_length
   end
   y=height - (props.v_margin )
-  cr:line_to(x + column_length ,y) 
+  cr:line_to(x + column_length ,y)
   cr:line_to(width - props.h_margin,height - (props.v_margin ))
   cr:close_path()
 
@@ -206,7 +201,7 @@ function linegraph.draw(graph, wibox, cr, width, height)
   --Draw the graph line
 
   x=width -(props.h_margin + props.rounded_size * less_value)
-  y=height-(props.v_margin) 
+  y=height-(props.v_margin)
 
   cr:new_path()
   cr:move_to(x,y)
@@ -226,11 +221,11 @@ function linegraph.draw(graph, wibox, cr, width, height)
     x=x-column_length
   end
   y=height - (props.v_margin - 1) -- the y point here is set outside the clip rectangle
-  cr:line_to(x + column_length ,y) 
+  cr:line_to(x + column_length ,y)
 
   r,g,b,a=helpers.hexadecimal_to_rgba_percent(props.graph_line_color)
   cr:set_source_rgba(r, g, b, a)
-  cr:stroke() 
+  cr:stroke()
   if props.show_text == true then
   --Draw Text and it's background
     cr:set_font_size(props.font_size)
@@ -242,7 +237,7 @@ function linegraph.draw(graph, wibox, cr, width, height)
                           props.font.slang or "normal",
                           props.font.weight or "normal")
     end
-  
+
     local value = string.format(props.value_format, data[graph].values[1] * 100)
     if props.label then
       text=string.gsub(data[graph].label,"$percent", value)
@@ -250,21 +245,21 @@ function linegraph.draw(graph, wibox, cr, width, height)
       text=value .. "%"
     end
 
-    helpers.draw_text_and_background(cr, 
-                                     text, 
-                                     props.h_margin + props.rounded_size * less_value, 
-                                      height/2 , 
-                                      props.text_background_color, 
-                                      props.text_color,
-                                      false,
-                                      true,
-                                      false,
-                                      false)
+    helpers.draw_text_and_background(cr,
+                                     text,
+                                     props.h_margin + props.rounded_size * less_value,
+                                     height/2 ,
+                                     props.text_background_color,
+                                     props.text_color,
+                                     false,
+                                     true,
+                                     false,
+                                     false)
   end
 end
 
 function linegraph.fit(graph, width, height)
-    return data[graph].width, data[graph].height
+  return data[graph].width, data[graph].height
 end
 
 ---Add a value to the graph.
@@ -274,52 +269,51 @@ end
 --@param value The value between 0 and 1.
 --@param group The stack color group index.
 local function add_value(graph, value, group)
-    if not graph then return end
+  if not graph then return end
+  local value = value or 0
+  local values = data[graph].values
 
-    local value = value or 0
-    local values = data[graph].values
-   
-    if string.find(value, "nan") then
-       value=0
-    end
-   
-    local values = data[graph].values
-    table.remove(values, #values)
-    table.insert(values,1,value)
-    graph:emit_signal("widget::updated")
-    return graph
+  if string.find(value, "nan") then
+    value=0
+  end
+
+  local values = data[graph].values
+  table.remove(values, #values)
+  table.insert(values,1,value)
+  graph:emit_signal("widget::updated")
+  return graph
 end
 
 
 ---Set the graph height.
 --@param height The height to set.
 function linegraph:set_height( height)
-    if height >= 5 then
-        data[self].height = height
-        self:emit_signal("widget::updated")
-    end
-    return self
+  if height >= 5 then
+    data[self].height = height
+    self:emit_signal("widget::updated")
+  end
+  return self
 end
 
 ---Set the graph width.
 --@param width The width to set.
 function linegraph:set_width( width)
-    if width >= 5 then
-        data[self].width = width
-        self:emit_signal("widget::updated")
-    end
-    return self
+  if width >= 5 then
+    data[self].width = width
+    self:emit_signal("widget::updated")
+  end
+  return self
 end
 
 -- Build properties function
 for _, prop in ipairs(properties) do
-    if not linegraph["set_" .. prop] then
-        linegraph["set_" .. prop] = function(graph, value)
-            data[graph][prop] = value
-            graph:emit_signal("widget::updated")
-            return graph
-        end
+  if not linegraph["set_" .. prop] then
+    linegraph["set_" .. prop] = function(graph, value)
+    data[graph][prop] = value
+    graph:emit_signal("widget::updated")
+      return graph
     end
+  end
 end
 
 ---Create a graph widget.
@@ -327,38 +321,37 @@ end
 --key to set graph geometry.
 --@return A graph widget.
 function linegraph.new(args)
-    
-    local args = args or {}
+  local args = args or {}
 
-    args.width = args.width or 100
-    args.height = args.height or 20
+  args.width = args.width or 100
+  args.height = args.height or 20
 
-    if args.width < 5 or args.height < 5 then return end
+  if args.width < 5 or args.height < 5 then return end
 
-    local graph = base.make_widget()
-    data[graph] = {}
+  local graph = base.make_widget()
+  data[graph] = {}
 
-    for _, v in ipairs(properties) do
-      data[graph][v] = args[v] 
-    end
+  for _, v in ipairs(properties) do
+    data[graph][v] = args[v]
+  end
 
-    data[graph].values = {}
-    
+  data[graph].values = {}
+
     -- Set methods
-    graph.set_value = add_value
-    graph.add_value = add_value
-    graph.draw = linegraph.draw
-    graph.fit = linegraph.fit
+  graph.set_value = add_value
+  graph.add_value = add_value
+  graph.draw = linegraph.draw
+  graph.fit = linegraph.fit
 
-    for _, prop in ipairs(properties) do
-        graph["set_" .. prop] = linegraph["set_" .. prop]
-    end
+  for _, prop in ipairs(properties) do
+    graph["set_" .. prop] = linegraph["set_" .. prop]
+  end
 
-    return graph
+  return graph
 end
 
 function linegraph.mt:__call(...)
-    return linegraph.new(...)
+  return linegraph.new(...)
 end
 
 return setmetatable(linegraph, linegraph.mt)
