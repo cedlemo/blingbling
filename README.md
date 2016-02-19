@@ -6,7 +6,7 @@ Blingbling is a graphical widget library for Awesome Windows Manager. The goal o
 
 Originally, I have written Blingbling for myself but I share it under the GNU GPL-v2 (http://www.gnu.org/licenses/old-licenses/gpl-2.0.html). Testers and feedbacks are welcome!
 
-The current version is the v2.1 and works with Awesome WM <= 3.5.6 and Lua <= 5.3. There are a lot of changes between the v1.0 and the v2.0. Open the doc/index.html file if you want to read an exhaustive documentation.
+The current version is the v2.1 and works with Awesome WM <= awesome v3.5.8 and Lua <= 5.3. There are a lot of changes between the v1.0 and the v2.0. Open the doc/index.html file if you want to read an exhaustive documentation.
 
 <img src="https://raw.github.com/cedlemo/blingbling/master/config_example/japanese2_screen.png" width="576" height="324" alt="Screenshot">
 
