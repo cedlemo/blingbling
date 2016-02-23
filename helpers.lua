@@ -2,6 +2,8 @@
 local naughty= require("naughty")
 local lgi = require("lgi")
 local cairo = lgi.cairo
+local pango = lgi.Pango
+local pangocairo = lgi.PangoCairo
 local string = require("string")
 local os = require('os')
 local awful = require('awful')
@@ -214,6 +216,24 @@ function helpers.draw_text_and_background(cr, text, x, y, text_background_color,
     r,g,b,a=helpers.hexadecimal_to_rgba_percent(text_color)
     cr:set_source_rgba(r, g, b, a)
     cr:show_text(text)
+end
+
+function helpers.draw_layout_and_background(cr, text, x, y, font, bg_color, fg_color, text_centered_on_x, text_centered_on_y, text_on_left_of_x, text_on_bottom_of_y)
+  local layout = pangocairo.create_layout(cr)
+  local font_desc = pango.FontDescription.from_string(font)
+	layout:set_font_description(font_desc)
+	layout.text = text
+  local _, logical = layout:get_pixel_extents()
+  
+  cr:rectangle(x, y - logical.height/2, logical.width, logical.height)
+  local r,g,b,a = helpers.hexadecimal_to_rgba_percent(bg_color)
+  cr:set_source_rgba(r,g,b,a)
+  cr:fill()
+
+  cr:move_to(x, y - logical.height/2)
+  local r,g,b,a = helpers.hexadecimal_to_rgba_percent(fg_color)
+  cr:set_source_rgba(r,g,b,a)
+  cr:show_layout(layout)
 end
 
 ---Drawn one foreground arrow with a background arrow that depend on a value.
