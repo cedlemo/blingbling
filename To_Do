@@ -16,10 +16,13 @@
   use helpers.draw_layout_and_baground
     line_graph.lua                done
     net.lua
-    progress_graph.lua
+    progress_graph.lua            done
     triangular_progress_graph.lua done
 
-create a grid widget
+--> create a grid module
+  test env                        done
+  module skeleton                 done
+
 simplify value_text_box
 remove border for text background
 
