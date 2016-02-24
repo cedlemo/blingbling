@@ -117,11 +117,7 @@ local properties = { "width", "height", "h_margin", "v_margin",
 
 function linegraph.draw(graph, wibox, cr, width, height)
 
-  local values = data[graph].values
-
   -- Set the values we need
-  local value = data[graph].value
-
   local props = helpers.load_properties(properties, data, graph, superproperties)
 
   local line_width = 1
@@ -163,98 +159,99 @@ function linegraph.draw(graph, wibox, cr, width, height)
   --check for the less value between hight and height to calculate the space for rounded size:
   local column_length = 6
 
-  less_value = height > width and width / 2 or height / 2
-  max_column=math.ceil((width - (2*props.h_margin +2*(props.rounded_size * less_value)))/column_length)
+  local less_value = height > width and width / 2 or height / 2
+  local used_width = width - (2 * props.h_margin + 2 * (props.rounded_size * less_value))
+  max_column = math.ceil( used_width / column_length)
   --Check if the table graph values is empty / not initialized
   --if next(data[graph].values) == nil then
   if #data[graph].values == 0 or #data[graph].values ~= max_column then
     -- initialize graph_values with empty values:
+    print("here")
     data[graph].values={}
     for i=1,max_column do
       --the following line feed the graph with random value if you uncomment it and comment the line after it
       --data[graph].values[i]=math.random(0,100) / 100
-      data[graph].values[i]=0
+      data[graph].values[i] = 0
     end
   end
+  local values = data[graph].values
+
   --Fill the graph
-  x=width -(props.h_margin + props.rounded_size * less_value)
-  y=height-(props.v_margin)
+  x = width -(props.h_margin + props.rounded_size * less_value)
+  y = height-(props.v_margin)
 
   cr:new_path()
   cr:move_to(x,y)
   cr:line_to(x,y)
   for i=1,max_column do
-    y_range=height - (2 * props.v_margin)
-    y= height - (props.v_margin + ((data[graph].values[i]) * y_range))
+    y_range = height - (2 * props.v_margin)
+    y = height - (props.v_margin + ((values[i]) * y_range))
     cr:line_to(x,y)
-    x=x-column_length
+    x = x-column_length
   end
-  y=height - (props.v_margin )
+  y = height - (props.v_margin )
   cr:line_to(x + column_length ,y)
   cr:line_to(width - props.h_margin,height - (props.v_margin ))
   cr:close_path()
 
-  r,g,b,a=helpers.hexadecimal_to_rgba_percent(props.graph_color)
+  local r,g,b,a = helpers.hexadecimal_to_rgba_percent(props.graph_color)
   cr:set_source_rgba(r, g, b, a)
   cr:fill()
 
   --Draw the graph line
 
-  x=width -(props.h_margin + props.rounded_size * less_value)
-  y=height-(props.v_margin)
+  x = width - (props.h_margin + props.rounded_size * less_value)
+  y = height - (props.v_margin)
 
   cr:new_path()
   cr:move_to(x,y)
   cr:line_to(x,y)
   for i=1,max_column do
-    y_range=height - (2 * props.v_margin)
-    y= height - (props.v_margin + ((data[graph].values[i]) * y_range))
+    y_range = height - (2 * props.v_margin)
+    y = height - (props.v_margin + ((values[i]) * y_range))
     -- this is a trick:
     -- when value a equal to zero, I remove add 1 pixel to the y point in order
     -- to put the point outside the clip area done with helpers.clip_rounded_corners_rectangle
     -- so when a value is == 0 the point is almost not visible whereas the line of the graph
     -- is not broken.
-    if data[graph].values[i] == 0 then
-      y= y + 1
+    if values[i] == 0 then
+      y = y + 1
     end
     cr:line_to(x,y)
-    x=x-column_length
+    x = x - column_length
   end
-  y=height - (props.v_margin - 1) -- the y point here is set outside the clip rectangle
+  y = height - (props.v_margin - 1) -- the y point here is set outside the clip rectangle
   cr:line_to(x + column_length ,y)
 
-  r,g,b,a=helpers.hexadecimal_to_rgba_percent(props.graph_line_color)
+  r,g,b,a = helpers.hexadecimal_to_rgba_percent(props.graph_line_color)
   cr:set_source_rgba(r, g, b, a)
   cr:stroke()
+
   if props.show_text == true then
   --Draw Text and it's background
-    cr:set_font_size(props.font_size)
-
+    local font
     if type(props.font) == "string" then
-      cr:select_font_face(props.font,nil,nil)
+      font = props.font .. " " .. props.font_size
     elseif type(props.font) == "table" then
-      cr:select_font_face(props.font.family or "Sans",
-                          props.font.slang or "normal",
-                          props.font.weight or "normal")
+      font = (props.font.family or "Sans") .. " " .. (props.font.slang or "normal") .. " " .. (props.font.weight or "normal") .. " " .. props.font_size
     end
 
-    local value = string.format(props.value_format, data[graph].values[1] * 100)
+    local value = string.format(props.value_format, values[1] * 100)
     if props.label then
       text=string.gsub(data[graph].label,"$percent", value)
     else
       text=value .. "%"
     end
 
-    helpers.draw_text_and_background(cr,
+    helpers.draw_layout_and_background(cr,
                                      text,
                                      props.h_margin + props.rounded_size * less_value,
                                      height/2 ,
+                                     font,
                                      props.text_background_color,
                                      props.text_color,
-                                     false,
-                                     true,
-                                     false,
-                                     false)
+                                     "start",
+                                     "middle")
   end
 end
 
