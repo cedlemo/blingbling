@@ -198,6 +198,7 @@ mytasklist.buttons = awful.util.table.join(
                                       width = 160,
                                       show_text = true,
                                       label = "Cpu: $percent %",
+                                      font_size = 7
                                      })
   vicious.register(cpu_graph, vicious.widgets.cpu,'$1',2)
 
@@ -205,6 +206,7 @@ mytasklist.buttons = awful.util.table.join(
                                       width = 160,
                                       show_text = true,
                                       label = "Mem: $percent %",
+                                      font_size = 7
                                      })
 
 	vicious.register(mem_graph, vicious.widgets.mem, '$1', 2)
