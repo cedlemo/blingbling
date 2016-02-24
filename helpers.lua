@@ -179,28 +179,28 @@ end
 --@param show_text_centered_on_y a boolean value not mandatory (false by default) if true, y parameter is the coordinate of the middle of the text
 --@param show_text_on_left_of_x a boolean value not mandatory (false by default) if true, x parameter is the right of the text
 --@param show_text_on_bottom_of_y a boolean value not mandatory (false by default) if true, y parameter is the top of the text
-function helpers.draw_text_and_background(cr, text, x, y, text_background_color, text_color, show_text_centered_on_x, show_text_centered_on_y, show_text_on_left_of_x, show_text_on_bottom_of_y)
+function helpers.draw_text_and_background(cr, text, x, y, text_background_color, text_color, text_x_center, text_y_center, text_x_left, text_y_bottom)
     --Text background
     ext=cr:text_extents(text)
     x_modif = 0
     y_modif = 0
 
-    if show_text_centered_on_x == true then
+    if text_x_centered == true then
       x_modif = ((ext.width + ext.x_bearing) / 2) + ext.x_bearing / 2
-      show_text_on_left_of_x = false
+      text_x_left = false
     else
-      if show_text_on_left_of_x == true then
+      if text_x_left == true then
         x_modif = ext.width + 2 *ext.x_bearing
       else
         x_modif = x_modif
       end
     end
 
-    if show_text_centered_on_y == true then
+    if text_y_centered == true then
       y_modif = ((ext.height +ext.y_bearing)/2 ) + ext.y_bearing / 2
-      show_text_on_left_of_y = false
+      text_y_left = false
     else
-      if show_text_on_bottom_of_y == true then
+      if text_y_bottom == true then
         y_modif = ext.height + 2 *ext.y_bearing
       else
         y_modif = y_modif
@@ -218,19 +218,46 @@ function helpers.draw_text_and_background(cr, text, x, y, text_background_color,
     cr:show_text(text)
 end
 
-function helpers.draw_layout_and_background(cr, text, x, y, font, bg_color, fg_color, text_centered_on_x, text_centered_on_y, text_on_left_of_x, text_on_bottom_of_y)
+---Draw text on a rectangle which width and height depend on the text width and height.
+--@param cr a cairo context already initialised
+--@param text the text to display
+--@param x the x coordinate of the left of the text
+--@param y the y coordinate of the bottom of the text
+--@param bg_color a string "#rrggbb" or "#rrggbbaa" for the rectangle color
+--@param fg_color a string "#rrggbb" or "#rrggbbaa" for the text color
+--@param x_position a string "start", "middle" or "end" which define how the drawing will be positioned from x ("start" by default)
+--@param y_position a string "start", "middle" or "end" which define how the drawing will be positioned from y ("start" by default)
+function helpers.draw_layout_and_background(cr, text, x, y, font, bg_color, fg_color, x_position, y_position)
   local layout = pangocairo.create_layout(cr)
   local font_desc = pango.FontDescription.from_string(font)
 	layout:set_font_description(font_desc)
 	layout.text = text
   local _, logical = layout:get_pixel_extents()
-  
-  cr:rectangle(x, y - logical.height/2, logical.width, logical.height)
+  local height = logical.height
+  local width = logical.width
+
+  local text_x = x -- x position start
+  local text_y = y -- y position start
+
+
+  if x_position == "middle" then
+    text_x = text_x - width / 2
+  elseif x_position == "end" then
+    text_x = text_x - width
+  end
+
+  if y_position == "middle" then
+    text_y = text_y - height / 2
+  elseif y_position == "end" then
+    text_y = text_y - height
+  end
+
+  cr:rectangle(text_x, text_y, width, height)
   local r,g,b,a = helpers.hexadecimal_to_rgba_percent(bg_color)
   cr:set_source_rgba(r,g,b,a)
   cr:fill()
 
-  cr:move_to(x, y - logical.height/2)
+  cr:move_to(text_x, text_y)
   local r,g,b,a = helpers.hexadecimal_to_rgba_percent(fg_color)
   cr:set_source_rgba(r,g,b,a)
   cr:show_layout(layout)
