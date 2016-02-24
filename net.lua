@@ -101,65 +101,46 @@ local superproperties = require('blingbling.superproperties')
 local net = { mt = {} }
 
 local data = setmetatable({}, { __mode = "k" })
-local properties = {"interface", "width", "height", "v_margin", "h_margin", "background_color", "background_graph_color","graph_color", "graph_line_color","show_text", "text_color", "text_background_color" , "font_size","font","url_for_ext_ip" }
+
+local properties = { "interface", "width", "height", "v_margin", "h_margin",
+                     "background_color", "graph_background_color","graph_color",
+                     "graph_line_color","show_text", "text_color", 
+                     "text_background_color" , "font_size","font","url_for_ext_ip" }
 
 function net.draw(n_graph, wibox, cr, width, height)
 
-  local v_margin =  superproperties.v_margin 
-  if data[n_graph].v_margin and data[n_graph].v_margin <= data[n_graph].height/4 then 
-      v_margin = data[n_graph].v_margin 
-  end
+  local props = helpers.load_properties(properties, data, n_graph, superproperties)
+  local interface= data[n_graph].interface or "eth0"
   
-  local h_margin = superproperties.h_margin
-  if data[n_graph].h_margin and data[n_graph].h_margin <= data[n_graph].width / 3 then 
-      h_margin = data[n_graph].h_margin 
-  end
+  if props.show_text then
+    cr:set_font_size(props.font_size)
 
-  local background_border = data[n_graph].background_border or superproperties.background_border
-  local background_color = data[n_graph].background_color or superproperties.background_color
-  local rounded_size = data[n_graph].rounded_size or superproperties.rounded_size
-  local graph_background_color = data[n_graph].graph_background_color or superproperties.graph_background_color
-  local graph_background_border = data[n_graph].graph_background_border or superproperties.graph_background_border
-  local graph_color = data[n_graph].graph_color or superproperties.graph_color
-  local graph_line_color = data[n_graph].graph_line_color or superproperties.graph_line_color
-  local text_color = data[n_graph].text_color or superproperties.text_color
-  local text_background_color = data[n_graph].text_background_color or superproperties.text_background_color
-  local font_size =data[n_graph].font_size or superproperties.font_size
-  local font = data[n_graph].font or superproperties.font
-
-  local interface=""
-  if data[n_graph].interface == nil then
-    data[n_graph].interface = "eth0"
-  end
-  interface = data[n_graph].interface 
-  
-  if data[n_graph].show_text then
-    cr:set_font_size(font_size)
-
-    if type(font) == "string" then
-      cr:select_font_face(font,nil,nil)
-    elseif type(font) == "table" then
-      cr:select_font_face(font.family or "Sans", font.slang or "normal", font.weight or "normal")
+    if type(props.font) == "string" then
+      cr:select_font_face(props.font,nil,nil)
+    elseif type(props.font) == "table" then
+      cr:select_font_face(props.font.family or "Sans",
+                          props.font.slang or "normal",
+                          props.font.weight or "normal")
     end
   --search the good width to display all text and graph and modify the widget width if necessary
     --Adapt widget width with max lenght text
-    local text_reference="1.00mb"
-    local ext=cr:text_extents(text_reference)
-    local text_width=ext.width +1 
+    local text_reference = "1.00mb"
+    local ext = cr:text_extents(text_reference)
+    local text_width = ext.width +1 
     local arrow_width = 6 
     local arrows_separator = 2
-    local total_width = (2* text_width) +(2*arrow_width) +(2 * ext.x_bearing)+ arrows_separator + (2*h_margin) 
+    local total_width = (2* text_width) +(2*arrow_width) +(2 * ext.x_bearing)+ arrows_separator + (2*props.h_margin) 
 
     data[n_graph].width = total_width
   else
     local arrow_width = 8
     local arrows_separator = 2
-    data[n_graph].width = (arrow_width * 2) + arrows_separator + (2*h_margin)
+    data[n_graph].width = (arrow_width * 2) + arrows_separator + (2* props.h_margin)
   end
 --TODO manage widget background
   ----Generate Background (background widget)
-  if background_color then
-    r,g,b,a = helpers.hexadecimal_to_rgba_percent(background_color)
+  if props.background_color then
+    local r,g,b,a = helpers.hexadecimal_to_rgba_percent(props.background_color)
     cr:set_source_rgba(r,g,b,a)
     cr:paint()
   end
@@ -228,45 +209,45 @@ function net.draw(n_graph, wibox, cr, width, height)
   helpers.draw_up_down_arrows(
       cr,
       math.floor(data[n_graph].width/2 -1),
-      height - v_margin,
-      v_margin, 
+      height - props.v_margin,
+      props.v_margin, 
       up_value, 
-      graph_background_color, 
-      graph_color,
-      graph_line_color , 
+      props.graph_background_color, 
+      props.graph_color,
+      props.graph_line_color , 
       true)
   --Drawn down arrow
   helpers.draw_up_down_arrows(
       cr,
       math.floor(data[n_graph].width/2)+1,
-      v_margin,
-      data[n_graph].height - v_margin,
+      props.v_margin,
+      data[n_graph].height - props.v_margin,
       down_value,
-      graph_background_color, 
-      graph_color,
-      graph_line_color , 
+      props.graph_background_color, 
+      props.graph_color,
+      props.graph_line_color , 
       false)
   
   if data[n_graph][interface.."_state"] ~= "up" or data[n_graph][interface.."_carrier"] ~= "1" then
-     cr:move_to(data[n_graph].width*2/5, v_margin)
-     cr:line_to(data[n_graph].width*3/5,data[n_graph].height - v_margin)
-     cr:move_to(data[n_graph].width *4/7, 2*v_margin)
-     cr:line_to(data[n_graph].width*3/7,height - 2*v_margin)
+     cr:move_to(data[n_graph].width*2/5, props.v_margin)
+     cr:line_to(data[n_graph].width*3/5,data[n_graph].height - props.v_margin)
+     cr:move_to(data[n_graph].width *4/7, 2*props.v_margin)
+     cr:line_to(data[n_graph].width*3/7,height - 2*props.v_margin)
      cr:set_source_rgb(1,0,0)
      cr:set_line_width(1)
      cr:stroke()
   end
 
-  if data[n_graph].show_text == true then
+  if props.show_text == true then
   --Draw Text and it's background
-    cr:set_font_size(font_size)
+    cr:set_font_size(props.font_size)
     
     helpers.draw_text_and_background(cr, 
                                         down_text, 
-                                        data[n_graph].width -h_margin, 
-                                        v_margin , 
-                                        text_background_color, 
-                                        text_color,
+                                        data[n_graph].width - props.h_margin, 
+                                        props.v_margin , 
+                                        props.text_background_color, 
+                                        props.text_color,
                                         false,
                                         false,
                                         true,
@@ -274,10 +255,10 @@ function net.draw(n_graph, wibox, cr, width, height)
     
     helpers.draw_text_and_background(cr, 
                                         up_text, 
-                                        h_margin, 
-                                        height -v_margin , 
-                                        text_background_color, 
-                                        text_color,
+                                        props.h_margin, 
+                                        height - props.v_margin , 
+                                        props.text_background_color, 
+                                        props.text_color,
                                         false,
                                         false,
                                         false,
