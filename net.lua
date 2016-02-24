@@ -15,7 +15,9 @@ local color = require("gears.color")
 local base = require("wibox.widget.base")
 local helpers = require("blingbling.helpers")
 local superproperties = require('blingbling.superproperties')
-
+local lgi = require("lgi")
+local pangocairo = lgi.PangoCairo
+local pango = lgi.Pango
 ---Net widget displays two arrows as graph for download/upload activities
 --@module blingbling.widget
 
@@ -112,24 +114,29 @@ function net.draw(n_graph, wibox, cr, width, height)
   local props = helpers.load_properties(properties, data, n_graph, superproperties)
   local interface= data[n_graph].interface or "eth0"
   
+  local font = nil
   if props.show_text then
-    cr:set_font_size(props.font_size)
-
     if type(props.font) == "string" then
-      cr:select_font_face(props.font,nil,nil)
-    elseif type(props.font) == "table" then
-      cr:select_font_face(props.font.family or "Sans",
-                          props.font.slang or "normal",
-                          props.font.weight or "normal")
+      font = props.font .. " " .. props.font_size
+      elseif type(props.font) == "table" then
+      font = (props.font.family or "Sans") .. " " .. (props.font.slang or "normal") .. " " .. (props.font.weight or "normal") .. " " .. props.font_size
     end
+
   --search the good width to display all text and graph and modify the widget width if necessary
     --Adapt widget width with max lenght text
-    local text_reference = "1.00mb"
-    local ext = cr:text_extents(text_reference)
-    local text_width = ext.width +1 
+    --local text_reference = "1.00mb"
+    local layout = pangocairo.create_layout(cr)
+    local font_desc = pango.FontDescription.from_string(font)
+	  layout:set_font_description(font_desc)
+	  layout.text = "1.00mb"
+    local _, logical = layout:get_pixel_extents()
+
+--    local ext = cr:text_extents(text_reference)
+--    local text_width = ext.width +1 
+    local text_width = logical.width
     local arrow_width = 6 
     local arrows_separator = 2
-    local total_width = (2* text_width) +(2*arrow_width) +(2 * ext.x_bearing)+ arrows_separator + (2*props.h_margin) 
+    local total_width = (2* text_width) +(2*arrow_width) + arrows_separator + (2*props.h_margin) 
 
     data[n_graph].width = total_width
   else
@@ -240,32 +247,26 @@ function net.draw(n_graph, wibox, cr, width, height)
 
   if props.show_text == true then
   --Draw Text and it's background
-    cr:set_font_size(props.font_size)
-    
-    helpers.draw_text_and_background(cr, 
+    helpers.draw_layout_and_background(cr, 
                                         down_text, 
                                         data[n_graph].width - props.h_margin, 
                                         props.v_margin , 
+                                        font,
                                         props.text_background_color, 
                                         props.text_color,
-                                        false,
-                                        false,
-                                        true,
-                                        true)
+                                        "end",
+                                        "start")
     
-    helpers.draw_text_and_background(cr, 
+    helpers.draw_layout_and_background(cr, 
                                         up_text, 
                                         props.h_margin, 
                                         height - props.v_margin , 
+                                        font,
                                         props.text_background_color, 
                                         props.text_color,
-                                        false,
-                                        false,
-                                        false,
-                                        false)
-    
+                                        "start",
+                                        "end")
   end
-
 end
 
 function net.fit(n_graph, width, height)

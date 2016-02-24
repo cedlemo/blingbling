@@ -15,7 +15,7 @@
 --> use pango layout instead of cairo text functionnalities
   use helpers.draw_layout_and_baground
     line_graph.lua                done
-    net.lua
+    net.lua                       done
     progress_graph.lua            done
     triangular_progress_graph.lua done
 
