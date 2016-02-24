@@ -403,5 +403,6 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 
 netbox = wibox({width = 200, height = 100, x = 500, y = 300})
 netbox.visible = true
-local net = blingbling.net({interface = "enp3s0", show_text = true})
+local net = blingbling.net({interface = "enp3s0", show_text = true, h_margin = 8, v_margin = 8})
+net:set_ippopup()
 netbox:set_widget(net)
