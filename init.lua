@@ -19,6 +19,7 @@ return
 	clock = require("blingbling.clock");
 	tagslist = require("blingbling.tagslist");
 	calendar = require("blingbling.calendar");
-  transient = require("blingbling.transient")
+  transient = require("blingbling.transient");
+  grid = require("blingbling.grid")
 }
 
