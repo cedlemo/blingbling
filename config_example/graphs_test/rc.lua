@@ -149,7 +149,7 @@ volume:set_master_control()
 
 local v_pgraph = blingbling.progress_graph({height = 30,
                                         width = 60,
-                                        show_text = false,
+                                        show_text = true,
                                         graph_line_color = "#00000000"})
 v_pgraph:set_value(0.6)
 
@@ -157,7 +157,8 @@ local h_pgraph = blingbling.progress_graph({height = 30,
                                         width = 60,
                                         horizontal = true,
                                         rounded_size = 0.3,      
-                                        graph_line_color = "#00000000"})
+                                        graph_line_color = "#00000000",
+                                        show_text = true})
 h_pgraph:set_value(0.6)
 
 local circle_graph = blingbling.wlourf_circle_graph({radius = 12,
