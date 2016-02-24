@@ -1,4 +1,4 @@
--- @author cedlemo  
+-- @author cedlemo
 
 local setmetatable = setmetatable
 local ipairs = ipairs
@@ -14,7 +14,7 @@ local superproperties = require('blingbling.superproperties')
 ---Triangular progress graph widget.
 --@module blingbling.triangular_progress_graph
 
----Fill all the widget (width * height) with this color (default is transparent ). 
+---Fill all the widget (width * height) with this color (default is transparent ).
 --@usage mypgraph:set_background_color(string) -->"#rrggbbaa"
 --@name set_background_color
 --@class function
@@ -98,7 +98,7 @@ local superproperties = require('blingbling.superproperties')
 --@usage mypgraph:set_label(string)
 --By default the text is : (value_send_to_the_widget *100) .. "%"
 --static string: example set_label("Volume:") will display "Volume:" on the graph
---dynamic string: use $percent in the string example set_label("Volume $percent %") will display "Volume 10%" 
+--dynamic string: use $percent in the string example set_label("Volume $percent %") will display "Volume 10%"
 --@name set_label
 --@class function
 --@param text the text to display
@@ -116,12 +116,12 @@ function triangular_progressgraph.draw(tp_graph, wibox, cr, width, height)
 
   local props = helpers.load_properties(properties, data, tp_graph, superproperties)
 --Generate Background (background color and Tiles)
-    r,g,b,a = helpers.hexadecimal_to_rgba_percent(props.background_color)
+    local r,g,b,a = helpers.hexadecimal_to_rgba_percent(props.background_color)
     cr:set_source_rgba(r,g,b,a)
     cr:paint()
 
   --Draw the background of the graph:
-  if data[tp_graph].bar == true then
+  if props.bar == true then
       helpers.draw_triangle_using_bars( cr, width,
                                         height,
                                         props.h_margin,
@@ -144,7 +144,7 @@ function triangular_progressgraph.draw(tp_graph, wibox, cr, width, height)
     local second  = { x = width - props.h_margin,
                       y = height - (props.v_margin + y_range) }
     local third   = { x = width  - props.h_margin,
-                      y = height - props.v_margin }    
+                      y = height - props.v_margin }
 
     helpers.draw_triangle(cr, first, second, third, props.graph_background_color)
 
@@ -161,7 +161,7 @@ function triangular_progressgraph.draw(tp_graph, wibox, cr, width, height)
     end
   end
 --Draw Text and it's background
-  if props.show_text == true  then 
+  if props.show_text == true  then
 
     local font
     if type(props.font) == "string" then
@@ -173,11 +173,11 @@ function triangular_progressgraph.draw(tp_graph, wibox, cr, width, height)
 
     local value = string.format(props.value_format,
                                 data[tp_graph].value * 100)
-    
-    if data[tp_graph].label then
-      text=string.gsub(data[tp_graph].label,"$percent", value)
+
+    if props.label then
+      text = string.gsub(props.label,"$percent", value)
     else
-      text=value .. "%"
+      text = value .. "%"
     end
     helpers.draw_layout_and_background(cr,
                                        text,
@@ -200,42 +200,42 @@ end
 --@param tp_graph The progress bar.
 --@param value The progress bar value between 0 and 1.
 local function set_value(tp_graph, value)
-    local value = value or 0
-    local max_value = data[tp_graph].max_value
-    data[tp_graph].value = math.min(max_value, math.max(0, value))
-    tp_graph:emit_signal("widget::updated")
-    return tp_graph
+  local value = value or 0
+  local max_value = data[tp_graph].max_value
+  data[tp_graph].value = math.min(max_value, math.max(0, value))
+  tp_graph:emit_signal("widget::updated")
+  return tp_graph
 end
 
 ---Set the tp_graph height.
 -- @param height The height to set.
 function triangular_progressgraph:set_height( height)
-    if height >= 5 then
-        data[self].height = height
-        self:emit_signal("widget::updated")
-    end
-    return self
+  if height >= 5 then
+    data[self].height = height
+    self:emit_signal("widget::updated")
+  end
+  return self
 end
 
 ---Set the tp_graph width.
 --@param width The width to set.
 function triangular_progressgraph:set_width( width)
-    if width >= 5 then
-        data[self].width = width
-        self:emit_signal("widget::updated")
-    end
-    return self
+  if width >= 5 then
+    data[self].width = width
+    self:emit_signal("widget::updated")
+  end
+  return self
 end
 
 -- Build properties function
 for _, prop in ipairs(properties) do
-    if not triangular_progressgraph["set_" .. prop] then
-        triangular_progressgraph["set_" .. prop] = function(tp_graph, value)
-            data[tp_graph][prop] = value
-            tp_graph:emit_signal("widget::updated")
-            return tp_graph
-        end
+  if not triangular_progressgraph["set_" .. prop] then
+    triangular_progressgraph["set_" .. prop] = function(tp_graph, value)
+      data[tp_graph][prop] = value
+      tp_graph:emit_signal("widget::updated")
+      return tp_graph
     end
+  end
 end
 
 --- Create a tp_graph widget.
@@ -243,42 +243,41 @@ end
 -- key to set graph geometry.
 -- @return A graph widget.
 function triangular_progressgraph.new(args)
-    
-    local args = args or {}
 
-    args.width = args.width or 100
-    args.height = args.height or 20
+  local args = args or {}
 
-    if args.width < 5 or args.height < 5 then return end
+  args.width = args.width or 100
+  args.height = args.height or 20
 
-    local tp_graph = base.make_widget()
-    
-    data[tp_graph] = {}
+  if args.width < 5 or args.height < 5 then return end
 
-    for _, v in ipairs(properties) do
-      data[tp_graph][v] = args[v] 
-    end
+  local tp_graph = base.make_widget()
+
+  data[tp_graph] = {}
+
+  for _, v in ipairs(properties) do
+    data[tp_graph][v] = args[v]
+  end
 
 
-    data[tp_graph].value = 0
-    data[tp_graph].max_value = 1
+  data[tp_graph].value = 0
+  data[tp_graph].max_value = 1
 
-    -- Set methods
-    tp_graph.set_value = set_value
-    tp_graph.add_value = set_value
-    tp_graph.draw = triangular_progressgraph.draw
-    tp_graph.fit = triangular_progressgraph.fit
+  -- Set methods
+  tp_graph.set_value = set_value
+  tp_graph.add_value = set_value
+  tp_graph.draw = triangular_progressgraph.draw
+  tp_graph.fit = triangular_progressgraph.fit
 
-    for _, prop in ipairs(properties) do
-        tp_graph["set_" .. prop] = triangular_progressgraph["set_" .. prop]
-    end
+  for _, prop in ipairs(properties) do
+    tp_graph["set_" .. prop] = triangular_progressgraph["set_" .. prop]
+  end
 
-    return tp_graph
+  return tp_graph
 end
 
 function triangular_progressgraph.mt:__call(...)
-    return triangular_progressgraph.new(...)
+  return triangular_progressgraph.new(...)
 end
 
 return setmetatable(triangular_progressgraph, triangular_progressgraph.mt)
-
