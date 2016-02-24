@@ -124,49 +124,49 @@ local properties = {    "width", "height", "v_margin", "h_margin",
                         "value_format"}
 
 function progressgraph.draw(p_graph, wibox, cr, width, height)
-    -- We want one pixel wide lines
-    cr:set_line_width(1)
-    -- Set the values we need
-    local value = data[p_graph].value
-    local props = helpers.load_properties(properties, data, p_graph, superproperties)    
-    --Generate Background (background widget)
-    if data[p_graph].background_color then
-      helpers.draw_rounded_corners_rectangle( cr,
-                                              0,
-                                              0,
-                                              width, 
-                                              height,
-                                              props.background_color, 
-                                              props.rounded_size)
-    end
-  
-    --draw a graph with graph_background_color
-    if props.horizontal == true then
-      helpers.draw_rounded_corners_horizontal_graph( cr,
-                                        props.h_margin,
-                                        props.v_margin,
-                                        width - props.h_margin, 
-                                        height - props.v_margin, 
-                                        props.graph_background_color, 
-                                        props.graph_color, 
-                                        props.rounded_size, 
-                                        value,
-                                        props.graph_line_color)
+  -- We want one pixel wide lines
+  cr:set_line_width(1)
+  -- Set the values we need
+  local value = data[p_graph].value
+  local props = helpers.load_properties(properties, data, p_graph, superproperties)    
+  --Generate Background (background widget)
+  if data[p_graph].background_color then
+    helpers.draw_rounded_corners_rectangle( cr,
+                                            0,
+                                            0,
+                                            width, 
+                                            height,
+                                            props.background_color, 
+                                            props.rounded_size)
+  end
 
-    else
-       helpers.draw_rounded_corners_vertical_graph( cr,
-                                        props.h_margin,
-                                        props.v_margin,
-                                        width - props.h_margin, 
-                                        height - props.v_margin, 
-                                        props.graph_background_color, 
-                                        props.graph_color, 
-                                        props.rounded_size, 
-                                        value,
-                                        props.graph_line_color)
-    end 
+  --draw a graph with graph_background_color
+  if props.horizontal == true then
+    helpers.draw_rounded_corners_horizontal_graph( cr,
+                                      props.h_margin,
+                                      props.v_margin,
+                                      width - props.h_margin, 
+                                      height - props.v_margin, 
+                                      props.graph_background_color, 
+                                      props.graph_color, 
+                                      props.rounded_size, 
+                                      value,
+                                      props.graph_line_color)
 
-    if props.show_text == true then
+  else
+     helpers.draw_rounded_corners_vertical_graph( cr,
+                                      props.h_margin,
+                                      props.v_margin,
+                                      width - props.h_margin, 
+                                      height - props.v_margin, 
+                                      props.graph_background_color, 
+                                      props.graph_color, 
+                                      props.rounded_size, 
+                                      value,
+                                      props.graph_line_color)
+  end 
+
+  if props.show_text == true then
     local font
     if type(props.font) == "string" then
       font = props.font .. " " .. props.font_size
@@ -174,36 +174,35 @@ function progressgraph.draw(p_graph, wibox, cr, width, height)
       font = (props.font.family or "Sans") .. " " .. (props.font.slang or "normal") .. " " .. (props.font.weight or "normal") .. " " .. props.font_size
     end
 
-        
-        local value = string.format(props.value_format, data[p_graph].value * 100)
-        if data[p_graph].label then
-            text=string.gsub(data[p_graph].label,"$percent", value)
-        else
-            text=value .. "%"
-        end
-        --if vertical graph, text is at the middle of the width, if vertical bar text is at the middle of the height
-        if props.horizontal == nil or props.horizontal == false then
-          helpers.draw_layout_and_background(cr,
-                                             text,
-                                             width/2,
-                                             height/2 ,
-                                             font,
-                                             props.text_background_color,
-                                             props.text_color,
-                                             "start",
-                                             "middle")
-        else
-          helpers.draw_layout_and_background(cr,
-                                             text,
-                                             props.h_margin,
-                                             height/2 ,
-                                             font,
-                                             props.text_background_color,
-                                             props.text_color,
-                                             "start",
-                                             "middle")
-        end     
+    value = string.format(props.value_format, data[p_graph].value * 100)
+    if data[p_graph].label then
+      text=string.gsub(data[p_graph].label,"$percent", value)
+    else
+      text=value .. "%"
     end
+    --if vertical graph, text is at the middle of the width, if vertical bar text is at the middle of the height
+    if props.horizontal == nil or props.horizontal == false then
+      helpers.draw_layout_and_background(cr,
+                                         text,
+                                         width/2,
+                                         height/2 ,
+                                         font,
+                                         props.text_background_color,
+                                         props.text_color,
+                                         "start",
+                                         "middle")
+    else
+      helpers.draw_layout_and_background(cr,
+                                         text,
+                                         props.h_margin,
+                                         height/2 ,
+                                         font,
+                                         props.text_background_color,
+                                         props.text_color,
+                                         "start",
+                                         "middle")
+    end     
+  end
 end
 
 function progressgraph.fit(p_graph, width, height)
@@ -214,39 +213,39 @@ end
 -- @param p_graph The progress bar.
 -- @param value The progress bar value between 0 and 1.
 function set_value(p_graph, value)
-    if not p_graph then return end
-    local value = value or 0
-    local max_value = data[p_graph].max_value or 1
-    data[p_graph].value = math.min(max_value, math.max(0, value))
-    p_graph:emit_signal("widget::updated")
-    return p_graph
+  if not p_graph then return end
+  local value = value or 0
+  local max_value = data[p_graph].max_value or 1
+  data[p_graph].value = math.min(max_value, math.max(0, value))
+  p_graph:emit_signal("widget::updated")
+  return p_graph
 end
 
 --- Set the p_graph height.
 -- @param height The height to set.
 function progressgraph:set_height( height)
-    data[self].height = height
-    self:emit_signal("widget::updated")
-    return self
+  data[self].height = height
+  self:emit_signal("widget::updated")
+  return self
 end
 
 --- Set the p_graph width.
 -- @param width The width to set.
 function progressgraph:set_width( width)
-    data[self].width = width
-    self:emit_signal("widget::updated")
-    return self
+  data[self].width = width
+  self:emit_signal("widget::updated")
+  return self
 end
 
 -- Build properties function
 for _, prop in ipairs(properties) do
-    if not progressgraph["set_" .. prop] then
-        progressgraph["set_" .. prop] = function(p_graph, value)
-            data[p_graph][prop] = value
-            p_graph:emit_signal("widget::updated")
-            return p_graph
-        end
+  if not progressgraph["set_" .. prop] then
+    progressgraph["set_" .. prop] = function(p_graph, value)
+      data[p_graph][prop] = value
+      p_graph:emit_signal("widget::updated")
+      return p_graph
     end
+  end
 end
 
 --- Create a p_graph widget.
@@ -254,41 +253,38 @@ end
 -- key to set p_graph geometry.
 -- @return A p_graph widget.
 function progressgraph.new(args)
+  local args = args or {}
+  
+  args.width = args.width or 100
+  args.height = args.height or 20
 
-    local args = args or {}
-    
-    args.width = args.width or 100
-    args.height = args.height or 20
+  if args.width < 5 or args.height < 5 then return end
 
-    if args.width < 5 or args.height < 5 then return end
+  local p_graph = base.make_widget()
 
-    local p_graph = base.make_widget()
+  data[p_graph] = {}
 
-    data[p_graph] = {}
+  for _, v in ipairs(properties) do
+    data[p_graph][v] = args[v] 
+  end
 
-    for _, v in ipairs(properties) do
-      data[p_graph][v] = args[v] 
-    end
+  data[p_graph].value = 0
+  data[p_graph].max_value = 1
 
-    data[p_graph].value = 0
-    data[p_graph].max_value = 1
+  -- Set methods
+  for _, prop in ipairs(properties) do
+      p_graph["set_" .. prop] = progressgraph["set_" .. prop]
+  end
 
-    -- Set methods
-    for _, prop in ipairs(properties) do
-        p_graph["set_" .. prop] = progressgraph["set_" .. prop]
-    end
+  p_graph.set_value = set_value
+  p_graph.add_value = set_value
+  p_graph.draw = progressgraph.draw
+  p_graph.fit = progressgraph.fit
 
-    p_graph.set_value = set_value
-    p_graph.add_value = set_value
-    p_graph.draw = progressgraph.draw
-    p_graph.fit = progressgraph.fit
-
-    return p_graph
+  return p_graph
 end
 
 function progressgraph.mt:__call(...)
-    return progressgraph.new(...)
+  return progressgraph.new(...)
 end
 return setmetatable(progressgraph, progressgraph.mt)
-
--- vim: filetype=lua:expandtab:shiftwidth=2:tabstop=8:softtabstop=2:textwidth=80
