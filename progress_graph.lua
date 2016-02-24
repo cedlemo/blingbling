@@ -167,14 +167,13 @@ function progressgraph.draw(p_graph, wibox, cr, width, height)
     end 
 
     if props.show_text == true then
-        cr:set_font_size(props.font_size)
+    local font
+    if type(props.font) == "string" then
+      font = props.font .. " " .. props.font_size
+    elseif type(props.font) == "table" then
+      font = (props.font.family or "Sans") .. " " .. (props.font.slang or "normal") .. " " .. (props.font.weight or "normal") .. " " .. props.font_size
+    end
 
-        if type(props.font) == "string" then
-          cr:select_font_face(props.font,nil,nil)
-        elseif type(props.font) == "table" then
-          cr:select_font_face(props.font.family or "Sans", props.font.slang or
-"normal", props.font.weight or "normal")
-        end
         
         local value = string.format(props.value_format, data[p_graph].value * 100)
         if data[p_graph].label then
@@ -184,27 +183,25 @@ function progressgraph.draw(p_graph, wibox, cr, width, height)
         end
         --if vertical graph, text is at the middle of the width, if vertical bar text is at the middle of the height
         if props.horizontal == nil or props.horizontal == false then
-        helpers.draw_text_and_background(cr, 
-                                        text, 
-                                        width/2, 
-                                        height/2 , 
-                                        props.text_background_color, 
-                                        props.text_color,
-                                        true,
-                                        true,
-                                        false,
-                                        false)
+          helpers.draw_layout_and_background(cr,
+                                             text,
+                                             width/2,
+                                             height/2 ,
+                                             font,
+                                             props.text_background_color,
+                                             props.text_color,
+                                             "start",
+                                             "middle")
         else
-        helpers.draw_text_and_background(cr, 
-                                        text, 
-                                        props.h_margin, 
-                                        height/2 , 
-                                        props.text_background_color, 
-                                        props.text_color,
-                                        false,
-                                        true,
-                                        false,
-                                        false)
+          helpers.draw_layout_and_background(cr,
+                                             text,
+                                             props.h_margin,
+                                             height/2 ,
+                                             font,
+                                             props.text_background_color,
+                                             props.text_color,
+                                             "start",
+                                             "middle")
         end     
     end
 end
