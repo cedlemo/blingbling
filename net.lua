@@ -109,6 +109,43 @@ local properties = { "interface", "width", "height", "v_margin", "h_margin",
                      "graph_line_color","show_text", "text_color", 
                      "text_background_color" , "font_size","font","url_for_ext_ip" }
 
+local function format_output_value(value)
+  local unit = { "b", "kb","mb","gb"}
+  local unit_range = { 1, 1024, 1024^2, 1024^3 }
+  local output_value = 0
+  local output_unit = "b"
+  local text = ""
+  if value ~= nil then
+    for i,v in ipairs(unit_range) do
+      if value >= v then
+        output_value = value / v
+        output_unit = unit[i]
+      end
+    end
+  end
+
+  if output_value >= 0 and output_value < 10 then 
+    text = string.format("%.2f", output_value).. output_unit
+  end
+  if output_value >= 10 and output_value < 100 then
+     text = string.format("%.1f", output_value).. output_unit
+  end
+  if output_value >= 100 then
+     text = string.format("%d", math.ceil(output_value)).. output_unit
+  end
+  return output_value, text
+end
+
+local function draw_a_red_cross(cr, x , y, width, height)
+  cr:move_to(x, y)
+  cr:line_to(width - x, height - y)
+  cr:move_to(width - x, y)
+  cr:line_to(x, height - y)
+  cr:set_source_rgb(1,0,0)
+  cr:set_line_width(2)
+  cr:stroke()
+end
+
 function net.draw(n_graph, wibox, cr, width, height)
 
   local props = helpers.load_properties(properties, data, n_graph, superproperties)
@@ -131,8 +168,6 @@ function net.draw(n_graph, wibox, cr, width, height)
 	  layout.text = "1.00mb"
     local _, logical = layout:get_pixel_extents()
 
---    local ext = cr:text_extents(text_reference)
---    local text_width = ext.width +1 
     local text_width = logical.width
     local arrow_width = 6 
     local arrows_separator = 2
@@ -152,66 +187,8 @@ function net.draw(n_graph, wibox, cr, width, height)
     cr:paint()
   end
   
---Prepare the Text  
-  local unit = { "b", "kb","mb","gb"}
-  local unit_range = { 1, 1024, 1024^2, 1024^3 }
-  local down_value
-  local down_unit
-  local up_value
-  local up_unit
-  
-  down_value=0
-  down_unit="b"  
-  
-  up_value=0
-  up_unit="b"
-
-  if data[n_graph][interface.."_down"] ~= nil then
-    for i,v in ipairs(unit_range) do
-      if data[n_graph][interface.."_down"] >= v then
-        down_value=data[n_graph][interface.."_down"]/v
-        down_unit=unit[i]
-      end
-    end
-  end
-  if data[n_graph][interface.."_up"] ~= nil then
-    for i,v in ipairs(unit_range) do
-      if data[n_graph][interface .."_up"] >= v then
-        up_value=data[n_graph][interface.."_up"]/v
-        up_unit=unit[i]
-      end
-    end
-  end
---we format the value
-  if  down_value >=0 and down_value <10 then 
-    down_text=string.format("%.2f",down_value)..down_unit
-  end
-  if down_value >= 10 and down_value < 100 then
-     down_text=string.format("%.1f",down_value)..down_unit
-  end
-  if down_value >= 100 then
-     down_text=string.format("%d",math.ceil(down_value))..down_unit
-  end
-  
-  if data[n_graph][interface.."_up"] ~= nil then
-    for i,v in ipairs(unit_range) do
-      if data[n_graph][interface.."_up"] >= v then
-        up_value=data[n_graph][interface.."_up"]/v
-        up_unit=unit[i]
-      end
-    end
-  end
-  --we format the value
-  if  up_value >=0 and up_value <10 then 
-    up_text=string.format("%.2f",up_value)..up_unit
-  end
-  if up_value >= 10 and up_value < 100 then
-     up_text=string.format("%.1f",up_value)..up_unit
-  end
-  if up_value >= 100 then
-     uptext=string.format("%d",math.ceil(up_value))..up_unit
-  end
-
+  up_value, up_text = format_output_value(data[n_graph][interface.."_up"])
+  down_value, down_text = format_output_value(data[n_graph][interface.."_down"])
 --Drawn up arrow 
   helpers.draw_up_down_arrows(
       cr,
@@ -228,7 +205,7 @@ function net.draw(n_graph, wibox, cr, width, height)
       cr,
       math.floor(data[n_graph].width/2)+1,
       props.v_margin,
-      data[n_graph].height - props.v_margin,
+      height - props.v_margin,
       down_value,
       props.graph_background_color, 
       props.graph_color,
@@ -236,13 +213,7 @@ function net.draw(n_graph, wibox, cr, width, height)
       false)
   
   if data[n_graph][interface.."_state"] ~= "up" or data[n_graph][interface.."_carrier"] ~= "1" then
-     cr:move_to(data[n_graph].width*2/5, props.v_margin)
-     cr:line_to(data[n_graph].width*3/5,data[n_graph].height - props.v_margin)
-     cr:move_to(data[n_graph].width *4/7, 2*props.v_margin)
-     cr:line_to(data[n_graph].width*3/7,height - 2*props.v_margin)
-     cr:set_source_rgb(1,0,0)
-     cr:set_line_width(1)
-     cr:stroke()
+    draw_a_red_cross(cr, props.h_margin, props.v_margin, data[n_graph].width, height)
   end
 
   if props.show_text == true then
@@ -487,4 +458,3 @@ function net.mt:__call(...)
 end
 
 return setmetatable(net, net.mt)
-
