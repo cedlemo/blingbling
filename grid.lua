@@ -14,7 +14,7 @@ function grid:get_child(left_x, left_y)
 
 end
 
-function grid::set_padding(padding)
+function grid:set_padding(padding)
 
 end
 
@@ -26,4 +26,4 @@ function grid.mt:__call(...)
   return grid.new(...)
 end
 
-return setmetatable(calendar, calendar.mt)
+return setmetatable(grid, grid.mt)
