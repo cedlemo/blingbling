@@ -217,7 +217,7 @@ mytasklist.buttons = awful.util.table.join(
                           {beautiful.magenta, 0.79},
                           {beautiful.red, 0.90}
                         }
-  volume_bar = blingbling.volume({height = 18, width = 40, bar =true, show_text = true, label ="Vol"})
+  volume_bar = blingbling.volume({height = 18, width = 40, bar =true, show_text = true, label ="Vol", font_size = 7})
 	volume_bar:update_master()
 	volume_bar:set_master_control()
 

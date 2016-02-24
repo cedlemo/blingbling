@@ -163,15 +163,13 @@ function triangular_progressgraph.draw(tp_graph, wibox, cr, width, height)
 --Draw Text and it's background
   if props.show_text == true  then 
 
-    cr:set_font_size(props.font_size)
-  
+    local font
     if type(props.font) == "string" then
-      cr:select_font_face(props.font,nil,nil)
+      font = props.font .. " " .. props.font_size
     elseif type(props.font) == "table" then
-      cr:select_font_face(props.font.family or "Sans",
-                          props.font.slang or "normal",
-                          props.font.weight or "normal")
+      font = (props.font.family or "Sans") .. " " .. (props.font.slang or "normal") .. " " .. (props.font.weight or "normal") .. " " .. props.font_size
     end
+
 
     local value = string.format(props.value_format,
                                 data[tp_graph].value * 100)
@@ -181,16 +179,15 @@ function triangular_progressgraph.draw(tp_graph, wibox, cr, width, height)
     else
       text=value .. "%"
     end
-    helpers.draw_text_and_background(cr, 
-                                      text, 
-                                      props.h_margin, 
-                                      (height/2) , 
-                                      props.text_background_color, 
-                                      props.text_color,
-                                      false,
-                                      true,
-                                      false,
-                                      false)
+    helpers.draw_layout_and_background(cr,
+                                       text,
+                                       props.h_margin,
+                                       height/2 ,
+                                       font,
+                                       props.text_background_color,
+                                       props.text_color,
+                                       "start",
+                                       "middle")
   end
 end
 

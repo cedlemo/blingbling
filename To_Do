@@ -14,10 +14,10 @@
 
 --> use pango layout instead of cairo text functionnalities
   use helpers.draw_layout_and_baground
-    line_graph.lua              done
+    line_graph.lua                done
     net.lua
     progress_graph.lua
-    triangular_progress_graph.lua
+    triangular_progress_graph.lua done
 
 create a grid widget
 simplify value_text_box
