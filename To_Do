@@ -1,10 +1,29 @@
 --hight priority
--->use load_properties in all widgets
+
+--> use load_properties in all widgets
+  line_graph.lua                  done
+  triangular_progress_graph.lua   done 
+  value_text_box.lua              done
+  wlourf_circle_graph.lua         done
+  progress_graph.lua              done
+  net.lua
+  text_box.lua
+  tagslist.lua
+  calendar.lua
+  popups.lua
+
+--> use pango layout instead of cairo text functionnalities
+  use helpers.draw_layout_and_baground
+    line_graph.lua              done
+    net.lua
+    progress_graph.lua
+    triangular_progress_graph.lua
+
+create a grid widget
 simplify value_text_box
 remove border for text background
-use pango layout instead of cairo text functionnalities
+
 clean calendar 
-create a grid widget
 clean helpers (some methods with too much parameters)
 try to be consistent with the use of h_margin/v_margin names or h_padding/v_padding
 
@@ -15,4 +34,5 @@ Check all values in superproperties and in all files some of them doesn't match 
 check all for tagslist values
 create a border value for tagslist (user set it with a color and a border of 1 px is displayed)
 add superproperties values for task_warrior
+
 Check in all files the usage of local values that have been set using user_value or superproperties value or nil
