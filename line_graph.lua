@@ -166,7 +166,6 @@ function linegraph.draw(graph, wibox, cr, width, height)
   --if next(data[graph].values) == nil then
   if #data[graph].values == 0 or #data[graph].values ~= max_column then
     -- initialize graph_values with empty values:
-    print("here")
     data[graph].values={}
     for i=1,max_column do
       --the following line feed the graph with random value if you uncomment it and comment the line after it
