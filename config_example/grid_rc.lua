@@ -402,4 +402,22 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 
 grid_box = wibox({height = 400, width = 400, ontop = true, x = 200, y = 200})
 grid_box.visible = true
+local blingbling = require("blingbling")
+grid = blingbling.grid()
 
+texts = {}
+for i=1,5 do 
+  c = tostring(i - 1)
+  texts[i] = blingbling.text_box({text = tostring(i),
+                            background_color = "#"..c..c..c..c..c..c,
+                            rounded_size = 0,
+                            h_margin = 0,
+                            v_margin = 0})
+end
+
+grid:add_child(texts[1], 1 , 1, 1, 1)
+grid:add_child(texts[2], 2 , 1, 1, 1)
+grid:add_child(texts[3], 1 , 2, 2, 2)
+--grid:add_child(t4, 3, 2, 2, 2) don't work yet
+
+grid_box:set_widget(grid)
