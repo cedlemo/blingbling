@@ -89,37 +89,24 @@ end
 
 local function draw( t_box, wibox, cr, width, height)
 
-  local background_color = data[t_box].background_color or superproperties.background_color
-	local rounded_size = data[t_box].rounded_size or superproperties.rounded_size
-  local text_color = data[t_box].text_color or superproperties.text_color
-  local text_background_color = data[t_box].text_background_color or superproperties.text_background_color
-  local font_size =data[t_box].font_size or superproperties.font_size
-  local font = data[t_box].font or superproperties.font
+  local props = helpers.load_properties(properties, data, t_box, superproperties)
   local text = data[t_box].text
 
-  if type(font) ~= "string" and type(font) == "table" then
-    font = (font.family or "Sans") ..(font.slang or "normal") ..( font.weight or "normal")
+  if type(props.font) ~= "string" and type(props.font) == "table" then
+    font = (props.font.family or "Sans") ..(props.font.slang or "normal") ..( props.font.weight or "normal")
   end
   
 	layout = t_box._layout
 	cr:update_layout(layout)
-	local font_desc = pango.FontDescription.from_string(font .. " " .. font_size)
+	local font_desc = pango.FontDescription.from_string(props.font .. " " .. props.font_size)
 	layout:set_font_description(font_desc)
 	layout.text = text
-  layout:set_markup("<span color='"..text_color.."'>"..text.."</span>" )
-  local ink, logical = layout:get_pixel_extents()
+  layout:set_markup("<span color='".. props.text_color .."'>"..text.."</span>" )
+  local _, logical = layout:get_pixel_extents()
   
 	local width = data[t_box].width > logical.width and data[t_box].width or logical.width
   local height = data[t_box].height > logical.height and data[t_box].height or logical.height
 
-	local v_margin =  superproperties.v_margin  
-  if data[t_box].v_margin and data[t_box].v_margin <= height/3 then 
-    v_margin = data[t_box].v_margin 
-  end
-  local h_margin = superproperties.h_margin 
-  if data[t_box].h_margin and data[t_box].h_margin <= width / 3 then 
-    h_margin = data[t_box].h_margin 
-  end
 	setup_layout(t_box, width, height)
   
 	--Generate Background (background widget)
@@ -129,24 +116,24 @@ local function draw( t_box, wibox, cr, width, height)
                                             0,
                                             width, 
                                             height,
-                                            background_color, 
-                                            rounded_size)
+                                            props.background_color, 
+                                            props.rounded_size)
   end
   
   --Draw nothing, or filled ( value background)
   if data[t_box].text_background_color then
     --draw rounded corner rectangle
-    local x=h_margin
-    local y=v_margin
+    local x = props.h_margin
+    local y = props.v_margin
     
     helpers.draw_rounded_corners_rectangle( cr,
                                             x,
                                             y,
-                                            width - h_margin, 
-                                            height - v_margin, 
-                                            text_background_color, 
-                                            rounded_size,
-                                            background_text_border
+                                            width - x, 
+                                            height - y, 
+                                            props.text_background_color, 
+                                            props.rounded_size,
+                                            props.background_text_border
                                             )
   end  
 	local x_offset, y_offset = 0
@@ -162,18 +149,17 @@ end
 
 function text_box:fit( width, height)
 	setup_layout(self, width, height)
-  local font =data[self].font or superproperties.font
-  local font_size =data[self].font_size or superproperties.font_size
-	local font_desc = pango.FontDescription.from_string(font .. " " .. font_size)
-	local text_color = data[self].text_color
+  
+  local props = helpers.load_properties(properties, data, self, superproperties)
+	local font_desc = pango.FontDescription.from_string(props.font .. " " .. props.font_size)
   local text = data[self].text or ""
   self._layout:set_font_description(font_desc)
-  if text_color then
-    self._layout:set_markup("<span color='"..text_color.."'>"..text.."</span>" )
+  if props.text_color then
+    self._layout:set_markup("<span color='"..props.text_color.."'>"..text.."</span>" )
 	else
     self._layout:set_markup(text)
   end
-  local ink, logical = self._layout:get_pixel_extents()
+  local _, logical = self._layout:get_pixel_extents()
 	local width, height
 	width = logical.width > data[self].width and logical.width or data[self].width
 	height = logical.height > data[self].height and logical.height or data[self].height
@@ -274,4 +260,3 @@ function text_box.mt:__call(...)
 end
 
 return setmetatable(text_box, text_box.mt)
-
