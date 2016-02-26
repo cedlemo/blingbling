@@ -7,7 +7,7 @@
   wlourf_circle_graph.lua         done
   progress_graph.lua              done
   net.lua                         done
-  text_box.lua
+  text_box.lua                    done
   tagslist.lua
   calendar.lua
   popups.lua
