@@ -25,14 +25,19 @@ function grid:draw(wibox, cr, width, height)
   
   for _, d in pairs(data[self].widgets) do
     local x, y, w, h
+    
     x = round(median_width * (d.left - 1))
     y = round(median_height * (d.top - 1))
 
     w = floor(median_width * d.cols)
-    h = floor(median_width * d.lines)
+    h = floor(median_height * d.lines)
     
-    d.widget:set_width(w)
-    d.widget:set_height(h)
+--    Keep for widget debug
+--    str = "x " .. tostring(x) .. " y ".. tostring(y) .. " w " .. tostring(w) .. " h " .. tostring(h)
+--    print("width " .. tostring(width) .. "height " .. tostring(height))
+--    print("columns ".. tostring(data[self].num_columns) .. "median_width ".. tostring(median_width))
+--    print("lines ".. tostring(data[self].num_lines) .. "median_height ".. tostring(median_height))
+--    print(str)
 
     base.draw_widget(wibox, cr, d.widget, x, y, w, h)
   end
