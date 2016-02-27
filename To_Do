@@ -1,4 +1,6 @@
 --hight priority
+--> See why a text_box doesn't display its content when the only parameter set 
+  is the text
 
 --> use load_properties in all widgets
   line_graph.lua                  done
