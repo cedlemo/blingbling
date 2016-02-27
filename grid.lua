@@ -55,7 +55,7 @@ local function matrix_add(matrix, object, x, y, w, h)
     
     if #line < x - 1 then
       for j = #line + 1, (x - 1) do
-        table.insert(line, j, "-")
+        table.insert(line, j, "-") -- TODO find another way to use sparse table [w1,nil,nil,w2]
       end
     end
     
@@ -98,6 +98,31 @@ function grid:set_padding(padding)
 
 end
 
+function grid:fit(width, height)
+  local matrix = data[self].matrix
+  local max_width = 0
+  local cumul_height = 0
+
+  for _,line in ipairs(matrix) do
+    local prev_widget = nil 
+    local max_height = 0
+    for i,w in ipairs(line) do
+      local cumul_width = 0
+      -- See TODO line 58
+      if (prev_widget == nil or w ~= prev_widget) and w ~= "-" then 
+        local w,h = w:fit(width, height)
+        cumul_width = cumul_width + w
+        if max_height <  h then max_height = h end
+        prev_widget = w
+      end
+      if max_width < cumul_width then max_width = cumul_width end
+    end
+
+    cumul_height = max_height + cumul_height
+  end
+  return max_width, cumul_height
+end
+
 function grid.new()
   local _grid = widget_base.make_widget()
   
@@ -115,7 +140,8 @@ function grid.new()
   _grid.get_child = grid.get_child
   _grid.set_padding = grid.set_padding
   _grid.draw = grid.draw
-
+  _grid.fit = grid.fit
+  
   return _grid
 end
 
