@@ -419,5 +419,6 @@ grid:add_child(texts[1], 1, 1, 1, 1)
 grid:add_child(texts[2], 2, 1, 1, 1)
 grid:add_child(texts[3], 1, 2, 2, 2)
 grid:add_child(texts[4], 3, 2, 2, 2)
+grid:add_child(texts[5], 3, 1, 2, 1)
 
 grid_box:set_widget(grid)

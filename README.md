@@ -29,6 +29,7 @@ The current version is the v2.2 and it works with Awesome WM <= awesome v3.5.8 a
 *  [tagslist](#tagslist)
 *  [text_box](#text_box)
 *  [calendar](#calendar)
+*  [grid](#grid)
 *  [transient](#transient)
 
 This part is an adaptation of some of the wlourf awesome stuff : http://wlourf.deviantart.com/art/widgets-for-awesome-wm-v1-3-269061228.
@@ -233,7 +234,28 @@ This widget is a clock widget with a calendar. You can show the calendar for the
 calendar = blingbling.calendar()
 calendar:set_link_to_external_calendar(true)
 ```
+##### grid
+It is a layout/container widget. It allow you to add child in the same way of the `GtkGrid`. The best way to see is to try the ***config_example/grid_rc.lua***.
 
+```lua
+texts = {}
+for i=1,5 do 
+  c = tostring(i - 1)
+  texts[i] = blingbling.text_box({text = tostring(i),
+                            background_color = "#"..c..c..c..c..c..c,
+                            rounded_size = 0,
+                            h_margin = 0,
+                            v_margin = 0})
+end
+
+grid:add_child(texts[1], 1, 1, 1, 1) -- child, left, top , width, height
+grid:add_child(texts[2], 2, 1, 1, 1)
+grid:add_child(texts[3], 1, 2, 2, 2)
+grid:add_child(texts[4], 3, 2, 2, 2)
+grid:add_child(texts[5], 3, 1, 2, 1)
+
+grid_box:set_widget(grid)
+```
 ##### transient
 It is a wibox that can be displayed for a short amount of time. ( TODO : usage example)
 
