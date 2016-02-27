@@ -70,8 +70,12 @@ local function generate_weeks_numbers(calendar)
 		data[calendar].weeks_numbers[i]:set_text(numbers[i])
 	end
 end
+
 local function generate_days_of_month(calendar)
-  -- TODO
+  data[calendar].days_of_month = {}
+  for i=1,42 do
+    data[calendar].days_of_month[i] = text_box(data[calendar].props.days_of_month_widget_style)
+  end
 end
 
 local function generate_widgets(calendar)
@@ -100,7 +104,13 @@ local function add_weeks_numbers(calendar)
 end
 
 local function add_days_of_month(calendar)
-  -- TODO
+  for y=1,6 do
+    for x=1,7 do
+      local index = x + ((y - 1 ) * 7)
+      local child = data[calendar].days_of_month[index]
+      calendar:add_child(child, 1 + x, 2 + y, 1, 1)
+    end
+  end
 end
 
 local function fill_grid(calendar)
@@ -113,6 +123,41 @@ end
 local function get_current_month_year(calendar)
 	data[calendar].month = tonumber(os.date("%m"))
 	data[calendar].year = tonumber(os.date("%Y"))
+end
+
+local function find_first_last_days_of_month(calendar)
+  --find the first week day of the month
+  --it is the number used as start for displaying day in the 
+  --table data[calendar].days_of_month
+  local d = os.date('*t',
+                    os.time{year = data[calendar].year,
+                            month = data[calendar].month,
+                            day = 01}
+                    )
+  --We use Monday as first day of week
+  local day_1 = d['wday'] - 1 == 0 and 7 or d["wday"]
+  
+	local day_n = helpers.get_days_in_month(data[calendar].month, data[calendar].year)
+  data[calendar].day_1 = day_1
+  data[calendar].day_n = tonumber(day_n)
+end
+
+local function display_days_of_month(calendar)
+  find_first_last_days_of_month(calendar)
+  local days = data[calendar].days_of_month
+  local day_1 = data[calendar].day_1
+  local day_n = data[calendar].day_n
+  local day_number = 0
+  for i=1,42 do
+    if i < day_1 then
+      days[i]:set_text("-")
+    elseif i> day_n then
+      days[i]:set_text("-")
+    else
+      day_number = day_number + 1
+      days[i]:set_text(day_number)
+    end
+  end
 end
 
 function calendar.new(args)
@@ -132,6 +177,7 @@ function calendar.new(args)
   get_current_month_year(_calendar)
   generate_widgets(_calendar)
   fill_grid(_calendar)
+  display_days_of_month(_calendar)
   return _calendar
 end
 
