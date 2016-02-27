@@ -407,3 +407,7 @@ local blingbling = require("blingbling")
 cal = blingbling.calendar()
 cal_box:set_widget(cal)
 cal_box.visible = true
+
+local w, h = cal:fit(400, 400)
+cal_box.width = w + 80
+cal_box.height = h + 80
