@@ -24,6 +24,7 @@
 --> create a grid module
   test env                        done
   module skeleton                 done
+  see how to deal sparse table (usage of the "-" doesn't seem very pro"
 
 simplify value_text_box
 remove border for text background
