@@ -47,7 +47,8 @@ with `$XDG_CONFIG_HOME` usually `~/.config`
 *   Download with command line tools
 
         cd $XDG_CONFIG_HOME/awesome/
-        wget https://github.com/cedlemo/blingbling.git
+        wget https://github.com/cedlemo/blingbling/archive/v2.2.zip
+        unzip v2.2.zip blingbling
 
 *   Download with your browser go to : https://github.com/cedlemo/blingbling/tree/v2.2
 
