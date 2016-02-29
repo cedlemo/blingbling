@@ -60,6 +60,7 @@ local function generate_week_days(calendar)
     data[calendar].week_days[i]:set_text(n) 
   end
 end
+
 local function generate_weeks_numbers(calendar)
 	local numbers = helpers.get_ISO8601_weeks_number_of_month(data[calendar].month,
                                                                   data[calendar].year)
@@ -149,6 +150,14 @@ local function hide_day_of_month_cell(text_box)
   text_box:set_background_text_border("#0000000")
 end
 
+local function apply_style(widget, style)
+	for k,v in pairs(style) do
+		if widget['set_'..k] ~= nil and type(widget['set_'..k]) == "function" then
+			widget['set_' ..k](widget, v)
+		end
+	end
+end
+
 local function display_days_of_month(calendar)
   find_first_last_days_of_month(calendar)
   local days = data[calendar].days_of_month
@@ -163,8 +172,70 @@ local function display_days_of_month(calendar)
     else
       day_number = day_number + 1
       days[i]:set_text(day_number)
+      apply_style(days[i], 
+                  data[calendar].props.days_of_month_widget_style)
     end
   end
+end
+
+local function add_focus_style(widget, focus, normal)
+	widget:connect_signal("mouse::enter",
+                        function()
+                          if widget._layout.text ~= "" then
+                            apply_style(widget, focus)
+                          end
+                        end)
+	widget:connect_signal("mouse::leave",
+                        function() 
+                          if widget._layout.text ~= "" then
+                            apply_style(widget, normal)
+                          end
+                        end)
+end
+
+local function add_focus_signals_on_prev_next(calendar, props)
+  local focus = props.focus_widget_style
+  local normal = props.prev_next_widget_style
+  add_focus_style(data[calendar].prev_month, focus, normal)
+  add_focus_style(data[calendar].next_month, focus, normal)
+end
+
+local function add_focus_signals(calendar)
+  local props = data[calendar].props
+  add_focus_signals_on_prev_next(calendar, props)
+end
+
+local function next_month(calendar)
+  if data[calendar].month == 12 then
+    data[calendar].month = 1
+    data[calendar].year = data[calendar].year + 1
+  else
+    data[calendar].month = data[calendar].month + 1
+  end
+end
+
+local function prev_month(calendar)
+  if data[calendar].month == 1 then
+    data[calendar].month = 12
+    data[calendar].year = data[calendar].year - 1
+  else
+    data[calendar].month = data[calendar].month - 1
+  end
+end
+
+local function add_change_month_signals(calendar)
+  data[calendar].prev_month:buttons(util.table.join(
+	        awful.button({ }, 1, function()
+					  prev_month(calendar)
+            display_days_of_month(calendar)
+          end)
+          ))
+  data[calendar].next_month:buttons(util.table.join(
+	        awful.button({ }, 1, function()
+					  next_month(calendar)
+            display_days_of_month(calendar)
+          end)
+          ))
 end
 
 function calendar.new(args)
@@ -185,6 +256,8 @@ function calendar.new(args)
   generate_widgets(_calendar)
   fill_grid(_calendar)
   display_days_of_month(_calendar)
+  add_focus_signals(_calendar)
+  add_change_month_signals(_calendar)
   return _calendar
 end
 
