@@ -22,9 +22,8 @@
     triangular_progress_graph.lua done
 
 --> create a grid module
-  test env                        done
-  module skeleton                 done
   see how to deal sparse table (usage of the "-" doesn't seem very pro"
+  check the fit method
 
 --> text_box
   rename background_text_border to text_background_border
