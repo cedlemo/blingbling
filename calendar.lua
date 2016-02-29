@@ -142,6 +142,13 @@ local function find_first_last_days_of_month(calendar)
   data[calendar].day_n = tonumber(day_n)
 end
 
+local function hide_day_of_month_cell(text_box)
+  text_box:set_text("")
+  text_box:set_background_color("#00000000")
+  text_box:set_text_background_color("#00000000")
+  text_box:set_background_text_border("#0000000")
+end
+
 local function display_days_of_month(calendar)
   find_first_last_days_of_month(calendar)
   local days = data[calendar].days_of_month
@@ -149,10 +156,10 @@ local function display_days_of_month(calendar)
   local day_n = data[calendar].day_n
   local day_number = 0
   for i=1,42 do
-    if i < day_1 then
-      days[i]:set_text("-")
-    elseif i> day_n then
-      days[i]:set_text("-")
+    if i < day_1 - 1 then
+      hide_day_of_month_cell(days[i])
+    elseif i > day_n then
+      hide_day_of_month_cell(days[i])
     else
       day_number = day_number + 1
       days[i]:set_text(day_number)
