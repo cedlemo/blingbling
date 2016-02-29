@@ -5,9 +5,6 @@ local grid = require("blingbling.grid")
 local text_box = require("blingbling.text_box")
 local awful = require("awful")
 local util = awful.util
-local capi = { screen = screen, mouse = mouse }
-local wibox = require("wibox")
-local base = require("wibox.layout.base")
 local pairs = pairs
 
 local calendar = { mt = {} }
@@ -30,10 +27,26 @@ for _, prop in ipairs(properties) do
   end
 end
 
+local function get_month_name(calendar)
+  local month_name = os.date("%B",
+                             os.time{ year = data[calendar].year,
+                                      month = data[calendar].month,
+                                      day=01
+                                    }
+                            )
+  return month_name
+end
+
+local function get_date_label(calendar)
+  print(data[calendar])
+  local year = tostring(data[calendar].year)
+  return get_month_name(calendar) .. " " .. year
+end
+
 local function generate_header_widgets(calendar)
   local props = data[calendar].props
   data[calendar].date = text_box(props.current_date_widget_style)
-  data[calendar].date:set_text(os.date('%a %b %d, %H:%M'))
+  data[calendar].date:set_text(get_date_label(calendar))
 
   data[calendar].prev_month = text_box(props.prev_next_widget_style)
   data[calendar].prev_month:set_text(util.escape("<<"))
@@ -256,13 +269,7 @@ local function add_change_month_signals(calendar)
 					  prev_month(calendar)
             display_days_of_month(calendar)
             set_weeks_numbers(calendar)
-            local month_name = os.date("%B",
-                                       os.time{ year = data[calendar].year,
-                                                month = data[calendar].month,
-                                                day=01
-                                              }
-                                      )
-            data[calendar].date:set_text(month_name)
+            data[calendar].date:set_text(get_date_label(calendar))
           end)
           ))
   data[calendar].next_month:buttons(util.table.join(
@@ -270,13 +277,7 @@ local function add_change_month_signals(calendar)
 					  next_month(calendar)
             display_days_of_month(calendar)
             set_weeks_numbers(calendar)
-            local month_name = os.date("%B",
-                                       os.time{ year = data[calendar].year,
-                                                month = data[calendar].month,
-                                                day=01
-                                              }
-                                      )
-            data[calendar].date:set_text(month_name)
+            data[calendar].date:set_text(get_date_label(calendar))
           end)
           ))
   data[calendar].date:buttons(util.table.join(
@@ -284,7 +285,7 @@ local function add_change_month_signals(calendar)
             get_current_month_year(calendar)
             display_days_of_month(calendar)
             set_weeks_numbers(calendar)
-            data[calendar].date:set_text(os.date('%a %b %d, %H:%M'))
+            data[calendar].date:set_text(get_date_label(calendar))
           end)
           ))
 end
