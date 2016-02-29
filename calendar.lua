@@ -61,15 +61,21 @@ local function generate_week_days(calendar)
   end
 end
 
-local function generate_weeks_numbers(calendar)
+local function set_weeks_numbers(calendar)
 	local numbers = helpers.get_ISO8601_weeks_number_of_month(data[calendar].month,
-                                                                  data[calendar].year)
+  data[calendar].year)
+  for i,w in ipairs(data[calendar].weeks_numbers) do
+    w:set_text(numbers[i])
+  end
+end
+
+local function generate_weeks_numbers(calendar)
   local props = data[calendar].props
 	data[calendar].weeks_numbers = {}
   for i=1,6 do
     data[calendar].weeks_numbers[i] = text_box(props.weeks_number_style)
-		data[calendar].weeks_numbers[i]:set_text(numbers[i])
 	end
+  set_weeks_numbers(calendar)
 end
 
 local function generate_days_of_month(calendar)
@@ -174,7 +180,6 @@ local function display_days_of_month(calendar)
   local days = data[calendar].days_of_month
   local day_1 = data[calendar].day_1
   local day_n = data[calendar].day_n
-  print(day_n)
   local day_number = 0
 
   for i=1,42 do
@@ -194,7 +199,6 @@ local function display_days_of_month(calendar)
         apply_style(days[i],
                     data[calendar].props.days_of_month_widget_style)
       end
-      print(day_number)
     end
   end
 end
@@ -251,6 +255,7 @@ local function add_change_month_signals(calendar)
 	        awful.button({ }, 1, function()
 					  prev_month(calendar)
             display_days_of_month(calendar)
+            set_weeks_numbers(calendar)
             local month_name = os.date("%B",
                                        os.time{ year = data[calendar].year,
                                                 month = data[calendar].month,
@@ -264,6 +269,7 @@ local function add_change_month_signals(calendar)
 	        awful.button({ }, 1, function()
 					  next_month(calendar)
             display_days_of_month(calendar)
+            set_weeks_numbers(calendar)
             local month_name = os.date("%B",
                                        os.time{ year = data[calendar].year,
                                                 month = data[calendar].month,
@@ -277,6 +283,7 @@ local function add_change_month_signals(calendar)
 	        awful.button({ }, 1, function()
             get_current_month_year(calendar)
             display_days_of_month(calendar)
+            set_weeks_numbers(calendar)
             data[calendar].date:set_text(os.date('%a %b %d, %H:%M'))
           end)
           ))
