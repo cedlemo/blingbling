@@ -4,7 +4,7 @@ local superproperties = require("blingbling.superproperties")
 local grid = require("blingbling.grid")
 local text_box = require("blingbling.text_box")
 local awful = require("awful")
-local util = awful.util 
+local util = awful.util
 local capi = { screen = screen, mouse = mouse }
 local wibox = require("wibox")
 local base = require("wibox.layout.base")
@@ -15,8 +15,8 @@ local data = setmetatable({}, { __mode = "k" })
 
 local properties = { "prev_next_widget_style", "current_date_widget_style",
                      "days_of_week_widget_style", "days_of_month_widget_style",
-                     "weeks_number_widget_style", "corner_widget_style", 
-                     "current_day_widget_style", "focus_widget_style", 
+                     "weeks_number_widget_style", "corner_widget_style",
+                     "current_day_widget_style", "focus_widget_style",
                      "info_cell_style", "link_to_external_calendar" }
 
 -- Build properties function
@@ -35,10 +35,10 @@ local function generate_header_widgets(calendar)
   data[calendar].date = text_box(props.current_date_widget_style)
   data[calendar].date:set_text(os.date('%a %b %d, %H:%M'))
 
-  data[calendar].prev_month = text_box(props.prev_month_widget_style)
+  data[calendar].prev_month = text_box(props.prev_next_widget_style)
   data[calendar].prev_month:set_text(util.escape("<<"))
 
-  data[calendar].next_month = text_box(props.next_month_widget_style)
+  data[calendar].next_month = text_box(props.prev_next_widget_style)
   data[calendar].next_month:set_text(util.escape(">>"))
 end
 
@@ -54,10 +54,10 @@ local function generate_week_days(calendar)
   names = generate_week_day_names()
   data[calendar].week_days = {}
   local props = data[calendar].props
-  
+
   for i, n in ipairs(names) do
     data[calendar].week_days[i] = text_box(props.days_of_week_style)
-    data[calendar].week_days[i]:set_text(n) 
+    data[calendar].week_days[i]:set_text(n)
   end
 end
 
@@ -128,7 +128,7 @@ end
 
 local function find_first_last_days_of_month(calendar)
   --find the first week day of the month
-  --it is the number used as start for displaying day in the 
+  --it is the number used as start for displaying day in the
   --table data[calendar].days_of_month
   local d = os.date('*t',
                     os.time{year = data[calendar].year,
@@ -137,7 +137,7 @@ local function find_first_last_days_of_month(calendar)
                     )
   --We use Monday as first day of week
   local day_1 = d['wday'] - 1 == 0 and 7 or d["wday"]
-  
+
 	local day_n = helpers.get_days_in_month(data[calendar].month, data[calendar].year)
   data[calendar].day_1 = day_1
   data[calendar].day_n = tonumber(day_n)
@@ -172,7 +172,7 @@ local function display_days_of_month(calendar)
     else
       day_number = day_number + 1
       days[i]:set_text(day_number)
-      apply_style(days[i], 
+      apply_style(days[i],
                   data[calendar].props.days_of_month_widget_style)
     end
   end
@@ -186,23 +186,25 @@ local function add_focus_style(widget, focus, normal)
                           end
                         end)
 	widget:connect_signal("mouse::leave",
-                        function() 
+                        function()
                           if widget._layout.text ~= "" then
                             apply_style(widget, normal)
                           end
                         end)
 end
 
-local function add_focus_signals_on_prev_next(calendar, props)
+local function add_focus_signals_on_date_prev_next(calendar, props)
   local focus = props.focus_widget_style
   local normal = props.prev_next_widget_style
   add_focus_style(data[calendar].prev_month, focus, normal)
   add_focus_style(data[calendar].next_month, focus, normal)
+  normal = props.current_date_widget_style
+  add_focus_style(data[calendar].date, focus, normal)
 end
 
 local function add_focus_signals(calendar)
   local props = data[calendar].props
-  add_focus_signals_on_prev_next(calendar, props)
+  add_focus_signals_on_date_prev_next(calendar, props)
 end
 
 local function next_month(calendar)
@@ -228,12 +230,33 @@ local function add_change_month_signals(calendar)
 	        awful.button({ }, 1, function()
 					  prev_month(calendar)
             display_days_of_month(calendar)
+            local month_name = os.date("%B",
+                                       os.time{ year = data[calendar].year,
+                                                month = data[calendar].month,
+                                                day=01
+                                              }
+                                      )
+            data[calendar].date:set_text(month_name)
           end)
           ))
   data[calendar].next_month:buttons(util.table.join(
 	        awful.button({ }, 1, function()
 					  next_month(calendar)
             display_days_of_month(calendar)
+            local month_name = os.date("%B",
+                                       os.time{ year = data[calendar].year,
+                                                month = data[calendar].month,
+                                                day=01
+                                              }
+                                      )
+            data[calendar].date:set_text(month_name)
+          end)
+          ))
+  data[calendar].date:buttons(util.table.join(
+	        awful.button({ }, 1, function()
+            get_current_month_year(calendar)
+            display_days_of_month(calendar)
+            data[calendar].date:set_text(os.date('%a %b %d, %H:%M'))
           end)
           ))
 end
@@ -241,11 +264,11 @@ end
 function calendar.new(args)
   local args = args or {}
   local _calendar = grid()
-  
+
   if args.locale then
 		os.setlocale(locale)
 	end
-  
+
   data[_calendar] = {}
   data[_calendar].props =  helpers.load_properties(properties,
                                                   data,
