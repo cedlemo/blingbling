@@ -29,6 +29,7 @@ The current version is the v2.2 and it works with Awesome WM <= awesome v3.5.8 a
 *  [tagslist](#tagslist)
 *  [text_box](#text_box)
 *  [calendar](#calendar)
+*  [extended_calendar](#calendar)
 *  [grid](#grid)
 *  [transient](#transient)
 
@@ -228,12 +229,26 @@ left_layout:add(wibox.layout.margin(mytag[s],0,0,1,1))
 ```
 
 ##### calendar
-This widget is a clock widget with a calendar. You can show the calendar for the current month with a mouse click on this widget. In the calendar, there is 3 buttons allowing to show previous, current and next month. You can get events from remind and taskwarrior or add handlers for other task/calendar software.
+This widget is different from the calendar of the v2.2 version. It is just a simple [grid](#grid) displaying days of month, week numbers. There are 3 buttons on the first row of the grid that allow you to displays the previous and next month or to return to the current month. Unlike the previous version, it must be added to a wibox in order to be displayed.
+If you want a calendar that offers the same functionnalities than the previous calendar widget, you should use the [extended_calendar](#extended_calendar).
+You can test it with the file **config_example/calendar_rc.lua** and the simple theme **config_example/calendar_tests/**.
 
 ```lua
-calendar = blingbling.calendar()
-calendar:set_link_to_external_calendar(true)
+
+cal_box = wibox({height = 200, width = 240, ontop = true, x = 200, y = 200})
+cal_box.visible = true
+local blingbling = require("blingbling")
+
+-- cal = blingbling.calendar({locale = 'fr_FR'})
+cal = blingbling.calendar()
+cal_box:set_widget(cal)
+cal_box.visible = true
 ```
+
+##### extended_calendar
+
+  *  To be done
+
 ##### grid
 It is a layout/container widget. It allow you to add child in the same way of the `GtkGrid`. The best way to see is to try the ***config_example/grid_rc.lua***.
 
