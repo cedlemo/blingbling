@@ -400,14 +400,15 @@ client.connect_signal("focus", function(c) c.border_color = beautiful.border_foc
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 
 
-cal_box = wibox({height = 400, width = 400, ontop = true, x = 200, y = 200})
+cal_box = wibox({height = 200, width = 240, ontop = true, x = 200, y = 200})
 cal_box.visible = true
 local blingbling = require("blingbling")
 
+-- cal = blingbling.calendar({locale = 'fr_FR'})
 cal = blingbling.calendar()
 cal_box:set_widget(cal)
 cal_box.visible = true
 
-local w, h = cal:fit(400, 400)
-cal_box.width = w + 80
-cal_box.height = h + 80
+--local w, h = cal:fit(600, 600)
+--cal_box.width = w + 80
+--cal_box.height = h + 80
