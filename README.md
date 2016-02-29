@@ -12,6 +12,8 @@ The current version is the v2.2 and it works with Awesome WM <= awesome v3.5.8 a
 
 <img src="https://raw.github.com/cedlemo/blingbling/master/config_example/japanese2_screen.png" width="576" height="324" alt="Screenshot">
 
+<img src="https://raw.github.com/cedlemo/blingbling/master/config_example/graphs_test_screen.png" width="576" height="324" alt="Screenshot">
+
 
 ### Version: v2.2
 
@@ -230,8 +232,8 @@ left_layout:add(wibox.layout.margin(mytag[s],0,0,1,1))
 
 ##### calendar
 This widget is different from the calendar of the v2.2 version. It is just a simple [grid](#grid) displaying days of month, week numbers. There are 3 buttons on the first row of the grid that allow you to displays the previous and next month or to return to the current month. Unlike the previous version, it must be added to a wibox in order to be displayed.
-If you want a calendar that offers the same functionnalities than the previous calendar widget, you should use the [extended_calendar](#extended_calendar).
-You can test it with the file **config_example/calendar_rc.lua** and the simple theme **config_example/calendar_tests/**.
+
+You can test it with the file **config_example/calendar_rc.lua** and the simple theme **config_example/calendar_tests/**. If you want a calendar that offers the same functionnalities than the previous calendar widget, you should use the [extended_calendar](#extended_calendar).
 
 ```lua
 
@@ -250,7 +252,7 @@ cal_box.visible = true
   *  To be done
 
 ##### grid
-It is a layout/container widget. It allow you to add child in the same way of the `GtkGrid`. The best way to see is to try the ***config_example/grid_rc.lua***.
+It is a layout/container widget. It allows you to add child in the same way of the `GtkGrid`. The best way to see is to try the ***config_example/grid_rc.lua***.
 
 ```lua
 texts = {}
