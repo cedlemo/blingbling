@@ -38,7 +38,6 @@ local function get_month_name(calendar)
 end
 
 local function get_date_label(calendar)
-  print(data[calendar])
   local year = tostring(data[calendar].year)
   return get_month_name(calendar) .. " " .. year
 end
