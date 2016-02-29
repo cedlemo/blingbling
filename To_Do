@@ -26,6 +26,10 @@
   module skeleton                 done
   see how to deal sparse table (usage of the "-" doesn't seem very pro"
 
+--> text_box
+  rename background_text_border to text_background_border
+  or remove the property
+
 simplify value_text_box
 remove border for text background
 
