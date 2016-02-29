@@ -136,6 +136,7 @@ local function find_first_last_days_of_month(calendar)
                             day = 01}
                     )
   --We use Monday as first day of week
+  -- TODO is it ok with other locale ?
   local day_1 = d['wday'] - 1 == 0 and 7 or d["wday"]
 
 	local day_n = helpers.get_days_in_month(data[calendar].month, data[calendar].year)
@@ -157,23 +158,43 @@ local function apply_style(widget, style)
 		end
 	end
 end
+local function is_current_month(calendar)
+  local current_month = tonumber(os.date("%m"))
+  local current_year = tonumber(os.date("%Y"))
+  if data[calendar].year == current_year and
+     data[calendar].month == current_month then
+    return true
+  else
+    return false
+  end
+end
 
 local function display_days_of_month(calendar)
   find_first_last_days_of_month(calendar)
   local days = data[calendar].days_of_month
   local day_1 = data[calendar].day_1
   local day_n = data[calendar].day_n
+  print(day_n)
   local day_number = 0
+
   for i=1,42 do
     if i < day_1 - 1 then
       hide_day_of_month_cell(days[i])
-    elseif i > day_n then
+    elseif i >= (day_n + day_1 - 1)  then
       hide_day_of_month_cell(days[i])
     else
       day_number = day_number + 1
+      local current_day = tonumber(os.date("%d"))
       days[i]:set_text(day_number)
-      apply_style(days[i],
-                  data[calendar].props.days_of_month_widget_style)
+      if current_day == day_number and
+        is_current_month(calendar) then
+        apply_style(days[i],
+                    data[calendar].props.current_day_widget_style)
+      else
+        apply_style(days[i],
+                    data[calendar].props.days_of_month_widget_style)
+      end
+      print(day_number)
     end
   end
 end
@@ -266,7 +287,7 @@ function calendar.new(args)
   local _calendar = grid()
 
   if args.locale then
-		os.setlocale(locale)
+    os.setlocale(args.locale)
 	end
 
   data[_calendar] = {}
