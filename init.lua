@@ -20,6 +20,7 @@ return
 	tagslist = require("blingbling.tagslist");
 	calendar = require("blingbling.calendar");
   transient = require("blingbling.transient");
-  grid = require("blingbling.grid")
+  grid = require("blingbling.grid");
+  extended_calendar = require("blingbling.extended_calendar")
 }
 
