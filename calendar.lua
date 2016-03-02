@@ -12,9 +12,8 @@ local data = setmetatable({}, { __mode = "k" })
 
 local properties = { "prev_next_widget_style", "current_date_widget_style",
                      "days_of_week_widget_style", "days_of_month_widget_style",
-                     "weeks_number_widget_style", "corner_widget_style",
-                     "current_day_widget_style", "focus_widget_style",
-                     "info_cell_style", "link_to_external_calendar" }
+                     "weeks_number_widget_style", "current_day_widget_style",
+                     "focus_widget_style" }
 
 -- Build properties function
 for _, prop in ipairs(properties) do
