@@ -202,8 +202,7 @@ local function display_days_of_month(calendar)
       day_number = day_number + 1
       local current_day = tonumber(os.date("%d"))
       days[i]:set_text(day_number)
-      if current_day == day_number and
-        is_current_month(calendar) then
+      if is_current_month(calendar) and current_day == day_number then
         apply_style(days[i],
                     data[calendar].props.current_day_widget_style)
       else
@@ -229,6 +228,22 @@ local function add_focus_style(widget, focus, normal)
                         end)
 end
 
+local function add_focus_style_with_ref(widget, focus, normal, refs)
+	refs.mouse_enter[widget] = function()
+                          if widget._layout.text ~= "" then
+                            apply_style(widget, focus)
+                          end
+                        end
+  widget:connect_signal("mouse::enter", refs.mouse_enter[widget])
+
+  refs.mouse_leave[widget] = function()
+                          if widget._layout.text ~= "" then
+                            apply_style(widget, normal)
+                          end
+                        end
+	widget:connect_signal("mouse::leave", refs.mouse_leave[widget])
+end
+
 local function add_focus_signals_on_date_prev_next(calendar, props)
   local focus = props.focus_widget_style
   local normal = props.prev_next_widget_style
@@ -238,13 +253,16 @@ local function add_focus_signals_on_date_prev_next(calendar, props)
   add_focus_style(data[calendar].date, focus, normal)
 end
 
-local function reset_focus(widget)
-	widget:connect_signal("mouse::enter",
-                        function()
-                        end)
-	widget:connect_signal("mouse::leave",
-                        function()
-                        end)
+local function reset_focus(calendar, widget)
+	local enter_fn = data[calendar].focus_handlers_ref.mouse_enter[widget]
+	local leave_fn = data[calendar].focus_handlers_ref.mouse_leave[widget]
+
+  if enter_fn then
+    widget:disconnect_signal("mouse::enter", enter_fn)
+  end
+  if leave_fn then
+    widget:disconnect_signal("mouse::leave", leave_fn)
+  end
 end
 
 local function add_focus_signals_on_days_of_month(calendar, props)
@@ -260,21 +278,23 @@ local function add_focus_signals_on_days_of_month(calendar, props)
 
   for i=1,42 do
     if i < day_1 - 1 then
-      reset_focus(days[i])
+      reset_focus(calendar, days[i])
     elseif i >= (day_n + day_1 - 1)  then
-      reset_focus(days[i])
+      reset_focus(calendar, days[i])
     else
+      reset_focus(calendar, days[i])
       day_number = day_number + 1
       local current_day = tonumber(os.date("%d"))
-      if current_day == day_number and
-        is_current_month(calendar) then
-        add_focus_style(days[i], focus, current)
+      if is_current_month(calendar) and current_day == day_number then
+        add_focus_style_with_ref(days[i], focus, current,
+                                 data[calendar].focus_handlers_ref)
       else
-        add_focus_style(days[i], focus, normal)
+        add_focus_style_with_ref(days[i], focus, normal,
+                                 data[calendar].focus_handlers_ref)
       end
     end
   end
- 
+
 end
 
 local function add_focus_signals(calendar)
@@ -346,12 +366,22 @@ function calendar.new(args)
   if args.locale then
     os.setlocale(args.locale)
 	end
-  
+
   data[_calendar] = {}
-  
+  data[_calendar].focused_day = nil
+
+  -- Used to keep tracks of the function used to change the focus
+  -- in order to be able to delete them and change them
+  -- a text_box can be an empty day, a normal day or the current
+  -- day depending on the month we choose to display
+  data[_calendar].focus_handlers_ref = {}
+  data[_calendar].focus_handlers_ref.mouse_enter = {}
+  data[_calendar].focus_handlers_ref.mouse_leave = {}
+
   for _, prop in ipairs(properties) do
     data[_calendar][prop] = args[prop]
   end
+
   data[_calendar].props =  helpers.load_properties(properties,
                                                   data,
                                                   _calendar,
@@ -363,7 +393,7 @@ function calendar.new(args)
   display_days_of_month(_calendar)
   add_focus_signals(_calendar)
   add_change_month_signals(_calendar)
-  
+
   return _calendar
 end
 
