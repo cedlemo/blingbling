@@ -13,7 +13,7 @@ local data = setmetatable({}, { __mode = "k" })
 local properties = { "prev_next_widget_style", "current_date_widget_style",
                      "days_of_week_widget_style", "days_of_month_widget_style",
                      "weeks_number_widget_style", "current_day_widget_style",
-                     "focus_widget_style" }
+                     "focus_widget_style", "focus_days" }
 
 -- Build properties function
 for _, prop in ipairs(properties) do
@@ -238,9 +238,51 @@ local function add_focus_signals_on_date_prev_next(calendar, props)
   add_focus_style(data[calendar].date, focus, normal)
 end
 
+local function reset_focus(widget)
+	widget:connect_signal("mouse::enter",
+                        function()
+                        end)
+	widget:connect_signal("mouse::leave",
+                        function()
+                        end)
+end
+
+local function add_focus_signals_on_days_of_month(calendar, props)
+  local focus = props.focus_widget_style
+  local normal = props.days_of_month_widget_style
+  local current = props.current_day_widget_style
+
+  find_first_last_days_of_month(calendar)
+  local days = data[calendar].days_of_month
+  local day_1 = data[calendar].day_1
+  local day_n = data[calendar].day_n
+  local day_number = 0
+
+  for i=1,42 do
+    if i < day_1 - 1 then
+      reset_focus(days[i])
+    elseif i >= (day_n + day_1 - 1)  then
+      reset_focus(days[i])
+    else
+      day_number = day_number + 1
+      local current_day = tonumber(os.date("%d"))
+      if current_day == day_number and
+        is_current_month(calendar) then
+        add_focus_style(days[i], focus, current)
+      else
+        add_focus_style(days[i], focus, normal)
+      end
+    end
+  end
+ 
+end
+
 local function add_focus_signals(calendar)
   local props = data[calendar].props
   add_focus_signals_on_date_prev_next(calendar, props)
+  if data[calendar].focus_days == true then
+    add_focus_signals_on_days_of_month(calendar, props)
+  end
 end
 
 local function next_month(calendar)
@@ -268,6 +310,9 @@ local function add_change_month_signals(calendar)
             display_days_of_month(calendar)
             set_weeks_numbers(calendar)
             data[calendar].date:set_text(get_date_label(calendar))
+            if data[calendar].focus_days == true then
+              add_focus_signals_on_days_of_month(calendar, data[calendar].props)
+            end
           end)
           ))
   data[calendar].next_month:buttons(util.table.join(
@@ -276,6 +321,9 @@ local function add_change_month_signals(calendar)
             display_days_of_month(calendar)
             set_weeks_numbers(calendar)
             data[calendar].date:set_text(get_date_label(calendar))
+            if data[calendar].focus_days == true then
+              add_focus_signals_on_days_of_month(calendar, data[calendar].props)
+            end
           end)
           ))
   data[calendar].date:buttons(util.table.join(
@@ -284,6 +332,9 @@ local function add_change_month_signals(calendar)
             display_days_of_month(calendar)
             set_weeks_numbers(calendar)
             data[calendar].date:set_text(get_date_label(calendar))
+            if data[calendar].focus_days == true then
+              add_focus_signals_on_days_of_month(calendar, data[calendar].props)
+            end
           end)
           ))
 end
@@ -295,8 +346,12 @@ function calendar.new(args)
   if args.locale then
     os.setlocale(args.locale)
 	end
-
+  
   data[_calendar] = {}
+  
+  for _, prop in ipairs(properties) do
+    data[_calendar][prop] = args[prop]
+  end
   data[_calendar].props =  helpers.load_properties(properties,
                                                   data,
                                                   _calendar,
@@ -308,6 +363,7 @@ function calendar.new(args)
   display_days_of_month(_calendar)
   add_focus_signals(_calendar)
   add_change_month_signals(_calendar)
+  
   return _calendar
 end
 

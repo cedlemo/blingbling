@@ -17,27 +17,17 @@ function ext_calendar.new(args)
   local _calendar = wibox(args)
   data[_calendar] = {}
 
-  
+  args.focus_days = true 
   data[_calendar].calendar = calendar(args)
   data[_calendar].grid = grid()
-  local title = text_box({text = os.date('%a %b %d, %H:%M')})
-  data[_calendar].grid:add_child(title,
-                                  1,
-                                  1,
-                                  2,
-                                  1)
 
-  data[_calendar].grid:add_child(data[_calendar].calendar,
-                                 1,
-                                 2,
-                                 1,
-                                 8)
+  local title = text_box({text = os.date('%a %b %d, %H:%M')})
+  data[_calendar].grid:add_child(title, 1, 1, 2, 1)
+
+  data[_calendar].grid:add_child(data[_calendar].calendar, 1, 2, 1, 8)
   local events_label = text_box({text = "Events :"})
-  data[_calendar].grid:add_child(events_label,
-                                 2,
-                                 2,
-                                 1,
-                                 1)
+  
+  data[_calendar].grid:add_child(events_label, 2, 2, 1, 1)
   _calendar.visible = true
 
   _calendar:set_widget(data[_calendar].grid)
