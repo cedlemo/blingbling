@@ -77,8 +77,6 @@ theme.titlebar_maximized_button_focus_inactive  = current_theme .. "/titlebar/ma
 theme.titlebar_maximized_button_normal_active = current_theme .. "/titlebar/maximized_normal_active.png"
 theme.titlebar_maximized_button_focus_active  = current_theme .. "/titlebar/maximized_focus_active.png"
 
-theme.wallpaper = "/mnt/data_0/Images/tiles_grey.png"--current_theme .. "/background.png"
-
 -- You can use your own layout icons like this:
 theme.layout_fairh = current_theme .. "/layouts/fairhw.png"
 theme.layout_fairv = current_theme .. "/layouts/fairvw.png"
