@@ -13,18 +13,9 @@ local data = setmetatable({}, { __mode = "k" })
 local properties = { "prev_next_widget_style", "current_date_widget_style",
                      "days_of_week_widget_style", "days_of_month_widget_style",
                      "weeks_number_widget_style", "current_day_widget_style",
-                     "focus_widget_style", "focus_days" }
+                     "focus_widget_style", "focus_days", "focus_days_enter_callback",
+                     "focus_days_leave_callback"}
 
--- Build properties function
-for _, prop in ipairs(properties) do
-	if not calendar["set_" .. prop] then
-		calendar["set_" .. prop] = function(cal, value)
-			data[cal][prop] = value
-			cal:emit_signal("widget::updated")
-			return cal
-    end
-  end
-end
 
 local function get_month_name(calendar)
   local month_name = os.date("%B",
@@ -265,6 +256,29 @@ local function reset_focus(calendar, widget)
   end
 end
 
+local function add_focus_leave_enter_callbacks(widget, enter_callback, leave_callback)
+	if enter_callback ~= nil then
+    widget:connect_signal("mouse::enter",
+                          function()
+                            if widget._layout.text ~= "" then
+                              callback = enter_callback.cb
+                              data = enter_callback.data
+                              callback(widget, data)
+                            end
+                          end)
+  end
+  if leave_callback ~= nil then
+    widget:connect_signal("mouse::leave",
+                          function()
+                            if widget._layout.text ~= "" then
+                              callback = leave_callback.cb
+                              data = leave_callback.data
+                              callback(widget, data)
+                            end
+                          end)
+  end
+end
+
 local function add_focus_signals_on_days_of_month(calendar, props)
   local focus = props.focus_widget_style
   local normal = props.days_of_month_widget_style
@@ -277,6 +291,11 @@ local function add_focus_signals_on_days_of_month(calendar, props)
   local day_number = 0
 
   for i=1,42 do
+    local enter_cb = data[calendar].focus_days_enter_callback
+    local leave_cb = data[calendar].focus_days_leave_callback
+    add_focus_leave_enter_callbacks(days[i],
+                                    enter_cb,
+                                    leave_cb)
     if i < day_1 - 1 then
       reset_focus(calendar, days[i])
     elseif i >= (day_n + day_1 - 1)  then
@@ -393,6 +412,16 @@ function calendar.new(args)
   display_days_of_month(_calendar)
   add_focus_signals(_calendar)
   add_change_month_signals(_calendar)
+
+  -- Build properties function
+  for _, prop in ipairs(properties) do
+	  if not _calendar["set_" .. prop] then
+		  _calendar["set_" .. prop] = function(cal, value)
+			  data[cal][prop] = value
+			  return cal
+      end
+    end
+  end
 
   return _calendar
 end
