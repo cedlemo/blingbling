@@ -261,8 +261,8 @@ local function add_focus_leave_enter_callbacks(widget, enter_callback, leave_cal
     widget:connect_signal("mouse::enter",
                           function()
                             if widget._layout.text ~= "" then
-                              callback = enter_callback.cb
-                              data = enter_callback.data
+                              local callback = enter_callback.cb
+                              local data = enter_callback.data
                               callback(widget, data)
                             end
                           end)
@@ -271,8 +271,8 @@ local function add_focus_leave_enter_callbacks(widget, enter_callback, leave_cal
     widget:connect_signal("mouse::leave",
                           function()
                             if widget._layout.text ~= "" then
-                              callback = leave_callback.cb
-                              data = leave_callback.data
+                              local callback = leave_callback.cb
+                              local data = leave_callback.data
                               callback(widget, data)
                             end
                           end)
@@ -289,7 +289,6 @@ local function add_focus_signals_on_days_of_month(calendar, props)
   local day_1 = data[calendar].day_1
   local day_n = data[calendar].day_n
   local day_number = 0
-
   for i=1,42 do
     local enter_cb = data[calendar].focus_days_enter_callback
     local leave_cb = data[calendar].focus_days_leave_callback
