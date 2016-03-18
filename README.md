@@ -14,6 +14,7 @@ The current version is the v2.2 and it works with Awesome WM <= awesome v3.5.8 a
 
 <img src="https://raw.github.com/cedlemo/blingbling/master/config_example/graphs_test_screen.png" width="576" height="324" alt="Screenshot">
 
+<img src="https://raw.github.com/cedlemo/blingbling/master/config_example/screenshot_extended_calendar.png" width="576" height="324" alt="Screenshot">
 
 ### Version: v2.2
 
