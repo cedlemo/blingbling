@@ -399,18 +399,31 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 
 local blingbling = require("blingbling")
 
-local function print_info_enter(widget, data)
-  str = widget._layout.text .. " : No events for this day"
-  data:set_text(str)
+local function print_info_enter(widget, month, year, info_cell)
+  day = widget._layout.text 
+  local str = day .."/"..month.."/"..year.." : No events for this day"
+  info_cell:set_text(str)
 end
-local function print_info_leave(widget, data)
-  data:set_text("")
+
+local function print_events_from_remind(day_widget, month, year, info_cell)
+  local day = day_widget._layout.text
+  local remind_conf = '~/.config/remind/reminders.rem'
+  local day_events = awful.util.pread('remind -k\'echo %s\' '..remind_conf ..' ' .. day .. " " .. os.date("%B",os.time{year=year, month=month, day=day}) .." " .. year)
+  day_events = string.gsub(day_events,"\n\n+","\n")
+  day_events  =string.gsub(day_events,"\n*$","")
+  day_events="Remind:\n" .. day_events
+
+  info_cell:set_text(day_events)
+end
+
+local function print_info_leave(widget, month, year, info_cell)
+  info_cell:set_text("")
 end
 
 -- cal = blingbling.calendar({locale = 'fr_FR'})
 cal = blingbling.extended_calendar({height = 300, width = 500, 
                                     ontop = true, x = 200, y = 200,
-                                    days_mouse_enter = print_info_enter,
+                                    days_mouse_enter = print_events_from_remind,
                                     days_mouse_leave = print_info_leave})
 --local cal = blingbling.extended_calendar({})
 --cal.visible = true
