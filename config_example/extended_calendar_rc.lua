@@ -399,8 +399,19 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 
 local blingbling = require("blingbling")
 
+local function print_info_enter(widget, data)
+  str = widget._layout.text .. " : No events for this day"
+  data:set_text(str)
+end
+local function print_info_leave(widget, data)
+  data:set_text("")
+end
+
 -- cal = blingbling.calendar({locale = 'fr_FR'})
-cal = blingbling.extended_calendar({height = 300, width = 500, ontop = true, x = 200, y = 200})
+cal = blingbling.extended_calendar({height = 300, width = 500, 
+                                    ontop = true, x = 200, y = 200,
+                                    days_mouse_enter = print_info_enter,
+                                    days_mouse_leave = print_info_leave})
 --local cal = blingbling.extended_calendar({})
 --cal.visible = true
 

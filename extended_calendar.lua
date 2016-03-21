@@ -9,15 +9,8 @@ local text_box = require("blingbling.text_box")
 local ext_calendar = { mt = {} }
 local data = setmetatable({}, { __mode = "k" })
 
-local properties = { "info_cell_style", "link_to_external_calendar" }
-
-local function print_info_enter(widget, data)
-  str = widget._layout.text .. " : No events for this day"
-  data:set_text(str)
-end
-local function print_info_leave(widget, data)
-  data:set_text("")
-end
+local properties = { "info_cell_style", "link_to_external_calendar",
+                     "days_mouse_enter", "days_mouse_leave"}
 
 function ext_calendar.new(args)
   local args = args or {}
@@ -26,9 +19,10 @@ function ext_calendar.new(args)
   data[_calendar] = {}
 
   args.focus_days = true 
+
   local events_content = text_box({text = ""})
-  args.focus_days_enter_callback = {cb = print_info_enter, data = events_content}
-  args.focus_days_leave_callback = {cb = print_info_leave, data = events_content}
+  args.focus_days_enter_callback = {cb = args.days_mouse_enter or function() end, data = events_content}
+  args.focus_days_leave_callback = {cb = args.days_mouse_leave or function() end, data = events_content}
   data[_calendar].calendar = calendar(args)
   data[_calendar].grid = grid()
 
