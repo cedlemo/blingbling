@@ -256,24 +256,28 @@ local function reset_focus(calendar, widget)
   end
 end
 
-local function add_focus_leave_enter_callbacks(widget, enter_callback, leave_callback)
-	if enter_callback ~= nil then
+local function add_focus_leave_enter_callbacks(widget, calendar)
+  local enter_cb = data[calendar].focus_days_enter_callback
+  local leave_cb = data[calendar].focus_days_leave_callback
+	local m = data[calendar].month
+	local y = data[calendar].year
+  if enter_cb ~= nil then
     widget:connect_signal("mouse::enter",
                           function()
                             if widget._layout.text ~= "" then
-                              local callback = enter_callback.cb
-                              local data = enter_callback.data
-                              callback(widget, data)
+                              local callback = enter_cb.cb
+                              local data = enter_cb.data
+                              callback(widget, m, y, data)
                             end
                           end)
   end
-  if leave_callback ~= nil then
+  if leave_cb ~= nil then
     widget:connect_signal("mouse::leave",
                           function()
                             if widget._layout.text ~= "" then
-                              local callback = leave_callback.cb
-                              local data = leave_callback.data
-                              callback(widget, data)
+                              local callback = leave_cb.cb
+                              local data = leave_cb.data
+                              callback(widget, m, y, data)
                             end
                           end)
   end
@@ -290,11 +294,7 @@ local function add_focus_signals_on_days_of_month(calendar, props)
   local day_n = data[calendar].day_n
   local day_number = 0
   for i=1,42 do
-    local enter_cb = data[calendar].focus_days_enter_callback
-    local leave_cb = data[calendar].focus_days_leave_callback
-    add_focus_leave_enter_callbacks(days[i],
-                                    enter_cb,
-                                    leave_cb)
+    add_focus_leave_enter_callbacks(days[i], calendar)
     if i < day_1 - 1 then
       reset_focus(calendar, days[i])
     elseif i >= (day_n + day_1 - 1)  then
