@@ -407,7 +407,10 @@ end
 
 local function print_events_from_remind(day_widget, month, year, info_cell)
   local day = day_widget._layout.text
+  local month = month
+  local year = year
   local remind_conf = '~/.config/remind/reminders.rem'
+  -- Not that it must be lighter to read the file directly and parse it
   local day_events = awful.util.pread('remind -k\'echo %s\' '..remind_conf ..' ' .. day .. " " .. os.date("%B",os.time{year=year, month=month, day=day}) .." " .. year)
   day_events = string.gsub(day_events,"\n\n+","\n")
   day_events  =string.gsub(day_events,"\n*$","")
