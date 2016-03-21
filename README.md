@@ -249,13 +249,14 @@ cal_box.visible = true
 ```
 
 ##### extended_calendar
-This widget is the new version of the calendar module of blingbling v2.2. While the calendar widget is a grid that displays days of month with some little functionnalities, extended_calendarr is a wibox that contains a calendar and other text_box widgets. It allow you to register callbacks so that when you hover your cursor on 
-a day cell, it trigger you callback. A working example can be find here config_example/extended_calendar_rc.lua. (it needs remind and you should adapt the code with
-your remind configuration file)
+This widget is the new version of the calendar module of blingbling v2.2. While the calendar widget is a grid that displays days of month with some little functionnalities, extended_calendar is a wibox that contains a calendar widget and other text_box widgets. It allow you to register callbacks so that when you hover your cursor on a day cell, it triggers you callback. A working example can be find here config_example/extended_calendar_rc.lua. (it needs the application *remind* and you should adapt the code with your *remind* configuration file)
 
 ```lua
--- This is the general format of the callback
-
+-- The arguments of the callback should be vizualized as :
+-- calendar_day_widget : the widget that we focus on (it is a blingbling.text_box)
+-- month : a number for the month that is displayed by the calendar
+-- year  : a number for the year that is displayed by the calendar
+-- info_cell : the blingbling.text_box on the right of the extended_calendar grid
 local function print_info_enter(calendar_day_widget, month, year, info_cell)
   local day = calendar_day_widget._layout.text
   local month = month
