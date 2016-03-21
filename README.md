@@ -249,8 +249,31 @@ cal_box.visible = true
 ```
 
 ##### extended_calendar
+This widget is the new version of the calendar module of blingbling v2.2. While the calendar widget is a grid that displays days of month with some little functionnalities, extended_calendarr is a wibox that contains a calendar and other text_box widgets. It allow you to register callbacks so that when you hover your cursor on 
+a day cell, it trigger you callback. A working example can be find here config_example/extended_calendar_rc.lua. (it needs remind and you should adapt the code with
+your remind configuration file)
 
-  *  To be done
+```lua
+-- This is the general format of the callback
+
+local function print_info_enter(calendar_day_widget, month, year, info_cell)
+  local day = calendar_day_widget._layout.text
+  local month = month
+  local day = day
+  local str = day .."/"..month.."/"..year.." : No events for this day"
+  info_cell:set_text(str)
+end
+
+local function print_info_leave(widget, month, year, info_cell)
+  info_cell:set_text("")
+end
+
+cal = blingbling.extended_calendar({height = 300, width = 500, 
+                                    ontop = true, x = 200, y = 200,
+                                    days_mouse_enter = print_info_enter,
+                                    days_mouse_leave = print_info_leave})
+
+```
 
 ##### grid
 It is a layout/container widget. It allows you to add child in the same way of the `GtkGrid`. The best way to see is to try the ***config_example/grid_rc.lua***.
