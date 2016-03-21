@@ -399,11 +399,11 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 
 local blingbling = require("blingbling")
 
-local function print_info_enter(widget, month, year, info_cell)
-  day = widget._layout.text 
-  local str = day .."/"..month.."/"..year.." : No events for this day"
-  info_cell:set_text(str)
-end
+--local function print_info_enter(widget, month, year, info_cell)
+--  local day = widget._layout.text 
+--  local str = day .."/"..month.."/"..year.." : No events for this day"
+--  info_cell:set_text(str)
+--end
 
 local function print_events_from_remind(day_widget, month, year, info_cell)
   local day = day_widget._layout.text
