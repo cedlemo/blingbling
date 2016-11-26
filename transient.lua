@@ -16,7 +16,6 @@ local table = table
 local string_format = string.format
 local color = require("gears.color")
 local object = require("gears.object")
-local sort = require("gears.sort")
 local beautiful = require("beautiful")
 local surface = require("gears.surface")
 local cairo = require("lgi").cairo
@@ -95,11 +94,11 @@ function transient:show()
     if not self.visible then
         self.visible = true
         local mytimer = timer({ timeout = self.timeout })
-        mytimer:connect_signal("timeout", function () 
+        mytimer:connect_signal("timeout", function ()
                                           if self.visible == true then
                                           self.visible=false
                                           mytimer:stop()
-                                          end 
+                                          end
                                           end)
         mytimer:start()
     end
@@ -112,7 +111,7 @@ function transient:top_left()
     else
        geometry = screen[current_screen].workarea
     end
-    self:geometry({x=geometry.x, y=geometry.y}) 
+    self:geometry({x=geometry.x, y=geometry.y})
 end
 function transient:top_center()
     local current_screen = mouse.screen
@@ -125,7 +124,7 @@ function transient:top_center()
     local w = self.width
     local h = self.height
     local x = geometry.x + geometry.width/2 - w/2
-    self:geometry({x=x, y=geometry.y}) 
+    self:geometry({x=x, y=geometry.y})
 end
 function transient:top_right()
     local current_screen = mouse.screen
@@ -138,7 +137,7 @@ function transient:top_right()
     local w = self.width
     local h = self.height
     local x = geometry.x + geometry.width - w
-    self:geometry({x=x, y=geometry.y}) 
+    self:geometry({x=x, y=geometry.y})
 end
 function transient:center()
     local current_screen = mouse.screen
@@ -154,7 +153,7 @@ function transient:center()
     local x,y = 0
     x = ((geometry.width /2) + geometry.x) - w/2
     y = ((geometry.height /2) + geometry.y) - h/2
-    self:geometry({x=x, y=y}) 
+    self:geometry({x=x, y=y})
 end
 function transient:bottom_left()
     local current_screen = mouse.screen
@@ -168,7 +167,7 @@ function transient:bottom_left()
     local h = self.height
     local x = geometry.x
     local y = geometry.y + geometry.height - h
-    self:geometry({x=x, y=y}) 
+    self:geometry({x=x, y=y})
 end
 function transient:bottom_center()
     local current_screen = mouse.screen
@@ -182,7 +181,7 @@ function transient:bottom_center()
     local h = self.height
     local x = geometry.x + geometry.width/2 - w/2
     local y = geometry.y + geometry.height - h
-    self:geometry({x=x, y=y}) 
+    self:geometry({x=x, y=y})
 end
 function transient:bottom_right()
     local current_screen = mouse.screen
@@ -196,7 +195,7 @@ function transient:bottom_right()
     local h = self.height
     local x = geometry.x + geometry.width - w
     local y = geometry.y + geometry.height - h
-    self:geometry({x=x, y=y}) 
+    self:geometry({x=x, y=y})
 end
 function transient:center_right()
     local current_screen = mouse.screen
@@ -210,7 +209,7 @@ function transient:center_right()
     local h = self.height
     local x = geometry.x + geometry.width - w
     local y = geometry.y + geometry.height/2 - h/2
-    self:geometry({x=x, y=y}) 
+    self:geometry({x=x, y=y})
 end
 function transient:center_left()
     local current_screen = mouse.screen
@@ -224,14 +223,14 @@ function transient:center_left()
     local h = self.height
     local x = geometry.x
     local y = geometry.y + geometry.height/2 - h/2
-    self:geometry({x=x, y=y}) 
+    self:geometry({x=x, y=y})
 end
 local function new(args)
     local ret = object()
     local w = capi.drawin(args)
     ret.drawin = w
     ret._drawable = transient.drawable(w.drawable, ret)
-    
+
     if args.parent then
         ret.parent = args.parent
     end
