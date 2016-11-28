@@ -27,9 +27,9 @@ do
     end)
 end
 -- }}}
-
-beautiful.init("/home/cedlemo/Projets/Lua/blingbling/config_example/graphs_test/theme.lua")
-terminal = "Germinal"
+user_dir = os.getenv("HOME")
+beautiful.init(user_dir .. "/.config/awesome/blingbling/config_example/graphs_test/theme.lua")
+terminal = "topinambour"
 editor = os.getenv("EDITOR") or "nvim"
 editor_cmd = terminal .. " -e " .. editor
 modkey = "Mod4"
@@ -40,7 +40,7 @@ local layouts =
 }
 
 for s = 1, screen.count() do
-  gears.wallpaper.maximized("/home/cedlemo/Projets/Lua/blingbling/config_example/tiles_grey.png", s, true)
+  gears.wallpaper.maximized(user_dir .. "/.config/awesome/blingbling/config_example/tiles_grey.png", s, true)
 end
 
 tags = {}
@@ -409,7 +409,7 @@ local title = wibox.widget.textbox()
 title:set_text("System Informations & monitors")
 title:set_align("center")
 title:set_font("Sans bold 14")
-line = line + 1 
+line = line + 1
 grid:add_child(title, 1, line, 2, 2)
 
 -- Second column first
@@ -451,42 +451,42 @@ local devices = blingbling.helpers.get_mounted_devices()
 local devices_graphs = {}
 local n=0
 for i,v in ipairs(devices) do
-  devices_graphs[i] = blingbling.progress_graph({ 
+  devices_graphs[i] = blingbling.progress_graph({
                                         show_text = true,
                                         label = devices[i].dev .." -> " .. devices[i].mnt .." Usage: $percent %",
                                           horizontal = true,
                                           rounded_size = 0.3,
                                           graph_background_color = "#00000033"
                                           })
-    
+
     vicious.register(devices_graphs[i], vicious.widgets.fs, "${" .. devices[i].mnt .." used_p}",120)
   line = line + 1
   grid:add_child(devices_graphs[i], 2, line, 1, 1)
 end
 
--- First column 
+-- First column
 local os_infos = blingbling.helpers.get_os_release_informations()
 line = 2 -- After the title line which is 2 line height
 for _,v in ipairs(os_infos) do
-  local tbox = wibox.widget.textbox()    
+  local tbox = wibox.widget.textbox()
   tbox:set_markup("<span color=\"white\">"..v.key..": </span><span color=\""..beautiful.bg_focus.."\">"..v.value.."</span>" )
   line = line + 1
   grid:add_child(tbox, 1, line, 1, 1)
 end
 
 local cpu_info = wibox.widget.textbox()
-cpu_info:set_markup("<span color=\"white\">Cpu: </span><span color=\""..beautiful.bg_focus.."\">"..blingbling.helpers.get_cpu_name().."</span>" )  
-line = line + 1  
+cpu_info:set_markup("<span color=\"white\">Cpu: </span><span color=\""..beautiful.bg_focus.."\">"..blingbling.helpers.get_cpu_name().."</span>" )
+line = line + 1
 grid:add_child(cpu_info, 1, line, 1, 1)
 
 local mem_info = wibox.widget.textbox()
-mem_info:set_markup("<span color=\"white\">Ram: </span><span color=\""..beautiful.bg_focus.."\">"..math.ceil(blingbling.helpers.get_total_mem_in_kb()/(1024*1024)).." G</span>" )  
-line = line + 1  
+mem_info:set_markup("<span color=\"white\">Ram: </span><span color=\""..beautiful.bg_focus.."\">"..math.ceil(blingbling.helpers.get_total_mem_in_kb()/(1024*1024)).." G</span>" )
+line = line + 1
 grid:add_child(mem_info, 1, line, 1, 1)
-  
+
 local input_devices = blingbling.helpers.get_input_devices()
 for k,v in pairs(input_devices) do
-  local tbox = wibox.widget.textbox()    
+  local tbox = wibox.widget.textbox()
   tbox:set_markup("<span color=\"white\">".. k ..": </span><span color=\""..beautiful.bg_focus.."\">"..v.."</span>" )
   line = line + 1
   grid:add_child(tbox, 1, line, 1, 1)
